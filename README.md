@@ -9,8 +9,8 @@ Dependencies:
 Features:
 - Focus on organization, optimizations, and game mechanics (not graphics)
 - 98% of the classes are overridable for per-game customizations
-- Object-oriented design
-- Flexible CharacterManager component consisting of multiple Armies with multiple Squads with multiple Characters for grouping NPCs and/or players
+- Object-oriented design and optional Game Component architecture (for only including what's needed/wanted in a project)
+- CharacterManager component consisting of multiple Armies with multiple Squads with multiple Characters for grouping NPCs and/or players
   - Includes large lists of first/last names for random name generation
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, AI-oriented variables, Health/Mana/Task progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
 - Basic UI controls for Buttons, Labels, Input boxes, Pictures/Images, Progress Bars, and Sliders
