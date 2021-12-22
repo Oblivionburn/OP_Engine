@@ -21,7 +21,7 @@ Features:
 - ParticleManager component for handling particles
 - SceneManager component for organizing screens/worlds/levels
   - Scene class has its own Menu and World
-- SoundManager component for handling basic playing/pausing/stopping of sounds/music/etc using FMOD
+- SoundManager component for handling basic playing/pausing/stopping and volume control of sounds/music/etc using FMOD
 - SpellbookManager component for central organization of spellbooks (none are added to it by default)
 - Tilemap (named World in library) consisting of multiple maps with multiple layers
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
