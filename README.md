@@ -15,7 +15,7 @@ Features:
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, AI-oriented variables, Health/Mana/Task progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
 - Basic UI controls for Buttons, Labels, Input boxes, Pictures/Images, Progress Bars, and Sliders
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
-- InventoryManager component for central organization of inventories used in your game (inventories are not added to it by default)
+- InventoryManager component for central organization of inventories (inventories are not added to it by default)
 - MenuManager component for organizing/iterating/referencing menus
   - Menu class contains lists of all basic UI controls and methods for getting menus built more quickly/easily
 - ParticleManager component for handling particles
