@@ -1,0 +1,15 @@
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\OP_Engine.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\OP_Engine.pdb
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.DXGI.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.Direct3D11.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.MediaFoundation.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.Direct2D1.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.XAudio2.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.Direct2D1.xml
+D:\Development\Game Dev\OP_Engine\OP_Engine\obj\Debug\OP_Engine.csproj.AssemblyReference.cache
+D:\Development\Game Dev\OP_Engine\OP_Engine\obj\Debug\OP_Engine.csproj.CoreCompileInputs.cache
+D:\Development\Game Dev\OP_Engine\OP_Engine\obj\Debug\OP_Engine.csproj.CopyComplete
+D:\Development\Game Dev\OP_Engine\OP_Engine\obj\Debug\OP_Engine.dll
+D:\Development\Game Dev\OP_Engine\OP_Engine\obj\Debug\OP_Engine.pdb
+D:\Development\Game Dev\OP_Engine\OP_Engine\bin\Debug\SharpDX.XInput.dll
