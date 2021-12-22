@@ -14,18 +14,18 @@ Features:
 - CharacterManager component consisting of multiple Armies with multiple Squads with multiple Characters for grouping NPCs and/or players
   - Includes large lists of first/last names for random name generation
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, AI-oriented variables, Health/Mana/Task progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
-- Basic UI controls for Buttons, Labels, Input boxes, Pictures/Images, Progress Bars, and Sliders
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
 - InventoryManager component for central organization of inventories (inventories are not added to it by default)
-- MenuManager component for organizing/iterating/referencing menus
-  - Menu class contains lists of all basic UI controls and methods for getting menus built more quickly/easily
-- ParticleManager component for handling particles
-- SceneManager component for organizing screens/worlds/levels
-  - Scene class has its own Menu and World
-- SoundManager component for handling basic playing/pausing/stopping and volume control of sounds/music/etc using FMOD
-- SpellbookManager component for central organization of spellbooks (none are added to it by default)
 - Tilemap (named World in library) consisting of multiple maps with multiple layers
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
+- Basic UI objects/classes for Buttons, Labels, Input boxes, Pictures/Images, Progress Bars, and Sliders
+- MenuManager component for organizing/referencing menus
+  - Menu class contains lists of all basic UI controls and methods for getting menus built more quickly/easily
+- SceneManager component for organizing screens/worlds/levels
+  - Scene class has its own Menu and World instance
+- SoundManager component for handling basic playing/pausing/stopping and volume control of sounds/music/etc using FMOD
+- SpellbookManager component for central organization of spellbooks (none are added to it by default)
+- ParticleManager component for handling particles
 - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
 - Utilities:
   - Cryptography-grade random number generator for extreme randomness
