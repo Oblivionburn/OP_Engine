@@ -28,7 +28,7 @@ Features:
 - ParticleManager component for handling particles
 - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
 - Utilities:
-  - Cryptography-grade random number generator for extreme randomness
+  - Cryptography-grade random number generator for extreme randomness (named CryptoRandom in library)
   - GetLine method for fast ray-tracing between two coordinates (returns list of coordinates between the two points)
 - WeatherManager component for handling/rendering basic weather effects (Clear, Rain, Storm, Snow and Fog) with methods for smoothly transitioning between them over time
   - Has its own instance of ParticleManager for rendering
