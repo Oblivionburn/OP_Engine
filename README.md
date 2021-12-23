@@ -7,7 +7,7 @@ Dependencies:
 - FMOD (not included)
 
 Features:
-- Focus on organization, optimizations, and keeping things simple for just 2D tilemapped games
+- Focus on organization, optimizations, and keeping things simple for 2D tilemapped games
 - Virtually no focus or effort put into fancy graphics effects (a simple pixel-based lighting system would be nice, though)
 - 99% of the classes are overridable for per-game customizations, and nearly everything is Disposable
 - Object-oriented design and optional Game Component architecture (for only including what's needed/wanted in a project)
