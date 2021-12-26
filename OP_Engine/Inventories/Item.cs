@@ -25,6 +25,13 @@ namespace OP_Engine.Inventories
         public string Task;
         public int TaskTime;
 
+        /*
+        Using this Square object for Region, instead of the Rectangle 
+        struct, to enable referencing the same Region as characters
+        for equipped items
+        */
+        public new Square Region;
+
         public bool Icon_Visible;
         public Texture2D Icon;
         public Rectangle Icon_Region;
@@ -39,7 +46,7 @@ namespace OP_Engine.Inventories
         {
             Inventory = new Inventory();
 
-            Region = default;
+            Region = new Square();
             Image = default;
         }
 
@@ -57,13 +64,14 @@ namespace OP_Engine.Inventories
                     {
                         if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                         {
+                            Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                             if (DrawColor != new Color(0, 0, 0, 0))
                             {
-                                spriteBatch.Draw(Texture, Region, Image, DrawColor);
+                                spriteBatch.Draw(Texture, region, Image, DrawColor);
                             }
                             else
                             {
-                                spriteBatch.Draw(Texture, Region, Image, Color.White);
+                                spriteBatch.Draw(Texture, region, Image, Color.White);
                             }
                         }
                     }
@@ -96,13 +104,14 @@ namespace OP_Engine.Inventories
                     {
                         if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                         {
+                            Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                             if (DrawColor != new Color(0, 0, 0, 0))
                             {
-                                spriteBatch.Draw(Texture, Region, Image, DrawColor);
+                                spriteBatch.Draw(Texture, region, Image, DrawColor);
                             }
                             else
                             {
-                                spriteBatch.Draw(Texture, Region, Image, color);
+                                spriteBatch.Draw(Texture, region, Image, color);
                             }
                         }
                     }
@@ -217,14 +226,11 @@ namespace OP_Engine.Inventories
 
         public override void Dispose()
         {
-            if (Texture != null)
-            {
-                Texture = null;
-            }
+            Icon = null;
 
-            if (Icon != null)
+            if (Region != null)
             {
-                Icon = null;
+                Region.Dispose();
             }
 
             foreach (Something property in Properties)

@@ -19,6 +19,12 @@ namespace OP_Engine.Characters
         public int PartyID;
         public string Gender;
 
+        /*
+        Using this Square object for Region, instead of the Rectangle 
+        struct, to enable classes like Item to use the same reference
+        */
+        public new Square Region;
+
         public List<Something> Stats = new List<Something>();
         public List<Something> Skills = new List<Something>();
         public Spellbook Spellbook;
@@ -62,7 +68,7 @@ namespace OP_Engine.Characters
             Destination = default;
             Pathing = new Pathing();
 
-            Region = default;
+            Region = new Square();
             Image = default;
 
             HealthBar = new ProgressBar();
@@ -86,7 +92,7 @@ namespace OP_Engine.Characters
                 if (Destination.X > Location.X)
                 {
                     Animator.FaceEast(this);
-                    MoveTo(new Rectangle(Region.X + Speed, Region.Y, Region.Width, Region.Height));
+                    MoveTo(new Vector2(Region.X + Speed, Region.Y));
 
                     if (Travelled == Travel_TotalDistance)
                     {
@@ -102,7 +108,7 @@ namespace OP_Engine.Characters
                     }
                     else if (Travelled > Travel_TotalDistance)
                     {
-                        MoveTo(new Rectangle(Region.X - Speed, Region.Y, Region.Width, Region.Height));
+                        MoveTo(new Vector2(Region.X - Speed, Region.Y));
                         Location.X = Destination.X;
                         Travelled = 0;
                         Travelling = false;
@@ -112,7 +118,7 @@ namespace OP_Engine.Characters
                 else if (Destination.X < Location.X)
                 {
                     Animator.FaceWest(this);
-                    MoveTo(new Rectangle(Region.X - Speed, Region.Y, Region.Width, Region.Height));
+                    MoveTo(new Vector2(Region.X - Speed, Region.Y));
 
                     if (Travelled == Travel_TotalDistance)
                     {
@@ -128,7 +134,7 @@ namespace OP_Engine.Characters
                     }
                     else if (Travelled > Travel_TotalDistance)
                     {
-                        MoveTo(new Rectangle(Region.X + Speed, Region.Y, Region.Width, Region.Height));
+                        MoveTo(new Vector2(Region.X + Speed, Region.Y));
                         Location.X = Destination.X;
                         Travelled = 0;
                         Travelling = false;
@@ -140,7 +146,7 @@ namespace OP_Engine.Characters
                     if (Destination.Y > Location.Y)
                     {
                         Animator.FaceSouth(this);
-                        MoveTo(new Rectangle(Region.X, Region.Y + Speed, Region.Width, Region.Height));
+                        MoveTo(new Vector2(Region.X, Region.Y + Speed));
 
                         if (Travelled == Travel_TotalDistance)
                         {
@@ -156,7 +162,7 @@ namespace OP_Engine.Characters
                         }
                         else if (Travelled > Travel_TotalDistance)
                         {
-                            MoveTo(new Rectangle(Region.X, Region.Y - Speed, Region.Width, Region.Height));
+                            MoveTo(new Vector2(Region.X, Region.Y - Speed));
                             Location.Y = Destination.Y;
                             Travelled = 0;
                             Travelling = false;
@@ -166,7 +172,7 @@ namespace OP_Engine.Characters
                     else if (Destination.Y < Location.Y)
                     {
                         Animator.FaceNorth(this);
-                        MoveTo(new Rectangle(Region.X, Region.Y - Speed, Region.Width, Region.Height));
+                        MoveTo(new Vector2(Region.X, Region.Y - Speed));
 
                         if (Travelled == Travel_TotalDistance)
                         {
@@ -182,7 +188,7 @@ namespace OP_Engine.Characters
                         }
                         else if (Travelled > Travel_TotalDistance)
                         {
-                            MoveTo(new Rectangle(Region.X, Region.Y + Speed, Region.Width, Region.Height));
+                            MoveTo(new Vector2(Region.X, Region.Y + Speed));
                             Location.Y = Destination.Y;
                             Travelled = 0;
                             Travelling = false;
@@ -208,14 +214,15 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
+                        Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
-                            spriteBatch.Draw(Texture, Region, Image, DrawColor);
+                            spriteBatch.Draw(Texture, region, Image, DrawColor);
                             Inventory.Draw(spriteBatch, resolution, DrawColor);
                         }
                         else
                         {
-                            spriteBatch.Draw(Texture, Region, Image, Color.White);
+                            spriteBatch.Draw(Texture, region, Image, Color.White);
                             Inventory.Draw(spriteBatch, resolution, Color.White);
                         }
                     }
@@ -231,14 +238,15 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
+                        Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
-                            spriteBatch.Draw(Texture, Region, Image, DrawColor);
+                            spriteBatch.Draw(Texture, region, Image, DrawColor);
                             Inventory.Draw(spriteBatch, resolution, DrawColor);
                         }
                         else
                         {
-                            spriteBatch.Draw(Texture, Region, Image, color);
+                            spriteBatch.Draw(Texture, region, Image, color);
                             Inventory.Draw(spriteBatch, resolution, color);
                         }
                     }
@@ -246,9 +254,10 @@ namespace OP_Engine.Characters
             }
         }
 
-        public virtual void MoveTo(Rectangle region)
+        public virtual void MoveTo(Vector2 location)
         {
-            Region = region;
+            Region.X = (int)location.X;
+            Region.Y = (int)location.Y;
             Travelled += Speed;
         }
 
@@ -286,11 +295,6 @@ namespace OP_Engine.Characters
 
         public override void Dispose()
         {
-            if (Texture != null)
-            {
-                Texture = null;
-            }
-
             if (HealthBar != null)
             {
                 HealthBar.Dispose();
@@ -314,6 +318,11 @@ namespace OP_Engine.Characters
             if (Spellbook != null)
             {
                 Spellbook.Dispose();
+            }
+
+            if (Region != null)
+            {
+                Region.Dispose();
             }
 
             foreach (Something stat in Stats)

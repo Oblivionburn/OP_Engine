@@ -123,7 +123,11 @@ namespace OP_Engine.Tiles
         public override void Dispose()
         {
             ProgressBar.Dispose();
-            Texture = null;
+
+            if (Region != null)
+            {
+                Region.Dispose();
+            }
 
             base.Dispose();
         }

@@ -26,7 +26,7 @@ namespace OP_Engine.Utility
 
         #region Methods
 
-        public virtual void Get_Path(Layer ground, Character character, Tile tile, bool on_target)
+        public virtual void Get_Path(Layer ground, Character character, Tile tile, int max_distance, bool on_target)
         {
             ALocation start = new ALocation((int)character.Location.X, (int)character.Location.Y);
             ALocation target = new ALocation((int)tile.Location.X, (int)tile.Location.Y);
@@ -46,7 +46,7 @@ namespace OP_Engine.Utility
             ALocation last_min = start;
 
             bool reached = false;
-            for (int i = 0; i < ground.Columns + ground.Rows; i++)
+            for (int i = 0; i < max_distance; i++)
             {
                 if (open.Count > 0)
                 {

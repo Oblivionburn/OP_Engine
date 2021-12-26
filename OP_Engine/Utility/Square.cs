@@ -1,6 +1,8 @@
-﻿namespace OP_Engine.Utility
+﻿using System;
+
+namespace OP_Engine.Utility
 {
-    public class Square
+    public class Square : IDisposable
     {
         #region Variables
 
@@ -30,7 +32,10 @@
 
         #region Methods
 
+        public virtual void Dispose()
+        {
 
+        }
 
         #endregion
     }
