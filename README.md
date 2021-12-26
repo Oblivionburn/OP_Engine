@@ -4,7 +4,7 @@
 
 Dependencies:
 - MonoGame for Windows Desktop DirectX v3.7.1.189+ (dll's included)
-- FMOD Sound System library v0.2.1.4+ (dll not included, but C# wrapper for it is)
+- FMOD Sound System dll v0.2.1.4+ (not included, but C# wrapper for it is)
 
 Features:
 - Focus on organization, optimizations, and keeping things simple
