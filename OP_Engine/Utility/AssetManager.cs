@@ -14,14 +14,14 @@ namespace OP_Engine.Utility
     {
         #region Variables
 
-        public Dictionary<string, string> Directories = new Dictionary<string, string>();
-        public Dictionary<string, string> Files = new Dictionary<string, string>();
-        public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
-        public Dictionary<string, Effect> Shaders = new Dictionary<string, Effect>();
-        public Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
-        public Dictionary<string, Dictionary<string, Sound>> Sounds = new Dictionary<string, Dictionary<string, Sound>>();
-        public Dictionary<string, Dictionary<string, string>> Ambient = new Dictionary<string, Dictionary<string, string>>();
-        public Dictionary<string, Dictionary<string, string>> Music = new Dictionary<string, Dictionary<string, string>>();
+        public static Dictionary<string, string> Directories = new Dictionary<string, string>();
+        public static Dictionary<string, string> Files = new Dictionary<string, string>();
+        public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
+        public static Dictionary<string, Effect> Shaders = new Dictionary<string, Effect>();
+        public static Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
+        public static Dictionary<string, Dictionary<string, Sound>> Sounds = new Dictionary<string, Dictionary<string, Sound>>();
+        public static Dictionary<string, Dictionary<string, string>> Ambient = new Dictionary<string, Dictionary<string, string>>();
+        public static Dictionary<string, Dictionary<string, string>> Music = new Dictionary<string, Dictionary<string, string>>();
 
         #endregion
 
@@ -36,14 +36,14 @@ namespace OP_Engine.Utility
 
         #region Methods
 
-        public virtual void Init(string content_dir)
+        public static void Init(string content_dir)
         {
             Directories.Add("Content", content_dir);
         }
 
         #region Load Stuff
 
-        public virtual void LoadTextures(GraphicsDevice graphicsDevice)
+        public static void LoadTextures(GraphicsDevice graphicsDevice)
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Textures"));
             foreach (var file in dir.GetFiles("*.png"))
@@ -61,7 +61,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void LoadTextures(GraphicsDevice graphicsDevice, string directory)
+        public static void LoadTextures(GraphicsDevice graphicsDevice, string directory)
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Textures"));
             foreach (var sub_dir in dir.GetDirectories())
@@ -87,7 +87,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void LoadFonts(ContentManager content)
+        public static void LoadFonts(ContentManager content)
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Fonts"));
             foreach (var file in dir.GetFiles("*.xnb"))
@@ -101,7 +101,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void LoadShaders(GraphicsDevice graphicsDevice)
+        public static void LoadShaders(GraphicsDevice graphicsDevice)
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Shaders"));
             foreach (var file in dir.GetFiles("*.FxDX"))
@@ -116,7 +116,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void LoadSounds()
+        public static void LoadSounds()
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Sounds"));
             foreach (var file in dir.GetFiles())
@@ -138,14 +138,14 @@ namespace OP_Engine.Utility
 
                     Sounds.Add("Sounds", sounds);
                 }
-                else if (!Sounds["Sounds"].ContainsKey(sound.Description))
+                else if (!Sounds["Sounds"].ContainsKey(sound.Name))
                 {
-                    Sounds["Sounds"].Add(sound.Description, sound);
+                    Sounds["Sounds"].Add(sound.Name, sound);
                 }
             }
         }
 
-        public virtual void LoadSounds(string directory)
+        public static void LoadSounds(string directory)
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Sounds"));
             foreach (var sub_dir in dir.GetDirectories())
@@ -171,9 +171,9 @@ namespace OP_Engine.Utility
 
                             Sounds.Add(directory, sounds);
                         }
-                        else if (!Sounds[directory].ContainsKey(sound.Description))
+                        else if (!Sounds[directory].ContainsKey(sound.Name))
                         {
-                            Sounds[directory].Add(sound.Description, sound);
+                            Sounds[directory].Add(sound.Name, sound);
                         }
                     }
 
@@ -182,7 +182,7 @@ namespace OP_Engine.Utility
             }  
         }
 
-        public virtual void LoadMusic()
+        public static void LoadMusic()
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Music"));
             foreach (var file in dir.GetFiles())
@@ -203,7 +203,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void LoadMusic(string directory)
+        public static void LoadMusic(string directory)
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Music"));
             foreach (var dir_music in dir.GetDirectories())
@@ -230,7 +230,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void LoadAmbient()
+        public static void LoadAmbient()
         {
             DirectoryInfo dir = new DirectoryInfo(string.Concat(Directories["Content"], @"\Ambient"));
             foreach (var file in dir.GetFiles())
@@ -251,7 +251,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void LoadAmbient(string directory)
+        public static void LoadAmbient(string directory)
         {
             DirectoryInfo d = new DirectoryInfo(string.Concat(Directories["Content"], @"\Ambient"));
             foreach (var dir in d.GetDirectories())
@@ -284,12 +284,12 @@ namespace OP_Engine.Utility
 
         #region Play Stuff
 
-        public virtual void PlayAmbient(string type, string name, bool looping)
+        public static void PlayAmbient(string type, string name, bool looping)
         {
             SoundManager.PlayMusic(Ambient[type][name], looping);
         }
 
-        public virtual void PlayAmbient_Random(string type, bool looping)
+        public static void PlayAmbient_Random(string type, bool looping)
         {
             CryptoRandom rand = new CryptoRandom();
             int choice = rand.Next(0, Ambient[type].Count);
@@ -297,13 +297,13 @@ namespace OP_Engine.Utility
             SoundManager.PlayMusic(Ambient[type].ToList().ElementAt(choice).Value, looping);
         }
 
-        public virtual void PlayMusic(string type, string name, bool looping)
+        public static void PlayMusic(string type, string name, bool looping)
         {
             SoundManager.PlayMusic(Music[type][name], looping);
             SoundManager.NeedMusic = false;
         }
 
-        public virtual void PlayMusic_Random(string type, bool looping)
+        public static void PlayMusic_Random(string type, bool looping)
         {
             CryptoRandom rand = new CryptoRandom();
             int choice = rand.Next(0, Music[type].Count);
@@ -312,15 +312,12 @@ namespace OP_Engine.Utility
             SoundManager.NeedMusic = false;
         }
 
-        public virtual void PlaySound(string type, string name)
+        public static void PlaySound(string type, string name)
         {
-            if (Sounds.ContainsKey(name))
-            {
-                SoundManager.PlaySound(Sounds[type][name]);
-            }
+            SoundManager.PlaySound(Sounds[type][name]);
         }
 
-        public virtual void PlaySound_Random(string type)
+        public static void PlaySound_Random(string type)
         {
             CryptoRandom rand = new CryptoRandom();
             int choice = rand.Next(0, Sounds[type].Count);
@@ -329,7 +326,7 @@ namespace OP_Engine.Utility
             SoundManager.PlaySound(sound);
         }
 
-        public virtual void PlaySound_AtDistance(string type, string name, Vector2 location, Vector2 source, int max_distance)
+        public static void PlaySound_AtDistance(string type, string name, Vector2 location, Vector2 source, int max_distance)
         {
             if (Sounds.ContainsKey(name))
             {
@@ -337,7 +334,7 @@ namespace OP_Engine.Utility
             }
         }
 
-        public virtual void PlaySound_Random_AtDistance(string type, Vector2 location, Vector2 source, int max_distance)
+        public static void PlaySound_Random_AtDistance(string type, Vector2 location, Vector2 source, int max_distance)
         {
             CryptoRandom rand = new CryptoRandom();
             int choice = rand.Next(0, Sounds[type].Count);
@@ -350,17 +347,17 @@ namespace OP_Engine.Utility
 
         #region Get Stuff
 
-        public virtual Texture2D GetTexture(string name)
+        public static Texture2D GetTexture(string name)
         {
             return Textures[name];
         }
 
-        public virtual Effect GetShader(string name)
+        public static Effect GetShader(string name)
         {
             return Shaders[name];
         }
 
-        public virtual SpriteFont GetFont(string name)
+        public static SpriteFont GetFont(string name)
         {
             return Fonts[name];
         }
