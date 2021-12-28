@@ -9,19 +9,19 @@ Dependencies:
 Features:
 - Focus on organization, optimizations, and keeping things simple
 - Virtually no focus or effort put into fancy graphics effects (a simple pixel-based lighting system would be nice, though)
-- 99% of the classes are overridable for per-game customizations, and nearly everything is Disposable
+- 99% of the methods are overridable for per-game customizations, and nearly everything is Disposable
 - Object-oriented design and optional Game Component architecture (for only including what's needed/wanted in a project)
-- CharacterManager component consisting of multiple Armies with multiple Squads with multiple Characters for grouping NPCs and/or players
+- CharacterManager component consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character. Used for grouping NPCs and/or players.
   - Includes large lists of first/last names for random name generation
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, AI-oriented variables, Health/Mana/Task progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
 - InventoryManager component for central organization of inventories (inventories are not added to it by default)
-- Tilemap (named World in library) consisting of multiple maps with multiple layers
+- World (tile map) consisting of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
 - Basic UI objects/classes for Buttons, Labels, Input boxes, Pictures/Images, Progress Bars, and Sliders
-- MenuManager component for organizing/referencing menus
+- MenuManager component for central organization of menus (menus are not added to it by default)
   - Menu class contains lists of all basic UI controls and methods for getting menus built more quickly/easily
-- SceneManager component for organizing screens/worlds/levels
+- SceneManager component for central organization of screens/scenes/levels (scenes are not added to it by default)
   - Scene class has its own Menu and World instance
 - SoundManager component for handling basic playing/pausing/stopping and volume control of sounds/music/etc using FMOD
 - SpellbookManager component for central organization of spellbooks (none are added to it by default)
