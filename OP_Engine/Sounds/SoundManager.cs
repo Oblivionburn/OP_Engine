@@ -196,10 +196,12 @@ namespace OP_Engine.Sounds
             FMODSystem.update();
         }
 
-        public static void PlayMusic(string filePath, bool looping)
+        public static void PlayMusic(Sound sound, bool looping)
         {
             if (MusicEnabled)
             {
+                string file = sound.Directory + @"\" + sound.Name + sound.Extension;
+
                 bool isPlaying = false;
                 FMOD.RESULT get_music_playing = MusicChannel.isPlaying(out isPlaying);
 
@@ -219,25 +221,27 @@ namespace OP_Engine.Sounds
                 MusicLooping = looping;
                 if (MusicLooping)
                 {
-                    FMODSystem.createStream(filePath, FMOD.MODE.LOOP_NORMAL, out MusicOut);
+                    FMODSystem.createStream(file, FMOD.MODE.LOOP_NORMAL, out MusicOut);
                 }
                 else
                 {
-                    FMODSystem.createStream(filePath, FMOD.MODE.DEFAULT, out MusicOut);
+                    FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out MusicOut);
                 }
                 
                 FMODSystem.playSound(MusicOut, MusicGroup, false, out MusicChannel);
                 MusicChannel.setVolume(MusicVolume);
 
                 MusicPlaying = true;
-                MusicPlaying_Name = Path.GetFileNameWithoutExtension(filePath);
+                MusicPlaying_Name = sound.Name;
             }
         }
 
-        public static void PlayAmbient(string filePath, bool looping)
+        public static void PlayAmbient(Sound sound, bool looping)
         {
             if (AmbientEnabled)
             {
+                string file = sound.Directory + @"\" + sound.Name + sound.Extension;
+
                 float volume = AmbientVolume - AmbientFade;
                 if (volume < 0)
                 {
@@ -263,18 +267,18 @@ namespace OP_Engine.Sounds
                 AmbientLooping = looping;
                 if (AmbientLooping)
                 {
-                    FMODSystem.createStream(filePath, FMOD.MODE.LOOP_NORMAL, out AmbientOut);
+                    FMODSystem.createStream(file, FMOD.MODE.LOOP_NORMAL, out AmbientOut);
                 }
                 else
                 {
-                    FMODSystem.createStream(filePath, FMOD.MODE.DEFAULT, out AmbientOut);
+                    FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out AmbientOut);
                 }
                 
                 FMODSystem.playSound(AmbientOut, AmbientGroup, false, out AmbientChannel);
                 AmbientChannel.setVolume(volume);
 
                 AmbientPlaying = true;
-                AmbientPlaying_Name = Path.GetFileNameWithoutExtension(filePath);
+                AmbientPlaying_Name = sound.Name;
             }
         }
 
@@ -282,10 +286,10 @@ namespace OP_Engine.Sounds
         {
             if (SoundEnabled)
             {
-                string fileName = sound.Directory + @"\" + sound.Name + sound.Extension;
+                string file = sound.Directory + @"\" + sound.Name + sound.Extension;
 
                 FMOD.Channel channel = new FMOD.Channel();
-                FMOD.RESULT stream_result = FMODSystem.createStream(fileName, FMOD.MODE.DEFAULT, out sound.SoundOut);
+                FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
                 FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
                 FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
                 
