@@ -7,8 +7,6 @@ namespace OP_Engine.Controls
     {
         #region Variables
 
-        public int Min_Value;
-
         public Texture2D Selection;
         public Rectangle Selection_Region;
 
@@ -78,7 +76,7 @@ namespace OP_Engine.Controls
 
         public virtual void SetValue()
         {
-            int increment = Slidebar_Region.Width / Max_Value;
+            int increment = Slidebar_Region.Width / (int)Max_Value;
 
             for (int i = Slidebar_Region.X; i < Slidebar_Region.X + Slidebar_Region.Width; i += increment)
             {

@@ -91,6 +91,8 @@ namespace OP_Engine.Tiles
 
         public virtual Tile GetTile(Vector2 location)
         {
+            //This only works if there's no gaps in the grid (every location has a Tile),
+            //otherwise the indexing will be off
             int index = ((int)location.Y * Columns) + (int)location.X;
             if (index >= 0 && index < Tiles.Count)
             {

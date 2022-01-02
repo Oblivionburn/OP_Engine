@@ -12,8 +12,8 @@ namespace OP_Engine.Inventories
     {
         #region Variables
 
-        public string Category;
-        public string Material;
+        public List<string> Categories = new List<string>();
+        public List<string> Materials = new List<string>();
         public int Amount;
         public bool Equipped;
 

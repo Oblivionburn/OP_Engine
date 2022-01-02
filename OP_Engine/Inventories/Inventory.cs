@@ -72,8 +72,8 @@ namespace OP_Engine.Inventories
         {
             foreach (Item item in Items)
             {
-                if (item.Category == category &&
-                    item.Type == type)
+                if (item.Type == type &&
+                    item.Categories.Contains(category))
                 {
                     return item;
                 }
@@ -86,11 +86,76 @@ namespace OP_Engine.Inventories
         {
             foreach (Item item in Items)
             {
-                if (item.Category == category &&
-                    item.Type == type &&
-                    item.Material == material)
+                if (item.Type == type &&
+                    item.Categories.Contains(category) &&
+                    item.Materials.Contains(material))
                 {
                     return item;
+                }
+            }
+
+            return null;
+        }
+
+        public virtual Item GetItem(List<string> categories, string type)
+        {
+            foreach (Item item in Items)
+            {
+                if (item.Type == type)
+                {
+                    bool categories_found = true;
+                    foreach (string category in categories)
+                    {
+                        if (!item.Categories.Contains(category))
+                        {
+                            categories_found = false;
+                            break;
+                        }
+                    }
+
+                    if (categories_found)
+                    {
+                        return item;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public virtual Item GetItem(List<string> categories, string type, List<string> materials)
+        {
+            foreach (Item item in Items)
+            {
+                if (item.Type == type)
+                {
+                    bool categories_found = true;
+                    foreach (string category in categories)
+                    {
+                        if (!item.Categories.Contains(category))
+                        {
+                            categories_found = false;
+                            break;
+                        }
+                    }
+
+                    if (categories_found)
+                    {
+                        bool materials_found = true;
+                        foreach (string material in materials)
+                        {
+                            if (!item.Materials.Contains(material))
+                            {
+                                materials_found = false;
+                                break;
+                            }
+                        }
+
+                        if (materials_found)
+                        {
+                            return item;
+                        }
+                    }
                 }
             }
 

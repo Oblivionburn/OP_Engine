@@ -14,19 +14,24 @@ namespace OP_Engine.Utility
         public string Name;
         public string Type;
         public string Assignment;
-        public int Value;
-        public int Max_Value;
+        public string Description;
+        public float Value;
+        public float Min_Value;
+        public float Max_Value;
+        public float Price;
         public float Rate;
         public float Weight;
-        public int Rarity;
+        public float Rarity;
         public bool InSight;
+        public bool IsLightSource;
+        public bool IsLit;
         public bool Visible;
-        public string Description;
         public Direction Direction;
-        public Vector3 Location;
+        public Vector3 Location; //X, Y, Z
+        public Vector3 Dimensions; //Width, Height, Depth
         public Texture2D Texture;
-        public Rectangle Region;
-        public Rectangle Image;
+        public Rectangle Region; //Screen render space
+        public Rectangle Image; //Sub-region of Texture
         public Color DrawColor;
 
         #endregion
