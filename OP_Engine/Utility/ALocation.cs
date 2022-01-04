@@ -1,6 +1,8 @@
-﻿namespace OP_Engine.Utility
+﻿using System;
+
+namespace OP_Engine.Utility
 {
-    public class ALocation
+    public class ALocation : IDisposable
     {
         #region Variables
 
@@ -13,7 +15,12 @@
 
         #endregion
 
-        #region Constructor
+        #region Constructors
+
+        public ALocation()
+        {
+            
+        }
 
         public ALocation(int x, int y)
         {
@@ -23,5 +30,13 @@
 
         #endregion
 
+        #region Methods
+
+        public virtual void Dispose()
+        {
+
+        }
+
+        #endregion
     }
 }

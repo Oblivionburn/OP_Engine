@@ -18,7 +18,9 @@ namespace OP_Engine.Utility
         public float Value;
         public float Min_Value;
         public float Max_Value;
-        public float Price;
+        public float Cost;
+        public float Sell_Price;
+        public float Buy_Price;
         public float Rate;
         public float Weight;
         public float Rarity;

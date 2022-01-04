@@ -2,16 +2,16 @@
 
 using Microsoft.Xna.Framework;
 
-using OP_Engine.Characters;
+using OP_Engine.Utility;
 using OP_Engine.Tiles;
 
-namespace OP_Engine.Utility
+namespace OP_Engine.Characters
 {
-    public class Pathing
+    public class Pathing : Something
     {
         #region Variables
 
-        public List<ALocation> Path;
+        public List<ALocation> Path = new List<ALocation>();
 
         #endregion
 
@@ -19,14 +19,14 @@ namespace OP_Engine.Utility
 
         public Pathing()
         {
-            Path = new List<ALocation>();
+            
         }
 
         #endregion
 
         #region Methods
 
-        public virtual void Get_Path(Layer ground, Character character, Tile tile, int max_distance, bool on_target)
+        public virtual void Get_Path(Layer ground, Character character, Tile tile, int max_distance, bool stop_next_to_tile)
         {
             ALocation start = new ALocation((int)character.Location.X, (int)character.Location.Y);
             ALocation target = new ALocation((int)tile.Location.X, (int)tile.Location.Y);
@@ -55,7 +55,7 @@ namespace OP_Engine.Utility
                     path.Add(min);
                     last_min = min;
 
-                    if (DestinationReached(min, tile, on_target))
+                    if (DestinationReached(min, tile, stop_next_to_tile))
                     {
                         reached = true;
                         break;
@@ -412,22 +412,22 @@ namespace OP_Engine.Utility
             return path;
         }
 
-        public virtual bool DestinationReached(ALocation location, Tile target_tile, bool on_target)
+        public virtual bool DestinationReached(ALocation location, Tile target_tile, bool stop_next_to_tile)
         {
-            if (on_target)
+            if (stop_next_to_tile)
             {
-                if (location.X == target_tile.Location.X &&
-                    location.Y == target_tile.Location.Y)
+                if ((location.X == target_tile.Location.X - 1 && location.Y == target_tile.Location.Y) ||
+                    (location.X == target_tile.Location.X + 1 && location.Y == target_tile.Location.Y) ||
+                    (location.X == target_tile.Location.X && location.Y == target_tile.Location.Y - 1) ||
+                    (location.X == target_tile.Location.X && location.Y == target_tile.Location.Y + 1))
                 {
                     return true;
                 }
             }
             else
             {
-                if ((location.X == target_tile.Location.X - 1 && location.Y == target_tile.Location.Y) ||
-                    (location.X == target_tile.Location.X + 1 && location.Y == target_tile.Location.Y) ||
-                    (location.X == target_tile.Location.X && location.Y == target_tile.Location.Y - 1) ||
-                    (location.X == target_tile.Location.X && location.Y == target_tile.Location.Y + 1))
+                if (location.X == target_tile.Location.X &&
+                    location.Y == target_tile.Location.Y)
                 {
                     return true;
                 }
@@ -469,6 +469,16 @@ namespace OP_Engine.Utility
             }
 
             return x_diff + y_diff;
+        }
+
+        public override void Dispose()
+        {
+            foreach (ALocation path in Path)
+            {
+                path.Dispose();
+            }
+
+            base.Dispose();
         }
 
         #endregion

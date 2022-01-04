@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using OP_Engine.Controls;
 using OP_Engine.Inventories;
+using OP_Engine.Jobs;
 using OP_Engine.Spells;
 using OP_Engine.Utility;
 
@@ -18,6 +19,7 @@ namespace OP_Engine.Characters
         public int LayerID;
         public int PartyID;
         public string Gender;
+        public bool Interacting;
 
         /*
         Using this Square object for Region, instead of the Rectangle 
@@ -27,31 +29,24 @@ namespace OP_Engine.Characters
 
         public List<Something> Stats = new List<Something>();
         public List<Something> Skills = new List<Something>();
-        public Spellbook Spellbook;
+
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;
 
-        public Inventory Inventory;
         public Animator Animator;
+        public Spellbook Spellbook;
+        public Inventory Inventory;
+        public Job Job;
+        public Pathing Pathing;
 
         public bool InCombat;
         public bool CombatTurn;
         public int CombatTick;
         public int Target_ID;
 
-        public bool Interacting;
-        public string Job;
-
-        public string Task;
-        public string Task_Type;
-        public Vector3 Task_Location;
-        public ProgressBar TaskBar;
-        public int Task_StartTime;
-        public int Patience;
-
         public Vector2 Formation;
         public Vector3 Destination;
-        public Pathing Pathing;
+        
         public bool Travelling;
         public int Travelled;
         public int Travel_TotalDistance;
@@ -66,7 +61,9 @@ namespace OP_Engine.Characters
             Formation = default;
             Location = default;
             Destination = default;
+
             Pathing = new Pathing();
+            Job = new Job();
 
             Region = new Square();
             Image = default;
@@ -78,7 +75,6 @@ namespace OP_Engine.Characters
             Spellbook = new Spellbook();
 
             Animator = new Animator();
-            TaskBar = new ProgressBar();
         }
 
         #endregion
@@ -305,11 +301,6 @@ namespace OP_Engine.Characters
                 ManaBar.Dispose();
             }
 
-            if (TaskBar != null)
-            {
-                TaskBar.Dispose();
-            }
-
             if (Inventory != null)
             {
                 Inventory.Dispose();
@@ -323,6 +314,16 @@ namespace OP_Engine.Characters
             if (Region != null)
             {
                 Region.Dispose();
+            }
+
+            if (Job != null)
+            {
+                Job.Dispose();
+            }
+
+            if (Pathing != null)
+            {
+                Pathing.Dispose();
             }
 
             foreach (Something stat in Stats)
