@@ -9,7 +9,7 @@
 ### Features:
 - Focus on organization, optimizations, and keeping things simple
 - Overridable methods for per-game customizations, and nearly everything is Disposable
-- Object-oriented design and optional component architecture (for only including what's needed/wanted in a project)
+- Object-oriented design and optional component architecture for only including what's needed/wanted in a project
 - CharacterManager component consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character. Used for grouping NPCs and/or players.
   - Includes large lists of first/last names for random name generation
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, Job class for task queueing and AI scheduling, Health/Mana progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
