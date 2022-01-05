@@ -11,7 +11,7 @@
 - Overridable methods for per-game customizations, and nearly everything is Disposable
 - Object-oriented design and optional component architecture for only including what's needed/wanted in a project
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
-- CharacterManager component consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character. Used for grouping NPCs and/or players.
+- CharacterManager component (for grouping NPCs and/or players) consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character 
   - Includes large lists of first/last names for random name generation
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, Job class for task queueing and AI scheduling, Health/Mana progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
 - JobManager component for central organization of jobs/tasks (jobs not added to it by default)
