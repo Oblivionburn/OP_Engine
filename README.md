@@ -8,7 +8,7 @@
 
 ### Features:
 - Focus on organization, optimizations, and keeping things simple
-- 99% of the methods are overridable for per-game customizations, and nearly everything is Disposable
+- Overridable methods for per-game customizations, and nearly everything is Disposable
 - Object-oriented design and optional component architecture (for only including what's needed/wanted in a project)
 - CharacterManager component consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character. Used for grouping NPCs and/or players.
   - Includes large lists of first/last names for random name generation
