@@ -2,8 +2,6 @@
 ## Source code for simple C# game engine used to make 2D tilemapped games for Windows (DirectX) in Visual Studio 2019. Uses MonoGame library for rendering pipeline and FMOD for sound.
 ###### Disclaimer: This does not include an editor like you would find with Unity or Unreal Engine, this is for programming games from scratch in Visual Studio. I created this 'engine' to save myself some time with getting new games up and running. I've mostly used it for making RPG, Strategy, and Simulation games.
 
-
-
 ### Dependencies:
 - MonoGame for Windows Desktop DirectX v3.7.1.189+ (dll's included)
 - FMOD Sound System dll v0.2.1.4+ (not included, but C# wrapper for it is)
@@ -12,7 +10,7 @@
 - Focus on organization, optimizations, and keeping things simple
 - Virtually no focus or effort put into fancy graphics effects (a simple pixel-based lighting system would be nice, though)
 - 99% of the methods are overridable for per-game customizations, and nearly everything is Disposable
-- Object-oriented design and optional Game Component architecture (for only including what's needed/wanted in a project)
+- Object-oriented design and optional component architecture (for only including what's needed/wanted in a project)
 - CharacterManager component consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character. Used for grouping NPCs and/or players.
   - Includes large lists of first/last names for random name generation
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, Job class for task queueing and AI scheduling, Health/Mana progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
