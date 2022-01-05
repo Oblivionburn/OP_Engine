@@ -8,7 +8,6 @@
 
 ### Features:
 - Focus on organization, optimizations, and keeping things simple
-- Virtually no focus or effort put into fancy graphics effects (a simple pixel-based lighting system would be nice, though)
 - 99% of the methods are overridable for per-game customizations, and nearly everything is Disposable
 - Object-oriented design and optional component architecture (for only including what's needed/wanted in a project)
 - CharacterManager component consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character. Used for grouping NPCs and/or players.
