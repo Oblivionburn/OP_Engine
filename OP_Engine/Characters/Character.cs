@@ -94,6 +94,7 @@ namespace OP_Engine.Characters
                     {
                         Location.X++;
                         Travelled = 0;
+                        Travelling = false;
                         Animator.Animate(this);
                     }
                     else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
@@ -120,6 +121,7 @@ namespace OP_Engine.Characters
                     {
                         Location.X--;
                         Travelled = 0;
+                        Travelling = false;
                         Animator.Animate(this);
                     }
                     else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
@@ -148,6 +150,7 @@ namespace OP_Engine.Characters
                         {
                             Location.Y++;
                             Travelled = 0;
+                            Travelling = false;
                             Animator.Animate(this);
                         }
                         else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
@@ -174,6 +177,7 @@ namespace OP_Engine.Characters
                         {
                             Location.Y--;
                             Travelled = 0;
+                            Travelling = false;
                             Animator.Animate(this);
                         }
                         else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
@@ -193,8 +197,9 @@ namespace OP_Engine.Characters
                     }
                     else
                     {
-                        Travelling = false;
                         Travelled = 0;
+                        Travelling = false;
+                        Animator.Reset(this);
                     }
                 }
             }

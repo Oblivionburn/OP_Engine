@@ -29,6 +29,17 @@ namespace OP_Engine.Jobs
 
         #region Methods
 
+        public virtual void Update(int current_time)
+        {
+            if (!Completed)
+            {
+                if (!InProgress(current_time))
+                {
+                    Completed = true;
+                }
+            }
+        }
+
         public virtual void Update(int current_time, int step_time)
         {
             if (Started &&
@@ -55,6 +66,12 @@ namespace OP_Engine.Jobs
             }
         }
 
+        public virtual void Start(int current_time)
+        {
+            Started = true;
+            StartTime = current_time;
+        }
+
         public virtual void Start(int current_time, int next_step_time)
         {
             Started = true;
@@ -78,7 +95,8 @@ namespace OP_Engine.Jobs
                 {
                     return true;
                 }
-                else if (current_time >= StartTime)
+                else if (current_time >= StartTime &&
+                         EndTime == 0)
                 {
                     return true;
                 }

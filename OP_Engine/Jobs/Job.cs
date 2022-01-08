@@ -8,6 +8,8 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
+        public Task CurrentTask;
+        public List<Task> PreviousTasks = new List<Task>();
         public List<Task> Tasks = new List<Task>();
 
         #endregion
@@ -23,30 +25,69 @@ namespace OP_Engine.Jobs
 
         #region Methods
 
-        public virtual void Update(int current_time, int task_step_time)
+        public virtual void Update(int current_time)
         {
-            if (Tasks.Count > 0)
+            CurrentTask = Get_CurrentTask();
+            if (CurrentTask != null)
             {
-                Task current_task = Tasks[0];
-                if (current_task != null)
+                if (!CurrentTask.Started &&
+                    !CurrentTask.Completed)
                 {
-                    if (current_task.Completed &&
-                        !current_task.Keep_On_Completed)
+                    CurrentTask.Start(current_time);
+                }
+
+                if (CurrentTask.Started &&
+                    !CurrentTask.Completed)
+                {
+                    CurrentTask.Update(current_time);
+                }
+
+                if (CurrentTask.Completed)
+                {
+                    if (!CurrentTask.Keep_On_Completed)
                     {
+                        PreviousTasks.Add(Tasks[0]);
                         Tasks.RemoveAt(0);
 
-                        if (Tasks.Count > 0)
+                        CurrentTask = Get_CurrentTask();
+                        if (CurrentTask != null)
                         {
-                            current_task = Tasks[0];
-                            if (current_task != null)
-                            {
-                                current_task.Start(current_time, task_step_time);
-                            }
+                            CurrentTask.Start(current_time);
                         }
                     }
-                    else
+                }
+            }
+        }
+
+        public virtual void Update(int current_time, int task_step_time)
+        {
+            CurrentTask = Get_CurrentTask();
+            if (CurrentTask != null)
+            {
+                if (!CurrentTask.Started &&
+                    !CurrentTask.Completed)
+                {
+                    CurrentTask.Start(current_time, task_step_time);
+                }
+
+                if (CurrentTask.Started &&
+                    !CurrentTask.Completed)
+                {
+                    CurrentTask.Update(current_time, task_step_time);
+                }
+
+                if (CurrentTask.Completed)
+                {
+                    if (!CurrentTask.Keep_On_Completed)
                     {
-                        current_task.Update(current_time, task_step_time);
+                        PreviousTasks.Add(Tasks[0]);
+                        Tasks.RemoveAt(0);
+
+                        CurrentTask = Get_CurrentTask();
+                        if (CurrentTask != null)
+                        {
+                            CurrentTask.Start(current_time, task_step_time);
+                        }
                     }
                 }
             }
@@ -78,7 +119,7 @@ namespace OP_Engine.Jobs
             return null;
         }
 
-        public virtual Task CurrentTask()
+        public virtual Task Get_CurrentTask()
         {
             if (Tasks.Count > 0)
             {
@@ -86,6 +127,22 @@ namespace OP_Engine.Jobs
             }
 
             return null;
+        }
+
+        public virtual void Abort(int current_time)
+        {
+            for (int i = 0; i < Tasks.Count; i++)
+            {
+                Task task = Tasks[i];
+                if (task.Started)
+                {
+                    task.EndTime = current_time;
+                    PreviousTasks.Add(task);
+                }
+                
+                Tasks.Remove(task);
+                i--;
+            }
         }
 
         public override void Dispose()
