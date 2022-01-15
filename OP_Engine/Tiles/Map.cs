@@ -11,7 +11,7 @@ namespace OP_Engine.Tiles
     {
         #region Variables
 
-        public int WorldID;
+        public long WorldID;
         public int Depth;
 
         public List<Layer> Layers = new List<Layer>();
@@ -59,7 +59,7 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public virtual Layer GetLayer(int id)
+        public virtual Layer GetLayer(long id)
         {
             foreach (Layer layer in Layers)
             {

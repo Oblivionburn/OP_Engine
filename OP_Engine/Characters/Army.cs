@@ -22,7 +22,7 @@ namespace OP_Engine.Characters
 
         #region Methods
 
-        public virtual Squad GetSquad(int id)
+        public virtual Squad GetSquad(long id)
         {
             foreach (Squad squad in Squads)
             {

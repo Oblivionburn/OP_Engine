@@ -11,7 +11,7 @@ namespace OP_Engine.Characters
         #region Variables
 
         public List<Character> Characters = new List<Character>();
-        public int Leader_ID;
+        public long Leader_ID;
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace OP_Engine.Characters
 
         #region Methods
 
-        public virtual Character GetCharacter(int id)
+        public virtual Character GetCharacter(long id)
         {
             foreach (Character character in Characters)
             {

@@ -10,8 +10,8 @@ namespace OP_Engine.Menus
     {
         #region Variables
 
-        public static int CurrentMenu_ID;
-        public static int PreviousMenu_ID;
+        public static long CurrentMenu_ID;
+        public static long PreviousMenu_ID;
 
         public static List<Menu> Menus = new List<Menu>();
 
@@ -76,7 +76,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public static Menu GetMenu(int id)
+        public static Menu GetMenu(long id)
         {
             foreach (Menu menu in Menus)
             {
@@ -110,7 +110,7 @@ namespace OP_Engine.Menus
             }
         }
 
-        public static void ChangeMenu(int id)
+        public static void ChangeMenu(long id)
         {
             Menu current_menu = GetMenu(CurrentMenu_ID);
             if (current_menu != null)
@@ -172,7 +172,7 @@ namespace OP_Engine.Menus
             }
         }
 
-        public static void ChangeMenu(int id, bool stay_active, bool stay_visible)
+        public static void ChangeMenu(long id, bool stay_active, bool stay_visible)
         {
             Menu current_menu = GetMenu(CurrentMenu_ID);
             if (current_menu != null)

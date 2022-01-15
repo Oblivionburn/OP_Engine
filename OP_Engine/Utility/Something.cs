@@ -9,8 +9,8 @@ namespace OP_Engine.Utility
     {
         #region Variables
 
-        public int ID;
-        public int OwnerID;
+        public long ID;
+        public long OwnerID;
         public string Name;
         public string Type;
         public string Assignment;

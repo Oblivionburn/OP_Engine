@@ -23,6 +23,32 @@ namespace OP_Engine.Spells
 
         #region Methods
 
+        public Spell GetSpell(long id)
+        {
+            foreach (Spell existing in Spells)
+            {
+                if (existing.ID == id)
+                {
+                    return existing;
+                }
+            }
+
+            return null;
+        }
+
+        public Spell GetSpell(string name)
+        {
+            foreach (Spell existing in Spells)
+            {
+                if (existing.Name == name)
+                {
+                    return existing;
+                }
+            }
+
+            return null;
+        }
+
         public override void Dispose()
         {
             foreach (Spell spell in Spells)

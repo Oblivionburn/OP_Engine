@@ -11,8 +11,8 @@ namespace OP_Engine.Tiles
     {
         #region Variables
 
-        public int WorldID;
-        public int MapID;
+        public long WorldID;
+        public long MapID;
 
         public int Rows;
         public int Columns;
@@ -63,7 +63,7 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public virtual Tile GetTile(int id)
+        public virtual Tile GetTile(long id)
         {
             foreach (Tile tile in Tiles)
             {

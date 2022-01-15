@@ -11,9 +11,9 @@ namespace OP_Engine.Tiles
     {
         #region Variables
 
-        public int WorldID;
-        public int MapID;
-        public int LayerID;
+        public long WorldID;
+        public long MapID;
+        public long LayerID;
 
         public bool BlocksMovement;
         public bool IsTall;

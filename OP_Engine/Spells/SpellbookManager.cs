@@ -23,7 +23,7 @@ namespace OP_Engine.Spells
 
         #region Methods
 
-        public static Spellbook GetSpellbook(int id)
+        public static Spellbook GetSpellbook(long id)
         {
             foreach (Spellbook existing in Spellbooks)
             {

@@ -60,7 +60,7 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public virtual Map GetMap(int id)
+        public virtual Map GetMap(long id)
         {
             foreach (Map map in Maps)
             {

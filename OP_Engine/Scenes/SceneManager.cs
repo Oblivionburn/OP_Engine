@@ -84,7 +84,7 @@ namespace OP_Engine.Scenes
             }
         }
 
-        public static void ChangeScene(int id)
+        public static void ChangeScene(long id)
         {
             foreach (Scene scene in Scenes)
             {
@@ -127,7 +127,7 @@ namespace OP_Engine.Scenes
             return null;
         }
 
-        public static Scene GetScene(int id)
+        public static Scene GetScene(long id)
         {
             foreach (Scene scene in Scenes)
             {

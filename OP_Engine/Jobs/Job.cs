@@ -93,7 +93,7 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public virtual Task GetTask(int id)
+        public virtual Task GetTask(long id)
         {
             foreach (Task task in Tasks)
             {

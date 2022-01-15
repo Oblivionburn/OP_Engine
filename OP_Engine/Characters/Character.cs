@@ -15,9 +15,9 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public int MapID;
-        public int LayerID;
-        public int PartyID;
+        public long MapID;
+        public long LayerID;
+        public long PartyID;
         public string Gender;
         public bool Interacting;
 
@@ -42,7 +42,7 @@ namespace OP_Engine.Characters
         public bool InCombat;
         public bool CombatTurn;
         public int CombatTick;
-        public int Target_ID;
+        public long Target_ID;
 
         public Vector2 Formation;
         public Vector3 Destination;

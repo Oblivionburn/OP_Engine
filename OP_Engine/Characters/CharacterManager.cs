@@ -27,7 +27,7 @@ namespace OP_Engine.Characters
 
         #region Methods
 
-        public static Army GetArmy(int id)
+        public static Army GetArmy(long id)
         {
             foreach (Army army in Armies)
             {

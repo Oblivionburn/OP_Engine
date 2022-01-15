@@ -134,7 +134,7 @@ namespace OP_Engine.Inventories
             }
         }
 
-        public virtual Something GetProperty(int id)
+        public virtual Something GetProperty(long id)
         {
             foreach (Something something in Properties)
             {
@@ -160,7 +160,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Item GetAttachment(int id)
+        public virtual Item GetAttachment(long id)
         {
             if (Attachments != null)
             {
@@ -192,7 +192,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Spell GetSpell(int id)
+        public virtual Spell GetSpell(long id)
         {
             if (Spells != null)
             {

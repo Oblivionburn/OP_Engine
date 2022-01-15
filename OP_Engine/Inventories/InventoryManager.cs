@@ -23,7 +23,7 @@ namespace OP_Engine.Inventories
 
         #region Methods
 
-        public static Inventory GetInventory(int id)
+        public static Inventory GetInventory(long id)
         {
             foreach (Inventory inventory in Inventories)
             {

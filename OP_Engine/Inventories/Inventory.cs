@@ -55,7 +55,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Item GetItem(int id)
+        public virtual Item GetItem(long id)
         {
             foreach (Item item in Items)
             {

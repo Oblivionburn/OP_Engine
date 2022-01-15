@@ -39,7 +39,7 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public static Job GetJob(int id)
+        public static Job GetJob(long id)
         {
             foreach (Job job in Jobs)
             {
@@ -65,7 +65,7 @@ namespace OP_Engine.Jobs
             return null;
         }
 
-        public static Job GetJob(string name, int owner_id)
+        public static Job GetJob(string name, long owner_id)
         {
             foreach (Job job in Jobs)
             {
@@ -94,7 +94,7 @@ namespace OP_Engine.Jobs
             return jobs;
         }
 
-        public static List<Job> GetJobs(int owner_id)
+        public static List<Job> GetJobs(long owner_id)
         {
             List<Job> jobs = new List<Job>();
 
@@ -109,7 +109,7 @@ namespace OP_Engine.Jobs
             return jobs;
         }
 
-        public static List<Job> GetJobs(string name, int owner_id)
+        public static List<Job> GetJobs(string name, long owner_id)
         {
             List<Job> jobs = new List<Job>();
 

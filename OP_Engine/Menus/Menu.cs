@@ -142,7 +142,7 @@ namespace OP_Engine.Menus
 
         }
 
-        public virtual void AddButton(int id, string name, Texture2D Texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, Color color, bool visible)
+        public virtual void AddButton(long id, string name, Texture2D Texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, Color color, bool visible)
         {
             Button button = new Button();
             button.ID = id;
@@ -158,7 +158,7 @@ namespace OP_Engine.Menus
             Buttons.Add(button);
         }
 
-        public virtual void AddButton(SpriteFont font, int id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Rectangle region, bool selected, bool visible)
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Rectangle region, bool selected, bool visible)
         {
             Button button = new Button();
             button.ID = id;
@@ -176,7 +176,7 @@ namespace OP_Engine.Menus
             Buttons.Add(button);
         }
 
-        public virtual void AddPicture(int id, string name, Texture2D texture, Rectangle region, Color color, bool visible)
+        public virtual void AddPicture(long id, string name, Texture2D texture, Rectangle region, Color color, bool visible)
         {
             Picture picture = new Picture();
             picture.ID = id;
@@ -218,7 +218,7 @@ namespace OP_Engine.Menus
             Labels.Add(label);
         }
 
-        public virtual void AddLabel(SpriteFont font, int id, string name, string text, Color color, Rectangle region, bool visible)
+        public virtual void AddLabel(SpriteFont font, long id, string name, string text, Color color, Rectangle region, bool visible)
         {
             Label label = new Label();
             label.ID = id;
@@ -232,7 +232,7 @@ namespace OP_Engine.Menus
             Labels.Add(label);
         }
 
-        public virtual void AddLabel(SpriteFont font, int id, string name, string text, Color color, Texture2D texture, Rectangle region, bool visible)
+        public virtual void AddLabel(SpriteFont font, long id, string name, string text, Color color, Texture2D texture, Rectangle region, bool visible)
         {
             Label label = new Label();
             label.ID = id;
@@ -248,7 +248,7 @@ namespace OP_Engine.Menus
             Labels.Add(label);
         }
 
-        public virtual void AddProgressBar(int id, string name, int max, int value, int increment, Texture2D base_texture, Texture2D bar_texture, Rectangle region, Color color, bool visible)
+        public virtual void AddProgressBar(long id, string name, int max, int value, int increment, Texture2D base_texture, Texture2D bar_texture, Rectangle region, Color color, bool visible)
         {
             ProgressBar progressBar = new ProgressBar();
             progressBar.ID = id;
@@ -272,7 +272,7 @@ namespace OP_Engine.Menus
             ProgressBars.Add(progressBar);
         }
 
-        public virtual void AddInput(SpriteFont font, int id, int max_length, string name, string text, Color text_color, Texture2D texture, Rectangle region, bool active, bool visible)
+        public virtual void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Texture2D texture, Rectangle region, bool active, bool visible)
         {
             InputBox input = new InputBox();
             input.ID = id;
@@ -304,7 +304,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public virtual Button GetButton(int id)
+        public virtual Button GetButton(long id)
         {
             foreach (Button existing in Buttons)
             {
@@ -343,7 +343,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public virtual Label GetLabel(int id)
+        public virtual Label GetLabel(long id)
         {
             foreach (Label existing in Labels)
             {
@@ -369,7 +369,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public virtual Picture GetPicture(int id)
+        public virtual Picture GetPicture(long id)
         {
             foreach (Picture existing in Pictures)
             {
@@ -395,7 +395,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public virtual Slider GetSlider(int id)
+        public virtual Slider GetSlider(long id)
         {
             foreach (Slider existing in Sliders)
             {
@@ -421,7 +421,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public virtual InputBox GetInput(int id)
+        public virtual InputBox GetInput(long id)
         {
             foreach (InputBox existing in Inputs)
             {
@@ -447,7 +447,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public virtual ProgressBar GetProgressBar(int id)
+        public virtual ProgressBar GetProgressBar(long id)
         {
             foreach (ProgressBar existing in ProgressBars)
             {
