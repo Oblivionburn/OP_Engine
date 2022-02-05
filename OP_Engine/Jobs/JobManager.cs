@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
+
+using OP_Engine.Utility;
 
 namespace OP_Engine.Jobs
 {
@@ -23,7 +26,7 @@ namespace OP_Engine.Jobs
 
         #region Methods
 
-        public static void Update(int current_time)
+        public static void Update(TimeHandler current_time)
         {
             foreach (Job job in Jobs)
             {
@@ -31,7 +34,7 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public static void Update(int current_time, int task_step_time)
+        public static void Update(TimeHandler current_time, TimeSpan task_step_time)
         {
             foreach (Job job in Jobs)
             {

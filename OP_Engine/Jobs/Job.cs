@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using OP_Engine.Utility;
 
@@ -8,9 +9,20 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
-        public Task CurrentTask;
         public List<Task> PreviousTasks = new List<Task>();
         public List<Task> Tasks = new List<Task>();
+
+        #endregion
+
+        #region Properties
+
+        public Task CurrentTask
+        {
+            get
+            {
+                return Get_CurrentTask();
+            }
+        }
 
         #endregion
 
@@ -25,9 +37,8 @@ namespace OP_Engine.Jobs
 
         #region Methods
 
-        public virtual void Update(int current_time)
+        public virtual void Update(TimeHandler current_time)
         {
-            CurrentTask = Get_CurrentTask();
             if (CurrentTask != null)
             {
                 if (!CurrentTask.Started &&
@@ -49,7 +60,6 @@ namespace OP_Engine.Jobs
                         PreviousTasks.Add(Tasks[0]);
                         Tasks.RemoveAt(0);
 
-                        CurrentTask = Get_CurrentTask();
                         if (CurrentTask != null)
                         {
                             CurrentTask.Start(current_time);
@@ -59,9 +69,8 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public virtual void Update(int current_time, int task_step_time)
+        public virtual void Update(TimeHandler current_time, TimeSpan task_step_time)
         {
-            CurrentTask = Get_CurrentTask();
             if (CurrentTask != null)
             {
                 if (!CurrentTask.Started &&
@@ -83,7 +92,6 @@ namespace OP_Engine.Jobs
                         PreviousTasks.Add(Tasks[0]);
                         Tasks.RemoveAt(0);
 
-                        CurrentTask = Get_CurrentTask();
                         if (CurrentTask != null)
                         {
                             CurrentTask.Start(current_time, task_step_time);
@@ -129,7 +137,7 @@ namespace OP_Engine.Jobs
             return null;
         }
 
-        public virtual void Abort(int current_time)
+        public virtual void Abort(TimeHandler current_time)
         {
             for (int i = 0; i < Tasks.Count; i++)
             {

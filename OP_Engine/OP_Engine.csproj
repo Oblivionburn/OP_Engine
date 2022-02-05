@@ -17,12 +17,13 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <LangVersion>7.1</LangVersion>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -106,6 +107,9 @@
     <Compile Include="Characters\Pathing.cs" />
     <Compile Include="Utility\Something.cs" />
     <Compile Include="Utility\Square.cs" />
+    <Compile Include="Utility\TimeChangedEventArgs.cs" />
+    <Compile Include="Utility\TimeHandler.cs" />
+    <Compile Include="Utility\TimeManager.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Weathers\Weather.cs" />
     <Compile Include="Weathers\WeatherManager.cs" />

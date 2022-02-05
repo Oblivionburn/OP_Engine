@@ -1,4 +1,6 @@
-﻿using OP_Engine.Controls;
+﻿using System;
+
+using OP_Engine.Controls;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Jobs
@@ -7,9 +9,9 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
-        public int StartTime;
-        public int StepTime;
-        public int EndTime;
+        public TimeHandler StartTime;
+        public TimeHandler StepTime;
+        public TimeHandler EndTime;
         public bool Started;
         public bool Completed;
         public bool Keep_On_Completed;
@@ -29,7 +31,7 @@ namespace OP_Engine.Jobs
 
         #region Methods
 
-        public virtual void Update(int current_time)
+        public virtual void Update(TimeHandler current_time)
         {
             if (!Completed)
             {
@@ -40,54 +42,65 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public virtual void Update(int current_time, int step_time)
+        public virtual void Update(TimeHandler current_time, TimeSpan step_time)
         {
             if (Started &&
-                !Completed &&
-                current_time >= StepTime)
+                !Completed)
             {
-                StepTime = current_time + step_time;
-
                 if (TaskBar.Increment > 0 &&
                     TaskBar.Value < TaskBar.Max_Value)
                 {
                     TaskBar.Step();
                 }
 
+                if (current_time != null &&
+                    StepTime != null)
+                {
+                    if (current_time.TotalTime >= StepTime.TotalTime)
+                    {
+                        StepTime.CopyTime(current_time);
+                        StepTime.AddTimeSpan(step_time);
+                    }
+                }
+
                 if (!InProgress(current_time))
                 {
-                    if (EndTime == 0)
+                    if (EndTime == null)
                     {
                         EndTime = current_time;
                     }
-                    
+
                     Completed = true;
                 }
             }
         }
 
-        public virtual void Start(int current_time)
+        public virtual void Start(TimeHandler current_time)
         {
             Started = true;
-            StartTime = current_time;
+            StartTime = new TimeHandler(current_time);
         }
 
-        public virtual void Start(int current_time, int next_step_time)
+        public virtual void Start(TimeHandler current_time, TimeSpan next_step_time)
         {
             Started = true;
-            StartTime = current_time;
-            StepTime = current_time + next_step_time;
+            StartTime = new TimeHandler(current_time);
+            StepTime = new TimeHandler(current_time, next_step_time);
         }
 
-        public virtual bool InProgress(int current_time)
+        public virtual bool InProgress(TimeHandler current_time)
         {
             if (Started &&
-                StartTime > 0)
+                StartTime != null)
             {
-                if (current_time >= StartTime &&
-                    current_time < EndTime)
+                if (current_time != null &&
+                    EndTime != null)
                 {
-                    return true;
+                    if (current_time.TotalTime >= StartTime.TotalTime &&
+                        current_time.TotalTime < EndTime.TotalTime)
+                    {
+                        return true;
+                    }
                 }
                 else if (TaskBar.Value > 0 &&
                          TaskBar.Increment > 0 &&
@@ -95,10 +108,12 @@ namespace OP_Engine.Jobs
                 {
                     return true;
                 }
-                else if (current_time >= StartTime &&
-                         EndTime == 0)
+                else if (current_time != null)
                 {
-                    return true;
+                    if (current_time.TotalTime >= StartTime.TotalTime)
+                    {
+                        return true;
+                    }
                 }
             }
 
