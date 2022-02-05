@@ -16,6 +16,7 @@
   - Character class prefit with Inventory, Stats and Skills lists, A* pathing, Job class for task queueing and AI scheduling, Health/Mana progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
 - JobManager component for central organization of character Job (jobs not added to it by default)
 - InventoryManager component for central organization of Inventory (inventories not added to it by default)
+- TimeManager component for tracking global in-game time with custom TimeHandler class for event-driven time tracking
 - World (tile map) consisting of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
 - Basic UI objects/classes for Buttons, Labels, Input boxes, Pictures/Images, Progress Bars, and Sliders
