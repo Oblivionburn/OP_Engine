@@ -35,10 +35,10 @@ namespace OP_Engine.Controls
 
         public override void Update()
         {
-            float CurrentVal = ((float)Bar_Texture.Width / Max_Value) * Value;
+            float CurrentVal = (Bar_Texture.Width / Max_Value) * Value;
             Bar_Image = new Rectangle(Bar_Image.X, Bar_Image.Y, (int)CurrentVal, Bar_Image.Height);
 
-            CurrentVal = ((float)Base_Region.Width / Max_Value) * Value;
+            CurrentVal = (Base_Region.Width / Max_Value) * Value;
             Bar_Region = new Rectangle(Base_Region.X, Base_Region.Y, (int)CurrentVal, Base_Region.Height);
         }
 
@@ -67,6 +67,8 @@ namespace OP_Engine.Controls
             {
                 Value = 0;
             }
+
+            Update();
         }
 
         public virtual void Increase(int value)
@@ -81,6 +83,8 @@ namespace OP_Engine.Controls
             {
                 Value = 0;
             }
+
+            Update();
         }
 
         public virtual void Decrease(int value)
@@ -95,6 +99,8 @@ namespace OP_Engine.Controls
             {
                 Value = 0;
             }
+
+            Update();
         }
 
         public virtual void SetValue(int value)
@@ -109,6 +115,8 @@ namespace OP_Engine.Controls
             {
                 Value = 0;
             }
+
+            Update();
         }
 
         public virtual void Reset()
