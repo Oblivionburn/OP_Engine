@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 
-namespace OP_Engine.Utility
+namespace OP_Engine.Time
 {
     public class TimeManager : GameComponent
     {

@@ -63,8 +63,13 @@
     <Compile Include="Characters\Squad.cs" />
     <Compile Include="Controls\Control.cs" />
     <Compile Include="Controls\Label.cs" />
+    <Compile Include="Inputs\ButtonEventArgs.cs" />
+    <Compile Include="Inputs\GamepadHandler.cs" />
     <Compile Include="Inputs\Input.cs" />
+    <Compile Include="Inputs\KeyboardHandler.cs" />
     <Compile Include="Inputs\InputManager.cs" />
+    <Compile Include="Inputs\KeyEventArgs.cs" />
+    <Compile Include="Inputs\MouseHandler.cs" />
     <Compile Include="Inventories\Inventory.cs" />
     <Compile Include="Inventories\InventoryManager.cs" />
     <Compile Include="Inventories\Item.cs" />
@@ -107,9 +112,8 @@
     <Compile Include="Characters\Pathing.cs" />
     <Compile Include="Utility\Something.cs" />
     <Compile Include="Utility\Square.cs" />
-    <Compile Include="Utility\TimeChangedEventArgs.cs" />
-    <Compile Include="Utility\TimeHandler.cs" />
-    <Compile Include="Utility\TimeManager.cs" />
+    <Compile Include="Time\TimeHandler.cs" />
+    <Compile Include="Time\TimeManager.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Weathers\Weather.cs" />
     <Compile Include="Weathers\WeatherManager.cs" />

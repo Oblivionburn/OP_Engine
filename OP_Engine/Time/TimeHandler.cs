@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace OP_Engine.Utility
+namespace OP_Engine.Time
 {
-    public class TimeHandler
+    public class TimeHandler : IDisposable
     {
         #region Variables
 
@@ -86,15 +86,15 @@ namespace OP_Engine.Utility
 
         }
 
-        public TimeHandler(TimeHandler time)
+        public TimeHandler(TimeHandler current_time)
         {
-            years = time.Years;
-            months = time.Months;
-            days = time.Days;
-            hours = time.Hours;
-            minutes = time.Minutes;
-            seconds = time.Seconds;
-            milliseconds = time.Milliseconds;
+            years = current_time.Years;
+            months = current_time.Months;
+            days = current_time.Days;
+            hours = current_time.Hours;
+            minutes = current_time.Minutes;
+            seconds = current_time.Seconds;
+            milliseconds = current_time.Milliseconds;
         }
 
         public TimeHandler(TimeHandler current_time, TimeSpan additional_time)
@@ -108,6 +108,51 @@ namespace OP_Engine.Utility
             milliseconds = current_time.Milliseconds;
 
             AddMilliseconds((long)additional_time.TotalMilliseconds);
+        }
+
+        public TimeHandler(long millisecond)
+        {
+            milliseconds = millisecond;
+        }
+
+        public TimeHandler(long second, long millisecond)
+        {
+            seconds = second;
+            milliseconds = millisecond;
+        }
+
+        public TimeHandler(long minute, long second, long millisecond)
+        {
+            minutes = minute;
+            seconds = second;
+            milliseconds = millisecond;
+        }
+
+        public TimeHandler(long hour, long minute, long second, long millisecond)
+        {
+            hours = hour;
+            minutes = minute;
+            seconds = second;
+            milliseconds = millisecond;
+        }
+
+        public TimeHandler(long day, long hour, long minute, long second, long millisecond)
+        {
+            days = day;
+            hours = hour;
+            minutes = minute;
+            seconds = second;
+            milliseconds = millisecond;
+        }
+
+        public TimeHandler(long month, long day, long hour, long minute, long second, long millisecond)
+        {
+            months = month;
+            days = day;
+            hours = hour;
+            minutes = minute;
+            seconds = second;
+            milliseconds = millisecond;
         }
 
         public TimeHandler(long year, long month, long day, long hour, long minute, long second, long millisecond)
@@ -253,6 +298,23 @@ namespace OP_Engine.Utility
         public void AddTimeSpan(TimeSpan amount)
         {
             AddMilliseconds((long)amount.TotalMilliseconds);
+        }
+
+        public DateTime? ToDateTime()
+        {
+            try
+            {
+                return new DateTime((int)Years, (int)Months, (int)Days, (int)Hours, (int)Minutes, (int)Seconds, (int)Milliseconds);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public void Dispose()
+        {
+
         }
 
         #endregion
