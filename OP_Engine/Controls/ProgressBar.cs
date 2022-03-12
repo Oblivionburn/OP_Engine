@@ -25,8 +25,6 @@ namespace OP_Engine.Controls
             Base_Region = new Rectangle();
             Bar_Region = new Rectangle();
             Bar_Image = new Rectangle();
-
-            Opacity = 1;
         }
 
         #endregion

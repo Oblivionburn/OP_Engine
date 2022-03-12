@@ -22,8 +22,7 @@ namespace OP_Engine.Controls
 
         public InputBox() : base()
         {
-            Size = default;
-            Position = default;
+            
         }
 
         #endregion

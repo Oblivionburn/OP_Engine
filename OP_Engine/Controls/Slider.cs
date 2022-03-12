@@ -3,9 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace OP_Engine.Controls
 {
-    public class Slider : Control
+    public class Slider : Picture
     {
         #region Variables
+
+        public bool Selected;
+        public bool Enabled;
 
         public Texture2D Selection;
         public Rectangle Selection_Region;
@@ -20,6 +23,7 @@ namespace OP_Engine.Controls
         public Slider(int max) : base()
         {
             Max_Value = max;
+            Enabled = true;
         }
 
         #endregion

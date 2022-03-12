@@ -1,23 +1,20 @@
-﻿using System;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace OP_Engine.Controls
 {
-    public class Button : Control
+    public class Button : Label
     {
         #region Variables
 
-        public string Text;
-        public Color TextColor;
-        public Color SelectedTextColor;
+        public bool Selected;
+        public bool Enabled;
 
-        public Vector2 Size;
-        public Vector2 Position;
-        public float Scale;
+        public Color TextColor_Selected;
+        public Color TextColor_Disabled;
 
-        public SpriteFont Font;
+        public Texture2D Texture_Highlight;
+        public Texture2D Texture_Disabled;
 
         #endregion
 
@@ -25,50 +22,55 @@ namespace OP_Engine.Controls
 
         public Button() : base()
         {
-            Size = default;
-            Position = default;
-            Opacity = 1;
+            Enabled = true;
         }
 
         #endregion
 
         #region Methods
 
-        public override void Update()
-        {
-            if (!string.IsNullOrEmpty(Text) &&
-                Font != null)
-            {
-                Size = Font.MeasureString(Text);
-
-                float xScale = Region.Width / Size.X;
-                float yScale = Region.Height / Size.Y;
-                Scale = Math.Min(xScale, yScale) - 0.10f;
-
-                int strWidth = (int)Math.Round(Size.X * Scale);
-                int strHeight = (int)Math.Round(Size.Y * Scale);
-
-                Position.X = (Region.Width - strWidth) / 2 + Region.X;
-                Position.Y = (Region.Height - strHeight) / 2 + Region.Y + 2.5f;
-            }
-        }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
-            base.Draw(spriteBatch);
-
-            if (Visible &&
-                Enabled &&
-                !string.IsNullOrEmpty(Text) &&
-                Font != null)
+            if (Visible)
             {
-                if (Selected)
+                if (Enabled)
                 {
-                    spriteBatch.DrawString(Font, Text, Position, SelectedTextColor * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                    if (Selected)
+                    {
+                        if (Texture_Highlight != null)
+                        {
+                            spriteBatch.Draw(Texture_Highlight, Region, Image, DrawColor * Opacity);
+                        }
+
+                        if (!string.IsNullOrEmpty(Text) &&
+                            Font != null)
+                        {
+                            spriteBatch.DrawString(Font, Text, Position, TextColor_Selected * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                        }
+                    }
+                    else
+                    {
+                        if (Texture != null)
+                        {
+                            spriteBatch.Draw(Texture, Region, Image, DrawColor * Opacity);
+                        }
+
+                        if (!string.IsNullOrEmpty(Text) &&
+                            Font != null)
+                        {
+                            spriteBatch.DrawString(Font, Text, Position, TextColor * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                        }
+                    }
                 }
-                else
+                else if (Texture_Disabled != null)
                 {
-                    spriteBatch.DrawString(Font, Text, Position, TextColor * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(Texture_Disabled, Region, Image, DrawColor * Opacity);
+
+                    if (!string.IsNullOrEmpty(Text) &&
+                        Font != null)
+                    {
+                        spriteBatch.DrawString(Font, Text, Position, TextColor_Disabled * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                    }
                 }
             }
         }

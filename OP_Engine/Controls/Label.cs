@@ -3,6 +3,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using OP_Engine.Utility;
+
 namespace OP_Engine.Controls
 {
     public class Label : Picture
@@ -11,10 +13,11 @@ namespace OP_Engine.Controls
 
         public string Text;
         public Color TextColor;
-        public Color SelectedTextColor;
 
         public Vector2 Size;
         public Vector2 Position;
+        public Alignment Alignment_Verticle;
+        public Alignment Alignment_Horizontal;
         public float Scale;
 
         public SpriteFont Font;
@@ -27,7 +30,6 @@ namespace OP_Engine.Controls
         {
             Size = default;
             Position = default;
-            Opacity = 1;
         }
 
         #endregion
@@ -48,8 +50,31 @@ namespace OP_Engine.Controls
                 int strWidth = (int)Math.Round(Size.X * Scale);
                 int strHeight = (int)Math.Round(Size.Y * Scale);
 
-                Position.X = (Region.Width - strWidth) / 2 + Region.X;
-                Position.Y = (Region.Height - strHeight) / 2 + Region.Y + 2.5f;
+                if (Alignment_Verticle == Alignment.Top)
+                {
+                    Position.Y = Region.Y + 8;
+                }
+                else if (Alignment_Verticle == Alignment.Center)
+                {
+                    Position.Y = Region.Y + (Region.Height / 2) - (strHeight / 2);
+                }
+                else if (Alignment_Verticle == Alignment.Bottom)
+                {
+                    Position.Y = Region.Y + Region.Height - strHeight - 8;
+                }
+
+                if (Alignment_Horizontal == Alignment.Left)
+                {
+                    Position.X = Region.X + 8;
+                }
+                else if (Alignment_Horizontal == Alignment.Center)
+                {
+                    Position.X = Region.X + (Region.Width / 2) - (strWidth / 2);
+                }
+                else if (Alignment_Horizontal == Alignment.Right)
+                {
+                    Position.X = Region.X + Region.Width - strWidth - 8;
+                }
             }
         }
 

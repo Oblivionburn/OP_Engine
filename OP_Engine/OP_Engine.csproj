@@ -99,6 +99,7 @@
     <Compile Include="Tiles\Map.cs" />
     <Compile Include="Tiles\Tile.cs" />
     <Compile Include="Tiles\World.cs" />
+    <Compile Include="Utility\Alignment.cs" />
     <Compile Include="Utility\ALocation.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\Picture.cs" />

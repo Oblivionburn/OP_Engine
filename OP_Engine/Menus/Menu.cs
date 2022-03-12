@@ -166,8 +166,64 @@ namespace OP_Engine.Menus
             button.Text = text;
             button.Font = font;
             button.TextColor = text_color;
-            button.SelectedTextColor = text_highlight_color;
+            button.TextColor_Selected = text_highlight_color;
             button.DrawColor = Color.White;
+            button.Texture = texture;
+            button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
+            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            button.Selected = selected;
+            button.Visible = visible;
+            Buttons.Add(button);
+        }
+
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Rectangle region, Color draw_color, bool selected, bool visible)
+        {
+            Button button = new Button();
+            button.ID = id;
+            button.Name = name;
+            button.Text = text;
+            button.Font = font;
+            button.TextColor = text_color;
+            button.TextColor_Selected = text_highlight_color;
+            button.DrawColor = draw_color;
+            button.Texture = texture;
+            button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
+            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            button.Selected = selected;
+            button.Visible = visible;
+            Buttons.Add(button);
+        }
+
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Rectangle region, bool selected, bool visible)
+        {
+            Button button = new Button();
+            button.ID = id;
+            button.Name = name;
+            button.Text = text;
+            button.Font = font;
+            button.TextColor = text_color;
+            button.TextColor_Selected = text_highlight_color;
+            button.TextColor_Disabled = text_disabled_color;
+            button.DrawColor = Color.White;
+            button.Texture = texture;
+            button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
+            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            button.Selected = selected;
+            button.Visible = visible;
+            Buttons.Add(button);
+        }
+
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Rectangle region, Color draw_color, bool selected, bool visible)
+        {
+            Button button = new Button();
+            button.ID = id;
+            button.Name = name;
+            button.Text = text;
+            button.Font = font;
+            button.TextColor = text_color;
+            button.TextColor_Selected = text_highlight_color;
+            button.TextColor_Disabled = text_disabled_color;
+            button.DrawColor = draw_color;
             button.Texture = texture;
             button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
             button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
@@ -189,27 +245,28 @@ namespace OP_Engine.Menus
             Pictures.Add(picture);
         }
 
-        public virtual void AddLabel(SpriteFont font, string name, string text, Color color, Rectangle region, bool visible)
+        public virtual void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Rectangle region, bool visible)
         {
             Label label = new Label();
+            label.ID = id;
             label.Name = name;
             label.Value = 255;
             label.Text = text;
-            label.TextColor = color;
+            label.TextColor = text_color;
             label.Font = font;
-            //label.Font = content.Load<SpriteFont>("Fonts\\ControlFont");
             label.Region = region;
             label.Visible = visible;
             Labels.Add(label);
         }
 
-        public virtual void AddLabel(SpriteFont font, string name, string text, Color color, Texture2D texture, Rectangle region, bool visible)
+        public virtual void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Rectangle region, bool visible)
         {
             Label label = new Label();
+            label.ID = id;
             label.Name = name;
             label.Text = text;
             label.Font = font;
-            label.TextColor = color;
+            label.TextColor = text_color;
             label.DrawColor = Color.White;
             label.Texture = texture;
             label.Region = region;
@@ -218,29 +275,15 @@ namespace OP_Engine.Menus
             Labels.Add(label);
         }
 
-        public virtual void AddLabel(SpriteFont font, long id, string name, string text, Color color, Rectangle region, bool visible)
-        {
-            Label label = new Label();
-            label.ID = id;
-            label.Name = name;
-            label.Value = 255;
-            label.Text = text;
-            label.TextColor = color;
-            label.Font = font;
-            label.Region = region;
-            label.Visible = visible;
-            Labels.Add(label);
-        }
-
-        public virtual void AddLabel(SpriteFont font, long id, string name, string text, Color color, Texture2D texture, Rectangle region, bool visible)
+        public virtual void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Rectangle region, Color draw_color, bool visible)
         {
             Label label = new Label();
             label.ID = id;
             label.Name = name;
             label.Text = text;
             label.Font = font;
-            label.TextColor = color;
-            label.DrawColor = Color.White;
+            label.TextColor = text_color;
+            label.DrawColor = draw_color;
             label.Texture = texture;
             label.Region = region;
             label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
