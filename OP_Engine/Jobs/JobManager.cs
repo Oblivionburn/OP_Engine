@@ -34,11 +34,11 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public static void Update(TimeHandler current_time, TimeSpan task_step_time)
+        public static void Update(TimeHandler current_time, TimeSpan time_span)
         {
             foreach (Job job in Jobs)
             {
-                job.Update(current_time, task_step_time);
+                job.Update(current_time, time_span);
             }
         }
 

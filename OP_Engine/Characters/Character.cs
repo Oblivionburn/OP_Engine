@@ -21,6 +21,7 @@ namespace OP_Engine.Characters
         public string Gender;
         public bool Interacting;
         public bool Dead;
+        public bool Unconscious;
 
         /*
         Using this Square object for Region, instead of the Rectangle 
@@ -30,6 +31,7 @@ namespace OP_Engine.Characters
 
         public List<Something> Stats = new List<Something>();
         public List<Something> Skills = new List<Something>();
+        public List<Something> StatusEffects = new List<Something>();
 
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;

@@ -34,17 +34,6 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time)
         {
-            if (!Completed)
-            {
-                if (!InProgress(current_time))
-                {
-                    Completed = true;
-                }
-            }
-        }
-
-        public virtual void Update(TimeHandler current_time, TimeSpan step_time)
-        {
             if (Started &&
                 !Completed)
             {
@@ -52,16 +41,6 @@ namespace OP_Engine.Jobs
                     TaskBar.Value < TaskBar.Max_Value)
                 {
                     TaskBar.Step();
-                }
-
-                if (current_time != null &&
-                    StepTime != null)
-                {
-                    if (current_time.TotalTime >= StepTime.TotalTime)
-                    {
-                        StepTime.CopyTime(current_time);
-                        StepTime.AddTimeSpan(step_time);
-                    }
                 }
 
                 if (!InProgress(current_time))
@@ -76,17 +55,54 @@ namespace OP_Engine.Jobs
             }
         }
 
+        public virtual void Update(TimeHandler current_time, TimeSpan time_span)
+        {
+            if (Started &&
+                !Completed)
+            {
+                if (current_time != null)
+                {
+                    if (StepTime == null)
+                    {
+                        StepTime = new TimeHandler(current_time, time_span);
+                    }
+
+                    if (current_time.TotalMilliseconds >= StepTime.TotalMilliseconds)
+                    {
+                        StepTime.CopyTime(current_time);
+                        StepTime.AddTimeSpan(time_span);
+
+                        if (TaskBar.Rate > 0 &&
+                            TaskBar.Value < TaskBar.Max_Value)
+                        {
+                            TaskBar.Step();
+                        }
+
+                        if (!InProgress(current_time))
+                        {
+                            if (EndTime == null)
+                            {
+                                EndTime = current_time;
+                            }
+
+                            Completed = true;
+                        }
+                    }
+                }
+            }
+        }
+
         public virtual void Start(TimeHandler current_time)
         {
             Started = true;
             StartTime = new TimeHandler(current_time);
         }
 
-        public virtual void Start(TimeHandler current_time, TimeSpan next_step_time)
+        public virtual void Start(TimeHandler current_time, TimeSpan time_span)
         {
             Started = true;
             StartTime = new TimeHandler(current_time);
-            StepTime = new TimeHandler(current_time, next_step_time);
+            StepTime = new TimeHandler(current_time, time_span);
         }
 
         public virtual bool InProgress(TimeHandler current_time)
@@ -97,8 +113,8 @@ namespace OP_Engine.Jobs
                 if (current_time != null &&
                     EndTime != null)
                 {
-                    if (current_time.TotalTime >= StartTime.TotalTime &&
-                        current_time.TotalTime < EndTime.TotalTime)
+                    if (current_time.TotalMilliseconds >= StartTime.TotalMilliseconds &&
+                        current_time.TotalMilliseconds < EndTime.TotalMilliseconds)
                     {
                         return true;
                     }
@@ -111,7 +127,7 @@ namespace OP_Engine.Jobs
                 }
                 else if (current_time != null)
                 {
-                    if (current_time.TotalTime >= StartTime.TotalTime)
+                    if (current_time.TotalMilliseconds >= StartTime.TotalMilliseconds)
                     {
                         return true;
                     }

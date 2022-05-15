@@ -40,62 +40,76 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time)
         {
-            if (CurrentTask != null)
+            if (Tasks.Count > 0)
             {
-                if (!CurrentTask.Started &&
-                    !CurrentTask.Completed)
+                Task current = Tasks[0];
+                if (current != null)
                 {
-                    CurrentTask.Start(current_time);
-                }
-
-                if (CurrentTask.Started &&
-                    !CurrentTask.Completed)
-                {
-                    CurrentTask.Update(current_time);
-                }
-
-                if (CurrentTask.Completed)
-                {
-                    if (!CurrentTask.Keep_On_Completed)
+                    if (!current.Completed)
                     {
-                        PreviousTasks.Add(Tasks[0]);
-                        Tasks.RemoveAt(0);
-
-                        if (CurrentTask != null)
+                        if (!current.Started)
                         {
-                            CurrentTask.Start(current_time);
+                            current.Start(current_time);
+                        }
+
+                        current.Update(current_time);
+                    }
+
+                    if (current.Completed)
+                    {
+                        if (!current.Keep_On_Completed)
+                        {
+                            PreviousTasks.Add(Tasks[0]);
+                            if (PreviousTasks.Count > 200)
+                            {
+                                PreviousTasks.RemoveAt(0);
+                            }
+
+                            Tasks.RemoveAt(0);
+
+                            if (current != null)
+                            {
+                                current.Start(current_time);
+                            }
                         }
                     }
                 }
             }
         }
 
-        public virtual void Update(TimeHandler current_time, TimeSpan task_step_time)
+        public virtual void Update(TimeHandler current_time, TimeSpan time_span)
         {
-            if (CurrentTask != null)
+            if (Tasks.Count > 0)
             {
-                if (!CurrentTask.Started &&
-                    !CurrentTask.Completed)
+                Task current = Tasks[0];
+                if (current != null)
                 {
-                    CurrentTask.Start(current_time, task_step_time);
-                }
-
-                if (CurrentTask.Started &&
-                    !CurrentTask.Completed)
-                {
-                    CurrentTask.Update(current_time, task_step_time);
-                }
-
-                if (CurrentTask.Completed)
-                {
-                    if (!CurrentTask.Keep_On_Completed)
+                    if (!current.Completed)
                     {
-                        PreviousTasks.Add(Tasks[0]);
-                        Tasks.RemoveAt(0);
-
-                        if (CurrentTask != null)
+                        if (!current.Started)
                         {
-                            CurrentTask.Start(current_time, task_step_time);
+                            current.Start(current_time, time_span);
+                        }
+
+                        current.Update(current_time, time_span);
+                    }
+
+                    if (current.Completed)
+                    {
+                        if (!current.Keep_On_Completed)
+                        {
+                            PreviousTasks.Add(Tasks[0]);
+                            if (PreviousTasks.Count > 200)
+                            {
+                                PreviousTasks.RemoveAt(0);
+                            }
+
+                            Tasks.RemoveAt(0);
+
+                            if (current != null)
+                            {
+                                current.Start(current_time, time_span);
+                            }
                         }
                     }
                 }
