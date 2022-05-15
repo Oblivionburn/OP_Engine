@@ -14,8 +14,6 @@ namespace OP_Engine.Controls
         public Rectangle Bar_Region;
         public Rectangle Bar_Image;
 
-        public float Increment;
-
         #endregion
 
         #region Constructor
@@ -55,65 +53,25 @@ namespace OP_Engine.Controls
 
         public virtual void Step()
         {
-            Value += (int)Increment;
-
-            if (Value > Max_Value)
-            {
-                Value = Max_Value;
-            }
-            else if (Value < 0)
-            {
-                Value = 0;
-            }
-
+            IncreaseValueByRate();
             Update();
         }
 
         public virtual void Increase(int value)
         {
-            Value += value;
-
-            if (Value > Max_Value)
-            {
-                Value = Max_Value;
-            }
-            else if (Value < 0)
-            {
-                Value = 0;
-            }
-
+            IncreaseValue(value);
             Update();
         }
 
         public virtual void Decrease(int value)
         {
-            Value -= value;
-
-            if (Value > Max_Value)
-            {
-                Value = Max_Value;
-            }
-            else if (Value < 0)
-            {
-                Value = 0;
-            }
-
+            DecreaseValue(value);
             Update();
         }
 
         public virtual void SetValue(int value)
         {
-            Value = value;
-
-            if (Value > Max_Value)
-            {
-                Value = Max_Value;
-            }
-            else if (Value < 0)
-            {
-                Value = 0;
-            }
-
+            SetValue(value);
             Update();
         }
 

@@ -20,6 +20,7 @@ namespace OP_Engine.Characters
         public long PartyID;
         public string Gender;
         public bool Interacting;
+        public bool Dead;
 
         /*
         Using this Square object for Region, instead of the Rectangle 

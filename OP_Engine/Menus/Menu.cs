@@ -297,7 +297,7 @@ namespace OP_Engine.Menus
             progressBar.ID = id;
             progressBar.Name = name;
             progressBar.Value = value;
-            progressBar.Increment = increment;
+            progressBar.Rate = increment;
             progressBar.Max_Value = max;
             progressBar.Base_Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
             progressBar.Bar_Region = new Rectangle(region.X, region.Y, 0, region.Height);

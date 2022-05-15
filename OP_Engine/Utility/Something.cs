@@ -57,6 +57,88 @@ namespace OP_Engine.Utility
 
         #region Methods
 
+        public virtual void IncreaseMaxValue(float amount)
+        {
+            Max_Value += amount;
+            CheckMinMax();
+        }
+
+        public virtual void IncreaseMinValue(float amount)
+        {
+            Min_Value += amount;
+            CheckMinMax();
+        }
+
+        public virtual void IncreaseValue(float amount)
+        {
+            Value += amount;
+            CheckMinMax();
+        }
+
+        public virtual void IncreaseValueByRate()
+        {
+            Value += Rate;
+            CheckMinMax();
+        }
+
+        public virtual void DecreaseMaxValue(float amount)
+        {
+            Max_Value -= amount;
+            CheckMinMax();
+        }
+
+        public virtual void DecreaseMinValue(float amount)
+        {
+            Min_Value -= amount;
+            CheckMinMax();
+        }
+
+        public virtual void DecreaseValue(float amount)
+        {
+            Value -= amount;
+            CheckMinMax();
+        }
+
+        public virtual void DecreaseValueByRate()
+        {
+            Value -= Rate;
+            CheckMinMax();
+        }
+
+        public virtual void SetMaxValue(float amount)
+        {
+            Max_Value = amount;
+            CheckMinMax();
+        }
+
+        public virtual void SetMinValue(float amount)
+        {
+            Min_Value = amount;
+            CheckMinMax();
+        }
+
+        public virtual void SetValue(float amount)
+        {
+            Value = amount;
+            CheckMinMax();
+        }
+
+        public virtual void CheckMinMax()
+        {
+            if (Value > Max_Value)
+            {
+                Value = Max_Value;
+            }
+            else if (Value < Min_Value)
+            {
+                Value = Min_Value;
+            }
+            else if (Value < 0)
+            {
+                Value = 0;
+            }
+        }
+
         public virtual void Dispose()
         {
             Texture = null;

@@ -48,7 +48,7 @@ namespace OP_Engine.Jobs
             if (Started &&
                 !Completed)
             {
-                if (TaskBar.Increment > 0 &&
+                if (TaskBar.Rate > 0 &&
                     TaskBar.Value < TaskBar.Max_Value)
                 {
                     TaskBar.Step();
@@ -104,7 +104,7 @@ namespace OP_Engine.Jobs
                     }
                 }
                 else if (TaskBar.Value > 0 &&
-                         TaskBar.Increment > 0 &&
+                         TaskBar.Rate > 0 &&
                          TaskBar.Value < TaskBar.Max_Value)
                 {
                     return true;
