@@ -58,6 +58,7 @@
     <Compile Include="Characters\Animation.cs" />
     <Compile Include="Characters\Animator.cs" />
     <Compile Include="Characters\Army.cs" />
+    <Compile Include="Characters\BodyPart.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterManager.cs" />
     <Compile Include="Characters\Squad.cs" />

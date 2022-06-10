@@ -9,6 +9,7 @@ namespace OP_Engine.Characters
         #region Variables
 
         public Animation Animation;
+        public int Frames;
 
         #endregion
 

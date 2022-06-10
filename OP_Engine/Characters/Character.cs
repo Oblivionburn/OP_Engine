@@ -32,6 +32,7 @@ namespace OP_Engine.Characters
         public List<Something> Stats = new List<Something>();
         public List<Something> Skills = new List<Something>();
         public List<Something> StatusEffects = new List<Something>();
+        public List<BodyPart> BodyParts = new List<BodyPart>();
 
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;
@@ -51,9 +52,9 @@ namespace OP_Engine.Characters
         public Vector3 Destination;
         
         public bool Travelling;
-        public int Travelled;
-        public int Travel_TotalDistance;
-        public int Speed;
+        public float Travelled;
+        public float Travel_TotalDistance;
+        public float Speed;
 
         #endregion
 
@@ -98,13 +99,7 @@ namespace OP_Engine.Characters
                         Location.X++;
                         Travelled = 0;
                         Travelling = false;
-                        Animator.Animate(this);
-                    }
-                    else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
-                             Travelled == (Travel_TotalDistance / 4) * 2 ||
-                             Travelled == (Travel_TotalDistance / 4))
-                    {
-                        Animator.Animate(this);
+                        Animator.Reset(this);
                     }
                     else if (Travelled > Travel_TotalDistance)
                     {
@@ -113,6 +108,17 @@ namespace OP_Engine.Characters
                         Travelled = 0;
                         Travelling = false;
                         Animator.Reset(this);
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= Animator.Frames; i++)
+                        {
+                            if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                            {
+                                Animator.Animate(this);
+                                break;
+                            }
+                        }
                     }
                 }
                 else if (Destination.X < Location.X)
@@ -125,13 +131,7 @@ namespace OP_Engine.Characters
                         Location.X--;
                         Travelled = 0;
                         Travelling = false;
-                        Animator.Animate(this);
-                    }
-                    else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
-                             Travelled == (Travel_TotalDistance / 4) * 2 ||
-                             Travelled == (Travel_TotalDistance / 4))
-                    {
-                        Animator.Animate(this);
+                        Animator.Reset(this);
                     }
                     else if (Travelled > Travel_TotalDistance)
                     {
@@ -140,6 +140,17 @@ namespace OP_Engine.Characters
                         Travelled = 0;
                         Travelling = false;
                         Animator.Reset(this);
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= Animator.Frames; i++)
+                        {
+                            if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                            {
+                                Animator.Animate(this);
+                                break;
+                            }
+                        }
                     }
                 }
                 else
@@ -154,13 +165,7 @@ namespace OP_Engine.Characters
                             Location.Y++;
                             Travelled = 0;
                             Travelling = false;
-                            Animator.Animate(this);
-                        }
-                        else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
-                                 Travelled == (Travel_TotalDistance / 4) * 2 ||
-                                 Travelled == (Travel_TotalDistance / 4))
-                        {
-                            Animator.Animate(this);
+                            Animator.Reset(this);
                         }
                         else if (Travelled > Travel_TotalDistance)
                         {
@@ -169,6 +174,17 @@ namespace OP_Engine.Characters
                             Travelled = 0;
                             Travelling = false;
                             Animator.Reset(this);
+                        }
+                        else
+                        {
+                            for (int i = 1; i <= Animator.Frames; i++)
+                            {
+                                if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                                {
+                                    Animator.Animate(this);
+                                    break;
+                                }
+                            }
                         }
                     }
                     else if (Destination.Y < Location.Y)
@@ -181,13 +197,7 @@ namespace OP_Engine.Characters
                             Location.Y--;
                             Travelled = 0;
                             Travelling = false;
-                            Animator.Animate(this);
-                        }
-                        else if (Travelled == (Travel_TotalDistance / 4) * 3 ||
-                                 Travelled == (Travel_TotalDistance / 4) * 2 ||
-                                 Travelled == (Travel_TotalDistance / 4))
-                        {
-                            Animator.Animate(this);
+                            Animator.Reset(this);
                         }
                         else if (Travelled > Travel_TotalDistance)
                         {
@@ -196,6 +206,17 @@ namespace OP_Engine.Characters
                             Travelled = 0;
                             Travelling = false;
                             Animator.Reset(this);
+                        }
+                        else
+                        {
+                            for (int i = 1; i <= Animator.Frames; i++)
+                            {
+                                if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                                {
+                                    Animator.Animate(this);
+                                    break;
+                                }
+                            }
                         }
                     }
                     else
@@ -286,6 +307,38 @@ namespace OP_Engine.Characters
             Something result = null;
 
             foreach (Something existing in Skills)
+            {
+                if (existing.Name == name)
+                {
+                    result = existing;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        public virtual Something GetStatusEffect(string name)
+        {
+            Something result = null;
+
+            foreach (Something existing in StatusEffects)
+            {
+                if (existing.Name == name)
+                {
+                    result = existing;
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        public virtual Something GetBodyPart(string name)
+        {
+            Something result = null;
+
+            foreach (Something existing in BodyParts)
             {
                 if (existing.Name == name)
                 {
