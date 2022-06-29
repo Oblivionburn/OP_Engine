@@ -11,8 +11,6 @@ namespace OP_Engine.Controls
         public string Caret;
         public int CarrotDelay;
 
-        public bool Active;
-
         private bool delayed;
         private int delay;
 

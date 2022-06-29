@@ -24,6 +24,7 @@ namespace OP_Engine.Utility
         public float Rate;
         public float Weight;
         public float Rarity;
+        public bool Active;
         public bool InSight;
         public bool IsLightSource;
         public bool IsLit;

@@ -14,7 +14,6 @@ namespace OP_Engine.Menus
         #region Variables
 
         public int Current_Button;
-        public bool Active;
 
         public List<Button> Buttons = new List<Button>();
         public List<Picture> Pictures = new List<Picture>();
@@ -142,16 +141,29 @@ namespace OP_Engine.Menus
 
         }
 
-        public virtual void AddButton(long id, string name, Texture2D Texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, Color color, bool visible)
+        public virtual void AddButton(long id, string name, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, Color color, bool visible)
         {
             Button button = new Button();
             button.ID = id;
             button.Name = name;
-            button.Texture = Texture;
+            button.Texture = texture;
             button.Texture_Highlight = texture_hover;
             button.Texture_Disabled = texture_disabled;
             button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
-            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+            else if (button.Texture_Highlight != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Highlight.Width, button.Texture_Highlight.Height);
+            }
+            else if (button.Texture_Disabled != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
+            }
+
             button.DrawColor = color;
             button.Visible = visible;
             button.Enabled = true;
@@ -227,6 +239,140 @@ namespace OP_Engine.Menus
             button.Texture = texture;
             button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
             button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            button.Selected = selected;
+            button.Visible = visible;
+            Buttons.Add(button);
+        }
+
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, bool selected, bool visible)
+        {
+            Button button = new Button();
+            button.ID = id;
+            button.Name = name;
+            button.Text = text;
+            button.Font = font;
+            button.TextColor = text_color;
+            button.TextColor_Selected = text_highlight_color;
+            button.DrawColor = Color.White;
+            button.Texture = texture;
+            button.Texture_Highlight = texture_hover;
+            button.Texture_Disabled = texture_disabled;
+            button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+            else if (button.Texture_Highlight != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Highlight.Width, button.Texture_Highlight.Height);
+            }
+            else if (button.Texture_Disabled != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
+            }
+
+            button.Selected = selected;
+            button.Visible = visible;
+            Buttons.Add(button);
+        }
+
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, Color draw_color, bool selected, bool visible)
+        {
+            Button button = new Button();
+            button.ID = id;
+            button.Name = name;
+            button.Text = text;
+            button.Font = font;
+            button.TextColor = text_color;
+            button.TextColor_Selected = text_highlight_color;
+            button.DrawColor = draw_color;
+            button.Texture = texture;
+            button.Texture_Highlight = texture_hover;
+            button.Texture_Disabled = texture_disabled;
+            button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+            else if (button.Texture_Highlight != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Highlight.Width, button.Texture_Highlight.Height);
+            }
+            else if (button.Texture_Disabled != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
+            }
+
+            button.Selected = selected;
+            button.Visible = visible;
+            Buttons.Add(button);
+        }
+
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, bool selected, bool visible)
+        {
+            Button button = new Button();
+            button.ID = id;
+            button.Name = name;
+            button.Text = text;
+            button.Font = font;
+            button.TextColor = text_color;
+            button.TextColor_Selected = text_highlight_color;
+            button.TextColor_Disabled = text_disabled_color;
+            button.DrawColor = Color.White;
+            button.Texture = texture;
+            button.Texture_Highlight = texture_hover;
+            button.Texture_Disabled = texture_disabled;
+            button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+            else if (button.Texture_Highlight != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Highlight.Width, button.Texture_Highlight.Height);
+            }
+            else if (button.Texture_Disabled != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
+            }
+
+            button.Selected = selected;
+            button.Visible = visible;
+            Buttons.Add(button);
+        }
+
+        public virtual void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Rectangle region, Color draw_color, bool selected, bool visible)
+        {
+            Button button = new Button();
+            button.ID = id;
+            button.Name = name;
+            button.Text = text;
+            button.Font = font;
+            button.TextColor = text_color;
+            button.TextColor_Selected = text_highlight_color;
+            button.TextColor_Disabled = text_disabled_color;
+            button.DrawColor = draw_color;
+            button.Texture = texture;
+            button.Texture_Highlight = texture_hover;
+            button.Texture_Disabled = texture_disabled;
+            button.Region = new Rectangle(region.X, region.Y, region.Width, region.Height);
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+            else if (button.Texture_Highlight != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Highlight.Width, button.Texture_Highlight.Height);
+            }
+            else if (button.Texture_Disabled != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
+            }
+
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);

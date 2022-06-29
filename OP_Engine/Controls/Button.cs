@@ -55,10 +55,21 @@ namespace OP_Engine.Controls
                             spriteBatch.Draw(Texture, Region, Image, DrawColor * Opacity);
                         }
 
-                        if (!string.IsNullOrEmpty(Text) &&
-                            Font != null)
+                        if (Active)
                         {
-                            spriteBatch.DrawString(Font, Text, Position, TextColor * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                            if (!string.IsNullOrEmpty(Text) &&
+                                Font != null)
+                            {
+                                spriteBatch.DrawString(Font, Text, Position, TextColor_Selected * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                            }
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(Text) &&
+                                Font != null)
+                            {
+                                spriteBatch.DrawString(Font, Text, Position, TextColor * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                            }
                         }
                     }
                 }

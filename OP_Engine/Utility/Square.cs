@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Utility
 {
@@ -10,6 +11,15 @@ namespace OP_Engine.Utility
         public int Y;
         public int Width;
         public int Height;
+
+        #endregion
+
+        #region Properties
+
+        public Rectangle ToRectangle
+        {
+            get { return new Rectangle(X, Y, Width, Height); }
+        }
 
         #endregion
 

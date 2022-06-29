@@ -57,21 +57,21 @@ namespace OP_Engine.Controls
             Update();
         }
 
-        public virtual void Increase(int value)
+        public virtual void IncreaseValue(int value)
         {
-            IncreaseValue(value);
+            base.IncreaseValue(value);
             Update();
         }
 
-        public virtual void Decrease(int value)
+        public virtual void DecreaseValue(int value)
         {
-            DecreaseValue(value);
+            base.DecreaseValue(value);
             Update();
         }
 
         public virtual void SetValue(int value)
         {
-            SetValue(value);
+            base.SetValue(value);
             Update();
         }
 
