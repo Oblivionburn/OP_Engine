@@ -17,6 +17,8 @@
 - JobManager component for central organization of character Job (jobs not added to it by default)
 - InventoryManager component for central organization of Inventory (inventories not added to it by default)
 - TimeManager component for tracking global in-game time with custom TimeHandler class for event-driven time tracking
+- CraftingManager for central organization of crafting recipes
+- ResearchManager for handling a research tree
 - World (tile map) consisting of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
 - Basic UI objects/classes for Buttons, Labels, Input boxes, Pictures/Images, Progress Bars, and Sliders
