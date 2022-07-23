@@ -8,8 +8,8 @@
 
 ### Features:
 - Focus on organization, optimizations, and keeping things simple
-- Overridable methods for per-game customizations, and nearly everything is Disposable
-- Object-oriented design and optional component architecture for only including what's needed/wanted in a project
+- Overridable methods for per-game customizations
+- Optional component architecture for only including what's needed/wanted in a project
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
 - CharacterManager component (for grouping NPCs and/or players) consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character 
   - Includes large lists of first/last names for random name generation
