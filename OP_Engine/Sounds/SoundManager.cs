@@ -50,6 +50,8 @@ namespace OP_Engine.Sounds
 
         public SoundManager(Game game) : base(game)
         {
+            game.Exiting += Game_Exiting;
+
             FMOD.Factory.System_Create(out FMODSystem);
             FMODSystem.setDSPBufferSize(512, 2);
             FMODSystem.init(16, FMOD.INITFLAGS.NORMAL, (IntPtr)0);

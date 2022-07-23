@@ -23,6 +23,8 @@ namespace OP_Engine.Weathers
 
         public WeatherManager(Game game) : base(game)
         {
+            game.Exiting += Game_Exiting;
+
             CurrentWeather = WeatherType.Clear;
         }
 

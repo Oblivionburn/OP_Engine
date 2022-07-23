@@ -25,7 +25,7 @@ namespace OP_Engine.Time
 
         public TimeManager(Game game) : base(game)
         {
-
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

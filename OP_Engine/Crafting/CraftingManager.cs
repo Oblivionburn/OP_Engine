@@ -17,7 +17,7 @@ namespace OP_Engine.Crafting
 
         public CraftingManager(Game game) : base(game)
         {
-
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

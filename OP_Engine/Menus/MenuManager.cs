@@ -22,7 +22,7 @@ namespace OP_Engine.Menus
 
         public MenuManager(Game game) : base(game)
         {
-            
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

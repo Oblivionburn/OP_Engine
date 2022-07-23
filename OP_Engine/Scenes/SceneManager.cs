@@ -19,7 +19,7 @@ namespace OP_Engine.Scenes
 
         public SceneManager(Game game) : base(game)
         {
-            
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

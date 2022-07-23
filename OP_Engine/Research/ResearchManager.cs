@@ -17,7 +17,7 @@ namespace OP_Engine.Research
 
         public ResearchManager(Game game) : base(game)
         {
-
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

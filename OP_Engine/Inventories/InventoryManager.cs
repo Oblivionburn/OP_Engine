@@ -17,7 +17,7 @@ namespace OP_Engine.Inventories
 
         public InventoryManager(Game game) : base(game)
         {
-            
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

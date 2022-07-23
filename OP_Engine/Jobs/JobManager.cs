@@ -19,7 +19,7 @@ namespace OP_Engine.Jobs
 
         public JobManager(Game game) : base(game)
         {
-
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

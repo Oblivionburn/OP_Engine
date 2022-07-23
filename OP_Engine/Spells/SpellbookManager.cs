@@ -17,7 +17,7 @@ namespace OP_Engine.Spells
 
         public SpellbookManager(Game game) : base(game)
         {
-            
+            game.Exiting += Game_Exiting;
         }
 
         #endregion

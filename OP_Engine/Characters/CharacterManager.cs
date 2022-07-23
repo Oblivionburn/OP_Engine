@@ -21,6 +21,8 @@ namespace OP_Engine.Characters
 
         public CharacterManager(Game game) : base(game)
         {
+            game.Exiting += Game_Exiting;
+
             LoadNames();
         }
 
