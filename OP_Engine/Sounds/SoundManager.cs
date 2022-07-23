@@ -410,6 +410,11 @@ namespace OP_Engine.Sounds
             StopSound();
         }
 
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            StopAll();
+        }
+
         #endregion
     }
 }

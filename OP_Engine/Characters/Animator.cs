@@ -8,7 +8,7 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public Animation Animation;
+        public string Animation;
         public int Frames;
 
         #endregion
@@ -26,37 +26,30 @@ namespace OP_Engine.Characters
 
         public virtual void Update(Character character)
         {
-            if (character.Travelling)
-            {
-                Animation = Animation.Walk;
-            }
-            else
-            {
-                Animation = Animation.Idle;
-            }
+            
         }
 
         public virtual void FaceNorth(Character character)
         {
-            character.Image = new Rectangle(character.Image.X, (character.Texture.Height / 4) * 3, character.Texture.Width / 4, character.Texture.Height / 4);
+            character.Image = new Rectangle(character.Image.X, (character.Texture.Height / 4) * 3, character.Texture.Width / Frames, character.Texture.Height / 4);
             character.Direction = Direction.Up;
         }
 
         public virtual void FaceEast(Character character)
         {
-            character.Image = new Rectangle(character.Image.X, (character.Texture.Height / 4) * 2, character.Texture.Width / 4, character.Texture.Height / 4);
+            character.Image = new Rectangle(character.Image.X, (character.Texture.Height / 4) * 2, character.Texture.Width / Frames, character.Texture.Height / 4);
             character.Direction = Direction.Right;
         }
 
         public virtual void FaceSouth(Character character)
         {
-            character.Image = new Rectangle(character.Image.X, 0, character.Texture.Width / 4, character.Texture.Height / 4);
+            character.Image = new Rectangle(character.Image.X, 0, character.Texture.Width / Frames, character.Texture.Height / 4);
             character.Direction = Direction.Down;
         }
 
         public virtual void FaceWest(Character character)
         {
-            character.Image = new Rectangle(character.Image.X, (character.Texture.Height / 4) * 1, character.Texture.Width / 4, character.Texture.Height / 4);
+            character.Image = new Rectangle(character.Image.X, (character.Texture.Height / 4) * 1, character.Texture.Width / Frames, character.Texture.Height / 4);
             character.Direction = Direction.Left;
         }
 

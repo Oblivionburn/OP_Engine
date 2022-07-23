@@ -128,6 +128,14 @@ namespace OP_Engine.Jobs
             return jobs;
         }
 
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            foreach (Job job in Jobs)
+            {
+                job.Dispose();
+            }
+        }
+
         #endregion
     }
 }

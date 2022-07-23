@@ -39,7 +39,7 @@ namespace OP_Engine.Controls
             {
                 if (Texture != null)
                 {
-                    spriteBatch.Draw(Texture, Region, Image, DrawColor * Opacity);
+                    spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor * Opacity);
                 }
             }
         }

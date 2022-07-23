@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
@@ -47,6 +48,14 @@ namespace OP_Engine.Inventories
             }
 
             return null;
+        }
+
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            foreach (Inventory inventory in Inventories)
+            {
+                inventory.Dispose();
+            }
         }
 
         #endregion

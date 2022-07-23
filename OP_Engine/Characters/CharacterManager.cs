@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 
@@ -973,6 +974,14 @@ namespace OP_Engine.Characters
             LastNames.Add("Byrd");
             LastNames.Add("Davidson");
             LastNames.Add("Hopkins");
+        }
+
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            foreach (Army army in Armies)
+            {
+                army.Dispose();
+            }
         }
 
         #endregion

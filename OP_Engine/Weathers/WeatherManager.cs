@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -166,6 +167,14 @@ namespace OP_Engine.Weathers
                     weather.Visible = true;
                     break;
                 }
+            }
+        }
+
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            foreach (Weather weather in Weathers)
+            {
+                weather.Dispose();
             }
         }
 

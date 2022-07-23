@@ -29,7 +29,7 @@ namespace OP_Engine.Tiles
         them all at the same time with a single modification to the Region
         at the lowest Layer. It's an efficiency thing.
         */
-        public new Square Region;
+        public new Region Region;
         
         #endregion
 
@@ -41,7 +41,7 @@ namespace OP_Engine.Tiles
 
             Location = new Vector3();
             ProgressBar = new ProgressBar();
-            Region = new Square();
+            Region = new Region();
             Image = new Rectangle();
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -140,7 +141,7 @@ namespace OP_Engine.Scenes
             return null;
         }
 
-        public static void DisposeScenes()
+        private void Game_Exiting(object sender, EventArgs e)
         {
             foreach (Scene scene in Scenes)
             {

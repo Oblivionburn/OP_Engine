@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OP_Engine.Utility;
 
 namespace OP_Engine.Controls
 {
@@ -8,11 +9,11 @@ namespace OP_Engine.Controls
         #region Variables
 
         public Texture2D Base_Texture;
-        public Rectangle Base_Region;
+        public Region Base_Region = new Region();
 
         public Texture2D Bar_Texture;
-        public Rectangle Bar_Region;
-        public Rectangle Bar_Image;
+        public Region Bar_Region = new Region();
+        public Rectangle Bar_Image = new Rectangle();
 
         #endregion
 
@@ -20,9 +21,7 @@ namespace OP_Engine.Controls
 
         public ProgressBar() : base()
         {
-            Base_Region = new Rectangle();
-            Bar_Region = new Rectangle();
-            Bar_Image = new Rectangle();
+            
         }
 
         #endregion
@@ -35,7 +34,7 @@ namespace OP_Engine.Controls
             Bar_Image = new Rectangle(Bar_Image.X, Bar_Image.Y, (int)CurrentVal, Bar_Image.Height);
 
             CurrentVal = (Base_Region.Width / Max_Value) * Value;
-            Bar_Region = new Rectangle(Base_Region.X, Base_Region.Y, (int)CurrentVal, Base_Region.Height);
+            Bar_Region = new Region(Base_Region.X, Base_Region.Y, (int)CurrentVal, Base_Region.Height);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -45,8 +44,8 @@ namespace OP_Engine.Controls
             {
                 if (Visible)
                 {
-                    spriteBatch.Draw(Base_Texture, Base_Region, Color.White * Opacity);
-                    spriteBatch.Draw(Bar_Texture, Bar_Region, Bar_Image, DrawColor * Opacity);
+                    spriteBatch.Draw(Base_Texture, Base_Region.ToRectangle, Color.White * Opacity);
+                    spriteBatch.Draw(Bar_Texture, Bar_Region.ToRectangle, Bar_Image, DrawColor * Opacity);
                 }
             }
         }
@@ -82,14 +81,17 @@ namespace OP_Engine.Controls
 
         public override void Dispose()
         {
+            Base_Region = null;
+            Bar_Region = null;
+
             if (Base_Texture != null)
             {
-                Base_Texture = null;
+                Base_Texture.Dispose();
             }
 
             if (Bar_Texture != null)
             {
-                Bar_Texture = null;
+                Bar_Texture.Dispose();
             }
 
             base.Dispose();

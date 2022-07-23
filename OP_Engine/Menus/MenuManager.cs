@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -213,7 +214,7 @@ namespace OP_Engine.Menus
             }
         }
 
-        public static void DisposeMenus()
+        private void Game_Exiting(object sender, EventArgs e)
         {
             foreach (Menu menu in Menus)
             {

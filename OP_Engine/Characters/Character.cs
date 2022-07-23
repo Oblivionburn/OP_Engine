@@ -17,17 +17,11 @@ namespace OP_Engine.Characters
 
         public long MapID;
         public long LayerID;
-        public long PartyID;
+        public long SquadID;
         public string Gender;
         public bool Interacting;
         public bool Dead;
         public bool Unconscious;
-
-        /*
-        Using this Square object for Region, instead of the Rectangle 
-        struct, to enable classes like Item to use the same reference
-        */
-        public new Square Region;
 
         public List<Something> Stats = new List<Something>();
         public List<Something> Skills = new List<Something>();
@@ -45,7 +39,7 @@ namespace OP_Engine.Characters
 
         public bool InCombat;
         public bool CombatTurn;
-        public int CombatTick;
+        public int CombatStep;
         public long Target_ID;
 
         public Vector2 Formation;
@@ -69,7 +63,7 @@ namespace OP_Engine.Characters
             Pathing = new Pathing();
             Job = new Job();
 
-            Region = new Square();
+            Region = new Region();
             Image = default;
 
             HealthBar = new ProgressBar();
@@ -239,15 +233,14 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
-                        Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
-                            spriteBatch.Draw(Texture, region, Image, DrawColor);
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
                             Inventory.Draw(spriteBatch, resolution, DrawColor);
                         }
                         else
                         {
-                            spriteBatch.Draw(Texture, region, Image, Color.White);
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
                             Inventory.Draw(spriteBatch, resolution, Color.White);
                         }
                     }
@@ -263,15 +256,14 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
-                        Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
-                            spriteBatch.Draw(Texture, region, Image, DrawColor);
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
                             Inventory.Draw(spriteBatch, resolution, DrawColor);
                         }
                         else
                         {
-                            spriteBatch.Draw(Texture, region, Image, color);
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
                             Inventory.Draw(spriteBatch, resolution, color);
                         }
                     }

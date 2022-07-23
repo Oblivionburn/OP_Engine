@@ -42,6 +42,11 @@ namespace OP_Engine.Time
             _now = new TimeHandler(year, month, day, hour, minute, second, millisecond);
         }
 
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            _now.Dispose();
+        }
+
         #endregion
     }
 }

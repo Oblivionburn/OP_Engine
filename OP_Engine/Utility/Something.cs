@@ -15,25 +15,33 @@ namespace OP_Engine.Utility
         public string Type;
         public string Assignment;
         public string Description;
+        public int Amount;
+        public int Tier;
+        public int Grade;
+        public int Quality;
+        public TimeSpan Time;
+        public TimeSpan Min_Time;
+        public TimeSpan Max_Time;
         public float Value;
         public float Min_Value;
         public float Max_Value;
-        public float Cost;
         public float Sell_Price;
         public float Buy_Price;
         public float Rate;
         public float Weight;
-        public float Rarity;
+        public float Duration;
+        public float Durability;
         public bool Active;
         public bool InSight;
         public bool IsLightSource;
         public bool IsLit;
         public bool Visible;
+        public Rarity Rarity;
         public Direction Direction;
         public Vector3 Location; //X, Y, Z
-        public Vector3 Dimensions; //Width, Height, Depth
+        public Dimension3 Dimensions; //Width, Height, Depth
         public Texture2D Texture;
-        public Rectangle Region; //Screen render space
+        public Region Region; //Where to draw this to the screen/window; X, Y, Width, Height
         public Rectangle Image; //Sub-region of Texture
         public Color DrawColor;
 
@@ -142,7 +150,12 @@ namespace OP_Engine.Utility
 
         public virtual void Dispose()
         {
-            Texture = null;
+            Region = null;
+
+            if (Texture != null)
+            {
+                Texture.Dispose();
+            }
         }
 
         #endregion

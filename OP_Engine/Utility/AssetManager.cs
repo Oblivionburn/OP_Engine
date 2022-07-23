@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -78,6 +79,19 @@ namespace OP_Engine.Utility
             {
                 Directories.Add("Textures", string.Concat(Directories["Content"], @"\Textures"));
             }            
+        }
+
+        private void Game_Exiting(object sender, EventArgs e)
+        {
+            foreach (var texture in Textures)
+            {
+                texture.Value.Dispose();
+            }
+
+            foreach (var shader in Shaders)
+            {
+                shader.Value.Dispose();
+            }
         }
 
         #region Load Stuff

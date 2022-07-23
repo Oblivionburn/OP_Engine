@@ -68,100 +68,6 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Item GetItem(string category, string type)
-        {
-            foreach (Item item in Items)
-            {
-                if (item.Type == type &&
-                    item.Categories.Contains(category))
-                {
-                    return item;
-                }
-            }
-
-            return null;
-        }
-
-        public virtual Item GetItem(string category, string type, string material)
-        {
-            foreach (Item item in Items)
-            {
-                if (item.Type == type &&
-                    item.Categories.Contains(category) &&
-                    item.Materials.Contains(material))
-                {
-                    return item;
-                }
-            }
-
-            return null;
-        }
-
-        public virtual Item GetItem(List<string> categories, string type)
-        {
-            foreach (Item item in Items)
-            {
-                if (item.Type == type)
-                {
-                    bool categories_found = true;
-                    foreach (string category in categories)
-                    {
-                        if (!item.Categories.Contains(category))
-                        {
-                            categories_found = false;
-                            break;
-                        }
-                    }
-
-                    if (categories_found)
-                    {
-                        return item;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public virtual Item GetItem(List<string> categories, string type, List<string> materials)
-        {
-            foreach (Item item in Items)
-            {
-                if (item.Type == type)
-                {
-                    bool categories_found = true;
-                    foreach (string category in categories)
-                    {
-                        if (!item.Categories.Contains(category))
-                        {
-                            categories_found = false;
-                            break;
-                        }
-                    }
-
-                    if (categories_found)
-                    {
-                        bool materials_found = true;
-                        foreach (string material in materials)
-                        {
-                            if (!item.Materials.Contains(material))
-                            {
-                                materials_found = false;
-                                break;
-                            }
-                        }
-
-                        if (materials_found)
-                        {
-                            return item;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
         public virtual Item GetItem(Vector2 location)
         {
             foreach (Item item in Items)
@@ -174,6 +80,56 @@ namespace OP_Engine.Inventories
             }
 
             return null;
+        }
+
+        public virtual List<Item> GetItems(string type, List<string> categories, List<string> materials)
+        {
+            List<Item> items = new List<Item>();
+
+            foreach (Item item in Items)
+            {
+                bool type_found = true;
+                if (!string.IsNullOrEmpty(type) &&
+                    item.Type != type)
+                {
+                    type_found = false;
+                }
+
+                bool categories_found = true;
+                if (categories != null)
+                {
+                    foreach (string category in categories)
+                    {
+                        if (!item.Categories.Contains(category))
+                        {
+                            categories_found = false;
+                            break;
+                        }
+                    }
+                }
+
+                bool materials_found = true;
+                if (materials != null)
+                {
+                    foreach (string material in materials)
+                    {
+                        if (!item.Materials.Contains(material))
+                        {
+                            materials_found = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (type_found &&
+                    categories_found &&
+                    materials_found)
+                {
+                    items.Add(item);
+                }
+            }
+
+            return items;
         }
 
         public override void Dispose()

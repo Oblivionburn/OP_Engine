@@ -39,7 +39,7 @@ namespace OP_Engine.Controls
                     {
                         if (Texture_Highlight != null)
                         {
-                            spriteBatch.Draw(Texture_Highlight, Region, Image, DrawColor * Opacity);
+                            spriteBatch.Draw(Texture_Highlight, Region.ToRectangle, Image, DrawColor * Opacity);
                         }
 
                         if (!string.IsNullOrEmpty(Text) &&
@@ -52,7 +52,7 @@ namespace OP_Engine.Controls
                     {
                         if (Texture != null)
                         {
-                            spriteBatch.Draw(Texture, Region, Image, DrawColor * Opacity);
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor * Opacity);
                         }
 
                         if (Active)
@@ -75,7 +75,7 @@ namespace OP_Engine.Controls
                 }
                 else if (Texture_Disabled != null)
                 {
-                    spriteBatch.Draw(Texture_Disabled, Region, Image, DrawColor * Opacity);
+                    spriteBatch.Draw(Texture_Disabled, Region.ToRectangle, Image, DrawColor * Opacity);
 
                     if (!string.IsNullOrEmpty(Text) &&
                         Font != null)
@@ -88,7 +88,16 @@ namespace OP_Engine.Controls
 
         public override void Dispose()
         {
-            Font = null;
+            if (Texture_Highlight != null)
+            {
+                Texture_Highlight.Dispose();
+            }
+
+            if (Texture_Disabled != null)
+            {
+                Texture_Disabled.Dispose();
+            }
+
             base.Dispose();
         }
 

@@ -97,12 +97,12 @@ namespace OP_Engine.Controls
         {
             if (Selection != null)
             {
-                Selection = null;
+                Selection.Dispose();
             }
 
             if (Slidebar != null)
             {
-                Slidebar = null;
+                Slidebar.Dispose();
             }
 
             base.Dispose();

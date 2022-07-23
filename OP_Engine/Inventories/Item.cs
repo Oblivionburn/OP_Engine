@@ -14,27 +14,20 @@ namespace OP_Engine.Inventories
 
         public List<string> Categories = new List<string>();
         public List<string> Materials = new List<string>();
-        public int Amount;
         public bool Equipped;
 
+        //Inventory for items that are containers of other items
         public Inventory Inventory;
+
         public List<Something> Properties = new List<Something>();
         public List<Item> Attachments = new List<Item>();
         public List<Spell> Spells = new List<Spell>();
 
         public string Task;
-        public int TaskTime;
-
-        /*
-        Using this Square object for Region, instead of the Rectangle 
-        struct, to enable referencing the same Region as characters
-        for equipped items
-        */
-        public new Square Region;
 
         public bool Icon_Visible;
         public Texture2D Icon;
-        public Rectangle Icon_Region;
+        public Region Icon_Region;
         public Rectangle Icon_Image;
         public Color Icon_DrawColor;
 
@@ -46,7 +39,7 @@ namespace OP_Engine.Inventories
         {
             Inventory = new Inventory();
 
-            Region = new Square();
+            Region = new Region();
             Image = default;
         }
 
@@ -64,14 +57,13 @@ namespace OP_Engine.Inventories
                     {
                         if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                         {
-                            Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                             if (DrawColor != new Color(0, 0, 0, 0))
                             {
-                                spriteBatch.Draw(Texture, region, Image, DrawColor);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
                             }
                             else
                             {
-                                spriteBatch.Draw(Texture, region, Image, Color.White);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
                             }
                         }
                     }
@@ -84,11 +76,11 @@ namespace OP_Engine.Inventories
                 {
                     if (Icon_DrawColor != new Color(0, 0, 0, 0))
                     {
-                        spriteBatch.Draw(Icon, Icon_Region, Icon_Image, Icon_DrawColor);
+                        spriteBatch.Draw(Icon, Icon_Region.ToRectangle, Icon_Image, Icon_DrawColor);
                     }
                     else
                     {
-                        spriteBatch.Draw(Icon, Icon_Region, Icon_Image, Color.White);
+                        spriteBatch.Draw(Icon, Icon_Region.ToRectangle, Icon_Image, Color.White);
                     }
                 }
             }
@@ -104,14 +96,13 @@ namespace OP_Engine.Inventories
                     {
                         if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                         {
-                            Rectangle region = new Rectangle(Region.X, Region.Y, Region.Width, Region.Height);
                             if (DrawColor != new Color(0, 0, 0, 0))
                             {
-                                spriteBatch.Draw(Texture, region, Image, DrawColor);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
                             }
                             else
                             {
-                                spriteBatch.Draw(Texture, region, Image, color);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
                             }
                         }
                     }
@@ -124,11 +115,11 @@ namespace OP_Engine.Inventories
                 {
                     if (Icon_DrawColor != new Color(0, 0, 0, 0))
                     {
-                        spriteBatch.Draw(Icon, Icon_Region, Icon_Image, Icon_DrawColor);
+                        spriteBatch.Draw(Icon, Icon_Region.ToRectangle, Icon_Image, Icon_DrawColor);
                     }
                     else
                     {
-                        spriteBatch.Draw(Icon, Icon_Region, Icon_Image, color);
+                        spriteBatch.Draw(Icon, Icon_Region.ToRectangle, Icon_Image, color);
                     }
                 }
             }
@@ -226,16 +217,14 @@ namespace OP_Engine.Inventories
 
         public override void Dispose()
         {
-            Icon = null;
-
-            if (Region != null)
-            {
-                Region.Dispose();
-            }
-
             foreach (Something property in Properties)
             {
                 property.Dispose();
+            }
+
+            foreach (Item item in Attachments)
+            {
+                item.Dispose();
             }
 
             foreach (Spell spell in Spells)
@@ -243,12 +232,9 @@ namespace OP_Engine.Inventories
                 spell.Dispose();
             }
 
-            if (Attachments != null)
+            if (Icon != null)
             {
-                foreach (Item item in Attachments)
-                {
-                    item.Dispose();
-                }
+                Icon.Dispose();
             }
 
             base.Dispose();

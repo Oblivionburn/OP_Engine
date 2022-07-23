@@ -136,7 +136,7 @@ namespace OP_Engine.Scenes
                     int width = TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
                     int x = TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
 
-                    label.Region = new Rectangle(x, (int)vector2.Y, width, height);
+                    label.Region = new Region(x, (int)vector2.Y, width, height);
                 }
                 else
                 {
@@ -145,7 +145,7 @@ namespace OP_Engine.Scenes
                         Messages.RemoveAt(0);
                         for (int j = 0; j < Messages.Count; j++)
                         {
-                            Messages[j].Region = new Rectangle(Messages[j].Region.X, Messages[j].Region.Y - resolution.Y / 32, TextFrame.Region.Width, height);
+                            Messages[j].Region = new Region(Messages[j].Region.X, Messages[j].Region.Y - resolution.Y / 32, TextFrame.Region.Width, height);
                         }
 
                         Vector2 vector;
@@ -158,7 +158,7 @@ namespace OP_Engine.Scenes
 
                         int width2 = TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
                         int x2 = TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
-                        label.Region = new Rectangle(x2, (int)vector2.Y, width2, height);
+                        label.Region = new Region(x2, (int)vector2.Y, width2, height);
                     }
                     else
                     {
@@ -169,7 +169,7 @@ namespace OP_Engine.Scenes
                         int width3 = TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
                         int x3 = TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
 
-                        label.Region = new Rectangle(x3, (int)vector2.Y, width3, height);
+                        label.Region = new Region(x3, (int)vector2.Y, width3, height);
                     }
                 }
 

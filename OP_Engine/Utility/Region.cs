@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Utility
 {
-    public class Square : IDisposable
+    public class Region : IDisposable
     {
         #region Variables
 
@@ -25,12 +25,12 @@ namespace OP_Engine.Utility
 
         #region Constructors
 
-        public Square()
+        public Region()
         {
 
         }
 
-        public Square (int x, int y, int width, int height)
+        public Region (int x, int y, int width, int height)
         {
             X = x;
             Y = y;
