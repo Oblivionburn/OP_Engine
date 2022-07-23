@@ -13,7 +13,7 @@
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
 - CharacterManager component (for grouping NPCs and/or players) consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character 
   - Includes large lists of first/last names for random name generation
-  - Character class prefit with Inventory, Stats and Skills lists, A* pathing, Job class for task queueing and AI scheduling, Health/Mana progress bars, Spellbook, and some basic animation code for spritesheets of 4 animations (can override Animator class for more)
+  - Character class prefit with Inventory, Stats and Skills lists, A* pathing, Job class for task queueing and AI scheduling, Health/Mana progress bars, Spellbook, and some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
 - JobManager component for central organization of character Job (jobs not added to it by default)
 - InventoryManager component for central organization of Inventory (inventories not added to it by default)
 - TimeManager component for tracking global in-game time with custom TimeHandler class for event-driven time tracking
