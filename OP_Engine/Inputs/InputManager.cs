@@ -239,12 +239,35 @@ namespace OP_Engine.Inputs
         private void Game_Exiting(object sender, EventArgs e)
         {
             //This is to stop all the timers when exiting game
-            Mouse.Dispose();
-            Keyboard.Dispose();
-            Player1.Dispose();
-            Player2.Dispose();
-            Player3.Dispose();
-            Player4.Dispose();
+            if (Mouse != null)
+            {
+                Mouse.Dispose();
+            }
+            
+            if (Keyboard != null)
+            {
+                Keyboard.Dispose();
+            }
+            
+            if (Player1 != null)
+            {
+                Player1.Dispose();
+            }
+
+            if (Player2 != null)
+            {
+                Player2.Dispose();
+            }
+
+            if (Player3 != null)
+            {
+                Player3.Dispose();
+            }
+
+            if (Player4 != null)
+            {
+                Player4.Dispose();
+            }
         }
 
         #endregion

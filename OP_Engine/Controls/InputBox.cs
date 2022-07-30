@@ -29,7 +29,8 @@ namespace OP_Engine.Controls
 
         public override void Update()
         {
-            if (Font != null)
+            if (Font != null &&
+                Region != null)
             {
                 if (!string.IsNullOrEmpty(Text))
                 {

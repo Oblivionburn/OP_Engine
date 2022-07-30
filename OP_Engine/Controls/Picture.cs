@@ -37,7 +37,8 @@ namespace OP_Engine.Controls
         {
             if (Visible)
             {
-                if (Texture != null)
+                if (Texture != null &&
+                    Region != null)
                 {
                     spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor * Opacity);
                 }

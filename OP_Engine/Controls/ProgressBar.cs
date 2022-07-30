@@ -30,17 +30,22 @@ namespace OP_Engine.Controls
 
         public override void Update()
         {
-            float CurrentVal = (Bar_Texture.Width / Max_Value) * Value;
-            Bar_Image = new Rectangle(Bar_Image.X, Bar_Image.Y, (int)CurrentVal, Bar_Image.Height);
+            if (Base_Region != null)
+            {
+                float CurrentVal = (Bar_Texture.Width / Max_Value) * Value;
+                Bar_Image = new Rectangle(Bar_Image.X, Bar_Image.Y, (int)CurrentVal, Bar_Image.Height);
 
-            CurrentVal = (Base_Region.Width / Max_Value) * Value;
-            Bar_Region = new Region(Base_Region.X, Base_Region.Y, (int)CurrentVal, Base_Region.Height);
+                CurrentVal = (Base_Region.Width / Max_Value) * Value;
+                Bar_Region = new Region(Base_Region.X, Base_Region.Y, (int)CurrentVal, Base_Region.Height);
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (Base_Texture != null &&
-                Bar_Texture != null)
+                Bar_Texture != null &&
+                Base_Region != null &&
+                Bar_Region != null)
             {
                 if (Visible)
                 {

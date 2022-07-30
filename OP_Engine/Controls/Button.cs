@@ -37,7 +37,8 @@ namespace OP_Engine.Controls
                 {
                     if (Selected)
                     {
-                        if (Texture_Highlight != null)
+                        if (Texture_Highlight != null &&
+                            Region != null)
                         {
                             spriteBatch.Draw(Texture_Highlight, Region.ToRectangle, Image, DrawColor * Opacity);
                         }
@@ -50,7 +51,8 @@ namespace OP_Engine.Controls
                     }
                     else
                     {
-                        if (Texture != null)
+                        if (Texture != null &&
+                            Region != null)
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor * Opacity);
                         }
@@ -73,7 +75,8 @@ namespace OP_Engine.Controls
                         }
                     }
                 }
-                else if (Texture_Disabled != null)
+                else if (Texture_Disabled != null &&
+                         Region != null)
                 {
                     spriteBatch.Draw(Texture_Disabled, Region.ToRectangle, Image, DrawColor * Opacity);
 

@@ -44,7 +44,10 @@ namespace OP_Engine.Time
 
         private void Game_Exiting(object sender, EventArgs e)
         {
-            _now.Dispose();
+            if (_now != null)
+            {
+                _now.Dispose();
+            }
         }
 
         #endregion
