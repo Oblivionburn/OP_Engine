@@ -14,7 +14,7 @@
   - Example: "Components.Add(new InputManager(this));" in your game's LoadContent() method
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
   - Input handlers have Updated_By_Game boolean flag to flip between updating per game's update loop (True) or being event-driven (False) which is True by default in every handler (KeyboardHandler, MouseHandler, and GamepadHandler)
-  - Have to manually add keys in KeyboardHandler.KeysMapped to minimize iteration time
+  - Have to manually add keys in KeyboardHandler.KeysMapped, so iteration time can be kept as efficient as possible
 - CharacterManager component for flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
   - Character class includes:
