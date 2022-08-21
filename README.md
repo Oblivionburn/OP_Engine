@@ -21,7 +21,7 @@
     - Inventory (an empty list of Items)
     - Empty string lists for Stats, Skills, Traits, and StatusEffects
     - A* pathing
-    - Events for detecting noises, sights, and smells
+    - Events for detecting noises, sights, and smells (handy for stealth mechanics and realistic NPC reactions)
     - Job class for task queueing and AI scheduling
     - Health/Mana progress bars
     - Spellbook (an empty list of Spells, each Spell contains an empty list of Properties inheriting from generic Something class)
