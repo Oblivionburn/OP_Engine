@@ -18,14 +18,14 @@
   - Tile class includes Inventory (for when stuff was dropped on the ground) and ProgressBar (for objects that can sustain damage)
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
 
-## Components:
+# Components:
 
-# InputManager
+## InputManager
 - For handling Mouse, Keyboard and up to 4 gamepads
   - Input handlers have Updated_By_Game boolean flag to flip between updating per game's update loop (True) or being event-driven (False) which is True by default in every handler (KeyboardHandler, MouseHandler, and GamepadHandler)
   - Have to manually add keys in KeyboardHandler.KeysMapped, so iteration time can be kept as efficient as possible
   
-# CharacterManager
+## CharacterManager
 - For flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
   - Character class includes:
@@ -41,52 +41,52 @@
       - Default usage expects spritesheet to have sprites facing South in first row, West in second row, East in third row, and North in fourth row
     - Boolean flags for Interacting, Unconscious, Dead, InCombat, and Travelling
     
-# JobManager
+## JobManager
 - For central organization of Jobs (jobs not added to it by default)
   - Purpose: so you can iterate through all the Jobs without having to iterate through all the Characters, or to run Jobs separate from the Characters' Jobs
   
-# InventoryManager
+## InventoryManager
 - For central organization of Inventories (inventories not added to it by default)
   - Purpose: so you can iterate through all the Inventories without having to iterate through all the Characters/Tiles/etc, or to store inventories independently
   
-# TimeManager
+## TimeManager
 - For tracking global in-game time with custom TimeHandler class for event-driven time tracking
   - Purpose: so you can do stuff like adding a minute of in-game time and trigger logic for every millisecond passing in that minute (very handy for simulations)
   
-# CraftingManager
+## CraftingManager
 - For central organization of crafting recipes
   - Purpose: convenient storage/lookup
   
-# ResearchManager
+## ResearchManager
 - For central organization of research trees
   - Purpose: convenient storage/lookup
 
-# MenuManager
+## MenuManager
 - For central organization of Menus (menus not added to it by default)
   - Purpose: handling the rendering of multiple menus on the screen simultaneously
   - Menu class contains lists of all UI objects, and has methods for getting menus built more quickly/easily
   
-# SceneManager
+## SceneManager
 - For central organization of Scenes (scenes not added to it by default)
   - Purpose: to organize stuff like screens (e.g. Title and Loading screens), levels, cutscenes, etc
   - Scene class has its own Menu and World instance
   
-# SoundManager
+## SoundManager
 - For handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
 
-# SpellbookManager component for central organization of Spellbooks (spellbooks not added to it by default)
+## SpellbookManager component for central organization of Spellbooks (spellbooks not added to it by default)
   - Purpose: so you can iterate through all the Spellbooks without having to iterate through all the Characters, or to store Spellbooks independently (for Characters to pick up later?)
   - Spellbook class has a list of Spells
   - Spell class has a list of Properties to handle spells with multiple elements/effects/textures/sounds
   
-# ParticleManager component for handling/rendering particles (very basic, could probably expand on this more yet)
+## ParticleManager component for handling/rendering particles (very basic, could probably expand on this more yet)
 
-# WeatherManager
+## WeatherManager
 - For handling some basic weather effects (e.g. Raining, Storming, Snowing and Fog) with methods for transitioning between them over time
   - Has its own instance of ParticleManager for rendering the weather textures
   - Requires texture names to match the weather types (Rain, Storm, Snow, and Fog)
   
-# Utilities
+## Utilities
 - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
   - Expects "Content" folder in game dir with the following structure:
     - "Ambient" folder
