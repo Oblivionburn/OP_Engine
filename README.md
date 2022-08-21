@@ -46,8 +46,8 @@
   - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
     - Expects "Content" folder in game dir with the following structure:
       - "Ambient" folder
-        - There's an AmbientLooping option in SoundManager
         - Better to use wav/ogg for Ambient Noise tracks, since they're more loop-friendly (mp3 always has a second of silence at the start of it)
+        - There's an AmbientLooping option in SoundManager
       - "Fonts" folder
         - Monogame is a continuation of Microsoft's XNA framework, which compiled fonts into .xnb files, and I haven't gotten around to creating a custom spritefont loader, yet, so fonts are still expected to be .xnb files in order for Monogame/XNA to load them
       - "Music" folder
