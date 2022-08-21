@@ -13,7 +13,7 @@
 - Modular component architecture for only including what's needed/wanted in a project
   - Example: "Components.Add(new InputManager(this));" in your game's LoadContent() method
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
-  - Input handlers have Updated_By_Game boolean flag to flip between updating per game's update loop (True) or being event-driven (False) and is True by default
+  - Input handlers have Updated_By_Game boolean flag to flip between updating per game's update loop (True) or being event-driven (False) which is True by default in every handler (KeyboardHandler, MouseHandler, and GamepadHandler)
 - CharacterManager component for flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
   - Character class includes:
