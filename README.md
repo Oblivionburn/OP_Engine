@@ -9,11 +9,20 @@
 ### Features:
 - Focus on organization, optimizations, and keeping things simple
 - Overridable methods for per-game customizations
-- Optional component architecture for only including what's needed/wanted in a project
+- Modular component architecture for only including what's needed/wanted in a project
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
-- CharacterManager component (for grouping NPCs and/or players) consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character 
+  - Inputs have options for handling either as event-driven or per game update loop
+- CharacterManager component for flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
-  - Character class prefit with Inventory, Stats and Skills lists, A* pathing, Job class for task queueing and AI scheduling, Health/Mana progress bars, Spellbook, and some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
+  - Character class includes:
+    - Inventory (an empty list of Items)
+    - Empty string lists for Stats, Skills, Traits, and StatusEffects
+    - A* pathing
+    - Job class for task queueing and AI scheduling
+    - Health/Mana progress bars
+    - Spellbook (an empty list of Spells, each Spell contains an empty list of Properties inheriting from generic Something class)
+    - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
+    - Boolean flags for Interacting, Unconscious, Dead, InCombat, and Travelling
 - JobManager component for central organization of character Job (jobs not added to it by default)
 - InventoryManager component for central organization of Inventory (inventories not added to it by default)
 - TimeManager component for tracking global in-game time with custom TimeHandler class for event-driven time tracking
