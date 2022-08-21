@@ -18,6 +18,8 @@
   - Tile class includes Inventory (for when stuff was dropped on the ground) and ProgressBar (for objects that can sustain damage)
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
 
+
+
 # Components:
 
 ## InputManager
@@ -109,6 +111,8 @@
       - There's no loop option for sounds
     - "Textures" folder
       - Textures organized in sub-folders
+
+
 
 # Utilities:
 - Something class that most objects inherit from which includes many basic variables (so everything can have an ID, Name, etc)
