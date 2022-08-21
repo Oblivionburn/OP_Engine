@@ -46,7 +46,8 @@
 - UI objects: Button, Label, Input box, Picture, Progress Bar, and Slider
 - MenuManager component for central organization of Menus (menus not added to it by default)
   - Menu class contains lists of all UI objects, and has methods for getting menus built more quickly/easily
-- SceneManager component for central organization of Scenes (screens, levels, or cutscenes)
+- SceneManager component for central organization of Scenes (scenes not added to it by default)
+  - Scene can be used for stuff like screens, levels, cutscenes, etc
   - Scene class has its own Menu and World instance
 - SoundManager component for handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
 - SpellbookManager component for central organization of Spellbooks (none are added to it by default)
