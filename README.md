@@ -54,7 +54,7 @@
         - Music organized in sub-folders (e.g. a "Day" folder with various music tracks to play during the game's daytime and a "Night" folder with various music tracks to play during the game's nighttime, which the game can randomly select from when a track finishes playing)
         - There's a MusicLooping option in SoundManager if you want to use that instead of randomly selecting tracks from the sub-folders
       - "Shaders" folder
-        - Shaders can be written as .fx files, but they need to be compiled into .FxDX using Monogame's 2MGFX.EXE tool in order to be loaded into the game as an "Effect" object
+        - Shaders need to be written as .fx files and compiled into .FxDX using Monogame's 2MGFX.EXE tool in order to be loaded into the game as an "Effect" object
       - "Sounds" folder
         - Sound variants organized in sub-folders (e.g. "Click" folder with Click1.mp3, Click2.mp3, Click3.mp3)
         - Non-varients in base Sounds folder
