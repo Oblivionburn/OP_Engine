@@ -76,12 +76,14 @@
 ## SoundManager
 - For handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
 
-## SpellbookManager component for central organization of Spellbooks (spellbooks not added to it by default)
+## SpellbookManager
+- For central organization of Spellbooks (spellbooks not added to it by default)
   - Purpose: so you can iterate through all the Spellbooks without having to iterate through all the Characters, or to store Spellbooks independently (for Characters to pick up later?)
   - Spellbook class has a list of Spells
   - Spell class has a list of Properties to handle spells with multiple elements/effects/textures/sounds
   
-## ParticleManager component for handling/rendering particles (very basic, could probably expand on this more yet)
+## ParticleManager
+- For handling/rendering particles (very basic, could probably expand on this more yet)
 
 ## WeatherManager
 - For handling some basic weather effects (e.g. Raining, Storming, Snowing and Fog) with methods for transitioning between them over time
