@@ -4,7 +4,7 @@
 
 ### Dependencies:
 - MonoGame v3.7.1.189+ for Windows Desktop DirectX (dll's included in the zip release, but you'll still need to install it for the templates in VS)
-- FMOD Sound System dll v0.2.1.4+ (not included, but C# wrapper for it is)
+- FMOD Sound System dll v0.2.1.4+ (not included for legal reasons, but C# wrapper for it is)
 - Your game to be a DirectX Windows Application project using .NET Framework 4.8+
 
 ### Features:
