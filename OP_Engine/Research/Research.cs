@@ -13,13 +13,13 @@ namespace OP_Engine.Research
         public bool Completed;
         public bool Unlocked;
 
-        //Resources required to start this one (name, amount)
+        //Resources required to start this research (name, amount)
         public Dictionary<string, int> Cost = new Dictionary<string, int>();
 
-        //IDs of research required to unlock this one
+        //IDs of other research required to be Completed for this research to be Unlocked
         public List<long> Prerequisites = new List<long>();
 
-        //IDs of research this contributes to unlocking when completed
+        //IDs of other research this will contribute to Unlocking when this is Completed
         public List<long> Unlocks = new List<long>();
 
         #endregion

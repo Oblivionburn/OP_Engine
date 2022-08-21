@@ -84,6 +84,7 @@
     <Compile Include="Particles\ParticleManager.cs" />
     <Compile Include="Research\Research.cs" />
     <Compile Include="Research\ResearchManager.cs" />
+    <Compile Include="Research\ResearchTree.cs" />
     <Compile Include="Scenes\Scene.cs" />
     <Compile Include="Scenes\SceneManager.cs" />
     <Compile Include="Sounds\FMOD\fmod.cs" />
