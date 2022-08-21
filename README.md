@@ -50,6 +50,7 @@
   - Scene class has its own Menu and World instance
 - SoundManager component for handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
 - SpellbookManager component for central organization of Spellbooks (spellbooks not added to it by default)
+  - Purpose: so you can iterate through all the Spellbooks without having to iterate through all the Characters
   - Spellbook class has a list of Spells
   - Spell class has a list of Properties to handle spells with multiple elements/effects/textures/sounds
 - ParticleManager component for handling particles
