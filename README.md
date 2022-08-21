@@ -12,24 +12,6 @@
 - Modular component architecture for only including what's needed/wanted in a project
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
   - Inputs have options for handling as event-driven or per game update loop
-- AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
-  - Expects "Content" folder in game dir with the following structure:
-    - "Ambient" folder
-      - There's an AmbientLooping option in SoundManager
-      - Better to use wav/ogg for Ambient Noise tracks, since they're more loop-friendly (mp3 always has a second of silence at the start of it)
-    - "Fonts" folder
-      - Monogame is a continuation of Microsoft's XNA framework, which compiled fonts into .xnb files, and I haven't gotten around to creating a custom spritefont loader, yet, so fonts are still expected to be .xnb files in order for Monogame/XNA to load them
-    - "Music" folder
-      - Music organized in sub-folders (e.g. a "Day" folder with various music tracks to play during the game's daytime and a "Night" folder with various music tracks to play during the game's nighttime, which the game can randomly select from when a track finishes playing)
-      - There's a MusicLooping option in SoundManager if you want to use that instead of randomly selecting tracks from the sub-folders
-    - "Shaders" folder
-      - Shaders can be written as .fx files, but they need to be compiled into .FxDX using Monogame's 2MGFX.EXE tool in order to be loaded into the game as an "Effect" object
-    - "Sounds" folder
-      - Sound variants organized in sub-folders (e.g. "Click" folder with Click1.mp3, Click2.mp3, Click3.mp3)
-      - Non-varients in base Sounds folder
-      - There's no loop option for sounds
-    - "Textures" folder
-      - Textures organized in sub-folders
 - CharacterManager component for flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
   - Character class includes:
@@ -61,6 +43,24 @@
   - Spell class has a list of Properties to handle spells with multiple elements/effects/textures/sounds
 - ParticleManager component for handling particles
 - Utilities:
+  - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
+    - Expects "Content" folder in game dir with the following structure:
+      - "Ambient" folder
+        - There's an AmbientLooping option in SoundManager
+        - Better to use wav/ogg for Ambient Noise tracks, since they're more loop-friendly (mp3 always has a second of silence at the start of it)
+      - "Fonts" folder
+        - Monogame is a continuation of Microsoft's XNA framework, which compiled fonts into .xnb files, and I haven't gotten around to creating a custom spritefont loader, yet, so fonts are still expected to be .xnb files in order for Monogame/XNA to load them
+      - "Music" folder
+        - Music organized in sub-folders (e.g. a "Day" folder with various music tracks to play during the game's daytime and a "Night" folder with various music tracks to play during the game's nighttime, which the game can randomly select from when a track finishes playing)
+        - There's a MusicLooping option in SoundManager if you want to use that instead of randomly selecting tracks from the sub-folders
+      - "Shaders" folder
+        - Shaders can be written as .fx files, but they need to be compiled into .FxDX using Monogame's 2MGFX.EXE tool in order to be loaded into the game as an "Effect" object
+      - "Sounds" folder
+        - Sound variants organized in sub-folders (e.g. "Click" folder with Click1.mp3, Click2.mp3, Click3.mp3)
+        - Non-varients in base Sounds folder
+        - There's no loop option for sounds
+      - "Textures" folder
+        - Textures organized in sub-folders
   - Something class that most objects inherit from which includes many basic variables (so everything can have an ID, Name, etc)
   - Region class that renderable objects use instead of Monogame's Rectangle struct
     - Makes it possible to do stuff like making a higher layer of tiles reference the regions in a lower layer of tiles, so you only have to iterate through a single layer to move multiple layers across the screen (far more efficient than iterating through every Tile in every Layer when you have thousands of tiles in many layers)
