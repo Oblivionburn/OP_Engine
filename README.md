@@ -27,17 +27,24 @@
     - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
     - Boolean flags for Interacting, Unconscious, Dead, InCombat, and Travelling
 - JobManager component for central organization of Jobs (jobs not added to it by default)
+  - Purpose: so you can iterate through all the Jobs without having to iterate through all the Characters, or to run Jobs separate from the Characters' Jobs
 - InventoryManager component for central organization of Inventories (inventories not added to it by default)
+  - Purpose: so you can iterate through all the Inventories without having to iterate through all the Characters, or to store inventories separate from the Character inventories
 - TimeManager component for tracking global in-game time with custom TimeHandler class for event-driven time tracking
+  - Purpose: so you can do stuff like adding a minute of in-game time and trigger logic for every millisecond passing in that minute (very handy for simulations)
 - CraftingManager component for central organization of crafting recipes
+  - Purpose: convenient storage/lookup
 - ResearchManager component for central organization of research trees
+  - Purpose: convenient storage/lookup
 - World object (for 2D tile mapping) consisting of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
+  - Purpose: so you can do stuff like rendering a floor tile with a table on it, a plate on that table, and a piece of food on that plate
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
 - UI objects: Button, Label, Input box, Picture, Progress Bar, and Slider
 - MenuManager component for central organization of Menus (menus not added to it by default)
+  - Purpose: handling the rendering of multiple menus on the screen simultaneously
   - Menu class contains lists of all UI objects, and has methods for getting menus built more quickly/easily
 - SceneManager component for central organization of Scenes (scenes not added to it by default)
-  - Scene can be used for stuff like screens, levels, cutscenes, etc
+  - Purpose: to organize stuff like screens (e.g. Title and Loading screens), levels, cutscenes, etc
   - Scene class has its own Menu and World instance
 - SoundManager component for handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
 - SpellbookManager component for central organization of Spellbooks (spellbooks not added to it by default)
