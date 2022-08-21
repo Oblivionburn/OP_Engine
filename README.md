@@ -27,6 +27,7 @@
     - Health/Mana progress bars
     - Spellbook (see SpellbookManager below for details)
     - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
+      - Default usage expects spritesheet to have sprites facing South in first row, West in second row, East in third row, and North in fourth row
     - Boolean flags for Interacting, Unconscious, Dead, InCombat, and Travelling
 - JobManager component for central organization of Jobs (jobs not added to it by default)
   - Purpose: so you can iterate through all the Jobs without having to iterate through all the Characters, or to run Jobs separate from the Characters' Jobs
