@@ -26,7 +26,8 @@
   - Have to manually add keys in KeyboardHandler.KeysMapped, so iteration time can be kept as efficient as possible
   
 ## CharacterManager
-- For flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
+- For flexible grouping of NPCs and/or players
+  - Contains a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
   - Character class includes:
     - Inventory (an empty list of Items)
