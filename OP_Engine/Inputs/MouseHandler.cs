@@ -64,12 +64,12 @@ namespace OP_Engine.Inputs
 
         public bool ScrolledUp
         {
-            get { return lastMouseState.ScrollWheelValue > mouseState.ScrollWheelValue; }
+            get { return lastMouseState.ScrollWheelValue < mouseState.ScrollWheelValue; }
         }
 
         public bool ScrolledDown
         {
-            get { return lastMouseState.ScrollWheelValue < mouseState.ScrollWheelValue; }
+            get { return lastMouseState.ScrollWheelValue > mouseState.ScrollWheelValue; }
         }
 
         public int Wheel

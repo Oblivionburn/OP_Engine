@@ -121,6 +121,7 @@
     <Compile Include="Utility\Region.cs" />
     <Compile Include="Time\TimeHandler.cs" />
     <Compile Include="Time\TimeManager.cs" />
+    <Compile Include="Utility\TimeRate.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Weathers\Weather.cs" />
     <Compile Include="Weathers\WeatherManager.cs" />

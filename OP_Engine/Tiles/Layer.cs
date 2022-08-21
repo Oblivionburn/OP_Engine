@@ -121,6 +121,9 @@ namespace OP_Engine.Tiles
 
         public virtual Tile GetTile(Rectangle region)
         {
+            //This only works if the tiles are sorted by Y,X
+            //Can use Sort_ForDrawing() method to pre-sort them by Y,X
+
             Tile result = null;
 
             int min = 0;
@@ -171,7 +174,8 @@ namespace OP_Engine.Tiles
             {
                 for (int j = 0; j < Tiles.Count - 1; j++)
                 {
-                    if (Tiles[j].Region.Y > Tiles[j + 1].Region.Y)
+                    if (Tiles[j].Region.Y > Tiles[j + 1].Region.Y ||
+                        Tiles[j].Region.X > Tiles[j + 1].Region.X)
                     {
                         Tile temp = Tiles[j + 1];
                         Tiles[j + 1] = Tiles[j];

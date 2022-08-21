@@ -81,7 +81,8 @@ namespace OP_Engine.Characters
 
         public virtual void Update()
         {
-            if (Travelling)
+            if (Travelling &&
+                Region != null)
             {
                 if (Destination.X > Location.X)
                 {
@@ -227,7 +228,8 @@ namespace OP_Engine.Characters
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
         {
-            if (Visible)
+            if (Visible &&
+                Region != null)
             {
                 if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))
                 {
@@ -250,7 +252,8 @@ namespace OP_Engine.Characters
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution, Color color)
         {
-            if (Visible)
+            if (Visible &&
+                Region != null)
             {
                 if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))
                 {
@@ -273,9 +276,12 @@ namespace OP_Engine.Characters
 
         public virtual void MoveTo(Vector2 location)
         {
-            Region.X = (int)location.X;
-            Region.Y = (int)location.Y;
-            Travelled += Speed;
+            if (Region != null)
+            {
+                Region.X = (int)location.X;
+                Region.Y = (int)location.Y;
+                Travelled += Speed;
+            }
         }
 
         public virtual Something GetStat(string name)

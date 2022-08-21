@@ -51,7 +51,8 @@ namespace OP_Engine.Inventories
         {
             if (Visible)
             {
-                if (Texture != null)
+                if (Texture != null &&
+                    Region != null)
                 {
                     if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))
                     {
@@ -72,7 +73,8 @@ namespace OP_Engine.Inventories
 
             if (Icon_Visible)
             {
-                if (Icon != null)
+                if (Icon != null &&
+                    Icon_Region != null)
                 {
                     if (Icon_DrawColor != new Color(0, 0, 0, 0))
                     {
@@ -90,7 +92,8 @@ namespace OP_Engine.Inventories
         {
             if (Visible)
             {
-                if (Texture != null)
+                if (Texture != null &&
+                    Region != null)
                 {
                     if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))
                     {
@@ -111,7 +114,8 @@ namespace OP_Engine.Inventories
 
             if (Icon_Visible)
             {
-                if (Icon != null)
+                if (Icon != null &&
+                    Icon_Region != null)
                 {
                     if (Icon_DrawColor != new Color(0, 0, 0, 0))
                     {
