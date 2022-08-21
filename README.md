@@ -64,7 +64,8 @@
 
 ## MenuManager
 - For central organization of Menus (menus not added to it by default)
-  - Purpose: handling the rendering of multiple menus on the screen simultaneously
+  - Purpose: handling the updating/rendering of multiple menus
+    - If a menu is Active but not Visible, then its Update method will still run without the menu rendering to the screen
   - Menu class contains lists of all UI objects, and has methods for getting menus built more quickly/easily
   
 ## SceneManager
