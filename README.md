@@ -9,9 +9,9 @@
 
 ### Features:
 - Focus on organization, optimizations, easy to read code, and keeping things simple yet flexible (definitely a balancing act with Simplicity vs Flexibility)
-- Overridable methods for per-game customizations
 - Modular component architecture for only including what's needed/wanted in a project
   - Example: "Components.Add(new InputManager(this));" in your game's LoadContent() method
+- Overridable methods for per-game customizations (components themselves require static methods for accessibility)
 - UI objects: Button, Label, InputBox, Picture, ProgressBar, and Slider
 - World object (for 2D tile mapping) consisting of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
   - Purpose: so you can do stuff like rendering a floor tile with a table on it, a plate on that table, and a piece of food on that plate
