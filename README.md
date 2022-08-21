@@ -8,7 +8,7 @@
 - Your game to be a DirectX Windows Application project using .NET Framework 4.8+
 
 ### Features:
-- Focus on organization, optimizations, easy to read code, and keeping things simple
+- Focus on organization, optimizations, easy to read code, and keeping things simple yet flexible (definitely a balancing act with Simplicity vs Flexibility)
 - Overridable methods for per-game customizations
 - Modular component architecture for only including what's needed/wanted in a project
   - Example: "Components.Add(new InputManager(this));" in your game's LoadContent() method
