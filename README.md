@@ -11,7 +11,7 @@
 - Overridable methods for per-game customizations
 - Modular component architecture for only including what's needed/wanted in a project
 - InputManager component for handling Mouse, Keyboard and up to 4 gamepads
-  - Inputs have options for handling either as event-driven or per game update loop
+  - Inputs have options for handling as event-driven or per game update loop
 - CharacterManager component for flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
   - Character class includes:
