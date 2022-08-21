@@ -50,10 +50,16 @@
   - Scene can be used for stuff like screens, levels, cutscenes, etc
   - Scene class has its own Menu and World instance
 - SoundManager component for handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
-- SpellbookManager component for central organization of Spellbooks (none are added to it by default)
+- SpellbookManager component for central organization of Spellbooks (spellbooks not added to it by default)
+  - Spellbook class has a list of Spells
+  - Spell class has a list of Properties to handle spells with multiple elements/effects/textures/sounds
 - ParticleManager component for handling particles
 - Utilities:
+  - Something class that most objects inherit from which includes many basic variables (so everything can have an ID, Name, etc)
+  - Region class that renderable objects use instead of Monogame's Rectangle struct
+    - Makes it possible to do stuff like making a higher layer of tiles reference the regions in a lower layer of tiles, so you only have to iterate through a single layer to move multiple layers across the screen (far more efficient than iterating through every Tile in every Layer when you have thousands of tiles in many layers)
   - Cryptography-grade random number generator for extreme randomness (named CryptoRandom in library)
   - GetLine method for fast ray-tracing between two coordinates (returns list of coordinates between the two points)
-- WeatherManager component for handling/rendering basic weather effects (Clear, Rain, Storm, Snow and Fog) with methods for smoothly transitioning between them over time
-  - Has its own instance of ParticleManager for rendering
+  - Various enums, structs, and other classes
+- WeatherManager component for handling some basic weather effects (e.g. Raining, Storming, Snowing and Fog) with methods for transitioning between them over time
+  - Has its own instance of ParticleManager for rendering the weather textures
