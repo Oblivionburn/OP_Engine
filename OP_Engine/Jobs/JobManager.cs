@@ -73,7 +73,7 @@ namespace OP_Engine.Jobs
             foreach (Job job in Jobs)
             {
                 if (job.Name == name &&
-                    job.OwnerID == owner_id)
+                    job.OwnerIDs.Contains(owner_id))
                 {
                     return job;
                 }
@@ -103,7 +103,7 @@ namespace OP_Engine.Jobs
 
             foreach (Job job in Jobs)
             {
-                if (job.OwnerID == owner_id)
+                if (job.OwnerIDs.Contains(owner_id))
                 {
                     jobs.Add(job);
                 }
@@ -119,7 +119,7 @@ namespace OP_Engine.Jobs
             foreach (Job job in Jobs)
             {
                 if (job.Name == name &&
-                    job.OwnerID == owner_id)
+                    job.OwnerIDs.Contains(owner_id))
                 {
                     jobs.Add(job);
                 }

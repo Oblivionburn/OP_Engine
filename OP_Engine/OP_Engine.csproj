@@ -60,6 +60,7 @@
     <Compile Include="Characters\BodyPart.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterManager.cs" />
+    <Compile Include="Characters\ReactionEventArgs.cs" />
     <Compile Include="Characters\Squad.cs" />
     <Compile Include="Controls\Label.cs" />
     <Compile Include="Crafting\CraftingManager.cs" />

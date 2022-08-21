@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,6 +26,7 @@ namespace OP_Engine.Characters
 
         public List<Something> Stats = new List<Something>();
         public List<Something> Skills = new List<Something>();
+        public List<Something> Traits = new List<Something>();
         public List<Something> StatusEffects = new List<Something>();
         public List<BodyPart> BodyParts = new List<BodyPart>();
 
@@ -49,6 +51,14 @@ namespace OP_Engine.Characters
         public float Travelled;
         public float Travel_TotalDistance;
         public float Speed;
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<ReactionEventArgs> HeardNoise;
+        public event EventHandler<ReactionEventArgs> SawMovement;
+        public event EventHandler<ReactionEventArgs> SmelledSomething;
 
         #endregion
 
@@ -346,6 +356,21 @@ namespace OP_Engine.Characters
             }
 
             return result;
+        }
+
+        public virtual void HearNoise(Direction direction, int distance, int loudness)
+        {
+            HeardNoise?.Invoke(this, new ReactionEventArgs(direction, distance, loudness));
+        }
+
+        public virtual void SeeMovement(Direction direction, int distance, float light_level)
+        {
+            SawMovement?.Invoke(this, new ReactionEventArgs(direction, distance, light_level));
+        }
+
+        public virtual void SmellSomething(Direction direction, int odor_strength)
+        {
+            SmelledSomething?.Invoke(this, new ReactionEventArgs(direction, odor_strength));
         }
 
         public override void Dispose()

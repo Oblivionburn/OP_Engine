@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -10,11 +10,12 @@ namespace OP_Engine.Utility
         #region Variables
 
         public long ID;
-        public long OwnerID;
+        public List<long> OwnerIDs = new List<long>();
         public string Name;
         public string Type;
         public string Assignment;
         public string Description;
+        public List<string> Tags = new List<string>();
         public int Amount;
         public int Tier;
         public int Grade;
