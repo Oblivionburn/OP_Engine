@@ -90,7 +90,7 @@
   - Has its own instance of ParticleManager for rendering the weather textures
   - Requires texture names to match the weather types (Rain, Storm, Snow, and Fog)
   
-# AssetManager
+## AssetManager
 - For organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
   - Expects "Content" folder in game dir with the following structure:
     - "Ambient" folder
