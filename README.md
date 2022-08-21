@@ -14,15 +14,15 @@
   - Inputs have options for handling as event-driven or per game update loop
 - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
   - Expects "Content" folder in game dir with the following structure:
-    - Ambient
-    - Fonts
-    - Music
+    - "Ambient" folder
+    - "Fonts" folder
+    - "Music" folder
       - Music organized in sub-folders
-    - Shaders
-    - Sounds
+    - "Shaders" folder
+    - "Sounds" folder
       - Sound variants organized in sub-folders (e.g. "Click" folder with Click1.mp3, Click2.mp3, Click3.mp3)
       - Non-varients in base Sounds folder
-    - Textures
+    - "Textures" folder
       - Textures organized in sub-folders
 - CharacterManager component for flexible grouping of NPCs and/or players consisting of a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
