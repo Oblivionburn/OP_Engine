@@ -90,8 +90,8 @@
   - Has its own instance of ParticleManager for rendering the weather textures
   - Requires texture names to match the weather types (Rain, Storm, Snow, and Fog)
   
-## Utilities
-- AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
+# AssetManager
+- For organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
   - Expects "Content" folder in game dir with the following structure:
     - "Ambient" folder
       - Better to use wav/ogg for Ambient Noise tracks, since they're more loop-friendly (mp3 always has a second of silence at the start of it)
@@ -109,6 +109,8 @@
       - There's no loop option for sounds
     - "Textures" folder
       - Textures organized in sub-folders
+
+# Utilities:
 - Something class that most objects inherit from which includes many basic variables (so everything can have an ID, Name, etc)
 - Region class that renderable objects use instead of Monogame's Rectangle struct
   - Makes it possible to do stuff like making a higher layer of tiles reference the regions in a lower layer of tiles, so you only have to iterate through a single layer to move multiple layers across the screen (far more efficient than iterating through every Tile in every Layer when you have thousands of tiles in many layers)
