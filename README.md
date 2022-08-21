@@ -43,7 +43,7 @@
   - Purpose: so you can do stuff like rendering a floor tile with a table on it, a plate on that table, and a piece of food on that plate
   - Tile class includes Inventory (for when stuff was dropped on the ground) and ProgressBar (for objects that can sustain damage)
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
-- UI objects: Button, Label, Input box, Picture, Progress Bar, and Slider
+- UI objects: Button, Label, InputBox, Picture, ProgressBar, and Slider
 - MenuManager component for central organization of Menus (menus not added to it by default)
   - Purpose: handling the rendering of multiple menus on the screen simultaneously
   - Menu class contains lists of all UI objects, and has methods for getting menus built more quickly/easily
