@@ -55,7 +55,7 @@
   - Purpose: so you can iterate through all the Spellbooks without having to iterate through all the Characters, or to store Spellbooks independently (for Characters to pick up later?)
   - Spellbook class has a list of Spells
   - Spell class has a list of Properties to handle spells with multiple elements/effects/textures/sounds
-- ParticleManager component for handling particles
+- ParticleManager component for handling/rendering particles (very basic, could probably expand on this more yet)
 - Utilities:
   - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
     - Expects "Content" folder in game dir with the following structure:
