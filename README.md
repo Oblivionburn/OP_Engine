@@ -58,6 +58,7 @@
 - ParticleManager component for handling/rendering particles (very basic, could probably expand on this more yet)
 - WeatherManager component for handling some basic weather effects (e.g. Raining, Storming, Snowing and Fog) with methods for transitioning between them over time
   - Has its own instance of ParticleManager for rendering the weather textures
+  - Requires texture names to match the weather types (Rain, Storm, Snow, and Fog)
 - Utilities:
   - AssetManager component for organizing and loading Textures (.png), Shaders (.FxDX), Fonts (.xnb), Sounds, Ambient noise, and Music
     - Expects "Content" folder in game dir with the following structure:
