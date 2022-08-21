@@ -17,7 +17,7 @@
     - "Ambient" folder
     - "Fonts" folder
     - "Music" folder
-      - Music organized in sub-folders
+      - Music organized in sub-folders (e.g. a "Day" folder with various music tracks to play during the game's daytime and a "Night" folder with various music tracks to play during the game's nighttime, which the game can randomly select from when a track finishes playing)
     - "Shaders" folder
     - "Sounds" folder
       - Sound variants organized in sub-folders (e.g. "Click" folder with Click1.mp3, Click2.mp3, Click3.mp3)
