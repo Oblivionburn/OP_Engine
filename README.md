@@ -22,7 +22,7 @@
 
 ## InputManager
 - For handling Mouse, Keyboard and up to 4 gamepads
-  - Input handlers have Updated_By_Game boolean flag to flip between updating per game's update loop (True) or being event-driven (False) which is True by default in every handler (KeyboardHandler, MouseHandler, and GamepadHandler)
+  - Input handlers have Updated_By_Game boolean flag to flip between updating per game's Update loop (Updated_By_Game = True) or being event-driven (Updated_By_Game = False) which is True by default in every handler (KeyboardHandler, MouseHandler, and GamepadHandler)
   - Have to manually add keys in KeyboardHandler.KeysMapped, so iteration time can be kept as efficient as possible
   
 ## CharacterManager
