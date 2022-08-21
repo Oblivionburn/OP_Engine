@@ -32,7 +32,7 @@
 - JobManager component for central organization of Jobs (jobs not added to it by default)
   - Purpose: so you can iterate through all the Jobs without having to iterate through all the Characters, or to run Jobs separate from the Characters' Jobs
 - InventoryManager component for central organization of Inventories (inventories not added to it by default)
-  - Purpose: so you can iterate through all the Inventories without having to iterate through all the Characters, or to store inventories separate from the Character inventories
+  - Purpose: so you can iterate through all the Inventories without having to iterate through all the Characters/Tiles/etc, or to store inventories independently
 - TimeManager component for tracking global in-game time with custom TimeHandler class for event-driven time tracking
   - Purpose: so you can do stuff like adding a minute of in-game time and trigger logic for every millisecond passing in that minute (very handy for simulations)
 - CraftingManager component for central organization of crafting recipes
@@ -41,6 +41,7 @@
   - Purpose: convenient storage/lookup
 - World object (for 2D tile mapping) consisting of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
   - Purpose: so you can do stuff like rendering a floor tile with a table on it, a plate on that table, and a piece of food on that plate
+  - Tile class includes Inventory (for when stuff was dropped on the ground) and ProgressBar (for objects that can sustain damage)
   - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
 - UI objects: Button, Label, Input box, Picture, Progress Bar, and Slider
 - MenuManager component for central organization of Menus (menus not added to it by default)
