@@ -39,6 +39,7 @@ namespace OP_Engine.Utility
         public bool Visible;
         public Rarity Rarity;
         public Direction Direction;
+        public Dimension2 Coordinates; //X, Y
         public Vector3 Location; //X, Y, Z
         public Dimension3 Dimensions; //Width, Height, Depth
         public Texture2D Texture;

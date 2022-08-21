@@ -92,23 +92,21 @@ namespace OP_Engine.Inputs
                 List<Keys> KeysPressed = new List<Keys>();
                 List<Keys> KeysDown = new List<Keys>();
 
-                for (int i = 0; i < KeysMapped.Count; i++)
+                foreach (var key in KeysMapped)
                 {
-                    Keys key = KeysMapped.ElementAt(i).Value;
-
-                    if (keyboardState.IsKeyUp(key) &&
-                        lastKeyboardState.IsKeyDown(key))
+                    if (keyboardState.IsKeyUp(key.Value) &&
+                        lastKeyboardState.IsKeyDown(key.Value))
                     {
-                        if (!KeysPressed.Contains(key))
+                        if (!KeysPressed.Contains(key.Value))
                         {
-                            KeysPressed.Add(key);
+                            KeysPressed.Add(key.Value);
                         }
                     }
-                    else if (keyboardState.IsKeyDown(key))
+                    else if (keyboardState.IsKeyDown(key.Value))
                     {
-                        if (!KeysDown.Contains(key))
+                        if (!KeysDown.Contains(key.Value))
                         {
-                            KeysDown.Add(key);
+                            KeysDown.Add(key.Value);
                         }
                     }
                 }

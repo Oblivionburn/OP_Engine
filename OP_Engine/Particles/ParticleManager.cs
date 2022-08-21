@@ -12,10 +12,10 @@ namespace OP_Engine.Particles
     {
         #region Variables
 
-        public List<Particle> Particles = new List<Particle>();
-        public List<Texture2D> Textures = new List<Texture2D>();
+        public static List<Particle> Particles = new List<Particle>();
+        public static List<Texture2D> Textures = new List<Texture2D>();
 
-        private CryptoRandom random = new CryptoRandom();
+        public static CryptoRandom random = new CryptoRandom();
 
         #endregion
 
@@ -30,15 +30,16 @@ namespace OP_Engine.Particles
 
         #region Methods
 
-        public virtual void Update()
+        public static void Update()
         {
             for (int i = 0; i < Particles.Count; i++)
             {
-                Particles[i].Update();
+                Particle particle = Particles[i];
 
-                if (Particles[i].Lifetime <= 0)
+                particle.Update();
+
+                if (particle.Lifetime <= 0)
                 {
-                    Particle particle = Particles[i];
                     particle.Dispose();
                     Particles.Remove(particle);
                     i--;
@@ -46,7 +47,7 @@ namespace OP_Engine.Particles
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
         {
             foreach (Particle particle in Particles)
             {
@@ -54,7 +55,7 @@ namespace OP_Engine.Particles
             }
         }
 
-        public virtual Particle AddParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, bool waver, bool scatter)
+        public static Particle AddParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, bool waver, bool scatter)
         {
             Texture2D texture = null;
 
@@ -67,23 +68,23 @@ namespace OP_Engine.Particles
                 }
             }
 
-            Vector2 position = new Vector2(0, 0);
+            Vector2 location;
             if (waver)
             {
-                position = new Vector2(random.Next(-region.X, region.X), random.Next(-region.Y, region.Y));
+                location = new Vector2(random.Next(-region.X, region.X), random.Next(-region.Y, region.Y));
             }
             else if (scatter)
             {
-                position = new Vector2(random.Next(0, region.X), random.Next(-(texture.Height * 2), region.Y));
+                location = new Vector2(random.Next(0, region.X), random.Next(-(texture.Height * 2), region.Y));
             }
             else
             {
-                position = new Vector2(region.X, region.Y);
+                location = new Vector2(region.X, region.Y);
             }
 
             Color new_color = color * opaque;
 
-            return new Particle(texture, position, velocity, angle, new_color, size, lifetime);
+            return new Particle(texture, location, velocity, angle, new_color, size, lifetime);
         }
 
         public void Dispose()

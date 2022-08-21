@@ -24,7 +24,7 @@ namespace OP_Engine.Research
 
         #region Methods
 
-        public static void Update(TimeSpan add_time)
+        public virtual void Update(TimeSpan add_time)
         {
             foreach (Research research in ResearchNodes)
             {
@@ -69,7 +69,7 @@ namespace OP_Engine.Research
             }
         }
 
-        public static void AddResearch(long id, string name, string description, TimeSpan max_time, List<long> prerequisites, List<long> unlocks)
+        public virtual void AddResearch(long id, string name, string description, TimeSpan max_time, List<long> prerequisites, List<long> unlocks)
         {
             Research research = new Research
             {
@@ -92,7 +92,7 @@ namespace OP_Engine.Research
             ResearchNodes.Add(research);
         }
 
-        public static Research GetResearch(string name)
+        public virtual Research GetResearch(string name)
         {
             foreach (Research research in ResearchNodes)
             {
@@ -105,7 +105,7 @@ namespace OP_Engine.Research
             return null;
         }
 
-        public static Research GetResearch(long id)
+        public virtual Research GetResearch(long id)
         {
             foreach (Research research in ResearchNodes)
             {
