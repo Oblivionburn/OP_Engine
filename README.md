@@ -56,7 +56,7 @@
       - "Shaders" folder
         - Shaders need to be written as .fx files and compiled into .FxDX using Monogame's 2MGFX.EXE tool in order to be loaded into the game as an "Effect" object
       - "Sounds" folder
-        - Sound variants organized in sub-folders (e.g. "Click" folder with Click1.mp3, Click2.mp3, Click3.mp3)
+        - Sound variants organized in sub-folders (e.g. "Click" folder with Click1.mp3, Click2.mp3, etc up to a max of 9 since only the last digit is grabbed for numbering (number is used for random selection))
         - Non-varients in base Sounds folder
         - There's no loop option for sounds
       - "Textures" folder
