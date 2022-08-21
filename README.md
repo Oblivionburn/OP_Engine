@@ -22,7 +22,8 @@
     - Empty string lists for Stats, Skills, Traits, and StatusEffects
     - A* pathing
     - Events for detecting noises, sights, and smells (handy for stealth mechanics and realistic NPC reactions)
-    - Job class for task queueing and AI scheduling
+    - Job class for queueing Tasks and handling AI schedules
+      - Task class includes a progress bar to render progress on the screen
     - Health/Mana progress bars
     - Spellbook (an empty list of Spells, each Spell contains an empty list of Properties inheriting from generic Something class)
     - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
