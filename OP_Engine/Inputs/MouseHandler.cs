@@ -47,6 +47,21 @@ namespace OP_Engine.Inputs
             get { return mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed; }
         }
 
+        public bool LB_Pressed_Flush
+        {
+            get
+            {
+                if (mouseState.LeftButton == ButtonState.Released &&
+                    lastMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    Flush();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         public bool LB_Held
         {
             get { return mouseState.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Pressed; }
@@ -55,6 +70,21 @@ namespace OP_Engine.Inputs
         public bool RB_Pressed
         {
             get { return mouseState.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed; }
+        }
+
+        public bool RB_Pressed_Flush
+        {
+            get
+            {
+                if (mouseState.RightButton == ButtonState.Released &&
+                    lastMouseState.RightButton == ButtonState.Pressed)
+                {
+                    Flush();
+                    return true;
+                }
+
+                return false;
+            }
         }
 
         public bool RB_Held
@@ -163,11 +193,11 @@ namespace OP_Engine.Inputs
 
         public virtual void Check_MouseWheel(object sender, EventArgs e)
         {
-            if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
+            if (lastMouseState.ScrollWheelValue < mouseState.ScrollWheelValue)
             {
                 WheelUp?.Invoke(this, EventArgs.Empty);
             }
-            else if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
+            else if (lastMouseState.ScrollWheelValue > mouseState.ScrollWheelValue)
             {
                 WheelDown?.Invoke(this, EventArgs.Empty);
             }
@@ -180,6 +210,12 @@ namespace OP_Engine.Inputs
             {
                 MouseMoved?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        public virtual void Flush()
+        {
+            lastMouseState = Mouse.GetState();
+            mouseState = Mouse.GetState();
         }
 
         public virtual void Game_Activated(object sender, EventArgs e)

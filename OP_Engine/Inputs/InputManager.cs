@@ -36,6 +36,11 @@ namespace OP_Engine.Inputs
             get { return MouseEnabled && Mouse.LB_Pressed; }
         }
 
+        public static bool Mouse_LB_Pressed_Flush
+        {
+            get { return MouseEnabled && Mouse.LB_Pressed_Flush; }
+        }
+
         public static bool Mouse_LB_Held
         {
             get { return MouseEnabled && Mouse.LB_Held; }
@@ -44,6 +49,11 @@ namespace OP_Engine.Inputs
         public static bool Mouse_RB_Pressed
         {
             get { return MouseEnabled && Mouse.RB_Pressed; }
+        }
+
+        public static bool Mouse_RB_Pressed_Flush
+        {
+            get { return MouseEnabled && Mouse.RB_Pressed_Flush; }
         }
 
         public static bool Mouse_RB_Held
