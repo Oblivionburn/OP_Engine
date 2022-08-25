@@ -67,9 +67,9 @@ namespace OP_Engine.Jobs
 
                             Tasks.RemoveAt(0);
 
-                            if (current != null)
+                            if (CurrentTask != null)
                             {
-                                current.Start(current_time);
+                                CurrentTask.Start(current_time);
                             }
                         }
                     }
@@ -106,9 +106,9 @@ namespace OP_Engine.Jobs
 
                             Tasks.RemoveAt(0);
 
-                            if (current != null)
+                            if (CurrentTask != null)
                             {
-                                current.Start(current_time, time_span);
+                                CurrentTask.Start(current_time, time_span);
                             }
                         }
                     }

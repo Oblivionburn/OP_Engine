@@ -133,8 +133,8 @@ namespace OP_Engine.Scenes
                     vector2.X = vector.X;
                     vector2.Y = vector.Y + (resolution.Y / 32);
 
-                    int width = TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
-                    int x = TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
+                    int width = (int)TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
+                    int x = (int)TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
 
                     label.Region = new Region(x, (int)vector2.Y, width, height);
                 }
@@ -156,8 +156,8 @@ namespace OP_Engine.Scenes
                         vector2.X = vector.X;
                         vector2.Y = vector.Y + (resolution.Y / 32);
 
-                        int width2 = TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
-                        int x2 = TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
+                        int width2 = (int)TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
+                        int x2 = (int)TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
                         label.Region = new Region(x2, (int)vector2.Y, width2, height);
                     }
                     else
@@ -166,8 +166,8 @@ namespace OP_Engine.Scenes
                         vector2.X = TextFrame.Region.X;
                         vector2.Y = TextFrame.Region.Y;
 
-                        int width3 = TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
-                        int x3 = TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
+                        int width3 = (int)TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
+                        int x3 = (int)TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
 
                         label.Region = new Region(x3, (int)vector2.Y, width3, height);
                     }

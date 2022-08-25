@@ -7,10 +7,10 @@ namespace OP_Engine.Utility
     {
         #region Variables
 
-        public int X;
-        public int Y;
-        public int Width;
-        public int Height;
+        public float X;
+        public float Y;
+        public float Width;
+        public float Height;
 
         #endregion
 
@@ -18,7 +18,7 @@ namespace OP_Engine.Utility
 
         public Rectangle ToRectangle
         {
-            get { return new Rectangle(X, Y, Width, Height); }
+            get { return new Rectangle((int)X, (int)Y, (int)Width, (int)Height); }
         }
 
         #endregion
@@ -30,7 +30,7 @@ namespace OP_Engine.Utility
 
         }
 
-        public Region (int x, int y, int width, int height)
+        public Region (float x, float y, float width, float height)
         {
             X = x;
             Y = y;

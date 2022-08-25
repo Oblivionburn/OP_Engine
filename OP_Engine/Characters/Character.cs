@@ -288,8 +288,8 @@ namespace OP_Engine.Characters
         {
             if (Region != null)
             {
-                Region.X = (int)location.X;
-                Region.Y = (int)location.Y;
+                Region.X = location.X;
+                Region.Y = location.Y;
                 Travelled += Speed;
             }
         }

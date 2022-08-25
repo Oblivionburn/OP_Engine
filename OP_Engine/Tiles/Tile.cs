@@ -71,11 +71,11 @@ namespace OP_Engine.Tiles
                         {
                             if (DrawColor != new Color(0, 0, 0, 0))
                             {
-                                spriteBatch.Draw(Texture, new Rectangle(Region.X, Region.Y, Region.Width, Region.Height), Image, DrawColor);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
                             }
                             else
                             {
-                                spriteBatch.Draw(Texture, new Rectangle(Region.X, Region.Y, Region.Width, Region.Height), Image, Color.White);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
                             }
                         }
                     }
@@ -97,11 +97,11 @@ namespace OP_Engine.Tiles
                         {
                             if (DrawColor != new Color(0, 0, 0, 0))
                             {
-                                spriteBatch.Draw(Texture, new Rectangle(Region.X, Region.Y, Region.Width, Region.Height), Image, DrawColor);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
                             }
                             else
                             {
-                                spriteBatch.Draw(Texture, new Rectangle(Region.X, Region.Y, Region.Width, Region.Height), Image, color);
+                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
                             }
                         }
                     }

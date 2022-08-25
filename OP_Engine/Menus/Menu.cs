@@ -126,9 +126,29 @@ namespace OP_Engine.Menus
             }
         }
 
+        public virtual void Open()
+        {
+
+        }
+
+        public virtual void Close()
+        {
+            
+        }
+
         public virtual void Load()
         {
 
+        }
+
+        public virtual void Clear()
+        {
+            Buttons.Clear();
+            Pictures.Clear();
+            Labels.Clear();
+            Sliders.Clear();
+            Inputs.Clear();
+            ProgressBars.Clear();
         }
 
         public virtual void Load(ContentManager content)
@@ -643,45 +663,6 @@ namespace OP_Engine.Menus
             }
 
             return null;
-        }
-
-        public virtual void Clear()
-        {
-            foreach (Button button in Buttons)
-            {
-                button.Dispose();
-            }
-            Buttons.Clear();
-
-            foreach (Picture picture in Pictures)
-            {
-                picture.Dispose();
-            }
-            Pictures.Clear();
-
-            foreach (Label label in Labels)
-            {
-                label.Dispose();
-            }
-            Labels.Clear();
-
-            foreach (Slider slider in Sliders)
-            {
-                slider.Dispose();
-            }
-            Sliders.Clear();
-
-            foreach (InputBox input in Inputs)
-            {
-                input.Dispose();
-            }
-            Inputs.Clear();
-
-            foreach (ProgressBar bar in ProgressBars)
-            {
-                bar.Dispose();
-            }
-            ProgressBars.Clear();
         }
 
         public override void Dispose()
