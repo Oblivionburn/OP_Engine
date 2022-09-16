@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace OP_Engine.Controls
 {
@@ -18,6 +19,12 @@ namespace OP_Engine.Controls
 
         #endregion
 
+        #region Events
+
+        public event EventHandler OnClick;
+
+        #endregion
+
         #region Constructor
 
         public Button() : base()
@@ -28,6 +35,11 @@ namespace OP_Engine.Controls
         #endregion
 
         #region Methods
+
+        public virtual void Click()
+        {
+            OnClick?.Invoke(this, EventArgs.Empty);
+        }
 
         public override void Draw(SpriteBatch spriteBatch)
         {

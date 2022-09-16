@@ -174,8 +174,14 @@ namespace OP_Engine.Tiles
             {
                 for (int j = 0; j < Tiles.Count - 1; j++)
                 {
-                    if (Tiles[j].Region.Y > Tiles[j + 1].Region.Y ||
-                        Tiles[j].Region.X > Tiles[j + 1].Region.X)
+                    if (Tiles[j].Region.Y > Tiles[j + 1].Region.Y)
+                    {
+                        Tile temp = Tiles[j + 1];
+                        Tiles[j + 1] = Tiles[j];
+                        Tiles[j] = temp;
+                    }
+                    else if (Tiles[j].Region.Y == Tiles[j + 1].Region.Y &&
+                             Tiles[j].Region.X > Tiles[j + 1].Region.X)
                     {
                         Tile temp = Tiles[j + 1];
                         Tiles[j + 1] = Tiles[j];

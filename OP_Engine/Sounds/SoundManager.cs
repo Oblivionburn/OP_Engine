@@ -405,6 +405,50 @@ namespace OP_Engine.Sounds
             }
         }
 
+        public static void StopSound(string name)
+        {
+            int name_length = name.Length + 1;
+
+            if (SoundChannels.Count > 0)
+            {
+                for (int c = 0; c < SoundChannels.Count; c++)
+                {
+                    FMOD.Channel channel = SoundChannels[c];
+                    FMOD.Sound sound = SoundOuts[c];
+
+                    string name_output;
+
+                    for (int i = 0; i < 10; i++)
+                    {
+                        string name_check = name;
+
+                        if (i == 0)
+                        {
+                            FMOD.RESULT name_result = sound.getName(out name_output, name_length);
+                        }
+                        else
+                        {
+                            FMOD.RESULT name_result = sound.getName(out name_output, name_length + 1);
+                            name_check += i.ToString();
+                        }
+                        
+                        if (!string.IsNullOrEmpty(name_output) &&
+                            name_output == name_check)
+                        {
+                            channel.stop();
+                            SoundChannels.Remove(channel);
+                            SoundOuts.Remove(sound);
+                            c--;
+
+                            FMOD.RESULT updated = FMODSystem.update();
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         public static void StopAll()
         {
             StopMusic();
