@@ -11,7 +11,7 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public List<ALocation> Path = new List<ALocation>();
+        
 
         #endregion
 
@@ -26,50 +26,51 @@ namespace OP_Engine.Characters
 
         #region Methods
 
-        public virtual void Get_Path(Layer ground, Character character, Tile tile, int max_distance, bool stop_next_to_tile)
+        public virtual List<ALocation> Get_Path(Layer ground, Character character, Tile tile, int max_distance, bool stop_next_to_tile)
         {
-            ALocation start = new ALocation((int)character.Location.X, (int)character.Location.Y);
+            List<ALocation> result = new List<ALocation>();
+
+            List<ALocation> path = new List<ALocation>();
             ALocation target = new ALocation((int)tile.Location.X, (int)tile.Location.Y);
 
+            ALocation start = new ALocation((int)character.Location.X, (int)character.Location.Y);
             List<ALocation> open = new List<ALocation>();
-            List<ALocation> path = new List<ALocation>();
             path.Add(start);
-
-            List<ALocation> locations = GetLocations(ground, start);
-            foreach (ALocation location in locations)
-            {
-                location.Distance_ToStart = GetDistance(new Vector2(location.X, location.Y), new Vector2(start.X, start.Y));
-                location.Distance_ToDestination = GetDistance(new Vector2(location.X, location.Y), new Vector2(target.X, target.Y));
-                open.Add(location);
-            }
-
             ALocation last_min = start;
 
             bool reached = false;
             for (int i = 0; i < max_distance; i++)
             {
-                if (open.Count > 0)
+                if (last_min != null)
                 {
-                    ALocation min = Get_MinLocation_Target(open, target, last_min);
-                    open.Clear();
-                    path.Add(min);
-                    last_min = min;
-
-                    if (DestinationReached(min, tile, stop_next_to_tile))
-                    {
-                        reached = true;
-                        break;
-                    }
-
-                    locations = GetLocations(ground, min);
+                    List<ALocation> locations = GetLocations(ground, last_min);
                     foreach (ALocation location in locations)
                     {
                         if (!HasLocation(path, location))
                         {
                             location.Distance_ToStart = GetDistance(new Vector2(location.X, location.Y), new Vector2(start.X, start.Y));
                             location.Distance_ToDestination = GetDistance(new Vector2(location.X, location.Y), new Vector2(target.X, target.Y));
+                            location.Parent = last_min;
                             open.Add(location);
                         }
+                    }
+
+                    if (open.Count > 0)
+                    {
+                        ALocation min = Get_MinLocation_Target(open, target, last_min);
+                        open.Clear();
+                        path.Add(min);
+                        last_min = min;
+
+                        if (DestinationReached(min, tile, stop_next_to_tile))
+                        {
+                            reached = true;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        last_min = last_min.Parent;
                     }
                 }
                 else
@@ -80,10 +81,10 @@ namespace OP_Engine.Characters
 
             if (reached)
             {
-                Path = Optimize_Path(path, start);
+                result = Optimize_Path(path, start);
             }
 
-            Path = null;
+            return result;
         }
 
         public virtual List<ALocation> GetLocations(Layer ground, ALocation location)
@@ -119,44 +120,39 @@ namespace OP_Engine.Characters
 
         public virtual List<ALocation> Optimize_Path(List<ALocation> possible, ALocation start)
         {
-            List<ALocation> open = new List<ALocation>();
             List<ALocation> path = new List<ALocation>();
-            path.Add(possible[possible.Count - 1]);
 
-            List<ALocation> locations = Get_ClosedLocations(possible, possible[possible.Count - 1]);
-            foreach (ALocation location in locations)
-            {
-                if (!HasLocation(path, location))
-                {
-                    open.Add(location);
-                }
-            }
+            ALocation min = possible[possible.Count - 1];
+            List<ALocation> open = new List<ALocation>();
+            path.Add(min);
+            ALocation last_min = min;
 
             bool reached = false;
             int path_max = possible.Count;
             for (int i = 0; i < path_max; i++)
             {
+                List<ALocation> locations = Get_ClosedLocations(possible, last_min);
+                foreach (ALocation location in locations)
+                {
+                    if (!HasLocation(path, location))
+                    {
+                        open.Add(location);
+                    }
+                }
+
                 if (open.Count > 0)
                 {
-                    ALocation min = Get_MinLocation_Start(open);
+                    min = Get_MinLocation_Start(open);
                     open.Clear();
                     possible = Path_RemoveTile(possible, min);
                     path.Add(min);
+                    last_min = min;
 
                     if (min.X == start.X &&
                         min.Y == start.Y)
                     {
                         reached = true;
                         break;
-                    }
-
-                    locations = Get_ClosedLocations(possible, min);
-                    foreach (ALocation location in locations)
-                    {
-                        if (!HasLocation(path, location))
-                        {
-                            open.Add(location);
-                        }
                     }
                 }
                 else
@@ -473,11 +469,6 @@ namespace OP_Engine.Characters
 
         public override void Dispose()
         {
-            foreach (ALocation path in Path)
-            {
-                path.Dispose();
-            }
-
             base.Dispose();
         }
 

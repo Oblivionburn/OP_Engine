@@ -60,6 +60,7 @@
     <Compile Include="Characters\BodyPart.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterManager.cs" />
+    <Compile Include="Characters\Memory.cs" />
     <Compile Include="Characters\ReactionEventArgs.cs" />
     <Compile Include="Characters\Squad.cs" />
     <Compile Include="Controls\Label.cs" />
@@ -78,8 +79,12 @@
     <Compile Include="Jobs\Job.cs" />
     <Compile Include="Jobs\JobManager.cs" />
     <Compile Include="Jobs\Task.cs" />
+    <Compile Include="Logging\Log.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Menus\MenuManager.cs" />
+    <Compile Include="Mods\Mod.cs" />
+    <Compile Include="Mods\ModAssembly.cs" />
+    <Compile Include="Mods\ModManager.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Particles\ParticleManager.cs" />
     <Compile Include="Research\Research.cs" />
@@ -118,6 +123,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controls\Slider.cs" />
     <Compile Include="Characters\Pathing.cs" />
+    <Compile Include="Logging\Logger.cs" />
     <Compile Include="Utility\Rarity.cs" />
     <Compile Include="Utility\Something.cs" />
     <Compile Include="Utility\Region.cs" />

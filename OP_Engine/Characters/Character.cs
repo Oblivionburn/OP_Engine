@@ -29,9 +29,11 @@ namespace OP_Engine.Characters
         public List<Something> Traits = new List<Something>();
         public List<Something> StatusEffects = new List<Something>();
         public List<BodyPart> BodyParts = new List<BodyPart>();
+        public List<Memory> Memories = new List<Memory>();
 
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;
+        public ProgressBar StaminaBar;
 
         public Animator Animator;
         public Spellbook Spellbook;
@@ -56,9 +58,11 @@ namespace OP_Engine.Characters
 
         #region Events
 
-        public event EventHandler<ReactionEventArgs> HeardNoise;
-        public event EventHandler<ReactionEventArgs> SawMovement;
+        public event EventHandler<ReactionEventArgs> HeardSomething;
+        public event EventHandler<ReactionEventArgs> SawSomething;
         public event EventHandler<ReactionEventArgs> SmelledSomething;
+        public event EventHandler<ReactionEventArgs> TastedSomething;
+        public event EventHandler<ReactionEventArgs> FeltSomething;
 
         #endregion
 
@@ -358,19 +362,29 @@ namespace OP_Engine.Characters
             return result;
         }
 
-        public virtual void HearNoise(Direction direction, int distance, int loudness)
+        public virtual void HearSomething(Direction direction, int distance, string adjective, int strength, int scale)
         {
-            HeardNoise?.Invoke(this, new ReactionEventArgs(direction, distance, loudness));
+            HeardSomething?.Invoke(this, new ReactionEventArgs(direction, distance, adjective, strength, scale));
         }
 
-        public virtual void SeeMovement(Direction direction, int distance, float light_level)
+        public virtual void SeeSomething(Direction direction, int distance, string adjective, float light_level, int scale)
         {
-            SawMovement?.Invoke(this, new ReactionEventArgs(direction, distance, light_level));
+            SawSomething?.Invoke(this, new ReactionEventArgs(direction, distance, adjective, light_level, scale));
         }
 
-        public virtual void SmellSomething(Direction direction, int odor_strength)
+        public virtual void SmellSomething(Direction direction, string adjective, int strength, int scale)
         {
-            SmelledSomething?.Invoke(this, new ReactionEventArgs(direction, odor_strength));
+            SmelledSomething?.Invoke(this, new ReactionEventArgs(direction, adjective, strength, scale));
+        }
+
+        public virtual void TasteSomething(string adjective, int strength, int scale)
+        {
+            TastedSomething?.Invoke(this, new ReactionEventArgs(adjective, strength, scale));
+        }
+
+        public virtual void FeelSomething(string adjective, int strength, int scale, BodyPart body_part)
+        {
+            FeltSomething?.Invoke(this, new ReactionEventArgs(adjective, strength, scale, body_part));
         }
 
         public override void Dispose()
