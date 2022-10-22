@@ -6,8 +6,8 @@ namespace OP_Engine.Time
     {
         #region Variables
 
-        public TimeRate Interval;
-        public bool Processing;
+        public TimeRate Interval; //Global rate for increasing time, else use methods with custom rate
+        public bool Processing; //Something to check if it's taking a long time to process all the events for a given amount of time
 
         public long TotalMilliseconds;
         public long TotalSeconds;
@@ -842,7 +842,7 @@ namespace OP_Engine.Time
             {
                 long total_seconds = amount * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Minute ||
@@ -1045,14 +1045,14 @@ namespace OP_Engine.Time
                 long total_minutes = amount * 60;
                 long total_seconds = total_minutes * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Minute)
             {
                 long total_minutes = amount * 60;
                 TotalSeconds += total_minutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
+                AddMinutes(total_minutes, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Hour ||
@@ -1253,7 +1253,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 long total_seconds = total_minutes * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Minute)
             {
@@ -1261,7 +1261,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 TotalSeconds += total_minutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
+                AddMinutes(total_minutes, rate);
             }
             else if (rate == TimeRate.Hour)
             {
@@ -1269,7 +1269,7 @@ namespace OP_Engine.Time
                 TotalMinutes += total_hours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
+                AddHours(total_hours, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Day ||
@@ -1471,7 +1471,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 long total_seconds = total_minutes * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Minute)
             {
@@ -1480,7 +1480,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 TotalSeconds += total_minutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
+                AddMinutes(total_minutes, rate);
             }
             else if (rate == TimeRate.Hour)
             {
@@ -1489,7 +1489,7 @@ namespace OP_Engine.Time
                 TotalMinutes += total_hours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
+                AddHours(total_hours, rate);
             }
             else if (rate == TimeRate.Day)
             {
@@ -1498,7 +1498,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
+                AddDays(total_days, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Month ||
@@ -1703,7 +1703,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 long total_seconds = total_minutes * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Minute)
             {
@@ -1713,7 +1713,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 TotalSeconds += total_minutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
+                AddMinutes(total_minutes, rate);
             }
             else if (rate == TimeRate.Hour)
             {
@@ -1723,7 +1723,7 @@ namespace OP_Engine.Time
                 TotalMinutes += total_hours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
+                AddHours(total_hours, rate);
             }
             else if (rate == TimeRate.Day)
             {
@@ -1733,7 +1733,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
+                AddDays(total_days, rate);
             }
             else if (rate == TimeRate.Month)
             {
@@ -1743,7 +1743,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
+                AddMonths(total_months, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Year ||
@@ -1953,7 +1953,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 long total_seconds = total_minutes * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Minute)
             {
@@ -1964,7 +1964,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 TotalSeconds += total_minutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
+                AddMinutes(total_minutes, rate);
             }
             else if (rate == TimeRate.Hour)
             {
@@ -1975,7 +1975,7 @@ namespace OP_Engine.Time
                 TotalMinutes += total_hours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
+                AddHours(total_hours, rate);
             }
             else if (rate == TimeRate.Day)
             {
@@ -1986,7 +1986,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
+                AddDays(total_days, rate);
             }
             else if (rate == TimeRate.Month)
             {
@@ -1997,7 +1997,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
+                AddMonths(total_months, rate);
             }
             else if (rate == TimeRate.Year)
             {
@@ -2008,7 +2008,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years);
+                AddYears(total_years, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Decade ||
@@ -2216,7 +2216,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 long total_seconds = total_minutes * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Minute)
             {
@@ -2227,7 +2227,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 TotalSeconds += total_minutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
+                AddMinutes(total_minutes, rate);
             }
             else if (rate == TimeRate.Hour)
             {
@@ -2238,7 +2238,7 @@ namespace OP_Engine.Time
                 TotalMinutes += total_hours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
+                AddHours(total_hours, rate);
             }
             else if (rate == TimeRate.Day)
             {
@@ -2249,7 +2249,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
+                AddDays(total_days, rate);
             }
             else if (rate == TimeRate.Month)
             {
@@ -2260,7 +2260,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
+                AddMonths(total_months, rate);
             }
             else if (rate == TimeRate.Year)
             {
@@ -2271,7 +2271,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years);
+                AddYears(total_years, rate);
             }
             else if (rate == TimeRate.Decade)
             {
@@ -2283,7 +2283,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddDecades(total_years);
+                AddDecades(total_years, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Century ||
@@ -2490,7 +2490,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 long total_seconds = total_minutes * 60;
                 TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
+                AddSeconds(total_seconds, rate);
             }
             else if (rate == TimeRate.Minute)
             {
@@ -2501,7 +2501,7 @@ namespace OP_Engine.Time
                 long total_minutes = total_hours * 60;
                 TotalSeconds += total_minutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
+                AddMinutes(total_minutes, rate);
             }
             else if (rate == TimeRate.Hour)
             {
@@ -2512,7 +2512,7 @@ namespace OP_Engine.Time
                 TotalMinutes += total_hours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
+                AddHours(total_hours, rate);
             }
             else if (rate == TimeRate.Day)
             {
@@ -2523,7 +2523,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
+                AddDays(total_days, rate);
             }
             else if (rate == TimeRate.Month)
             {
@@ -2534,7 +2534,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
+                AddMonths(total_months, rate);
             }
             else if (rate == TimeRate.Year)
             {
@@ -2545,7 +2545,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years);
+                AddYears(total_years, rate);
             }
             else if (rate == TimeRate.Decade)
             {
@@ -2557,7 +2557,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddDecades(total_years);
+                AddDecades(total_years, rate);
             }
             else if (rate == TimeRate.Century)
             {
@@ -2570,7 +2570,7 @@ namespace OP_Engine.Time
                 TotalMinutes += TotalHours * 60;
                 TotalSeconds += TotalMinutes * 60;
                 TotalMilliseconds += TotalSeconds * 1000;
-                AddCenturies(total_years);
+                AddCenturies(total_years, rate);
             }
             else if (rate == TimeRate.Nothing ||
                      rate == TimeRate.Millennia)
