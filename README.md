@@ -36,7 +36,7 @@
     - Events for detecting noises, sights, smells, tastes, and touches (handy for stealth mechanics and realistic NPC reactions)
     - Job class for queueing Tasks and handling AI schedules
       - Task class includes a progress bar to render progress on the screen
-    - Health/Mana progress bars
+    - Health/Mana/Stamina progress bars
     - Spellbook (see SpellbookManager below for details)
     - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
       - Default usage expects spritesheet to have sprites facing South in first row, West in second row, East in third row, and North in fourth row
