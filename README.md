@@ -30,8 +30,8 @@
   - Contains a list of Army, each Army has a list of Squad, and each Squad has a list of Character
   - Includes large lists of first/last names for random name generation
   - Character class includes:
-    - Inventory (an empty list of Items)
-    - Empty string lists for Stats, Skills, Traits, and StatusEffects
+    - Inventory (list of Items)
+    - Lists for Stats, Skills, Traits, and StatusEffects
     - A* pathing
     - Events for detecting noises, sights, smells, tastes, and touches (handy for stealth mechanics and realistic NPC reactions)
     - Job class for queueing Tasks and handling AI schedules
