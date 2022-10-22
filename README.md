@@ -33,7 +33,7 @@
     - Inventory (an empty list of Items)
     - Empty string lists for Stats, Skills, Traits, and StatusEffects
     - A* pathing
-    - Events for detecting noises, sights, and smells (handy for stealth mechanics and realistic NPC reactions)
+    - Events for detecting noises, sights, smells, tastes, and touches (handy for stealth mechanics and realistic NPC reactions)
     - Job class for queueing Tasks and handling AI schedules
       - Task class includes a progress bar to render progress on the screen
     - Health/Mana progress bars
@@ -41,6 +41,7 @@
     - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
       - Default usage expects spritesheet to have sprites facing South in first row, West in second row, East in third row, and North in fourth row
     - Boolean flags for Interacting, Unconscious, Dead, InCombat, and Travelling
+    - List of Memory object for tracking in-game events or recalling experiences in NPC dialogue
     
 ## JobManager
 - For central organization of Jobs (jobs not added to it by default)
@@ -109,6 +110,12 @@
       - There's no loop option for sounds
     - "Textures" folder
       - Textures organized in sub-folders
+      
+## ModManager
+- For handling moddable games
+
+## Logger
+- For logging stuff like game crashes
 
 # Utilities:
 - Something class that most objects inherit from which includes many basic variables (so everything can have an ID, Name, etc)
