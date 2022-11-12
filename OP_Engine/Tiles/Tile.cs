@@ -15,6 +15,7 @@ namespace OP_Engine.Tiles
         public long MapID;
         public long LayerID;
 
+        public bool InView;
         public bool BlocksMovement;
         public bool IsTall;
         public bool Animated;
@@ -57,25 +58,30 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
+        public virtual void Update(Point resolution)
         {
-            if (Visible)
+            InView = false;
+
+            if (Texture != null)
             {
-                if (Texture != null)
+                if (Visible)
                 {
-                    if (Region.X >= Region.Width * -2 &&
-                        Region.X < resolution.X + Region.Width * 2)
+                    float x = Region.X;
+                    float width = Region.Width;
+                    
+                    if (x >= 0 - width - 1)
                     {
-                        if (Region.Y >= Region.Height * -2 &&
-                            Region.Y < resolution.Y + Region.Height * 2)
+                        if (x < resolution.X + width + 1)
                         {
-                            if (DrawColor != new Color(0, 0, 0, 0))
+                            float y = Region.Y;
+                            float height = Region.Height;
+
+                            if (y >= 0 - height - 1)
                             {
-                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
-                            }
-                            else
-                            {
-                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
+                                if (y < resolution.Y + height + 1)
+                                {
+                                    InView = true;
+                                }
                             }
                         }
                     }
@@ -83,27 +89,37 @@ namespace OP_Engine.Tiles
             }
         }
 
+        public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
+        {
+            if (Texture != null)
+            {
+                if (Visible)
+                {
+                    if (DrawColor != new Color(0, 0, 0, 0))
+                    {
+                        spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
+                    }
+                }
+            }
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution, Color color)
         {
-            if (Visible)
+            if (Texture != null)
             {
-                if (Texture != null)
+                if (Visible)
                 {
-                    if (Region.X >= Region.Width * -2 &&
-                        Region.X < resolution.X + Region.Width * 2)
+                    if (DrawColor != new Color(0, 0, 0, 0))
                     {
-                        if (Region.Y >= Region.Height * -2 &&
-                            Region.Y < resolution.Y + Region.Height * 2)
-                        {
-                            if (DrawColor != new Color(0, 0, 0, 0))
-                            {
-                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
-                            }
-                            else
-                            {
-                                spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
-                            }
-                        }
+                        spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
                     }
                 }
             }

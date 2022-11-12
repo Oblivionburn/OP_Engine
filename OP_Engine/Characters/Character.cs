@@ -30,6 +30,7 @@ namespace OP_Engine.Characters
         public List<Something> StatusEffects = new List<Something>();
         public List<BodyPart> BodyParts = new List<BodyPart>();
         public List<Memory> Memories = new List<Memory>();
+        public List<ALocation> Path = new List<ALocation>();
 
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;
@@ -39,7 +40,6 @@ namespace OP_Engine.Characters
         public Spellbook Spellbook;
         public Inventory Inventory;
         public Job Job;
-        public Pathing Pathing;
 
         public bool InCombat;
         public bool CombatTurn;
@@ -74,7 +74,6 @@ namespace OP_Engine.Characters
             Location = default;
             Destination = default;
 
-            Pathing = new Pathing();
             Job = new Job();
 
             Region = new Region();
@@ -419,9 +418,9 @@ namespace OP_Engine.Characters
                 Job.Dispose();
             }
 
-            if (Pathing != null)
+            foreach (ALocation location in Path)
             {
-                Pathing.Dispose();
+                location.Dispose();
             }
 
             foreach (Something stat in Stats)

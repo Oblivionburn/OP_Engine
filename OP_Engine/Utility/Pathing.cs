@@ -2,10 +2,10 @@
 
 using Microsoft.Xna.Framework;
 
-using OP_Engine.Utility;
+using OP_Engine.Characters;
 using OP_Engine.Tiles;
 
-namespace OP_Engine.Characters
+namespace OP_Engine.Utility
 {
     public class Pathing : Something
     {
