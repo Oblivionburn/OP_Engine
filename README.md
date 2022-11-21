@@ -76,8 +76,8 @@
   
 ## RenderingManager
 - For handling rendering Scenes and Menus to the screen
-  - Includes deferred rendering if using default setup
-  - Flexible enough to handle custom rendering/lighting
+  - Includes deferred lighting if using default setup (run InitDefaults() method when loading content)
+  - Flexible enough to handle custom rendering/lighting with blend states
   
 ## SoundManager
 - For handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
