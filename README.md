@@ -69,7 +69,7 @@
 - For central organization of Scenes (scenes not added to it by default)
   - Purpose: to organize stuff like screens (e.g. Title and Loading screens), levels, cutscenes, etc
   - Scene class has its own Menu and World instance
-    - World object (for 2D tile mapping) consisting of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
+    - World object (for 2D tile mapping) consists of a list of Map, each Map has a list of Layer, and each Layer has a list of Tile
       - Purpose: so you can do stuff like rendering a floor tile with a table on it, a plate on that table, and a piece of food on that plate
       - Tile class includes Inventory (for when stuff was dropped on the ground) and ProgressBar (for objects that can sustain damage)
       - Includes large list of randomly generated fantasy-sounding names for villages/cities/maps/etc
