@@ -9,6 +9,7 @@
 
 ### Features:
 - Focus on organization, optimizations, easy to read code, and keeping things simple yet flexible (definitely a balancing act with Simplicity vs Flexibility)
+- Custom game form with basic pre-built Updating/Drawing methods and handling window resizing
 - Modular component architecture for only including what's needed/wanted in a project
   - Example: "Components.Add(new InputManager(this));" in your game's LoadContent() method
 - Overridable methods for per-game customizations (components themselves require static methods for accessibility)
@@ -72,6 +73,11 @@
 - For central organization of Scenes (scenes not added to it by default)
   - Purpose: to organize stuff like screens (e.g. Title and Loading screens), levels, cutscenes, etc
   - Scene class has its own Menu and World instance
+  
+## RenderingManager
+- For handling rendering Scenes and Menus to the screen
+  - Includes deferred rendering if using default setup
+  - Flexible enough to handle custom rendering/lighting
   
 ## SoundManager
 - For handling playing/pausing/stopping and volume control of sounds, music, and ambient noise using FMOD
