@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,6 +88,10 @@
     <Compile Include="Mods\ModManager.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Particles\ParticleManager.cs" />
+    <Compile Include="Rendering\GameWindow.cs" />
+    <Compile Include="Rendering\Lighting.cs" />
+    <Compile Include="Rendering\Renderer.cs" />
+    <Compile Include="Rendering\RenderingManager.cs" />
     <Compile Include="Research\Research.cs" />
     <Compile Include="Research\ResearchManager.cs" />
     <Compile Include="Research\ResearchTree.cs" />
@@ -125,6 +130,7 @@
     <Compile Include="Utility\Pathing.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Utility\Rarity.cs" />
+    <Compile Include="Utility\ScreenType.cs" />
     <Compile Include="Utility\Something.cs" />
     <Compile Include="Utility\Region.cs" />
     <Compile Include="Time\TimeHandler.cs" />

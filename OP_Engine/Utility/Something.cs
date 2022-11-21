@@ -20,6 +20,9 @@ namespace OP_Engine.Utility
         public int Tier;
         public int Grade;
         public int Quality;
+        public int Level;
+        public int XP;
+        public Dictionary<int, int> XP_Needed_ForLevels = new Dictionary<int, int>();
         public TimeSpan Time;
         public TimeSpan Min_Time;
         public TimeSpan Max_Time;

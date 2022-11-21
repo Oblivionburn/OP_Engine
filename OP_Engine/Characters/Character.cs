@@ -31,6 +31,7 @@ namespace OP_Engine.Characters
         public List<BodyPart> BodyParts = new List<BodyPart>();
         public List<Memory> Memories = new List<Memory>();
         public List<ALocation> Path = new List<ALocation>();
+        public Dictionary<long, string> Relationships = new Dictionary<long, string>();
 
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;

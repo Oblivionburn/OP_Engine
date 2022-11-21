@@ -20,7 +20,7 @@ namespace OP_Engine.Logging
 
         public Logger(Game game) : base(game)
         {
-            game.Exiting += Game_Exiting;
+            
         }
 
         #endregion
@@ -35,6 +35,11 @@ namespace OP_Engine.Logging
             {
                 File.WriteAllText(LogFile, "");
             }
+        }
+
+        public static void AddLog(string source, string message, string stack_trace)
+        {
+            Logs.Add(new Log(source, message, stack_trace));
         }
 
         public static void WriteLog()
@@ -54,14 +59,6 @@ namespace OP_Engine.Logging
                 }
 
                 File.AppendAllText(LogFile, sb.ToString());
-            }
-        }
-
-        private void Game_Exiting(object sender, EventArgs e)
-        {
-            if (Logs.Count > 0)
-            {
-                WriteLog();
             }
         }
 

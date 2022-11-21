@@ -54,7 +54,8 @@ namespace OP_Engine.Scenes
             {
                 if (scene.Visible)
                 {
-                    scene.Draw(spriteBatch, resolution);
+                    scene.DrawWorld(spriteBatch, resolution);
+                    scene.DrawMenu(spriteBatch);
                 }
             }
         }
@@ -65,7 +66,41 @@ namespace OP_Engine.Scenes
             {
                 if (scene.Visible)
                 {
-                    scene.Draw(spriteBatch, resolution, color);
+                    scene.DrawWorld(spriteBatch, resolution, color);
+                    scene.DrawMenu(spriteBatch);
+                }
+            }
+        }
+
+        public static void Draw_WorldsOnly(SpriteBatch spriteBatch, Point resolution)
+        {
+            foreach (Scene scene in Scenes)
+            {
+                if (scene.Visible)
+                {
+                    scene.DrawWorld(spriteBatch, resolution);
+                }
+            }
+        }
+
+        public static void Draw_WorldsOnly(SpriteBatch spriteBatch, Point resolution, Color color)
+        {
+            foreach (Scene scene in Scenes)
+            {
+                if (scene.Visible)
+                {
+                    scene.DrawWorld(spriteBatch, resolution, color);
+                }
+            }
+        }
+
+        public static void Draw_MenusOnly(SpriteBatch spriteBatch)
+        {
+            foreach (Scene scene in Scenes)
+            {
+                if (scene.Visible)
+                {
+                    scene.DrawMenu(spriteBatch);
                 }
             }
         }

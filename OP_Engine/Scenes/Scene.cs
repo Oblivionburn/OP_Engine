@@ -74,6 +74,30 @@ namespace OP_Engine.Scenes
             }
         }
 
+        public virtual void DrawWorld(SpriteBatch spriteBatch, Point resolution)
+        {
+            if (Visible)
+            {
+                World.Draw(spriteBatch, resolution);
+            }
+        }
+
+        public virtual void DrawWorld(SpriteBatch spriteBatch, Point resolution, Color color)
+        {
+            if (Visible)
+            {
+                World.Draw(spriteBatch, resolution, color);
+            }
+        }
+
+        public virtual void DrawMenu(SpriteBatch spriteBatch)
+        {
+            if (Visible)
+            {
+                Menu.Draw(spriteBatch);
+            }
+        }
+
         public virtual void Load()
         {
 

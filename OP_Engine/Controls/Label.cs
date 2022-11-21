@@ -11,16 +11,18 @@ namespace OP_Engine.Controls
     {
         #region Variables
 
+        public SpriteFont Font;
+        
         public string Text;
         public Color TextColor;
 
-        public Vector2 Size;
-        public Vector2 Position;
         public Alignment Alignment_Verticle;
         public Alignment Alignment_Horizontal;
-        public float Scale;
 
-        public SpriteFont Font;
+        public bool AutoScale = true;
+        public Vector2 Size;
+        public Vector2 Position;
+        public float Scale;
 
         #endregion
 
@@ -46,10 +48,15 @@ namespace OP_Engine.Controls
 
                 float xScale = Region.Width / Size.X;
                 float yScale = Region.Height / Size.Y;
-                Scale = Math.Min(xScale, yScale) - 0.10f;
+                float scale = Math.Min(xScale, yScale) - 0.10f;
 
-                int strWidth = (int)Math.Round(Size.X * Scale);
-                int strHeight = (int)Math.Round(Size.Y * Scale);
+                if (AutoScale)
+                {
+                    Scale = scale;
+                }
+
+                int strWidth = (int)Math.Round(Size.X * scale);
+                int strHeight = (int)Math.Round(Size.Y * scale);
 
                 if (Alignment_Verticle == Alignment.Top)
                 {
