@@ -32,7 +32,6 @@
   - Character class includes:
     - Inventory (list of Items)
     - Lists for Stats, Skills, Traits, and StatusEffects
-    - A* pathing
     - Events for detecting noises, sights, smells, tastes, and touches (handy for stealth mechanics and realistic NPC reactions)
     - Job class for queueing Tasks and handling AI schedules
       - Task class includes a progress bar to render progress on the screen
@@ -123,5 +122,6 @@
   - Makes it possible to do stuff like making a higher layer of tiles reference the regions in a lower layer of tiles, so you only have to iterate through a single layer to move multiple layers across the screen (far more efficient than iterating through every Tile in every Layer when you have thousands of tiles in many layers)
 - Cryptography-grade random number generator for extreme randomness (named CryptoRandom in library)
 - GetLine method for fast ray-tracing between two coordinates (returns list of coordinates between the two points)
+- Example code for A* pathing
 - Various enums, structs, and other classes
-  
+
