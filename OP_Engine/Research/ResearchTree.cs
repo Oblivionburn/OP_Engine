@@ -26,42 +26,53 @@ namespace OP_Engine.Research
 
         public virtual void Update(TimeSpan add_time)
         {
-            foreach (Research research in ResearchNodes)
+            int count = ResearchNodes.Count;
+            for (int i = 0; i < count; i++)
             {
-                research.Update(add_time);
-
-                if (research.Completed)
+                Research research = ResearchNodes[i];
+                if (research != null)
                 {
-                    foreach (long unlock in research.Unlocks)
-                    {
-                        //Check if unlocked research has all prerequisites completed
-                        Research unlocked_research = GetResearch(unlock);
-                        if (unlocked_research != null)
-                        {
-                            //Don't bother checking if it's already unlocked
-                            if (!unlocked_research.Unlocked)
-                            {
-                                bool unlocked = false;
-                                int prerequisites = 0;
+                    research.Update(add_time);
 
-                                foreach (long prerequisite in unlocked_research.Prerequisites)
+                    if (research.Completed)
+                    {
+                        int unlockCount = research.Unlocks.Count;
+                        for (int u = 0; u < unlockCount; u++)
+                        {
+                            long unlock = research.Unlocks[u];
+
+                            //Check if unlocked research has all prerequisites completed
+                            Research unlocked_research = GetResearch(unlock);
+                            if (unlocked_research != null)
+                            {
+                                //Don't bother checking if it's already unlocked
+                                if (!unlocked_research.Unlocked)
                                 {
-                                    Research prerequisite_research = GetResearch(prerequisite);
-                                    if (prerequisite_research != null)
+                                    bool unlocked = false;
+                                    int prerequisites = 0;
+
+                                    int prerequisiteCount = unlocked_research.Prerequisites.Count;
+                                    for (int p = 0; p < unlockCount; p++)
                                     {
-                                        if (prerequisite_research.Completed)
+                                        long prerequisite = unlocked_research.Prerequisites[p];
+
+                                        Research prerequisite_research = GetResearch(prerequisite);
+                                        if (prerequisite_research != null)
                                         {
-                                            prerequisites++;
+                                            if (prerequisite_research.Completed)
+                                            {
+                                                prerequisites++;
+                                            }
                                         }
                                     }
-                                }
 
-                                if (prerequisites >= unlocked_research.Prerequisites.Count)
-                                {
-                                    unlocked = true;
-                                }
+                                    if (prerequisites >= unlocked_research.Prerequisites.Count)
+                                    {
+                                        unlocked = true;
+                                    }
 
-                                unlocked_research.Unlocked = unlocked;
+                                    unlocked_research.Unlocked = unlocked;
+                                }
                             }
                         }
                     }
@@ -79,14 +90,16 @@ namespace OP_Engine.Research
                 Max_Time = TimeSpan.FromMilliseconds(max_time.TotalMilliseconds)
             };
 
-            foreach (long prerequisite in prerequisites)
+            int prerequisiteCount = prerequisites.Count;
+            for (int p = 0; p < prerequisiteCount; p++)
             {
-                research.Prerequisites.Add(prerequisite);
+                research.Prerequisites.Add(prerequisites[p]);
             }
 
-            foreach (long unlock in unlocks)
+            int unlockCount = unlocks.Count;
+            for (int u = 0; u < unlockCount; u++)
             {
-                research.Unlocks.Add(unlock);
+                research.Unlocks.Add(unlocks[u]);
             }
 
             ResearchNodes.Add(research);
@@ -94,11 +107,16 @@ namespace OP_Engine.Research
 
         public virtual Research GetResearch(string name)
         {
-            foreach (Research research in ResearchNodes)
+            int count = ResearchNodes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (research.Name == name)
+                Research existing = ResearchNodes[i];
+                if (existing != null)
                 {
-                    return research;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -107,11 +125,16 @@ namespace OP_Engine.Research
 
         public virtual Research GetResearch(long id)
         {
-            foreach (Research research in ResearchNodes)
+            int count = ResearchNodes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (research.ID == id)
+                Research existing = ResearchNodes[i];
+                if (existing != null)
                 {
-                    return research;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 

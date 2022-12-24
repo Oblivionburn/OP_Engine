@@ -118,12 +118,17 @@ namespace OP_Engine.Jobs
 
         public virtual Task GetTask(long id)
         {
-            foreach (Task task in Tasks)
+            int count = Tasks.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (task.ID == id)
+                Task existing = Tasks[i];
+                if (existing != null)
                 {
-                    return task;
-                }
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
+                }  
             }
 
             return null;
@@ -131,12 +136,17 @@ namespace OP_Engine.Jobs
 
         public virtual Task GetTask(string name)
         {
-            foreach (Task task in Tasks)
+            int count = Tasks.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (task.Name == name)
+                Task existing = Tasks[i];
+                if (existing != null)
                 {
-                    return task;
-                }
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
+                } 
             }
 
             return null;

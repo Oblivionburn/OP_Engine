@@ -31,9 +31,10 @@ namespace OP_Engine.Tiles
 
         public virtual void Update()
         {
-            foreach (Layer layer in Layers)
+            int count = Layers.Count;
+            for (int i = 0; i < count; i++)
             {
-                layer.Update();
+                Layers[i]?.Update();
             }
         }
 
@@ -41,9 +42,10 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                foreach (Layer layer in Layers)
+                int count = Layers.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    layer.Draw(spriteBatch, resolution);
+                    Layers[i]?.Draw(spriteBatch, resolution);
                 }
             }
         }
@@ -52,20 +54,26 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                foreach (Layer layer in Layers)
+                int count = Layers.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    layer.Draw(spriteBatch, resolution, color);
+                    Layers[i]?.Draw(spriteBatch, resolution, color);
                 }
             }
         }
 
         public virtual Layer GetLayer(long id)
         {
-            foreach (Layer layer in Layers)
+            int count = Layers.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (layer.ID == id)
+                Layer existing = Layers[i];
+                if (existing != null)
                 {
-                    return layer;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -74,12 +82,17 @@ namespace OP_Engine.Tiles
 
         public virtual Layer GetLayer(string name)
         {
-            foreach (Layer layer in Layers)
+            int count = Layers.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (layer.Name == name)
+                Layer existing = Layers[i];
+                if (existing != null)
                 {
-                    return layer;
-                }
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
+                } 
             }
 
             return null;

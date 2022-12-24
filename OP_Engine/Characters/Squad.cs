@@ -28,11 +28,16 @@ namespace OP_Engine.Characters
 
         public virtual Character GetCharacter(long id)
         {
-            foreach (Character character in Characters)
+            int count = Characters.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (character.ID == id)
+                Character existing = Characters[i];
+                if (existing != null)
                 {
-                    return character;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -41,11 +46,16 @@ namespace OP_Engine.Characters
 
         public virtual Character GetCharacter(string name)
         {
-            foreach (Character character in Characters)
+            int count = Characters.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (character.Name == name)
+                Character existing = Characters[i];
+                if (existing != null)
                 {
-                    return character;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -54,12 +64,17 @@ namespace OP_Engine.Characters
 
         public virtual Character GetCharacter (Vector2 formation)
         {
-            foreach (Character character in Characters)
+            int count = Characters.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (character.Formation.X == formation.X &&
-                    character.Formation.Y == formation.Y)
+                Character existing = Characters[i];
+                if (existing != null)
                 {
-                    return character;
+                    if (existing.Formation.X == formation.X &&
+                        existing.Formation.Y == formation.Y)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -68,11 +83,16 @@ namespace OP_Engine.Characters
 
         public virtual Character GetLeader()
         {
-            foreach (Character character in Characters)
+            int count = Characters.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (character.ID == Leader_ID)
+                Character existing = Characters[i];
+                if (existing != null)
                 {
-                    return character;
+                    if (existing.ID == Leader_ID)
+                    {
+                        return existing;
+                    }
                 }
             }
 

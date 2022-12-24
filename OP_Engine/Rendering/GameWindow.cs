@@ -12,6 +12,7 @@ using OP_Engine.Scenes;
 using OP_Engine.Sounds;
 using OP_Engine.Time;
 using OP_Engine.Utility;
+
 using Menu = OP_Engine.Menus.Menu;
 
 namespace OP_Engine.Rendering
@@ -314,17 +315,19 @@ namespace OP_Engine.Rendering
 
         public virtual void ResizeMenus()
         {
-            foreach (Menu menu in MenuManager.Menus)
+            int count = MenuManager.Menus.Count;
+            for (int i = 0; i < count; i++)
             {
-                menu.Resize(new Point(MenuSize_X, MenuSize_Y));
+                MenuManager.Menus[i].Resize(new Point(MenuSize_X, MenuSize_Y));
             }
         }
 
         public virtual void ResizeScenes()
         {
-            foreach (Scene scene in SceneManager.Scenes)
+            int count = SceneManager.Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                scene.Resize(TileSize);
+                SceneManager.Scenes[i].Resize(TileSize);
             }
         }
 

@@ -28,135 +28,149 @@ namespace OP_Engine.Scenes
 
         public static void Update()
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Visible)
-                {
-                    scene.Update();
-                }
+                Scenes[i]?.Update();
             }
         }
 
         public static void Update(Game gameRef, ContentManager content)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Visible)
-                {
-                    scene.Update(gameRef, content);
-                }
+                Scenes[i]?.Update(gameRef, content);
             }
         }
 
         public static void Draw(SpriteBatch spriteBatch, Point resolution)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Visible)
+                Scene existing = Scenes[i];
+                if (existing == null)
                 {
-                    scene.DrawWorld(spriteBatch, resolution);
-                    scene.DrawMenu(spriteBatch);
+                    existing.DrawWorld(spriteBatch, resolution);
+                    existing.DrawMenu(spriteBatch);
                 }
             }
         }
 
         public static void Draw(SpriteBatch spriteBatch, Point resolution, Color color)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Visible)
+                Scene existing = Scenes[i];
+                if (existing == null)
                 {
-                    scene.DrawWorld(spriteBatch, resolution, color);
-                    scene.DrawMenu(spriteBatch);
+                    existing.DrawWorld(spriteBatch, resolution, color);
+                    existing.DrawMenu(spriteBatch);
                 }
             }
         }
 
         public static void Draw_WorldsOnly(SpriteBatch spriteBatch, Point resolution)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Visible)
-                {
-                    scene.DrawWorld(spriteBatch, resolution);
-                }
+                Scenes[i]?.DrawWorld(spriteBatch, resolution);
             }
         }
 
         public static void Draw_WorldsOnly(SpriteBatch spriteBatch, Point resolution, Color color)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Visible)
-                {
-                    scene.DrawWorld(spriteBatch, resolution, color);
-                }
+                Scenes[i]?.DrawWorld(spriteBatch, resolution, color);
             }
         }
 
         public static void Draw_MenusOnly(SpriteBatch spriteBatch)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Visible)
-                {
-                    scene.DrawMenu(spriteBatch);
-                }
+                Scenes[i]?.DrawMenu(spriteBatch);
             }
         }
 
         public static void ChangeScene(string name)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Name == name)
+                Scene existing = Scenes[i];
+                if (existing != null)
                 {
-                    scene.Visible = true;
-                }
-                else
-                {
-                    scene.Visible = false;
+                    if (existing.Name == name)
+                    {
+                        existing.Visible = true;
+                    }
+                    else
+                    {
+                        existing.Visible = false;
+                    }
                 }
             }
         }
 
         public static void ChangeScene(long id)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.ID == id)
+                Scene existing = Scenes[i];
+                if (existing != null)
                 {
-                    scene.Visible = true;
-                }
-                else
-                {
-                    scene.Visible = false;
+                    if (existing.ID == id)
+                    {
+                        existing.Visible = true;
+                    }
+                    else
+                    {
+                        existing.Visible = false;
+                    }
                 }
             }
         }
 
         public static void ChangeScene(Scene scene)
         {
-            foreach (Scene existing in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.ID == scene.ID)
+                Scene existing = Scenes[i];
+                if (existing != null)
                 {
-                    existing.Visible = true;
-                }
-                else
-                {
-                    existing.Visible = false;
+                    if (existing.ID == scene.ID)
+                    {
+                        existing.Visible = true;
+                    }
+                    else
+                    {
+                        existing.Visible = false;
+                    }
                 }
             }
         }
 
         public static Scene GetScene(string name)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.Name == name)
+                Scene existing = Scenes[i];
+                if (existing != null)
                 {
-                    return scene;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -165,11 +179,16 @@ namespace OP_Engine.Scenes
 
         public static Scene GetScene(long id)
         {
-            foreach (Scene scene in Scenes)
+            int count = Scenes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (scene.ID == id)
+                Scene existing = Scenes[i];
+                if (existing != null)
                 {
-                    return scene;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 

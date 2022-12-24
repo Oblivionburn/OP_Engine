@@ -32,11 +32,16 @@ namespace OP_Engine.Characters
 
         public static Army GetArmy(long id)
         {
-            foreach (Army army in Armies)
+            int count = Armies.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (army.ID == id)
+                Army existing = Armies[i];
+                if (existing != null)
                 {
-                    return army;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -45,11 +50,16 @@ namespace OP_Engine.Characters
 
         public static Army GetArmy(string name)
         {
-            foreach (Army army in Armies)
+            int count = Armies.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (army.Name == name)
+                Army existing = Armies[i];
+                if (existing != null)
                 {
-                    return army;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -58,11 +68,16 @@ namespace OP_Engine.Characters
 
         public static Army GetArmy_ByType(string type)
         {
-            foreach (Army army in Armies)
+            int count = Armies.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (army.Type == type)
+                Army existing = Armies[i];
+                if (existing != null)
                 {
-                    return army;
+                    if (existing.Type == type)
+                    {
+                        return existing;
+                    }
                 }
             }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using OP_Engine.Utility;
 
@@ -28,46 +27,54 @@ namespace OP_Engine.Characters
 
         public virtual Something GetStat(string name)
         {
-            Something result = null;
-
-            foreach (Something existing in Stats)
+            int count = Stats.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Something existing = Stats[i];
+                if (existing != null)
                 {
-                    result = existing;
-                    break;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
-            return result;
+            return null;
         }
 
         public virtual Something GetStatusEffect(string name)
         {
-            Something result = null;
-
-            foreach (Something existing in StatusEffects)
+            int count = StatusEffects.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Something existing = StatusEffects[i];
+                if (existing != null)
                 {
-                    result = existing;
-                    break;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
-            return result;
+            return null;
         }
 
         public virtual List<Something> GetWounds(string name)
         {
             List<Something> results = new List<Something>();
 
-            foreach (Something existing in Wounds)
+            int count = Wounds.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Something existing = Wounds[i];
+                if (existing != null)
                 {
-                    results.Add(existing);
-                    break;
+                    if (existing.Name == name)
+                    {
+                        results.Add(existing);
+                    }
                 }
             }
 

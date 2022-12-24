@@ -26,11 +26,16 @@ namespace OP_Engine.Research
 
         public static ResearchTree GetResearchTree(string name)
         {
-            foreach (ResearchTree tree in ResearchTrees)
+            int count = ResearchTrees.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (tree.Name == name)
+                ResearchTree existing = ResearchTrees[i];
+                if (existing != null)
                 {
-                    return tree;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -39,11 +44,16 @@ namespace OP_Engine.Research
 
         public static ResearchTree GetResearchTree(long id)
         {
-            foreach (ResearchTree tree in ResearchTrees)
+            int count = ResearchTrees.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (tree.ID == id)
+                ResearchTree existing = ResearchTrees[i];
+                if (existing != null)
                 {
-                    return tree;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 

@@ -28,27 +28,34 @@ namespace OP_Engine.Inventories
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
         {
-            foreach (Item item in Items)
+            int count = Items.Count;
+            for (int i = 0; i < count; i++)
             {
-                item.Draw(spriteBatch, resolution);
+                Items[i]?.Draw(spriteBatch, resolution);
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution, Color color)
         {
-            foreach (Item item in Items)
+            int count = Items.Count;
+            for (int i = 0; i < count; i++)
             {
-                item.Draw(spriteBatch, resolution, color);
+                Items[i]?.Draw(spriteBatch, resolution, color);
             }
         }
 
         public virtual Item GetItem(string name)
         {
-            foreach (Item item in Items)
+            int count = Items.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (item.Name == name)
+                Item existing = Items[i];
+                if (existing != null)
                 {
-                    return item;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -57,11 +64,16 @@ namespace OP_Engine.Inventories
 
         public virtual Item GetItem(long id)
         {
-            foreach (Item item in Items)
+            int count = Items.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (item.ID == id)
+                Item existing = Items[i];
+                if (existing != null)
                 {
-                    return item;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -70,12 +82,17 @@ namespace OP_Engine.Inventories
 
         public virtual Item GetItem(Vector2 location)
         {
-            foreach (Item item in Items)
+            int count = Items.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (item.Location.X == location.X &&
-                    item.Location.Y == location.Y)
+                Item existing = Items[i];
+                if (existing != null)
                 {
-                    return item;
+                    if (existing.Location.X == location.X &&
+                        existing.Location.Y == location.Y)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -86,8 +103,11 @@ namespace OP_Engine.Inventories
         {
             List<Item> items = new List<Item>();
 
-            foreach (Item item in Items)
+            int itemCount = Items.Count;
+            for (int i = 0; i < itemCount; i++)
             {
+                Item item = Items[i];
+
                 bool type_found = true;
                 if (!string.IsNullOrEmpty(type) &&
                     item.Type != type)
@@ -98,8 +118,10 @@ namespace OP_Engine.Inventories
                 bool categories_found = true;
                 if (categories != null)
                 {
-                    foreach (string category in categories)
+                    int categoryCount = categories.Count;
+                    for (int c = 0; c < categoryCount; c++)
                     {
+                        string category = categories[c];
                         if (!item.Categories.Contains(category))
                         {
                             categories_found = false;
@@ -111,8 +133,10 @@ namespace OP_Engine.Inventories
                 bool materials_found = true;
                 if (materials != null)
                 {
-                    foreach (string material in materials)
+                    int materialCount = materials.Count;
+                    for (int m = 0; m < materialCount; m++)
                     {
+                        string material = materials[m];
                         if (!item.Materials.Contains(material))
                         {
                             materials_found = false;

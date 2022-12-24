@@ -25,11 +25,16 @@ namespace OP_Engine.Spells
 
         public virtual Something GetProperty(long id)
         {
-            foreach (Something something in Properties)
+            int count = Properties.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (something.ID == id)
+                Something existing = Properties[i];
+                if (existing == null)
                 {
-                    return something;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -38,11 +43,16 @@ namespace OP_Engine.Spells
 
         public virtual Something GetProperty(string name)
         {
-            foreach (Something something in Properties)
+            int count = Properties.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (something.Name == name)
+                Something existing = Properties[i];
+                if (existing == null)
                 {
-                    return something;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 

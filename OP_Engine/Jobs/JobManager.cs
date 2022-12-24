@@ -28,27 +28,34 @@ namespace OP_Engine.Jobs
 
         public static void Update(TimeHandler current_time)
         {
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                job.Update(current_time);
+                Jobs[i]?.Update(current_time);
             }
         }
 
         public static void Update(TimeHandler current_time, TimeSpan time_span)
         {
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                job.Update(current_time, time_span);
+                Jobs[i]?.Update(current_time, time_span);
             }
         }
 
         public static Job GetJob(long id)
         {
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (job.ID == id)
+                Job existing = Jobs[i];
+                if (existing != null)
                 {
-                    return job;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -57,11 +64,16 @@ namespace OP_Engine.Jobs
 
         public static Job GetJob(string name)
         {
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (job.Name == name)
+                Job existing = Jobs[i];
+                if (existing != null)
                 {
-                    return job;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -70,12 +82,17 @@ namespace OP_Engine.Jobs
 
         public static Job GetJob(string name, long owner_id)
         {
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (job.Name == name &&
-                    job.OwnerIDs.Contains(owner_id))
+                Job existing = Jobs[i];
+                if (existing != null)
                 {
-                    return job;
+                    if (existing.Name == name &&
+                        existing.OwnerIDs.Contains(owner_id))
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -86,11 +103,16 @@ namespace OP_Engine.Jobs
         {
             List<Job> jobs = new List<Job>();
 
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (job.Name == name)
+                Job existing = Jobs[i];
+                if (existing != null)
                 {
-                    jobs.Add(job);
+                    if (existing.Name == name)
+                    {
+                        jobs.Add(existing);
+                    }
                 }
             }
 
@@ -101,11 +123,16 @@ namespace OP_Engine.Jobs
         {
             List<Job> jobs = new List<Job>();
 
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (job.OwnerIDs.Contains(owner_id))
+                Job existing = Jobs[i];
+                if (existing != null)
                 {
-                    jobs.Add(job);
+                    if (existing.OwnerIDs.Contains(owner_id))
+                    {
+                        jobs.Add(existing);
+                    }
                 }
             }
 
@@ -116,12 +143,17 @@ namespace OP_Engine.Jobs
         {
             List<Job> jobs = new List<Job>();
 
-            foreach (Job job in Jobs)
+            int count = Jobs.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (job.Name == name &&
-                    job.OwnerIDs.Contains(owner_id))
+                Job existing = Jobs[i];
+                if (existing != null)
                 {
-                    jobs.Add(job);
+                    if (existing.Name == name &&
+                        existing.OwnerIDs.Contains(owner_id))
+                    {
+                        jobs.Add(existing);
+                    }
                 }
             }
 

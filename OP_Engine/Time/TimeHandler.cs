@@ -2679,18 +2679,6 @@ namespace OP_Engine.Time
             }
         }
 
-        public virtual DateTime? ToDateTime()
-        {
-            try
-            {
-                return new DateTime((int)TotalYears, (int)Months, (int)Days, (int)Hours, (int)Minutes, (int)Seconds, (int)Milliseconds);
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
-
         public virtual string ToString(bool military_time, bool include_milliseconds, bool include_date)
         {
             string result;

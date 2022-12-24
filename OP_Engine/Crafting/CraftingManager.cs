@@ -26,11 +26,16 @@ namespace OP_Engine.Crafting
 
         public static Recipe GetRecipe(string name)
         {
-            foreach (Recipe recipe in Recipes)
+            int count = Recipes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (recipe.Name == name)
+                Recipe existing = Recipes[i];
+                if (existing != null)
                 {
-                    return recipe;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -39,11 +44,16 @@ namespace OP_Engine.Crafting
 
         public static Recipe GetRecipe(long id)
         {
-            foreach (Recipe recipe in Recipes)
+            int count = Recipes.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (recipe.ID == id)
+                Recipe existing = Recipes[i];
+                if (existing != null)
                 {
-                    return recipe;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -54,32 +64,39 @@ namespace OP_Engine.Crafting
         {
             List<Recipe> recipes = new List<Recipe>();
 
-            foreach (Recipe item in Recipes)
+            int count = Recipes.Count;
+            for (int i = 0; i < count; i++)
             {
-                bool type_found = true;
-                if (!string.IsNullOrEmpty(type) &&
-                    item.Type != type)
+                Recipe existing = Recipes[i];
+                if (existing != null)
                 {
-                    type_found = false;
-                }
-
-                bool categories_found = true;
-                if (categories != null)
-                {
-                    foreach (string category in categories)
+                    bool type_found = true;
+                    if (!string.IsNullOrEmpty(type) &&
+                        existing.Type != type)
                     {
-                        if (!item.Categories.Contains(category))
+                        type_found = false;
+                    }
+
+                    bool categories_found = true;
+                    if (categories != null)
+                    {
+                        int categoryCount = categories.Count;
+                        for (int c = 0; c < categoryCount; c++)
                         {
-                            categories_found = false;
-                            break;
+                            string category = categories[c];
+                            if (!existing.Categories.Contains(category))
+                            {
+                                categories_found = false;
+                                break;
+                            }
                         }
                     }
-                }
 
-                if (type_found &&
-                    categories_found)
-                {
-                    recipes.Add(item);
+                    if (type_found &&
+                        categories_found)
+                    {
+                        recipes.Add(existing);
+                    }
                 }
             }
 

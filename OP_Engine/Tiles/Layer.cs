@@ -35,9 +35,10 @@ namespace OP_Engine.Tiles
 
         public virtual void Update()
         {
-            foreach (Tile tile in Tiles)
+            int count = Tiles.Count;
+            for (int i = 0; i < count; i++)
             {
-                tile.Update();
+                Tiles[i]?.Update();
             }
         }
 
@@ -45,9 +46,10 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                foreach (Tile tile in Tiles)
+                int count = Tiles.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    tile.Draw(spriteBatch, resolution);
+                    Tiles[i]?.Draw(spriteBatch, resolution);
                 }
             }
         }
@@ -56,20 +58,26 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                foreach (Tile tile in Tiles)
+                int count = Tiles.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    tile.Draw(spriteBatch, resolution, color);
+                    Tiles[i]?.Draw(spriteBatch, resolution, color);
                 }
             }
         }
 
         public virtual Tile GetTile(long id)
         {
-            foreach (Tile tile in Tiles)
+            int count = Tiles.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (tile.ID == id)
+                Tile existing = Tiles[i];
+                if (existing != null)
                 {
-                    return tile;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -78,11 +86,16 @@ namespace OP_Engine.Tiles
 
         public virtual Tile GetTile(string name)
         {
-            foreach (Tile tile in Tiles)
+            int count = Tiles.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (tile.Name == name)
+                Tile existing = Tiles[i];
+                if (existing != null)
                 {
-                    return tile;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -106,14 +119,19 @@ namespace OP_Engine.Tiles
 
         public virtual Tile GetTile(Vector3 location)
         {
-            foreach (Tile tile in Tiles)
+            int count = Tiles.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (tile.Location.X == location.X &&
-                    tile.Location.Y == location.Y &&
-                    tile.Location.Z == location.Z)
+                Tile existing = Tiles[i];
+                if (existing != null)
                 {
-                    return tile;
-                }
+                    if (existing.Location.X == location.X &&
+                        existing.Location.Y == location.Y &&
+                        existing.Location.Z == location.Z)
+                    {
+                        return existing;
+                    }
+                } 
             }
 
             return null;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 
 using Microsoft.Xna.Framework;
 
@@ -198,7 +197,8 @@ namespace OP_Engine.Sounds
             {
                 if (SoundChannels.Count > 0)
                 {
-                    for (int c = 0; c < SoundChannels.Count; c++)
+                    int count = SoundChannels.Count;
+                    for (int c = 0; c < count; c++)
                     {
                         FMOD.Channel channel = SoundChannels[c];
                         FMOD.RESULT set_sound_volume = channel.setVolume(0);

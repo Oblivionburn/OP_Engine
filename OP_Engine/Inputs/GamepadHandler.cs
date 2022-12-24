@@ -111,7 +111,8 @@ namespace OP_Engine.Inputs
                     List<Buttons> ButtonsPressed = new List<Buttons>();
                     List<Buttons> ButtonsDown = new List<Buttons>();
 
-                    for (int i = 0; i < ButtonsMapped.Count; i++)
+                    int count = ButtonsMapped.Count;
+                    for (int i = 0; i < count; i++)
                     {
                         var button = ButtonsMapped.ElementAt(i).Value;
 

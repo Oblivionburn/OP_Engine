@@ -69,9 +69,10 @@ namespace OP_Engine.Rendering
                 LightingRenderer.Update();
             }
 
-            foreach (Renderer renderer in Renderers)
+            int count = Renderers.Count;
+            for (int i = 0; i < count; i++)
             {
-                renderer.Update();
+                Renderers[i]?.Update();
             }
         }
 
@@ -118,9 +119,10 @@ namespace OP_Engine.Rendering
                             spriteBatch.End();
                         }
 
-                        foreach (Renderer renderer in Renderers)
+                        int count = Renderers.Count;
+                        for (int i = 0; i < count; i++)
                         {
-                            renderer.Draw(spriteBatch, resolution);
+                            Renderers[i].Draw(spriteBatch, resolution);
                         }
                     }
                 }

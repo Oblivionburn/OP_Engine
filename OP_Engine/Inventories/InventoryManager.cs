@@ -26,11 +26,16 @@ namespace OP_Engine.Inventories
 
         public static Inventory GetInventory(long id)
         {
-            foreach (Inventory inventory in Inventories)
+            int count = Inventories.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (inventory.ID == id)
+                Inventory existing = Inventories[i];
+                if (existing != null)
                 {
-                    return inventory;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -39,11 +44,16 @@ namespace OP_Engine.Inventories
 
         public static Inventory GetInventory(string name)
         {
-            foreach (Inventory inventory in Inventories)
+            int count = Inventories.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (inventory.Name == name)
+                Inventory existing = Inventories[i];
+                if (existing != null)
                 {
-                    return inventory;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 

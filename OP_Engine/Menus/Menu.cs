@@ -498,8 +498,10 @@ namespace OP_Engine.Menus
 
         public virtual Button GetButton(string name)
         {
-            foreach (Button existing in Buttons)
+            int count = Buttons.Count;
+            for (int i = 0; i < count; i++)
             {
+                Button existing = Buttons[i];
                 if (existing.Name == name)
                 {
                     return existing;
@@ -511,8 +513,10 @@ namespace OP_Engine.Menus
 
         public virtual Button GetButton(long id)
         {
-            foreach (Button existing in Buttons)
+            int count = Buttons.Count;
+            for (int i = 0; i < count; i++)
             {
+                Button existing = Buttons[i];
                 if (existing.ID == id)
                 {
                     return existing;
@@ -524,8 +528,10 @@ namespace OP_Engine.Menus
 
         public virtual Button GetButton_Current()
         {
-            foreach (Button existing in Buttons)
+            int count = Buttons.Count;
+            for (int i = 0; i < count; i++)
             {
+                Button existing = Buttons[i];
                 if (existing.ID == Current_Button)
                 {
                     return existing;
@@ -537,8 +543,10 @@ namespace OP_Engine.Menus
 
         public virtual Label GetLabel(string name)
         {
-            foreach (Label existing in Labels)
+            int count = Labels.Count;
+            for (int i = 0; i < count; i++)
             {
+                Label existing = Labels[i];
                 if (existing.Name == name)
                 {
                     return existing;
@@ -550,8 +558,10 @@ namespace OP_Engine.Menus
 
         public virtual Label GetLabel(long id)
         {
-            foreach (Label existing in Labels)
+            int count = Labels.Count;
+            for (int i = 0; i < count; i++)
             {
+                Label existing = Labels[i];
                 if (existing.ID == id)
                 {
                     return existing;
@@ -563,8 +573,10 @@ namespace OP_Engine.Menus
 
         public virtual Picture GetPicture(string name)
         {
-            foreach (Picture existing in Pictures)
+            int count = Pictures.Count;
+            for (int i = 0; i < count; i++)
             {
+                Picture existing = Pictures[i];
                 if (existing.Name == name)
                 {
                     return existing;
@@ -576,8 +588,10 @@ namespace OP_Engine.Menus
 
         public virtual Picture GetPicture(long id)
         {
-            foreach (Picture existing in Pictures)
+            int count = Pictures.Count;
+            for (int i = 0; i < count; i++)
             {
+                Picture existing = Pictures[i];
                 if (existing.ID == id)
                 {
                     return existing;
@@ -589,8 +603,10 @@ namespace OP_Engine.Menus
 
         public virtual Slider GetSlider(string name)
         {
-            foreach (Slider existing in Sliders)
+            int count = Sliders.Count;
+            for (int i = 0; i < count; i++)
             {
+                Slider existing = Sliders[i];
                 if (existing.Name == name)
                 {
                     return existing;
@@ -602,8 +618,10 @@ namespace OP_Engine.Menus
 
         public virtual Slider GetSlider(long id)
         {
-            foreach (Slider existing in Sliders)
+            int count = Sliders.Count;
+            for (int i = 0; i < count; i++)
             {
+                Slider existing = Sliders[i];
                 if (existing.ID == id)
                 {
                     return existing;
@@ -615,8 +633,10 @@ namespace OP_Engine.Menus
 
         public virtual InputBox GetInput(string name)
         {
-            foreach (InputBox existing in Inputs)
+            int count = Inputs.Count;
+            for (int i = 0; i < count; i++)
             {
+                InputBox existing = Inputs[i];
                 if (existing.Name == name)
                 {
                     return existing;
@@ -628,8 +648,10 @@ namespace OP_Engine.Menus
 
         public virtual InputBox GetInput(long id)
         {
-            foreach (InputBox existing in Inputs)
+            int count = Inputs.Count;
+            for (int i = 0; i < count; i++)
             {
+                InputBox existing = Inputs[i];
                 if (existing.ID == id)
                 {
                     return existing;
@@ -641,8 +663,10 @@ namespace OP_Engine.Menus
 
         public virtual ProgressBar GetProgressBar(string name)
         {
-            foreach (ProgressBar existing in ProgressBars)
+            int count = ProgressBars.Count;
+            for (int i = 0; i < count; i++)
             {
+                ProgressBar existing = ProgressBars[i];
                 if (existing.Name == name)
                 {
                     return existing;
@@ -654,8 +678,10 @@ namespace OP_Engine.Menus
 
         public virtual ProgressBar GetProgressBar(long id)
         {
-            foreach (ProgressBar existing in ProgressBars)
+            int count = ProgressBars.Count;
+            for (int i = 0; i < count; i++)
             {
+                ProgressBar existing = ProgressBars[i];
                 if (existing.ID == id)
                 {
                     return existing;

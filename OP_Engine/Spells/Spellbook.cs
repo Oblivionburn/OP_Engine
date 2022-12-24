@@ -25,11 +25,16 @@ namespace OP_Engine.Spells
 
         public Spell GetSpell(long id)
         {
-            foreach (Spell existing in Spells)
+            int count = Spells.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.ID == id)
+                Spell existing = Spells[i];
+                if (existing == null)
                 {
-                    return existing;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -38,12 +43,17 @@ namespace OP_Engine.Spells
 
         public Spell GetSpell(string name)
         {
-            foreach (Spell existing in Spells)
+            int count = Spells.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Spell existing = Spells[i];
+                if (existing == null)
                 {
-                    return existing;
-                }
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
+                } 
             }
 
             return null;

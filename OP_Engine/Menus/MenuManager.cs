@@ -31,46 +31,43 @@ namespace OP_Engine.Menus
 
         public static void Update()
         {
-            foreach (Menu existing in Menus)
+            int count = Menus.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Visible ||
-                    existing.Active)
-                {
-                    existing.Update();
-                }
+                Menus[i]?.Update();
             }
         }
 
         public static void Update(Game gameRef, ContentManager content)
         {
-            foreach (Menu existing in Menus)
+            int count = Menus.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Visible ||
-                    existing.Active)
-                {
-                    existing.Update(gameRef, content);
-                }
+                Menus[i]?.Update(gameRef, content);
             }
         }
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Menu existing in Menus)
+            int count = Menus.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Visible)
-                {
-                    existing.Draw(spriteBatch);
-                }
+                Menus[i]?.Draw(spriteBatch);
             }
         }
 
         public static Menu GetMenu(string name)
         {
-            foreach (Menu menu in Menus)
+            int count = Menus.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (menu.Name == name)
+                Menu existing = Menus[i];
+                if (existing != null)
                 {
-                    return menu;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -79,11 +76,16 @@ namespace OP_Engine.Menus
 
         public static Menu GetMenu(long id)
         {
-            foreach (Menu menu in Menus)
+            int count = Menus.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (menu.ID == id)
+                Menu existing = Menus[i];
+                if (existing != null)
                 {
-                    return menu;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 

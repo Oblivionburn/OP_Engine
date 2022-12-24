@@ -32,9 +32,10 @@ namespace OP_Engine.Tiles
 
         public virtual void Update()
         {
-            foreach (Map map in Maps)
+            int count = Maps.Count;
+            for (int i = 0; i < count; i++)
             {
-                map.Update();
+                Maps[i]?.Update();
             }
         }
 
@@ -42,9 +43,10 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                foreach (Map map in Maps)
+                int count = Maps.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    map.Draw(spriteBatch, resolution);
+                    Maps[i]?.Draw(spriteBatch, resolution);
                 }
             }
         }
@@ -53,21 +55,27 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                foreach (Map map in Maps)
+                int count = Maps.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    map.Draw(spriteBatch, resolution, color);
+                    Maps[i]?.Draw(spriteBatch, resolution, color);
                 }
             }
         }
 
         public virtual Map GetMap(long id)
         {
-            foreach (Map map in Maps)
+            int count = Maps.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (map.ID == id)
+                Map existing = Maps[i];
+                if (existing != null)
                 {
-                    return map;
-                }
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
+                } 
             }
 
             return null;
@@ -75,12 +83,17 @@ namespace OP_Engine.Tiles
 
         public virtual Map GetMap(string name)
         {
-            foreach (Map map in Maps)
+            int count = Maps.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (map.Name == name)
+                Map existing = Maps[i];
+                if (existing != null)
                 {
-                    return map;
-                }
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
+                } 
             }
 
             return null;

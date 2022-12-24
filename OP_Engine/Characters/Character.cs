@@ -300,66 +300,74 @@ namespace OP_Engine.Characters
 
         public virtual Something GetStat(string name)
         {
-            Something result = null;
-
-            foreach (Something existing in Stats)
+            int count = Stats.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Something existing = Stats[i];
+                if (existing != null)
                 {
-                    result = existing;
-                    break;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
-            return result;
+            return null;
         }
 
         public virtual Something GetSkill(string name)
         {
-            Something result = null;
-
-            foreach (Something existing in Skills)
+            int count = Skills.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Something existing = Skills[i];
+                if (existing != null)
                 {
-                    result = existing;
-                    break;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
-            return result;
+            return null;
         }
 
         public virtual Something GetStatusEffect(string name)
         {
-            Something result = null;
-
-            foreach (Something existing in StatusEffects)
+            int count = StatusEffects.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Something existing = StatusEffects[i];
+                if (existing != null)
                 {
-                    result = existing;
-                    break;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
-            return result;
+            return null;
         }
 
-        public virtual Something GetBodyPart(string name)
+        public virtual BodyPart GetBodyPart(string name)
         {
-            Something result = null;
-
-            foreach (Something existing in BodyParts)
+            int count = BodyParts.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                BodyPart existing = BodyParts[i];
+                if (existing != null)
                 {
-                    result = existing;
-                    break;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
-            return result;
+            return null;
         }
 
         public virtual void HearSomething(Direction direction, int distance, string adjective, int strength, int scale)

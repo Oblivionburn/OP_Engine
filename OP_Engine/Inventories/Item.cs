@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using OP_Engine.Utility;
 using OP_Engine.Spells;
+using System.Xml.Linq;
 
 namespace OP_Engine.Inventories
 {
@@ -131,11 +132,16 @@ namespace OP_Engine.Inventories
 
         public virtual Something GetProperty(long id)
         {
-            foreach (Something something in Properties)
+            int count = Properties.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (something.ID == id)
+                Something existing = Properties[i];
+                if (existing != null)
                 {
-                    return something;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -144,11 +150,16 @@ namespace OP_Engine.Inventories
 
         public virtual Something GetProperty(string name)
         {
-            foreach (Something something in Properties)
+            int count = Properties.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (something.Name == name)
+                Something existing = Properties[i];
+                if (existing != null)
                 {
-                    return something;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -159,11 +170,16 @@ namespace OP_Engine.Inventories
         {
             if (Attachments != null)
             {
-                foreach (Item item in Attachments)
+                int count = Attachments.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    if (item.ID == id)
+                    Item existing = Attachments[i];
+                    if (existing != null)
                     {
-                        return item;
+                        if (existing.ID == id)
+                        {
+                            return existing;
+                        }
                     }
                 }
             }
@@ -175,11 +191,16 @@ namespace OP_Engine.Inventories
         {
             if (Attachments != null)
             {
-                foreach (Item item in Attachments)
+                int count = Attachments.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    if (item.Name == name)
+                    Item existing = Attachments[i];
+                    if (existing != null)
                     {
-                        return item;
+                        if (existing.Name == name)
+                        {
+                            return existing;
+                        }
                     }
                 }
             }
@@ -191,11 +212,16 @@ namespace OP_Engine.Inventories
         {
             if (Spells != null)
             {
-                foreach (Spell spell in Spells)
+                int count = Spells.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    if (spell.ID == id)
+                    Spell existing = Spells[i];
+                    if (existing != null)
                     {
-                        return spell;
+                        if (existing.ID == id)
+                        {
+                            return existing;
+                        }
                     }
                 }
             }
@@ -207,11 +233,16 @@ namespace OP_Engine.Inventories
         {
             if (Spells != null)
             {
-                foreach (Spell spell in Spells)
+                int count = Spells.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    if (spell.Name == name)
+                    Spell existing = Spells[i];
+                    if (existing != null)
                     {
-                        return spell;
+                        if (existing.Name == name)
+                        {
+                            return existing;
+                        }
                     }
                 }
             }

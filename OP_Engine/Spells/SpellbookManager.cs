@@ -26,11 +26,16 @@ namespace OP_Engine.Spells
 
         public static Spellbook GetSpellbook(long id)
         {
-            foreach (Spellbook existing in Spellbooks)
+            int count = Spellbooks.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.ID == id)
+                Spellbook existing = Spellbooks[i];
+                if (existing == null)
                 {
-                    return existing;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -39,11 +44,16 @@ namespace OP_Engine.Spells
 
         public static Spellbook GetSpellbook(string name)
         {
-            foreach (Spellbook existing in Spellbooks)
+            int count = Spellbooks.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (existing.Name == name)
+                Spellbook existing = Spellbooks[i];
+                if (existing == null)
                 {
-                    return existing;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 

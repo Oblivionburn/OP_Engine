@@ -24,11 +24,16 @@ namespace OP_Engine.Characters
 
         public virtual Squad GetSquad(long id)
         {
-            foreach (Squad squad in Squads)
+            int count = Squads.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (squad.ID == id)
+                Squad existing = Squads[i];
+                if (existing != null)
                 {
-                    return squad;
+                    if (existing.ID == id)
+                    {
+                        return existing;
+                    }
                 }
             }
 
@@ -37,11 +42,16 @@ namespace OP_Engine.Characters
 
         public virtual Squad GetSquad(string name)
         {
-            foreach (Squad squad in Squads)
+            int count = Squads.Count;
+            for (int i = 0; i < count; i++)
             {
-                if (squad.Name == name)
+                Squad existing = Squads[i];
+                if (existing != null)
                 {
-                    return squad;
+                    if (existing.Name == name)
+                    {
+                        return existing;
+                    }
                 }
             }
 

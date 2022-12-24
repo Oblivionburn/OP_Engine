@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -116,12 +115,17 @@ namespace OP_Engine.Inputs
 
         public static Keys GetKey(string value)
         {
-            foreach (Keys key in Enum.GetValues(typeof(Keys)))
+            Array keys = Enum.GetValues(typeof(Keys));
+
+            int count = keys.Length;
+            for (int i = 0; i < count; i++)
             {
+                Keys key = (Keys)keys.GetValue(i);
                 if (key.ToString() == value)
                 {
                     return key;
                 }
+
             }
 
             return 0;
@@ -129,12 +133,17 @@ namespace OP_Engine.Inputs
 
         public static Buttons GetButton(string value)
         {
-            foreach (Buttons button in Enum.GetValues(typeof(Buttons)))
+            Array buttons = Enum.GetValues(typeof(Buttons));
+
+            int count = buttons.Length;
+            for (int i = 0; i < count; i++)
             {
+                Buttons button = (Buttons)buttons.GetValue(i);
                 if (button.ToString() == value)
                 {
                     return button;
                 }
+
             }
 
             return 0;
