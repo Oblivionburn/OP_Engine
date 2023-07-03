@@ -100,7 +100,6 @@ namespace OP_Engine.Characters
             {
                 if (Destination.X > Location.X)
                 {
-                    Animator.FaceEast(this);
                     MoveTo(new Vector2(Region.X + Speed, Region.Y));
 
                     if (Travelled == Travel_TotalDistance)
@@ -132,7 +131,6 @@ namespace OP_Engine.Characters
                 }
                 else if (Destination.X < Location.X)
                 {
-                    Animator.FaceWest(this);
                     MoveTo(new Vector2(Region.X - Speed, Region.Y));
 
                     if (Travelled == Travel_TotalDistance)
@@ -166,7 +164,6 @@ namespace OP_Engine.Characters
                 {
                     if (Destination.Y > Location.Y)
                     {
-                        Animator.FaceSouth(this);
                         MoveTo(new Vector2(Region.X, Region.Y + Speed));
 
                         if (Travelled == Travel_TotalDistance)
@@ -198,7 +195,6 @@ namespace OP_Engine.Characters
                     }
                     else if (Destination.Y < Location.Y)
                     {
-                        Animator.FaceNorth(this);
                         MoveTo(new Vector2(Region.X, Region.Y - Speed));
 
                         if (Travelled == Travel_TotalDistance)

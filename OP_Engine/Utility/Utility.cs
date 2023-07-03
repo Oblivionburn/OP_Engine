@@ -15,7 +15,7 @@ namespace OP_Engine.Utility
 
         #region Methods
 
-        public static bool RandomPercent(int value)
+        public static bool RandomPercent(float value)
         {
             CryptoRandom random = new CryptoRandom();
             int chance = random.Next(0, 101);

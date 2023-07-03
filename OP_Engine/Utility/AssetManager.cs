@@ -441,6 +441,19 @@ namespace OP_Engine.Utility
             return Textures[name];
         }
 
+        public static Texture2D GetTextureCopy(GraphicsDevice graphicsDevice, string name)
+        {
+            Texture2D texture = Textures[name];
+            Color[] colors = new Color[texture.Width * texture.Height];
+            texture.GetData(colors);
+
+            Texture2D newTexture = new Texture2D(graphicsDevice, texture.Width, texture.Height);
+            newTexture.Name = texture.Name;
+            newTexture.SetData(colors);
+
+            return newTexture;
+        }
+
         public static Effect GetShader(string name)
         {
             return Shaders[name];

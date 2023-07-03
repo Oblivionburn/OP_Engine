@@ -145,7 +145,7 @@ namespace OP_Engine.Rendering
             Logger.LogFile = Environment.CurrentDirectory + @"\CrashLog.txt";
 
             Game = game;
-            Game.Exiting += Game_Exiting;
+            Game.Exiting += OnExit;
 
             Application.EnableVisualStyles();
 
@@ -189,8 +189,11 @@ namespace OP_Engine.Rendering
                                 !TimeManager.Paused)
                             {
                                 Menu main = MenuManager.GetMenu("Main");
-                                main.Visible = true;
-                                main.Active = true;
+                                if (main != null)
+                                {
+                                    main.Visible = true;
+                                    main.Active = true;
+                                }
 
                                 TimeManager.Paused = true;
                             }
@@ -338,7 +341,7 @@ namespace OP_Engine.Rendering
             Game.Exit();
         }
 
-        public void Game_Exiting(object sender, EventArgs e)
+        public virtual void OnExit(object sender, EventArgs e)
         {
             if (Logger.Logs.Count > 0)
             {
