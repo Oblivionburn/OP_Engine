@@ -1,5 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 using OP_Engine.Utility;
 
 namespace OP_Engine.Controls
@@ -14,6 +17,14 @@ namespace OP_Engine.Controls
         public Texture2D Bar_Texture;
         public Region Bar_Region = new Region();
         public Rectangle Bar_Image = new Rectangle();
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnStep;
+        public event EventHandler OnValueIncrease;
+        public event EventHandler OnValueDecrease;
 
         #endregion
 
@@ -59,18 +70,24 @@ namespace OP_Engine.Controls
         {
             IncreaseValueByRate();
             Update();
+
+            OnStep?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void IncreaseValue(int value)
         {
             base.IncreaseValue(value);
             Update();
+
+            OnValueIncrease?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void DecreaseValue(int value)
         {
             base.DecreaseValue(value);
             Update();
+
+            OnValueDecrease?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void SetValue(int value)

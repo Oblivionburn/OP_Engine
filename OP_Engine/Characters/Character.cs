@@ -50,20 +50,23 @@ namespace OP_Engine.Characters
         public Vector2 Formation;
         public Vector3 Destination;
         
-        public bool Travelling;
-        public float Travelled;
-        public float Travel_TotalDistance;
+        public bool Moving;
+        public float Moved;
+        public float Move_TotalDistance;
         public float Speed;
 
         #endregion
 
         #region Events
 
-        public event EventHandler<ReactionEventArgs> HeardSomething;
-        public event EventHandler<ReactionEventArgs> SawSomething;
-        public event EventHandler<ReactionEventArgs> SmelledSomething;
-        public event EventHandler<ReactionEventArgs> TastedSomething;
-        public event EventHandler<ReactionEventArgs> FeltSomething;
+        public event EventHandler OnMove;
+        public event EventHandler OnMovementFinish;
+        public event EventHandler OnKill;
+        public event EventHandler<ReactionEventArgs> OnHearSomething;
+        public event EventHandler<ReactionEventArgs> OnSeeSomething;
+        public event EventHandler<ReactionEventArgs> OnSmellSomething;
+        public event EventHandler<ReactionEventArgs> OnTasteSomething;
+        public event EventHandler<ReactionEventArgs> OnFeelSomething;
 
         #endregion
 
@@ -95,33 +98,33 @@ namespace OP_Engine.Characters
 
         public virtual void Update()
         {
-            if (Travelling &&
+            if (Moving &&
                 Region != null)
             {
                 if (Destination.X > Location.X)
                 {
                     MoveTo(new Vector2(Region.X + Speed, Region.Y));
 
-                    if (Travelled == Travel_TotalDistance)
+                    if (Moved == Move_TotalDistance)
                     {
                         Location.X++;
-                        Travelled = 0;
-                        Travelling = false;
+                        Moved = 0;
+                        Moving = false;
                         Animator.Reset(this);
                     }
-                    else if (Travelled > Travel_TotalDistance)
+                    else if (Moved > Move_TotalDistance)
                     {
                         MoveTo(new Vector2(Region.X - Speed, Region.Y));
                         Location.X = Destination.X;
-                        Travelled = 0;
-                        Travelling = false;
+                        Moved = 0;
+                        Moving = false;
                         Animator.Reset(this);
                     }
                     else
                     {
                         for (int i = 1; i <= Animator.Frames; i++)
                         {
-                            if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
                             {
                                 Animator.Animate(this);
                                 break;
@@ -133,26 +136,26 @@ namespace OP_Engine.Characters
                 {
                     MoveTo(new Vector2(Region.X - Speed, Region.Y));
 
-                    if (Travelled == Travel_TotalDistance)
+                    if (Moved == Move_TotalDistance)
                     {
                         Location.X--;
-                        Travelled = 0;
-                        Travelling = false;
+                        Moved = 0;
+                        Moving = false;
                         Animator.Reset(this);
                     }
-                    else if (Travelled > Travel_TotalDistance)
+                    else if (Moved > Move_TotalDistance)
                     {
                         MoveTo(new Vector2(Region.X + Speed, Region.Y));
                         Location.X = Destination.X;
-                        Travelled = 0;
-                        Travelling = false;
+                        Moved = 0;
+                        Moving = false;
                         Animator.Reset(this);
                     }
                     else
                     {
                         for (int i = 1; i <= Animator.Frames; i++)
                         {
-                            if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
                             {
                                 Animator.Animate(this);
                                 break;
@@ -166,26 +169,26 @@ namespace OP_Engine.Characters
                     {
                         MoveTo(new Vector2(Region.X, Region.Y + Speed));
 
-                        if (Travelled == Travel_TotalDistance)
+                        if (Moved == Move_TotalDistance)
                         {
                             Location.Y++;
-                            Travelled = 0;
-                            Travelling = false;
+                            Moved = 0;
+                            Moving = false;
                             Animator.Reset(this);
                         }
-                        else if (Travelled > Travel_TotalDistance)
+                        else if (Moved > Move_TotalDistance)
                         {
                             MoveTo(new Vector2(Region.X, Region.Y - Speed));
                             Location.Y = Destination.Y;
-                            Travelled = 0;
-                            Travelling = false;
+                            Moved = 0;
+                            Moving = false;
                             Animator.Reset(this);
                         }
                         else
                         {
                             for (int i = 1; i <= Animator.Frames; i++)
                             {
-                                if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
                                 {
                                     Animator.Animate(this);
                                     break;
@@ -197,26 +200,26 @@ namespace OP_Engine.Characters
                     {
                         MoveTo(new Vector2(Region.X, Region.Y - Speed));
 
-                        if (Travelled == Travel_TotalDistance)
+                        if (Moved == Move_TotalDistance)
                         {
                             Location.Y--;
-                            Travelled = 0;
-                            Travelling = false;
+                            Moved = 0;
+                            Moving = false;
                             Animator.Reset(this);
                         }
-                        else if (Travelled > Travel_TotalDistance)
+                        else if (Moved > Move_TotalDistance)
                         {
                             MoveTo(new Vector2(Region.X, Region.Y + Speed));
                             Location.Y = Destination.Y;
-                            Travelled = 0;
-                            Travelling = false;
+                            Moved = 0;
+                            Moving = false;
                             Animator.Reset(this);
                         }
                         else
                         {
                             for (int i = 1; i <= Animator.Frames; i++)
                             {
-                                if (Travelled == (Travel_TotalDistance / Animator.Frames) * i)
+                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
                                 {
                                     Animator.Animate(this);
                                     break;
@@ -226,8 +229,8 @@ namespace OP_Engine.Characters
                     }
                     else
                     {
-                        Travelled = 0;
-                        Travelling = false;
+                        Moved = 0;
+                        Moving = false;
                         Animator.Reset(this);
                     }
                 }
@@ -284,13 +287,15 @@ namespace OP_Engine.Characters
             }
         }
 
-        public virtual void MoveTo(Vector2 location)
+        public virtual void MoveTo(Vector2 region)
         {
             if (Region != null)
             {
-                Region.X = location.X;
-                Region.Y = location.Y;
-                Travelled += Speed;
+                Region.X = region.X;
+                Region.Y = region.Y;
+                Moved += Speed;
+
+                OnMove?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -366,29 +371,35 @@ namespace OP_Engine.Characters
             return null;
         }
 
+        public virtual void Kill()
+        {
+            Dead = true;
+            OnKill?.Invoke(this, EventArgs.Empty);
+        }
+
         public virtual void HearSomething(Direction direction, int distance, string adjective, int strength, int scale)
         {
-            HeardSomething?.Invoke(this, new ReactionEventArgs(direction, distance, adjective, strength, scale));
+            OnHearSomething?.Invoke(this, new ReactionEventArgs(direction, distance, adjective, strength, scale));
         }
 
         public virtual void SeeSomething(Direction direction, int distance, string adjective, float light_level, int scale)
         {
-            SawSomething?.Invoke(this, new ReactionEventArgs(direction, distance, adjective, light_level, scale));
+            OnSeeSomething?.Invoke(this, new ReactionEventArgs(direction, distance, adjective, light_level, scale));
         }
 
         public virtual void SmellSomething(Direction direction, string adjective, int strength, int scale)
         {
-            SmelledSomething?.Invoke(this, new ReactionEventArgs(direction, adjective, strength, scale));
+            OnSmellSomething?.Invoke(this, new ReactionEventArgs(direction, adjective, strength, scale));
         }
 
         public virtual void TasteSomething(string adjective, int strength, int scale)
         {
-            TastedSomething?.Invoke(this, new ReactionEventArgs(adjective, strength, scale));
+            OnTasteSomething?.Invoke(this, new ReactionEventArgs(adjective, strength, scale));
         }
 
         public virtual void FeelSomething(string adjective, int strength, int scale, BodyPart body_part)
         {
-            FeltSomething?.Invoke(this, new ReactionEventArgs(adjective, strength, scale, body_part));
+            OnFeelSomething?.Invoke(this, new ReactionEventArgs(adjective, strength, scale, body_part));
         }
 
         public override void Dispose()

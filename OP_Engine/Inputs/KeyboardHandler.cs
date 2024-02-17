@@ -40,8 +40,8 @@ namespace OP_Engine.Inputs
 
         #region Events
 
-        public event EventHandler StateChanged;
-        public event EventHandler<KeyEventArgs> KeyStateChanged;
+        public event EventHandler OnStateChange;
+        public event EventHandler<KeyEventArgs> OnKeyStateChange;
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace OP_Engine.Inputs
         public KeyboardHandler(Game game)
         {
             keyboardListener.Elapsed += Check_KeyboardState;
-            StateChanged += Check_KeyState;
+            OnStateChange += Check_KeyState;
 
             game.Activated += Game_Activated;
             game.Deactivated += Game_Deactivated;
@@ -69,7 +69,7 @@ namespace OP_Engine.Inputs
                 lastKeyboardState = keyboardState;
                 keyboardState = Keyboard.GetState();
 
-                StateChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -80,7 +80,7 @@ namespace OP_Engine.Inputs
                 lastKeyboardState = keyboardState;
                 keyboardState = Keyboard.GetState();
 
-                StateChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -113,7 +113,7 @@ namespace OP_Engine.Inputs
                 if (KeysPressed.Count > 0 ||
                     KeysDown.Count > 0)
                 {
-                    KeyStateChanged?.Invoke(this, new KeyEventArgs(KeysPressed, KeysDown));
+                    OnKeyStateChange?.Invoke(this, new KeyEventArgs(KeysPressed, KeysDown));
                 }
             }
             catch (Exception)

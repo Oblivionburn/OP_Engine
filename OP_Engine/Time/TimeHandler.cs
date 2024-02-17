@@ -39,16 +39,16 @@ namespace OP_Engine.Time
 
         #region Events
 
-        public event EventHandler MillisecondsChanged;
-        public event EventHandler SecondsChanged;
-        public event EventHandler MinutesChanged;
-        public event EventHandler HoursChanged;
-        public event EventHandler DaysChanged;
-        public event EventHandler MonthsChanged;
-        public event EventHandler YearsChanged;
-        public event EventHandler DecadesChanged;
-        public event EventHandler CenturiesChanged;
-        public event EventHandler MillenniaChanged;
+        public event EventHandler OnMillisecondsChange;
+        public event EventHandler OnSecondsChange;
+        public event EventHandler OnMinutesChange;
+        public event EventHandler OnHoursChange;
+        public event EventHandler OnDaysChange;
+        public event EventHandler OnMonthsChange;
+        public event EventHandler OnYearsChange;
+        public event EventHandler OnDecadesChange;
+        public event EventHandler OnCenturiesChange;
+        public event EventHandler OnMillenniaChange;
 
         #endregion
 
@@ -451,7 +451,7 @@ namespace OP_Engine.Time
             {
                 TotalMilliseconds++;
                 Milliseconds++;
-                MillisecondsChanged?.Invoke(this, EventArgs.Empty);
+                OnMillisecondsChange?.Invoke(this, EventArgs.Empty);
 
                 if (Milliseconds >= 1000)
                 {
@@ -459,73 +459,73 @@ namespace OP_Engine.Time
 
                     TotalSeconds++;
                     Seconds++;
-                    SecondsChanged?.Invoke(this, EventArgs.Empty);
+                    OnSecondsChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                    if (Seconds >= 60)
-                    {
-                        Seconds = 0;
+                if (Seconds >= 60)
+                {
+                    Seconds = 0;
 
-                        TotalMinutes++;
-                        Minutes++;
-                        MinutesChanged?.Invoke(this, EventArgs.Empty);
+                    TotalMinutes++;
+                    Minutes++;
+                    OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                        if (Minutes >= 60)
-                        {
-                            Minutes = 0;
+                if (Minutes >= 60)
+                {
+                    Minutes = 0;
 
-                            TotalHours++;
-                            Hours++;
-                            HoursChanged?.Invoke(this, EventArgs.Empty);
+                    TotalHours++;
+                    Hours++;
+                    OnHoursChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                            if (Hours >= Hours_In_Day)
-                            {
-                                Hours = 0;
-                                TotalDays++;
-                                Days++;
-                                DaysChanged?.Invoke(this, EventArgs.Empty);
+                if (Hours >= Hours_In_Day)
+                {
+                    Hours = 0;
+                    TotalDays++;
+                    Days++;
+                    OnDaysChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                                if (Days > Days_In_Month)
-                                {
-                                    Days = 1;
-                                    TotalMonths++;
-                                    Months++;
-                                    MonthsChanged?.Invoke(this, EventArgs.Empty);
+                if (Days > Days_In_Month)
+                {
+                    Days = 1;
+                    TotalMonths++;
+                    Months++;
+                    OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                                    if (Months > Months_In_Year)
-                                    {
-                                        Months = 1;
-                                        TotalYears++;
-                                        Years++;
-                                        YearsChanged?.Invoke(this, EventArgs.Empty);
+                if (Months > Months_In_Year)
+                {
+                    Months = 1;
+                    TotalYears++;
+                    Years++;
+                    OnYearsChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                                        if (Years >= 10)
-                                        {
-                                            Years = 0;
-                                            TotalDecades++;
-                                            Decades++;
-                                            DecadesChanged?.Invoke(this, EventArgs.Empty);
+                if (Years >= 10)
+                {
+                    Years = 0;
+                    TotalDecades++;
+                    Decades++;
+                    OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                                            if (Decades >= 10)
-                                            {
-                                                Decades = 0;
-                                                TotalCenturies++;
-                                                Centuries++;
-                                                CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                if (Decades >= 10)
+                {
+                    Decades = 0;
+                    TotalCenturies++;
+                    Centuries++;
+                    OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                }
 
-                                                if (Centuries >= 10)
-                                                {
-                                                    Centuries = 0;
-                                                    TotalMillennia++;
-                                                    Millennia++;
-                                                    MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                if (Centuries >= 10)
+                {
+                    Centuries = 0;
+                    TotalMillennia++;
+                    Millennia++;
+                    OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                 }
             }
 
@@ -558,7 +558,7 @@ namespace OP_Engine.Time
                 {
                     TotalSeconds++;
                     Seconds++;
-                    SecondsChanged?.Invoke(this, EventArgs.Empty);
+                    OnSecondsChange?.Invoke(this, EventArgs.Empty);
 
                     if (Seconds >= 60)
                     {
@@ -566,64 +566,64 @@ namespace OP_Engine.Time
 
                         TotalMinutes++;
                         Minutes++;
-                        MinutesChanged?.Invoke(this, EventArgs.Empty);
+                        OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Minutes >= 60)
-                        {
-                            Minutes = 0;
+                    if (Minutes >= 60)
+                    {
+                        Minutes = 0;
 
-                            TotalHours++;
-                            Hours++;
-                            HoursChanged?.Invoke(this, EventArgs.Empty);
+                        TotalHours++;
+                        Hours++;
+                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Hours >= Hours_In_Day)
-                            {
-                                Hours = 0;
-                                TotalDays++;
-                                Days++;
-                                DaysChanged?.Invoke(this, EventArgs.Empty);
+                    if (Hours >= Hours_In_Day)
+                    {
+                        Hours = 0;
+                        TotalDays++;
+                        Days++;
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Days > Days_In_Month)
-                                {
-                                    Days = 1;
-                                    TotalMonths++;
-                                    Months++;
-                                    MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Days > Days_In_Month)
+                    {
+                        Days = 1;
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Months > Months_In_Year)
-                                    {
-                                        Months = 1;
-                                        TotalYears++;
-                                        Years++;
-                                        YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                        if (Years >= 10)
-                                        {
-                                            Years = 0;
-                                            TotalDecades++;
-                                            Decades++;
-                                            DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                            if (Decades >= 10)
-                                            {
-                                                Decades = 0;
-                                                TotalCenturies++;
-                                                Centuries++;
-                                                CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                                if (Centuries >= 10)
-                                                {
-                                                    Centuries = 0;
-                                                    TotalMillennia++;
-                                                    Millennia++;
-                                                    MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -657,7 +657,7 @@ namespace OP_Engine.Time
                 {
                     TotalSeconds++;
                     Seconds++;
-                    SecondsChanged?.Invoke(this, EventArgs.Empty);
+                    OnSecondsChange?.Invoke(this, EventArgs.Empty);
 
                     if (Seconds >= 60)
                     {
@@ -665,64 +665,64 @@ namespace OP_Engine.Time
 
                         TotalMinutes++;
                         Minutes++;
-                        MinutesChanged?.Invoke(this, EventArgs.Empty);
+                        OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Minutes >= 60)
-                        {
-                            Minutes = 0;
+                    if (Minutes >= 60)
+                    {
+                        Minutes = 0;
 
-                            TotalHours++;
-                            Hours++;
-                            HoursChanged?.Invoke(this, EventArgs.Empty);
+                        TotalHours++;
+                        Hours++;
+                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Hours >= Hours_In_Day)
-                            {
-                                Hours = 0;
-                                TotalDays++;
-                                Days++;
-                                DaysChanged?.Invoke(this, EventArgs.Empty);
+                    if (Hours >= Hours_In_Day)
+                    {
+                        Hours = 0;
+                        TotalDays++;
+                        Days++;
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Days > Days_In_Month)
-                                {
-                                    Days = 1;
-                                    TotalMonths++;
-                                    Months++;
-                                    MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Days > Days_In_Month)
+                    {
+                        Days = 1;
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Months > Months_In_Year)
-                                    {
-                                        Months = 1;
-                                        TotalYears++;
-                                        Years++;
-                                        YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                        if (Years >= 10)
-                                        {
-                                            Years = 0;
-                                            TotalDecades++;
-                                            Decades++;
-                                            DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                            if (Decades >= 10)
-                                            {
-                                                Decades = 0;
-                                                TotalCenturies++;
-                                                Centuries++;
-                                                CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                                if (Centuries >= 10)
-                                                {
-                                                    Centuries = 0;
-                                                    TotalMillennia++;
-                                                    Millennia++;
-                                                    MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -766,7 +766,7 @@ namespace OP_Engine.Time
                 {
                     TotalMinutes++;
                     Minutes++;
-                    MinutesChanged?.Invoke(this, EventArgs.Empty);
+                    OnMinutesChange?.Invoke(this, EventArgs.Empty);
 
                     if (Minutes >= 60)
                     {
@@ -774,55 +774,55 @@ namespace OP_Engine.Time
 
                         TotalHours++;
                         Hours++;
-                        HoursChanged?.Invoke(this, EventArgs.Empty);
+                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Hours >= Hours_In_Day)
-                        {
-                            Hours = 0;
-                            TotalDays++;
-                            Days++;
-                            DaysChanged?.Invoke(this, EventArgs.Empty);
+                    if (Hours >= Hours_In_Day)
+                    {
+                        Hours = 0;
+                        TotalDays++;
+                        Days++;
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Days > Days_In_Month)
-                            {
-                                Days = 1;
-                                TotalMonths++;
-                                Months++;
-                                MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Days > Days_In_Month)
+                    {
+                        Days = 1;
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Months > Months_In_Year)
-                                {
-                                    Months = 1;
-                                    TotalYears++;
-                                    Years++;
-                                    YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Years >= 10)
-                                    {
-                                        Years = 0;
-                                        TotalDecades++;
-                                        Decades++;
-                                        DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                        if (Decades >= 10)
-                                        {
-                                            Decades = 0;
-                                            TotalCenturies++;
-                                            Centuries++;
-                                            CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                            if (Centuries >= 10)
-                                            {
-                                                Centuries = 0;
-                                                TotalMillennia++;
-                                                Millennia++;
-                                                MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -866,7 +866,7 @@ namespace OP_Engine.Time
                 {
                     TotalMinutes++;
                     Minutes++;
-                    MinutesChanged?.Invoke(this, EventArgs.Empty);
+                    OnMinutesChange?.Invoke(this, EventArgs.Empty);
 
                     if (Minutes >= 60)
                     {
@@ -874,55 +874,55 @@ namespace OP_Engine.Time
 
                         TotalHours++;
                         Hours++;
-                        HoursChanged?.Invoke(this, EventArgs.Empty);
+                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Hours >= Hours_In_Day)
-                        {
-                            Hours = 0;
-                            TotalDays++;
-                            Days++;
-                            DaysChanged?.Invoke(this, EventArgs.Empty);
+                    if (Hours >= Hours_In_Day)
+                    {
+                        Hours = 0;
+                        TotalDays++;
+                        Days++;
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Days > Days_In_Month)
-                            {
-                                Days = 1;
-                                TotalMonths++;
-                                Months++;
-                                MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Days > Days_In_Month)
+                    {
+                        Days = 1;
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Months > Months_In_Year)
-                                {
-                                    Months = 1;
-                                    TotalYears++;
-                                    Years++;
-                                    YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Years >= 10)
-                                    {
-                                        Years = 0;
-                                        TotalDecades++;
-                                        Decades++;
-                                        DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                        if (Decades >= 10)
-                                        {
-                                            Decades = 0;
-                                            TotalCenturies++;
-                                            Centuries++;
-                                            CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                            if (Centuries >= 10)
-                                            {
-                                                Centuries = 0;
-                                                TotalMillennia++;
-                                                Millennia++;
-                                                MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -976,54 +976,54 @@ namespace OP_Engine.Time
                 {
                     TotalHours++;
                     Hours++;
-                    HoursChanged?.Invoke(this, EventArgs.Empty);
+                    OnHoursChange?.Invoke(this, EventArgs.Empty);
 
                     if (Hours >= Hours_In_Day)
                     {
                         Hours = 0;
                         TotalDays++;
                         Days++;
-                        DaysChanged?.Invoke(this, EventArgs.Empty);
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Days > Days_In_Month)
-                        {
-                            Days = 1;
-                            TotalMonths++;
-                            Months++;
-                            MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Days > Days_In_Month)
+                    {
+                        Days = 1;
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Months > Months_In_Year)
-                            {
-                                Months = 1;
-                                TotalYears++;
-                                Years++;
-                                YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Years >= 10)
-                                {
-                                    Years = 0;
-                                    TotalDecades++;
-                                    Decades++;
-                                    DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Decades >= 10)
-                                    {
-                                        Decades = 0;
-                                        TotalCenturies++;
-                                        Centuries++;
-                                        CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                        if (Centuries >= 10)
-                                        {
-                                            Centuries = 0;
-                                            TotalMillennia++;
-                                            Millennia++;
-                                            MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1077,54 +1077,54 @@ namespace OP_Engine.Time
                 {
                     TotalHours++;
                     Hours++;
-                    HoursChanged?.Invoke(this, EventArgs.Empty);
+                    OnHoursChange?.Invoke(this, EventArgs.Empty);
 
                     if (Hours >= Hours_In_Day)
                     {
                         Hours = 0;
                         TotalDays++;
                         Days++;
-                        DaysChanged?.Invoke(this, EventArgs.Empty);
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Days > Days_In_Month)
-                        {
-                            Days = 1;
-                            TotalMonths++;
-                            Months++;
-                            MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Days > Days_In_Month)
+                    {
+                        Days = 1;
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Months > Months_In_Year)
-                            {
-                                Months = 1;
-                                TotalYears++;
-                                Years++;
-                                YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Years >= 10)
-                                {
-                                    Years = 0;
-                                    TotalDecades++;
-                                    Decades++;
-                                    DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Decades >= 10)
-                                    {
-                                        Decades = 0;
-                                        TotalCenturies++;
-                                        Centuries++;
-                                        CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                        if (Centuries >= 10)
-                                        {
-                                            Centuries = 0;
-                                            TotalMillennia++;
-                                            Millennia++;
-                                            MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1190,46 +1190,46 @@ namespace OP_Engine.Time
                 {
                     TotalDays++;
                     Days++;
-                    DaysChanged?.Invoke(this, EventArgs.Empty);
+                    OnDaysChange?.Invoke(this, EventArgs.Empty);
 
                     if (Days > Days_In_Month)
                     {
                         Days = 1;
                         TotalMonths++;
                         Months++;
-                        MonthsChanged?.Invoke(this, EventArgs.Empty);
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Months > Months_In_Year)
-                        {
-                            Months = 1;
-                            TotalYears++;
-                            Years++;
-                            YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Years >= 10)
-                            {
-                                Years = 0;
-                                TotalDecades++;
-                                Decades++;
-                                DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Decades >= 10)
-                                {
-                                    Decades = 0;
-                                    TotalCenturies++;
-                                    Centuries++;
-                                    CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Centuries >= 10)
-                                    {
-                                        Centuries = 0;
-                                        TotalMillennia++;
-                                        Millennia++;
-                                        MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1295,46 +1295,46 @@ namespace OP_Engine.Time
                 {
                     TotalDays++;
                     Days++;
-                    DaysChanged?.Invoke(this, EventArgs.Empty);
+                    OnDaysChange?.Invoke(this, EventArgs.Empty);
 
                     if (Days > Days_In_Month)
                     {
                         Days = 1;
                         TotalMonths++;
                         Months++;
-                        MonthsChanged?.Invoke(this, EventArgs.Empty);
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Months > Months_In_Year)
-                        {
-                            Months = 1;
-                            TotalYears++;
-                            Years++;
-                            YearsChanged?.Invoke(this, EventArgs.Empty);
+                    if (Months > Months_In_Year)
+                    {
+                        Months = 1;
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Years >= 10)
-                            {
-                                Years = 0;
-                                TotalDecades++;
-                                Decades++;
-                                DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Decades >= 10)
-                                {
-                                    Decades = 0;
-                                    TotalCenturies++;
-                                    Centuries++;
-                                    CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                    if (Centuries >= 10)
-                                    {
-                                        Centuries = 0;
-                                        TotalMillennia++;
-                                        Millennia++;
-                                        MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                    }
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1414,38 +1414,38 @@ namespace OP_Engine.Time
                 {
                     TotalMonths++;
                     Months++;
-                    MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    OnMonthsChange?.Invoke(this, EventArgs.Empty);
 
                     if (Months > Months_In_Year)
                     {
                         Months = 1;
                         TotalYears++;
                         Years++;
-                        YearsChanged?.Invoke(this, EventArgs.Empty);
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Years >= 10)
-                        {
-                            Years = 0;
-                            TotalDecades++;
-                            Decades++;
-                            DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Decades >= 10)
-                            {
-                                Decades = 0;
-                                TotalCenturies++;
-                                Centuries++;
-                                CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Centuries >= 10)
-                                {
-                                    Centuries = 0;
-                                    TotalMillennia++;
-                                    Millennia++;
-                                    MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1525,38 +1525,38 @@ namespace OP_Engine.Time
                 {
                     TotalMonths++;
                     Months++;
-                    MonthsChanged?.Invoke(this, EventArgs.Empty);
+                    OnMonthsChange?.Invoke(this, EventArgs.Empty);
 
                     if (Months > Months_In_Year)
                     {
                         Months = 1;
                         TotalYears++;
                         Years++;
-                        YearsChanged?.Invoke(this, EventArgs.Empty);
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Years >= 10)
-                        {
-                            Years = 0;
-                            TotalDecades++;
-                            Decades++;
-                            DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Years >= 10)
+                    {
+                        Years = 0;
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Decades >= 10)
-                            {
-                                Decades = 0;
-                                TotalCenturies++;
-                                Centuries++;
-                                CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                                if (Centuries >= 10)
-                                {
-                                    Centuries = 0;
-                                    TotalMillennia++;
-                                    Millennia++;
-                                    MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                                }
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1652,30 +1652,30 @@ namespace OP_Engine.Time
                 {
                     TotalYears++;
                     Years++;
-                    YearsChanged?.Invoke(this, EventArgs.Empty);
+                    OnYearsChange?.Invoke(this, EventArgs.Empty);
 
                     if (Years >= 10)
                     {
                         Years = 0;
                         TotalDecades++;
                         Decades++;
-                        DecadesChanged?.Invoke(this, EventArgs.Empty);
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Decades >= 10)
-                        {
-                            Decades = 0;
-                            TotalCenturies++;
-                            Centuries++;
-                            CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Centuries >= 10)
-                            {
-                                Centuries = 0;
-                                TotalMillennia++;
-                                Millennia++;
-                                MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1771,30 +1771,30 @@ namespace OP_Engine.Time
                 {
                     TotalYears++;
                     Years++;
-                    YearsChanged?.Invoke(this, EventArgs.Empty);
+                    OnYearsChange?.Invoke(this, EventArgs.Empty);
 
                     if (Years >= 10)
                     {
                         Years = 0;
                         TotalDecades++;
                         Decades++;
-                        DecadesChanged?.Invoke(this, EventArgs.Empty);
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Decades >= 10)
-                        {
-                            Decades = 0;
-                            TotalCenturies++;
-                            Centuries++;
-                            CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    if (Decades >= 10)
+                    {
+                        Decades = 0;
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                            if (Centuries >= 10)
-                            {
-                                Centuries = 0;
-                                TotalMillennia++;
-                                Millennia++;
-                                MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                            }
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -1908,22 +1908,22 @@ namespace OP_Engine.Time
                 {
                     TotalDecades++;
                     Decades++;
-                    DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    OnDecadesChange?.Invoke(this, EventArgs.Empty);
 
                     if (Decades >= 10)
                     {
                         Decades = 0;
                         TotalCenturies++;
                         Centuries++;
-                        CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Centuries >= 10)
-                        {
-                            Centuries = 0;
-                            TotalMillennia++;
-                            Millennia++;
-                            MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -2037,22 +2037,22 @@ namespace OP_Engine.Time
                 {
                     TotalDecades++;
                     Decades++;
-                    DecadesChanged?.Invoke(this, EventArgs.Empty);
+                    OnDecadesChange?.Invoke(this, EventArgs.Empty);
 
                     if (Decades >= 10)
                     {
                         Decades = 0;
                         TotalCenturies++;
                         Centuries++;
-                        CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                    }
 
-                        if (Centuries >= 10)
-                        {
-                            Centuries = 0;
-                            TotalMillennia++;
-                            Millennia++;
-                            MillenniaChanged?.Invoke(this, EventArgs.Empty);
-                        }
+                    if (Centuries >= 10)
+                    {
+                        Centuries = 0;
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -2179,14 +2179,14 @@ namespace OP_Engine.Time
                 {
                     TotalCenturies++;
                     Centuries++;
-                    CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    OnCenturiesChange?.Invoke(this, EventArgs.Empty);
 
                     if (Centuries >= 10)
                     {
                         Centuries = 0;
                         TotalMillennia++;
                         Millennia++;
-                        MillenniaChanged?.Invoke(this, EventArgs.Empty);
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -2313,14 +2313,14 @@ namespace OP_Engine.Time
                 {
                     TotalCenturies++;
                     Centuries++;
-                    CenturiesChanged?.Invoke(this, EventArgs.Empty);
+                    OnCenturiesChange?.Invoke(this, EventArgs.Empty);
 
                     if (Centuries >= 10)
                     {
                         Centuries = 0;
                         TotalMillennia++;
                         Millennia++;
-                        MillenniaChanged?.Invoke(this, EventArgs.Empty);
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                     }
                 }
 
@@ -2461,7 +2461,7 @@ namespace OP_Engine.Time
                 {
                     TotalMillennia++;
                     Millennia++;
-                    MillenniaChanged?.Invoke(this, EventArgs.Empty);
+                    OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                 }
 
                 Processing = false;
@@ -2601,7 +2601,7 @@ namespace OP_Engine.Time
                 {
                     TotalMillennia++;
                     Millennia++;
-                    MillenniaChanged?.Invoke(this, EventArgs.Empty);
+                    OnMillenniaChange?.Invoke(this, EventArgs.Empty);
                 }
 
                 Processing = false;

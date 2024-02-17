@@ -9,6 +9,7 @@ namespace OP_Engine.Research
     {
         #region Variables
 
+        public static TimeSpan Rate;
         public static List<ResearchTree> ResearchTrees = new List<ResearchTree>();
 
         #endregion
@@ -23,6 +24,26 @@ namespace OP_Engine.Research
         #endregion
 
         #region Methods
+
+        public static void Update()
+        {
+            int count = ResearchTrees.Count;
+            for (int i = 0; i < count; i++)
+            {
+                ResearchTree tree = ResearchTrees[i];
+                if (!tree.Completed)
+                {
+                    if (Rate != null)
+                    {
+                        tree.Update(Rate);
+                    }
+                    else
+                    {
+                        tree.Update();
+                    }
+                }
+            }
+        }
 
         public static ResearchTree GetResearchTree(string name)
         {

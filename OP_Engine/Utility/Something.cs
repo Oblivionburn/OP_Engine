@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -42,7 +43,7 @@ namespace OP_Engine.Utility
         public bool Visible;
         public Rarity Rarity;
         public Direction Direction;
-        public Dimension2 Coordinates; //X, Y
+        public Vector2 Coordinates; //X, Y
         public Vector3 Location; //X, Y, Z
         public Dimension3 Dimensions; //Width, Height, Depth
         public Texture2D Texture;
@@ -52,14 +53,23 @@ namespace OP_Engine.Utility
 
         #endregion
 
-        #region Constructor
+        #region Events
+
+        public event EventHandler OnValueChange;
+        public event EventHandler OnMinValueChange;
+        public event EventHandler OnMaxValueChange;
+        public event EventHandler OnGainLevel;
+
+        #endregion
+
+        #region Constructors
 
         public Something()
         {
 
         }
 
-        public Something(int id, string name, int value, int max_value)
+        public Something(long id, string name, int value, int max_value)
         {
             ID = id;
             Name = name;
@@ -74,66 +84,88 @@ namespace OP_Engine.Utility
         public virtual void IncreaseMaxValue(float amount)
         {
             Max_Value += amount;
+            OnMaxValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void IncreaseMinValue(float amount)
         {
             Min_Value += amount;
+            OnMinValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void IncreaseValue(float amount)
         {
             Value += amount;
+            OnValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void IncreaseValueByRate()
         {
             Value += Rate;
+            OnValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void DecreaseMaxValue(float amount)
         {
             Max_Value -= amount;
+            OnMaxValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void DecreaseMinValue(float amount)
         {
             Min_Value -= amount;
+            OnMinValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void DecreaseValue(float amount)
         {
             Value -= amount;
+            OnValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void DecreaseValueByRate()
         {
             Value -= Rate;
+            OnValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void SetMaxValue(float amount)
         {
             Max_Value = amount;
+            OnMaxValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void SetMinValue(float amount)
         {
             Min_Value = amount;
+            OnMinValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
         public virtual void SetValue(float amount)
         {
             Value = amount;
+            OnValueChange?.Invoke(this, EventArgs.Empty);
+
             CheckMinMax();
         }
 
@@ -142,14 +174,92 @@ namespace OP_Engine.Utility
             if (Value > Max_Value)
             {
                 Value = Max_Value;
+                OnValueChange?.Invoke(this, EventArgs.Empty);
             }
             else if (Value < Min_Value)
             {
                 Value = Min_Value;
+                OnValueChange?.Invoke(this, EventArgs.Empty);
             }
             else if (Value < 0)
             {
                 Value = 0;
+                OnValueChange?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public virtual void AddXP(int amount)
+        {
+            XP += amount;
+
+            foreach (var level in XP_Needed_ForLevels)
+            {
+                if (level.Key == Level + 1)
+                {
+                    if (XP >= level.Value)
+                    {
+                        XP -= level.Value;
+                        if (XP < 0)
+                        {
+                            XP = 0;
+                        }
+
+                        Level++;
+                        OnGainLevel?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        public virtual float Get_BuyPrice_Markup(float percent)
+        {
+            if (percent >= 1)
+            {
+                return Buy_Price + (Buy_Price * (percent / 100));
+            }
+            else
+            {
+                return Buy_Price + (Buy_Price * percent);
+            }
+        }
+
+        public virtual float Get_BuyPrice_Discount(float percent)
+        {
+            if (percent >= 1)
+            {
+                return Buy_Price - (Buy_Price * (percent / 100));
+            }
+            else
+            {
+                return Buy_Price - (Buy_Price * percent);
+            }
+        }
+
+        public virtual float Get_SellPrice_Markup(float percent)
+        {
+            if (percent >= 1)
+            {
+                return Sell_Price + (Sell_Price * (percent / 100));
+            }
+            else
+            {
+                return Sell_Price + (Sell_Price * percent);
+            }
+        }
+
+        public virtual float Get_SellPrice_Discount(float percent)
+        {
+            if (percent >= 1)
+            {
+                return Sell_Price - (Sell_Price * (percent / 100));
+            }
+            else
+            {
+                return Sell_Price - (Sell_Price * percent);
             }
         }
 

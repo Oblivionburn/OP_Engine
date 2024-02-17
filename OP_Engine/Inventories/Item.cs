@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using OP_Engine.Utility;
 using OP_Engine.Spells;
-using System.Xml.Linq;
 
 namespace OP_Engine.Inventories
 {
@@ -15,7 +15,10 @@ namespace OP_Engine.Inventories
 
         public List<string> Categories = new List<string>();
         public List<string> Materials = new List<string>();
+
         public bool Equipped;
+        public bool Used;
+        public bool OneTimeUse;
 
         //Inventory for items that are containers of other items
         public Inventory Inventory;
@@ -31,6 +34,13 @@ namespace OP_Engine.Inventories
         public Region Icon_Region;
         public Rectangle Icon_Image;
         public Color Icon_DrawColor;
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnUsed;
+        public event EventHandler OnEquipped;
 
         #endregion
 
@@ -248,6 +258,18 @@ namespace OP_Engine.Inventories
             }
 
             return null;
+        }
+
+        public virtual void Equip()
+        {
+            Equipped = true;
+            OnEquipped?.Invoke(this, EventArgs.Empty);
+        }
+
+        public virtual void Use()
+        {
+            Used = true;
+            OnUsed?.Invoke(this, EventArgs.Empty);
         }
 
         public override void Dispose()

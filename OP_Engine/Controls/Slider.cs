@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace OP_Engine.Controls
@@ -15,6 +17,12 @@ namespace OP_Engine.Controls
 
         public Texture2D Slidebar;
         public Rectangle Slidebar_Region;
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnValueSet;
 
         #endregion
 
@@ -91,6 +99,8 @@ namespace OP_Engine.Controls
                     break;
                 }
             }
+
+            OnValueSet?.Invoke(this, EventArgs.Empty);
         }
 
         public override void Dispose()

@@ -48,8 +48,8 @@ namespace OP_Engine.Inputs
 
         #region Events
 
-        public event EventHandler StateChanged;
-        public event EventHandler<ButtonEventArgs> ButtonStateChanged;
+        public event EventHandler OnStateChange;
+        public event EventHandler<ButtonEventArgs> OnButtonStateChange;
 
         #endregion
 
@@ -61,10 +61,10 @@ namespace OP_Engine.Inputs
 
             gamepadListener.Elapsed += Check_GamepadState;
 
-            StateChanged += Check_ButtonState;
-            StateChanged += Check_LeftStickState;
-            StateChanged += Check_RightStickState;
-            StateChanged += Check_DPadState;
+            OnStateChange += Check_ButtonState;
+            OnStateChange += Check_LeftStickState;
+            OnStateChange += Check_RightStickState;
+            OnStateChange += Check_DPadState;
 
             game.Activated += Game_Activated;
             game.Deactivated += Game_Deactivated;
@@ -85,7 +85,7 @@ namespace OP_Engine.Inputs
 
                 Connected = gamePadState.IsConnected;
 
-                StateChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -98,7 +98,7 @@ namespace OP_Engine.Inputs
 
                 Connected = gamePadState.IsConnected;
 
-                StateChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -136,7 +136,7 @@ namespace OP_Engine.Inputs
                     if (ButtonsPressed.Count > 0 ||
                         ButtonsDown.Count > 0)
                     {
-                        ButtonStateChanged?.Invoke(this, new ButtonEventArgs(ButtonsPressed, ButtonsDown));
+                        OnButtonStateChange?.Invoke(this, new ButtonEventArgs(ButtonsPressed, ButtonsDown));
                     }
                 }
                 catch (Exception)

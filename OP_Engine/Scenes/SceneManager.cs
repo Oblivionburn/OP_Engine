@@ -11,7 +11,36 @@ namespace OP_Engine.Scenes
     {
         #region Variables
 
+        public static long CurrentScene_ID;
+        public static long PreviousScene_ID;
+
         public static List<Scene> Scenes = new List<Scene>();
+
+        #endregion
+
+        #region Properties
+
+        public static Scene CurrentScene
+        {
+            get
+            {
+                return GetCurrentScene();
+            }
+        }
+
+        public static Scene PreviousScene
+        {
+            get
+            {
+                return GetPreviousScene();
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        public static event EventHandler OnSceneChange;
 
         #endregion
 
@@ -99,66 +128,6 @@ namespace OP_Engine.Scenes
             }
         }
 
-        public static void ChangeScene(string name)
-        {
-            int count = Scenes.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Scene existing = Scenes[i];
-                if (existing != null)
-                {
-                    if (existing.Name == name)
-                    {
-                        existing.Visible = true;
-                    }
-                    else
-                    {
-                        existing.Visible = false;
-                    }
-                }
-            }
-        }
-
-        public static void ChangeScene(long id)
-        {
-            int count = Scenes.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Scene existing = Scenes[i];
-                if (existing != null)
-                {
-                    if (existing.ID == id)
-                    {
-                        existing.Visible = true;
-                    }
-                    else
-                    {
-                        existing.Visible = false;
-                    }
-                }
-            }
-        }
-
-        public static void ChangeScene(Scene scene)
-        {
-            int count = Scenes.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Scene existing = Scenes[i];
-                if (existing != null)
-                {
-                    if (existing.ID == scene.ID)
-                    {
-                        existing.Visible = true;
-                    }
-                    else
-                    {
-                        existing.Visible = false;
-                    }
-                }
-            }
-        }
-
         public static Scene GetScene(string name)
         {
             int count = Scenes.Count;
@@ -193,6 +162,78 @@ namespace OP_Engine.Scenes
             }
 
             return null;
+        }
+
+        public static Scene GetCurrentScene()
+        {
+            return GetScene(CurrentScene_ID);
+        }
+
+        public static Scene GetPreviousScene()
+        {
+            return GetScene(PreviousScene_ID);
+        }
+
+        public static void ChangeScene(string name)
+        {
+            Scene current_scene = GetCurrentScene();
+            if (current_scene != null)
+            {
+                PreviousScene_ID = CurrentScene_ID;
+
+                current_scene.Visible = false;
+            }
+
+            Scene new_scene = GetScene(name);
+            if (new_scene != null)
+            {
+                CurrentScene_ID = new_scene.ID;
+
+                new_scene.Visible = true;
+            }
+
+            OnSceneChange?.Invoke(null, EventArgs.Empty);
+        }
+
+        public static void ChangeScene(long id)
+        {
+            Scene current_scene = GetCurrentScene();
+            if (current_scene != null)
+            {
+                PreviousScene_ID = CurrentScene_ID;
+
+                current_scene.Visible = false;
+            }
+
+            Scene new_scene = GetScene(id);
+            if (new_scene != null)
+            {
+                CurrentScene_ID = new_scene.ID;
+
+                new_scene.Visible = true;
+            }
+
+            OnSceneChange?.Invoke(null, EventArgs.Empty);
+        }
+
+        public static void ChangeScene(Scene scene)
+        {
+            Scene current_scene = GetCurrentScene();
+            if (current_scene != null)
+            {
+                PreviousScene_ID = CurrentScene_ID;
+
+                current_scene.Visible = false;
+            }
+
+            if (scene != null)
+            {
+                CurrentScene_ID = scene.ID;
+
+                scene.Visible = true;
+            }
+
+            OnSceneChange?.Invoke(null, EventArgs.Empty);
         }
 
         private void Game_Exiting(object sender, EventArgs e)

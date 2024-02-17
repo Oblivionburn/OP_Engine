@@ -15,10 +15,28 @@ namespace OP_Engine.Utility
 
         #region Methods
 
+        public static float ConvertValueToRange(float value, float old_min, float old_max, float new_min, float new_max)
+        {
+            //Convert a value from one number range to another (e.g. local space to screen space)
+
+            float old_range = old_max - old_min;
+            float new_range = new_max - new_min;
+
+            float new_value = (((value - old_min) * new_range) / old_range) + new_min;
+
+            return new_value;
+        }
+
+        public static int DiceRoll(int sides)
+        {
+            CryptoRandom random = new CryptoRandom();
+            return random.Next(1, sides + 1);
+        }
+
         public static bool RandomPercent(float value)
         {
             CryptoRandom random = new CryptoRandom();
-            int chance = random.Next(0, 101);
+            int chance = random.Next(1, 101);
             if (chance <= value)
             {
                 return true;

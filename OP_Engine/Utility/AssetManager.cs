@@ -22,8 +22,8 @@ namespace OP_Engine.Utility
         public static Dictionary<string, Effect> Shaders = new Dictionary<string, Effect>();
         public static Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
         public static Dictionary<string, Dictionary<string, Sound>> Sounds = new Dictionary<string, Dictionary<string, Sound>>();
-        public static Dictionary<string, Dictionary<string, Sound>> Ambient = new Dictionary<string, Dictionary<string, Sound>>();
         public static Dictionary<string, Dictionary<string, Sound>> Music = new Dictionary<string, Dictionary<string, Sound>>();
+        public static Dictionary<string, Dictionary<string, Sound>> Ambient = new Dictionary<string, Dictionary<string, Sound>>();
 
         #endregion
 
@@ -349,45 +349,6 @@ namespace OP_Engine.Utility
 
         #region Play Stuff
 
-        public static void PlayAmbient(string name, bool looping)
-        {
-            SoundManager.PlayMusic(Ambient["Ambient"][name], looping);
-        }
-
-        public static void PlayAmbient(string type, string name, bool looping)
-        {
-            SoundManager.PlayMusic(Ambient[type][name], looping);
-        }
-
-        public static void PlayAmbient_Random(string type, bool looping)
-        {
-            CryptoRandom rand = new CryptoRandom();
-            int choice = rand.Next(0, Ambient[type].Count);
-
-            SoundManager.PlayMusic(Ambient[type].ToList().ElementAt(choice).Value, looping);
-        }
-
-        public static void PlayMusic(string name, bool looping)
-        {
-            SoundManager.PlayMusic(Music["Music"][name], looping);
-            SoundManager.NeedMusic = false;
-        }
-
-        public static void PlayMusic(string type, string name, bool looping)
-        {
-            SoundManager.PlayMusic(Music[type][name], looping);
-            SoundManager.NeedMusic = false;
-        }
-
-        public static void PlayMusic_Random(string type, bool looping)
-        {
-            CryptoRandom rand = new CryptoRandom();
-            int choice = rand.Next(0, Music[type].Count);
-
-            SoundManager.PlayMusic(Music[type].ToList().ElementAt(choice).Value, looping);
-            SoundManager.NeedMusic = false;
-        }
-
         public static void PlaySound(string name)
         {
             SoundManager.PlaySound(Sounds["Sounds"][name]);
@@ -432,6 +393,45 @@ namespace OP_Engine.Utility
             SoundManager.PlaySound_Distance(sound, location, source, max_distance);
         }
 
+        public static void PlayMusic(string name, bool looping)
+        {
+            SoundManager.PlayMusic(Music["Music"][name], looping);
+            SoundManager.NeedMusic = false;
+        }
+
+        public static void PlayMusic(string type, string name, bool looping)
+        {
+            SoundManager.PlayMusic(Music[type][name], looping);
+            SoundManager.NeedMusic = false;
+        }
+
+        public static void PlayMusic_Random(string type, bool looping)
+        {
+            CryptoRandom rand = new CryptoRandom();
+            int choice = rand.Next(0, Music[type].Count);
+
+            SoundManager.PlayMusic(Music[type].ToList().ElementAt(choice).Value, looping);
+            SoundManager.NeedMusic = false;
+        }
+
+        public static void PlayAmbient(string name, bool looping)
+        {
+            SoundManager.PlayMusic(Ambient["Ambient"][name], looping);
+        }
+
+        public static void PlayAmbient(string type, string name, bool looping)
+        {
+            SoundManager.PlayMusic(Ambient[type][name], looping);
+        }
+
+        public static void PlayAmbient_Random(string type, bool looping)
+        {
+            CryptoRandom rand = new CryptoRandom();
+            int choice = rand.Next(0, Ambient[type].Count);
+
+            SoundManager.PlayMusic(Ambient[type].ToList().ElementAt(choice).Value, looping);
+        }
+
         #endregion
 
         #region Get Stuff
@@ -472,6 +472,16 @@ namespace OP_Engine.Utility
         public static Sound GetSound(string type, string name)
         {
             return Sounds[type][name];
+        }
+
+        public static Sound GetMusic(string name)
+        {
+            return Music["Music"][name];
+        }
+
+        public static Sound GetMusic(string type, string name)
+        {
+            return Music[type][name];
         }
 
         public static Sound GetAmbient(string name)

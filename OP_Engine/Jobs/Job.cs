@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using OP_Engine.Time;
 using OP_Engine.Utility;
@@ -10,8 +11,9 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
-        public List<Task> PreviousTasks = new List<Task>();
         public List<Task> Tasks = new List<Task>();
+        public List<Task> TasksCompleted = new List<Task>();
+        public List<Task> TasksAborted = new List<Task>();
 
         #endregion
 
@@ -40,7 +42,7 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time)
         {
-            if (Tasks.Count > 0)
+            if (Tasks.Any())
             {
                 Task current = Tasks[0];
                 if (current != null)
@@ -59,10 +61,10 @@ namespace OP_Engine.Jobs
                     {
                         if (!current.Keep_On_Completed)
                         {
-                            PreviousTasks.Add(Tasks[0]);
-                            if (PreviousTasks.Count > 200)
+                            TasksCompleted.Add(Tasks[0]);
+                            if (TasksCompleted.Count > 200)
                             {
-                                PreviousTasks.RemoveAt(0);
+                                TasksCompleted.RemoveAt(0);
                             }
 
                             Tasks.RemoveAt(0);
@@ -79,7 +81,7 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time, TimeSpan time_span)
         {
-            if (Tasks.Count > 0)
+            if (Tasks.Any())
             {
                 Task current = Tasks[0];
                 if (current != null)
@@ -98,10 +100,10 @@ namespace OP_Engine.Jobs
                     {
                         if (!current.Keep_On_Completed)
                         {
-                            PreviousTasks.Add(Tasks[0]);
-                            if (PreviousTasks.Count > 200)
+                            TasksCompleted.Add(Tasks[0]);
+                            if (TasksCompleted.Count > 200)
                             {
-                                PreviousTasks.RemoveAt(0);
+                                TasksCompleted.RemoveAt(0);
                             }
 
                             Tasks.RemoveAt(0);
@@ -154,7 +156,7 @@ namespace OP_Engine.Jobs
 
         public virtual Task Get_CurrentTask()
         {
-            if (Tasks.Count > 0)
+            if (Tasks.Any())
             {
                 return Tasks[0];
             }
@@ -170,7 +172,7 @@ namespace OP_Engine.Jobs
                 if (task.Started)
                 {
                     task.EndTime = current_time;
-                    PreviousTasks.Add(task);
+                    TasksAborted.Add(task);
                 }
                 
                 Tasks.Remove(task);

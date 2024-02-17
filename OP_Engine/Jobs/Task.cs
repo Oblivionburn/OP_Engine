@@ -18,7 +18,15 @@ namespace OP_Engine.Jobs
         public bool Keep_On_Completed;
 
         public ProgressBar TaskBar;
-        
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnStart;
+        public event EventHandler OnStep;
+        public event EventHandler OnComplete;
+
         #endregion
 
         #region Constructor
@@ -37,20 +45,28 @@ namespace OP_Engine.Jobs
             if (Started &&
                 !Completed)
             {
-                if (TaskBar.Rate > 0 &&
-                    TaskBar.Value < TaskBar.Max_Value)
+                if (current_time != null)
                 {
-                    TaskBar.Step();
-                }
-
-                if (!InProgress(current_time))
-                {
-                    if (EndTime == null)
+                    if (TaskBar.Rate > 0 &&
+                        TaskBar.Value < TaskBar.Max_Value)
                     {
-                        EndTime = current_time;
+                        TaskBar.Step();
                     }
 
-                    Completed = true;
+                    if (!InProgress(current_time))
+                    {
+                        if (EndTime == null)
+                        {
+                            EndTime = current_time;
+                        }
+
+                        Completed = true;
+                        OnComplete?.Invoke(this, EventArgs.Empty);
+                    }
+                    else
+                    {
+                        OnStep?.Invoke(this, EventArgs.Empty);
+                    }
                 }
             }
         }
@@ -86,6 +102,11 @@ namespace OP_Engine.Jobs
                             }
 
                             Completed = true;
+                            OnComplete?.Invoke(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            OnStep?.Invoke(this, EventArgs.Empty);
                         }
                     }
                 }
@@ -96,6 +117,8 @@ namespace OP_Engine.Jobs
         {
             Started = true;
             StartTime = new TimeHandler(current_time);
+
+            OnStart?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Start(TimeHandler current_time, TimeSpan time_span)
@@ -103,6 +126,8 @@ namespace OP_Engine.Jobs
             Started = true;
             StartTime = new TimeHandler(current_time);
             StepTime = new TimeHandler(current_time, time_span);
+
+            OnStart?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual bool InProgress(TimeHandler current_time)

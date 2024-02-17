@@ -111,14 +111,14 @@ namespace OP_Engine.Inputs
 
         #region Events
 
-        public event EventHandler StateChanged;
-        public event EventHandler LeftButtonPressed;
-        public event EventHandler LeftButtonHeld;
-        public event EventHandler RightButtonPressed;
-        public event EventHandler RightButtonHeld;
-        public event EventHandler WheelUp;
-        public event EventHandler WheelDown;
-        public event EventHandler MouseMoved;
+        public event EventHandler OnStateChange;
+        public event EventHandler OnLeftButtonPress;
+        public event EventHandler OnLeftButtonHeld;
+        public event EventHandler OnRightButtonPress;
+        public event EventHandler OnRightButtonHeld;
+        public event EventHandler OnWheelUp;
+        public event EventHandler OnWheelDown;
+        public event EventHandler OnMouseMove;
 
         #endregion
 
@@ -128,10 +128,10 @@ namespace OP_Engine.Inputs
         {
             mouseListener.Elapsed += Check_MouseState;
 
-            StateChanged += Check_LeftButton;
-            StateChanged += Check_RightButton;
-            StateChanged += Check_MouseWheel;
-            StateChanged += Check_MouseMoved;
+            OnStateChange += Check_LeftButton;
+            OnStateChange += Check_RightButton;
+            OnStateChange += Check_MouseWheel;
+            OnStateChange += Check_MouseMoved;
 
             game.Activated += Game_Activated;
             game.Deactivated += Game_Deactivated;
@@ -150,7 +150,7 @@ namespace OP_Engine.Inputs
                 lastMouseState = mouseState;
                 mouseState = Mouse.GetState();
 
-                StateChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -161,7 +161,7 @@ namespace OP_Engine.Inputs
                 lastMouseState = mouseState;
                 mouseState = Mouse.GetState();
 
-                StateChanged?.Invoke(this, EventArgs.Empty);
+                OnStateChange?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -170,11 +170,12 @@ namespace OP_Engine.Inputs
             if (mouseState.LeftButton == ButtonState.Released &&
                 lastMouseState.LeftButton == ButtonState.Pressed)
             {
-                LeftButtonPressed?.Invoke(this, EventArgs.Empty);
+                OnLeftButtonPress?.Invoke(this, EventArgs.Empty);
             }
-            else if (mouseState.LeftButton == ButtonState.Pressed)
+            else if (mouseState.LeftButton == ButtonState.Pressed &&
+                     lastMouseState.LeftButton == ButtonState.Pressed)
             {
-                LeftButtonHeld?.Invoke(this, EventArgs.Empty);
+                OnLeftButtonHeld?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -183,11 +184,12 @@ namespace OP_Engine.Inputs
             if (mouseState.RightButton == ButtonState.Released &&
                 lastMouseState.RightButton == ButtonState.Pressed)
             {
-                RightButtonPressed?.Invoke(this, EventArgs.Empty);
+                OnRightButtonPress?.Invoke(this, EventArgs.Empty);
             }
-            else if (mouseState.RightButton == ButtonState.Pressed)
+            else if (mouseState.RightButton == ButtonState.Pressed &&
+                     lastMouseState.RightButton == ButtonState.Pressed)
             {
-                RightButtonHeld?.Invoke(this, EventArgs.Empty);
+                OnRightButtonHeld?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -195,11 +197,11 @@ namespace OP_Engine.Inputs
         {
             if (lastMouseState.ScrollWheelValue < mouseState.ScrollWheelValue)
             {
-                WheelUp?.Invoke(this, EventArgs.Empty);
+                OnWheelUp?.Invoke(this, EventArgs.Empty);
             }
             else if (lastMouseState.ScrollWheelValue > mouseState.ScrollWheelValue)
             {
-                WheelDown?.Invoke(this, EventArgs.Empty);
+                OnWheelDown?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -208,7 +210,7 @@ namespace OP_Engine.Inputs
             if (mouseState.X != lastMouseState.X || 
                 mouseState.Y != lastMouseState.Y)
             {
-                MouseMoved?.Invoke(this, EventArgs.Empty);
+                OnMouseMove?.Invoke(this, EventArgs.Empty);
             }
         }
 

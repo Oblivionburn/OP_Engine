@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -22,6 +23,13 @@ namespace OP_Engine.Scenes
         public float TextFrame_OpaqueLevel;
         public List<Button> Messages = new List<Button>();
         public bool BlockMessages;
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnLoad;
+        public event EventHandler OnResize;
 
         #endregion
 
@@ -100,17 +108,17 @@ namespace OP_Engine.Scenes
 
         public virtual void Load()
         {
-
+            OnLoad?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Load(ContentManager content)
         {
-
+            OnLoad?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Resize(Point point)
         {
-
+            OnResize?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void PrintMessage(SpriteFont font, string text, Point resolution)

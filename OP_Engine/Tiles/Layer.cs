@@ -137,53 +137,76 @@ namespace OP_Engine.Tiles
             return null;
         }
 
-        public virtual Tile GetTile(Rectangle region)
+        public virtual Tile GetTile(Point screen_point, Point tileSize)
         {
             //This only works if the tiles are sorted by Y,X
             //Can use Sort_ForDrawing() method to pre-sort them by Y,X
 
-            Tile result = null;
+            int min_x = (int)Tiles[0].Region.X;
+            int max_x = min_x + (tileSize.X * Columns);
+            int min_y = (int)Tiles[0].Region.Y;
+            int max_y = min_y + (tileSize.Y * Rows);
 
-            int min = 0;
-            int max = Tiles.Count - 1;
-
-            while (min <= max)
+            int y_pos = 0;
+            for (int y = min_y; y < max_y; y += tileSize.Y)
             {
-                int mid = (min + max) / 2;
-                if (mid < Tiles.Count)
-                {
-                    if (region.Y == Tiles[mid].Region.Y)
-                    {
-                        if (region.X == Tiles[mid].Region.X)
-                        {
-                            result = Tiles[mid];
-                            break;
-                        }
-                        else if (region.X < Tiles[mid].Region.X)
-                        {
-                            max = mid - 1;
-                        }
-                        else
-                        {
-                            min = mid + 1;
-                        }
-                    }
-                    else if (region.Y < Tiles[mid].Region.Y)
-                    {
-                        max = mid - 1;
-                    }
-                    else
-                    {
-                        min = mid + 1;
-                    }
-                }
-                else
+                if (screen_point.Y == y)
                 {
                     break;
                 }
+
+                y_pos++;
             }
 
-            return result;
+            int x_pos = 0;
+            for (int x = min_x; x < max_x; x += tileSize.X)
+            {
+                if (screen_point.X == x)
+                {
+                    break;
+                }
+
+                x_pos++;
+            }
+
+            return GetTile(new Vector2(x_pos, y_pos));
+        }
+
+        public virtual Tile WithinTile(Point screen_point, Point tileSize)
+        {
+            //This only works if the tiles are sorted by Y,X
+            //Can use Sort_ForDrawing() method to pre-sort them by Y,X
+
+            int min_x = (int)Tiles[0].Region.X;
+            int max_x = min_x + (tileSize.X * Columns);
+            int min_y = (int)Tiles[0].Region.Y;
+            int max_y = min_y + (tileSize.Y * Rows);
+
+            int y_pos = 0;
+            for (int y = min_y; y < max_y; y += tileSize.Y)
+            {
+                if (screen_point.Y >= y &&
+                    screen_point.Y < y + tileSize.Y)
+                {
+                    break;
+                }
+
+                y_pos++;
+            }
+
+            int x_pos = 0;
+            for (int x = min_x; x < max_x; x += tileSize.X)
+            {
+                if (screen_point.X >= x &&
+                    screen_point.X < x + tileSize.X)
+                {
+                    break;
+                }
+
+                x_pos++;
+            }
+
+            return GetTile(new Vector2(x_pos, y_pos));
         }
 
         public virtual void Sort_ForDrawing()

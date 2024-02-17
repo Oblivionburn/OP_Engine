@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -22,6 +23,20 @@ namespace OP_Engine.Menus
         public List<InputBox> Inputs = new List<InputBox>();
         public List<ProgressBar> ProgressBars = new List<ProgressBar>();
         public Color nullColor = new Color(0, 0, 0, 0);
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnOpen;
+        public event EventHandler OnClose;
+        public event EventHandler OnLoad;
+        public event EventHandler OnClear;
+        public event EventHandler OnAddButton;
+        public event EventHandler OnAddPicture;
+        public event EventHandler OnAddLabel;
+        public event EventHandler OnAddProgressBar;
+        public event EventHandler OnAddInput;
 
         #endregion
 
@@ -128,17 +143,17 @@ namespace OP_Engine.Menus
 
         public virtual void Open()
         {
-
+            OnOpen?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Close()
         {
-            
+            OnClose?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Load()
         {
-
+            OnLoad?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Clear()
@@ -149,11 +164,13 @@ namespace OP_Engine.Menus
             Sliders.Clear();
             Inputs.Clear();
             ProgressBars.Clear();
+
+            OnClear?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Load(ContentManager content)
         {
-
+            OnLoad?.Invoke(this, EventArgs.Empty);
         }
 
         public virtual void Resize(Point point)
@@ -188,6 +205,8 @@ namespace OP_Engine.Menus
             button.Visible = visible;
             button.Enabled = true;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Region region, bool selected, bool visible)
@@ -206,6 +225,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
@@ -224,6 +245,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Region region, bool selected, bool visible)
@@ -243,6 +266,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
@@ -262,6 +287,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
@@ -295,6 +322,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
@@ -328,6 +357,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
@@ -362,6 +393,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
@@ -396,6 +429,8 @@ namespace OP_Engine.Menus
             button.Selected = selected;
             button.Visible = visible;
             Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddPicture(long id, string name, Texture2D texture, Region region, Color color, bool visible)
@@ -409,6 +444,8 @@ namespace OP_Engine.Menus
             picture.DrawColor = color;
             picture.Visible = visible;
             Pictures.Add(picture);
+
+            OnAddPicture?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Region region, bool visible)
@@ -423,6 +460,8 @@ namespace OP_Engine.Menus
             label.Region = region;
             label.Visible = visible;
             Labels.Add(label);
+
+            OnAddLabel?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Region region, bool visible)
@@ -439,6 +478,8 @@ namespace OP_Engine.Menus
             label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
             label.Visible = visible;
             Labels.Add(label);
+
+            OnAddLabel?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Region region, Color draw_color, bool visible)
@@ -455,6 +496,8 @@ namespace OP_Engine.Menus
             label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
             label.Visible = visible;
             Labels.Add(label);
+
+            OnAddLabel?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddProgressBar(long id, string name, int max, int value, int increment, Texture2D base_texture, Texture2D bar_texture, Region region, Color color, bool visible)
@@ -475,6 +518,8 @@ namespace OP_Engine.Menus
             progressBar.Update();
 
             ProgressBars.Add(progressBar);
+
+            OnAddProgressBar?.Invoke(this, EventArgs.Empty);
         }
 
         public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Texture2D texture, Region region, bool active, bool visible)
@@ -494,6 +539,8 @@ namespace OP_Engine.Menus
             input.Opacity = 0.8f;
             input.Active = active;
             Inputs.Add(input);
+
+            OnAddInput?.Invoke(this, EventArgs.Empty);
         }
 
         public Button GetButton(string name)
