@@ -178,15 +178,58 @@ namespace OP_Engine.Menus
 
         }
 
+        public void AddButton(ButtonOptions options)
+        {
+            Button button = new Button
+            {
+                ID = options.id,
+                Name = options.name,
+                Text = options.text,
+                Font = options.font,
+                TextColor = options.text_color,
+                TextColor_Selected = options.text_selected_color,
+                TextColor_Disabled = options.text_disabled_color,
+                DrawColor = options.draw_color,
+                Texture = options.texture,
+                Texture_Highlight = options.texture_highlight,
+                Texture_Disabled = options.texture_disabled,
+                Region = options.region,
+                Selected = options.selected,
+                Visible = options.visible
+            };
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+            else if (button.Texture_Highlight != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Highlight.Width, button.Texture_Highlight.Height);
+            }
+            else if (button.Texture_Disabled != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
+            }
+
+            Buttons.Add(button);
+
+            OnAddButton?.Invoke(this, EventArgs.Empty);
+        }
+
         public void AddButton(long id, string name, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color color, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Texture = texture;
-            button.Texture_Highlight = texture_hover;
-            button.Texture_Disabled = texture_disabled;
-            button.Region = region;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Texture = texture,
+                Texture_Highlight = texture_hover,
+                Texture_Disabled = texture_disabled,
+                Region = region,
+                DrawColor = color,
+                Visible = visible,
+                Enabled = true
+            };
 
             if (button.Texture != null)
             {
@@ -201,110 +244,139 @@ namespace OP_Engine.Menus
                 button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
             }
 
-            button.DrawColor = color;
-            button.Visible = visible;
-            button.Enabled = true;
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Texture2D texture, Region region, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.DrawColor = Color.White;
-            button.Texture = texture;
-            button.Region = region;
-            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
-            button.Selected = selected;
-            button.Visible = visible;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                DrawColor = Color.White,
+                Texture = texture,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.DrawColor = draw_color;
-            button.Texture = texture;
-            button.Region = region;
-            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
-            button.Selected = selected;
-            button.Visible = visible;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                DrawColor = draw_color,
+                Texture = texture,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Color text_disabled_color, Texture2D texture, Region region, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.TextColor_Disabled = text_disabled_color;
-            button.DrawColor = Color.White;
-            button.Texture = texture;
-            button.Region = region;
-            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
-            button.Selected = selected;
-            button.Visible = visible;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                TextColor_Disabled = text_disabled_color,
+                DrawColor = Color.White,
+                Texture = texture,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Color text_disabled_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.TextColor_Disabled = text_disabled_color;
-            button.DrawColor = draw_color;
-            button.Texture = texture;
-            button.Region = region;
-            button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
-            button.Selected = selected;
-            button.Visible = visible;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                TextColor_Disabled = text_disabled_color,
+                DrawColor = draw_color,
+                Texture = texture,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
+
+            if (button.Texture != null)
+            {
+                button.Image = new Rectangle(0, 0, button.Texture.Width, button.Texture.Height);
+            }
+
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.DrawColor = Color.White;
-            button.Texture = texture;
-            button.Texture_Highlight = texture_hover;
-            button.Texture_Disabled = texture_disabled;
-            button.Region = region;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                DrawColor = Color.White,
+                Texture = texture,
+                Texture_Highlight = texture_hover,
+                Texture_Disabled = texture_disabled,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
 
             if (button.Texture != null)
             {
@@ -319,27 +391,29 @@ namespace OP_Engine.Menus
                 button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
             }
 
-            button.Selected = selected;
-            button.Visible = visible;
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.DrawColor = draw_color;
-            button.Texture = texture;
-            button.Texture_Highlight = texture_hover;
-            button.Texture_Disabled = texture_disabled;
-            button.Region = region;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                DrawColor = draw_color,
+                Texture = texture,
+                Texture_Highlight = texture_hover,
+                Texture_Disabled = texture_disabled,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
 
             if (button.Texture != null)
             {
@@ -354,28 +428,30 @@ namespace OP_Engine.Menus
                 button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
             }
 
-            button.Selected = selected;
-            button.Visible = visible;
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.TextColor_Disabled = text_disabled_color;
-            button.DrawColor = Color.White;
-            button.Texture = texture;
-            button.Texture_Highlight = texture_hover;
-            button.Texture_Disabled = texture_disabled;
-            button.Region = region;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                TextColor_Disabled = text_disabled_color,
+                DrawColor = Color.White,
+                Texture = texture,
+                Texture_Highlight = texture_hover,
+                Texture_Disabled = texture_disabled,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
 
             if (button.Texture != null)
             {
@@ -390,28 +466,30 @@ namespace OP_Engine.Menus
                 button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
             }
 
-            button.Selected = selected;
-            button.Visible = visible;
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_selected_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
         {
-            Button button = new Button();
-            button.ID = id;
-            button.Name = name;
-            button.Text = text;
-            button.Font = font;
-            button.TextColor = text_color;
-            button.TextColor_Selected = text_highlight_color;
-            button.TextColor_Disabled = text_disabled_color;
-            button.DrawColor = draw_color;
-            button.Texture = texture;
-            button.Texture_Highlight = texture_hover;
-            button.Texture_Disabled = texture_disabled;
-            button.Region = region;
+            Button button = new Button
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                TextColor_Selected = text_selected_color,
+                TextColor_Disabled = text_disabled_color,
+                DrawColor = draw_color,
+                Texture = texture,
+                Texture_Highlight = texture_hover,
+                Texture_Disabled = texture_disabled,
+                Region = region,
+                Selected = selected,
+                Visible = visible
+            };
 
             if (button.Texture != null)
             {
@@ -426,39 +504,94 @@ namespace OP_Engine.Menus
                 button.Image = new Rectangle(0, 0, button.Texture_Disabled.Width, button.Texture_Disabled.Height);
             }
 
-            button.Selected = selected;
-            button.Visible = visible;
             Buttons.Add(button);
 
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddPicture(long id, string name, Texture2D texture, Region region, Color color, bool visible)
+        public void AddPicture(PictureOptions options)
         {
-            Picture picture = new Picture();
-            picture.ID = id;
-            picture.Name = name;
-            picture.Texture = texture;
-            picture.Region = region;
-            picture.Image = new Rectangle(0, 0, picture.Texture.Width, picture.Texture.Height);
-            picture.DrawColor = color;
-            picture.Visible = visible;
+            Picture picture = new Picture
+            {
+                ID = options.id,
+                Name = options.name,
+                Texture = options.texture,
+                Region = options.region,
+                DrawColor = options.color,
+                Visible = options.visible
+            };
+
+            if (picture.Texture != null)
+            {
+                picture.Image = new Rectangle(0, 0, picture.Texture.Width, picture.Texture.Height);
+            }
+
             Pictures.Add(picture);
 
             OnAddPicture?.Invoke(this, EventArgs.Empty);
         }
 
+        public void AddPicture(long id, string name, Texture2D texture, Region region, Color color, bool visible)
+        {
+            Picture picture = new Picture
+            {
+                ID = id,
+                Name = name,
+                Texture = texture,
+                Region = region,
+                DrawColor = color,
+                Visible = visible
+            };
+
+            if (picture.Texture != null)
+            {
+                picture.Image = new Rectangle(0, 0, picture.Texture.Width, picture.Texture.Height);
+            }
+
+            Pictures.Add(picture);
+
+            OnAddPicture?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void AddLabel(LabelOptions options)
+        {
+            Label label = new Label
+            {
+                ID = options.id,
+                Name = options.name,
+                Text = options.text,
+                Font = options.font,
+                TextColor = options.text_color,
+                DrawColor = options.draw_color,
+                Texture = options.texture,
+                Region = options.region,
+                Visible = options.visible
+            };
+
+            if (label.Texture != null)
+            {
+                label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
+            }
+
+            Labels.Add(label);
+
+            OnAddLabel?.Invoke(this, EventArgs.Empty);
+        }
+
         public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Region region, bool visible)
         {
-            Label label = new Label();
-            label.ID = id;
-            label.Name = name;
-            label.Value = 255;
-            label.Text = text;
-            label.TextColor = text_color;
-            label.Font = font;
-            label.Region = region;
-            label.Visible = visible;
+            Label label = new Label
+            {
+                ID = id,
+                Name = name,
+                Value = 255,
+                Text = text,
+                TextColor = text_color,
+                Font = font,
+                Region = region,
+                Visible = visible
+            };
+
             Labels.Add(label);
 
             OnAddLabel?.Invoke(this, EventArgs.Empty);
@@ -466,17 +599,24 @@ namespace OP_Engine.Menus
 
         public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Region region, bool visible)
         {
-            Label label = new Label();
-            label.ID = id;
-            label.Name = name;
-            label.Text = text;
-            label.Font = font;
-            label.TextColor = text_color;
-            label.DrawColor = Color.White;
-            label.Texture = texture;
-            label.Region = region;
-            label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
-            label.Visible = visible;
+            Label label = new Label
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                DrawColor = Color.White,
+                Texture = texture,
+                Region = region,
+                Visible = visible
+            };
+
+            if (label.Texture != null)
+            {
+                label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
+            }
+
             Labels.Add(label);
 
             OnAddLabel?.Invoke(this, EventArgs.Empty);
@@ -484,37 +624,55 @@ namespace OP_Engine.Menus
 
         public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Region region, Color draw_color, bool visible)
         {
-            Label label = new Label();
-            label.ID = id;
-            label.Name = name;
-            label.Text = text;
-            label.Font = font;
-            label.TextColor = text_color;
-            label.DrawColor = draw_color;
-            label.Texture = texture;
-            label.Region = region;
-            label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
-            label.Visible = visible;
+            Label label = new Label
+            {
+                ID = id,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                DrawColor = draw_color,
+                Texture = texture,
+                Region = region,
+                Visible = visible
+            };
+
+            if (label.Texture != null)
+            {
+                label.Image = new Rectangle(0, 0, label.Texture.Width, label.Texture.Height);
+            }
+
             Labels.Add(label);
 
             OnAddLabel?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddProgressBar(long id, string name, int max, int value, int increment, Texture2D base_texture, Texture2D bar_texture, Region region, Color color, bool visible)
+        public void AddProgressBar(ProgressBarOptions options)
         {
-            ProgressBar progressBar = new ProgressBar();
-            progressBar.ID = id;
-            progressBar.Name = name;
-            progressBar.Value = value;
-            progressBar.Rate = increment;
-            progressBar.Max_Value = max;
-            progressBar.Base_Region = region;
-            progressBar.Bar_Region = new Region(region.X, region.Y, 0, region.Height);
-            progressBar.Base_Texture = base_texture;
-            progressBar.Bar_Texture = bar_texture;
-            progressBar.Bar_Image = new Rectangle(0, 0, 0, progressBar.Base_Texture.Height);
-            progressBar.DrawColor = color;
-            progressBar.Visible = visible;
+            ProgressBar progressBar = new ProgressBar
+            {
+                ID = options.id,
+                Name = options.name,
+                Max_Value = options.max,
+                Value = options.value,
+                Rate = options.increment,
+                Base_Texture = options.base_texture,
+                Bar_Texture = options.bar_texture,
+                Base_Region = options.region,
+                DrawColor = options.draw_color,
+                Visible = options.visible
+            };
+
+            if (progressBar.Base_Region != null)
+            {
+                progressBar.Bar_Region = new Region(progressBar.Base_Region.X, progressBar.Base_Region.Y, 0, progressBar.Base_Region.Height);
+            }
+
+            if (progressBar.Base_Texture != null)
+            {
+                progressBar.Bar_Image = new Rectangle(0, 0, 0, progressBar.Base_Texture.Height);
+            }
+
             progressBar.Update();
 
             ProgressBars.Add(progressBar);
@@ -522,22 +680,174 @@ namespace OP_Engine.Menus
             OnAddProgressBar?.Invoke(this, EventArgs.Empty);
         }
 
+        public void AddProgressBar(long id, string name, int max, int value, int increment, Texture2D base_texture, Texture2D bar_texture, Region region, Color draw_color, bool visible)
+        {
+            ProgressBar progressBar = new ProgressBar
+            {
+                ID = id,
+                Name = name,
+                Max_Value = max,
+                Value = value,
+                Rate = increment,
+                Base_Texture = base_texture,
+                Bar_Texture = bar_texture,
+                Base_Region = region,
+                DrawColor = draw_color,
+                Visible = visible
+            };
+
+            if (progressBar.Base_Region != null)
+            {
+                progressBar.Bar_Region = new Region(progressBar.Base_Region.X, progressBar.Base_Region.Y, 0, progressBar.Base_Region.Height);
+            }
+
+            if (progressBar.Base_Texture != null)
+            {
+                progressBar.Bar_Image = new Rectangle(0, 0, 0, progressBar.Base_Texture.Height);
+            }
+
+            progressBar.Update();
+
+            ProgressBars.Add(progressBar);
+
+            OnAddProgressBar?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void AddInput(InputBoxOptions options)
+        {
+            InputBox input = new InputBox
+            {
+                ID = options.id,
+                MaxLength = options.max_length,
+                Name = options.name,
+                Text = options.text,
+                Font = options.font,
+                TextColor = options.text_color,
+                DrawColor = options.draw_color,
+                Texture = options.texture,
+                Region = options.region,
+                Visible = options.visible,
+                Opacity = options.opacity,
+                Active = options.active
+            };
+
+            if (input.Texture != null)
+            {
+                input.Image = new Rectangle(0, 0, input.Texture.Width, input.Texture.Height);
+            }
+
+            Inputs.Add(input);
+
+            OnAddInput?.Invoke(this, EventArgs.Empty);
+        }
+
         public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Texture2D texture, Region region, bool active, bool visible)
         {
-            InputBox input = new InputBox();
-            input.ID = id;
-            input.MaxLength = max_length;
-            input.Name = name;
-            input.Text = text;
-            input.Font = font;
-            input.TextColor = text_color;
-            input.DrawColor = Color.White;
-            input.Texture = texture;
-            input.Region = region;
-            input.Image = new Rectangle(0, 0, input.Texture.Width, input.Texture.Height);
-            input.Visible = visible;
-            input.Opacity = 0.8f;
-            input.Active = active;
+            InputBox input = new InputBox
+            {
+                ID = id,
+                MaxLength = max_length,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                DrawColor = Color.White,
+                Texture = texture,
+                Region = region,
+                Visible = visible,
+                Opacity = 0.8f,
+                Active = active
+            };
+
+            if (input.Texture != null)
+            {
+                input.Image = new Rectangle(0, 0, input.Texture.Width, input.Texture.Height);
+            }
+
+            Inputs.Add(input);
+
+            OnAddInput?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Color draw_color, Texture2D texture, Region region, bool active, bool visible)
+        {
+            InputBox input = new InputBox
+            {
+                ID = id,
+                MaxLength = max_length,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                DrawColor = draw_color,
+                Texture = texture,
+                Region = region,
+                Visible = visible,
+                Opacity = 0.8f,
+                Active = active
+            };
+
+            if (input.Texture != null)
+            {
+                input.Image = new Rectangle(0, 0, input.Texture.Width, input.Texture.Height);
+            }
+
+            Inputs.Add(input);
+
+            OnAddInput?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Texture2D texture, Region region, float opacity, bool active, bool visible)
+        {
+            InputBox input = new InputBox
+            {
+                ID = id,
+                MaxLength = max_length,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                DrawColor = Color.White,
+                Texture = texture,
+                Region = region,
+                Visible = visible,
+                Opacity = opacity,
+                Active = active
+            };
+
+            if (input.Texture != null)
+            {
+                input.Image = new Rectangle(0, 0, input.Texture.Width, input.Texture.Height);
+            }
+
+            Inputs.Add(input);
+
+            OnAddInput?.Invoke(this, EventArgs.Empty);
+        }
+
+        public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Color draw_color, Texture2D texture, Region region, float opacity, bool active, bool visible)
+        {
+            InputBox input = new InputBox
+            {
+                ID = id,
+                MaxLength = max_length,
+                Name = name,
+                Text = text,
+                Font = font,
+                TextColor = text_color,
+                DrawColor = draw_color,
+                Texture = texture,
+                Region = region,
+                Visible = visible,
+                Opacity = opacity,
+                Active = active
+            };
+
+            if (input.Texture != null)
+            {
+                input.Image = new Rectangle(0, 0, input.Texture.Width, input.Texture.Height);
+            }
+
             Inputs.Add(input);
 
             OnAddInput?.Invoke(this, EventArgs.Empty);

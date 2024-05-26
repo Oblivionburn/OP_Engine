@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 using OP_Engine.Utility;
+using OP_Engine.Inputs;
 
 namespace OP_Engine.Controls
 {
@@ -94,6 +95,22 @@ namespace OP_Engine.Controls
         {
             base.SetValue(value);
             Update();
+        }
+
+        public virtual void SetValue_FromMouse()
+        {
+            if (Base_Region != null &&
+                Bar_Region != null &&
+                Bar_Texture != null)
+            {
+                Bar_Region.Width = InputManager.Mouse.X - Base_Region.X;
+                float value = ((Bar_Region.Width * Max_Value) / Base_Region.Width) + 1;
+
+                float CurrentVal = ((value - 1) * Bar_Texture.Width) / Max_Value;
+                Bar_Image.Width = (int)CurrentVal;
+
+                Value = (int)value;
+            }
         }
 
         public virtual void Reset()

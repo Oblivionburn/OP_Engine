@@ -64,7 +64,12 @@
     <Compile Include="Characters\Memory.cs" />
     <Compile Include="Characters\ReactionEventArgs.cs" />
     <Compile Include="Characters\Squad.cs" />
+    <Compile Include="Controls\ButtonOptions.cs" />
+    <Compile Include="Controls\InputBoxOptions.cs" />
     <Compile Include="Controls\Label.cs" />
+    <Compile Include="Controls\LabelOptions.cs" />
+    <Compile Include="Controls\PictureOptions.cs" />
+    <Compile Include="Controls\ProgressBarOptions.cs" />
     <Compile Include="Crafting\CraftingManager.cs" />
     <Compile Include="Crafting\Recipe.cs" />
     <Compile Include="Inputs\ButtonEventArgs.cs" />

@@ -104,15 +104,8 @@ namespace OP_Engine.Controls
 
         public override void Dispose()
         {
-            if (Texture_Highlight != null)
-            {
-                Texture_Highlight.Dispose();
-            }
-
-            if (Texture_Disabled != null)
-            {
-                Texture_Disabled.Dispose();
-            }
+            Texture_Highlight = null;
+            Texture_Disabled = null;
 
             base.Dispose();
         }

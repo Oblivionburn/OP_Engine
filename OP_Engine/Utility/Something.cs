@@ -266,11 +266,7 @@ namespace OP_Engine.Utility
         public virtual void Dispose()
         {
             Region = null;
-
-            if (Texture != null)
-            {
-                Texture.Dispose();
-            }
+            Texture = null;
         }
 
         #endregion
