@@ -351,26 +351,38 @@ namespace OP_Engine.Utility
 
         public static void PlaySound(string name)
         {
-            SoundManager.PlaySound(Sounds["Sounds"][name]);
+            if (Sounds.ContainsKey("Sounds") &&
+                Sounds["Sounds"].ContainsKey(name))
+            {
+                SoundManager.PlaySound(Sounds["Sounds"][name]);
+            }
         }
 
         public static void PlaySound(string type, string name)
         {
-            SoundManager.PlaySound(Sounds[type][name]);
+            if (Sounds.ContainsKey(type) &&
+                Sounds[type].ContainsKey(name))
+            {
+                SoundManager.PlaySound(Sounds[type][name]);
+            }
         }
 
         public static void PlaySound_Random(string type)
         {
-            CryptoRandom rand = new CryptoRandom();
-            int choice = rand.Next(0, Sounds[type].Count);
+            if (Sounds.ContainsKey(type))
+            {
+                CryptoRandom rand = new CryptoRandom();
+                int choice = rand.Next(0, Sounds[type].Count);
 
-            Sound sound = Sounds[type].ToList().ElementAt(choice).Value;
-            SoundManager.PlaySound(sound);
+                Sound sound = Sounds[type].ToList().ElementAt(choice).Value;
+                SoundManager.PlaySound(sound);
+            }
         }
 
         public static void PlaySound_AtDistance(string name, Vector2 location, Vector2 source, int max_distance)
         {
-            if (Sounds.ContainsKey(name))
+            if (Sounds.ContainsKey("Sounds") &&
+                Sounds["Sounds"].ContainsKey(name))
             {
                 SoundManager.PlaySound_Distance(Sounds["Sounds"][name], location, source, max_distance);
             }
@@ -378,7 +390,8 @@ namespace OP_Engine.Utility
 
         public static void PlaySound_AtDistance(string type, string name, Vector2 location, Vector2 source, int max_distance)
         {
-            if (Sounds.ContainsKey(name))
+            if (Sounds.ContainsKey(type) &&
+                Sounds[type].ContainsKey(name))
             {
                 SoundManager.PlaySound_Distance(Sounds[type][name], location, source, max_distance);
             }
@@ -386,50 +399,75 @@ namespace OP_Engine.Utility
 
         public static void PlaySound_Random_AtDistance(string type, Vector2 location, Vector2 source, int max_distance)
         {
-            CryptoRandom rand = new CryptoRandom();
-            int choice = rand.Next(0, Sounds[type].Count);
+            if (Sounds.ContainsKey(type))
+            {
+                CryptoRandom rand = new CryptoRandom();
+                int choice = rand.Next(0, Sounds[type].Count);
 
-            Sound sound = Sounds[type].ToList().ElementAt(choice).Value;
-            SoundManager.PlaySound_Distance(sound, location, source, max_distance);
+                Sound sound = Sounds[type].ToList().ElementAt(choice).Value;
+                SoundManager.PlaySound_Distance(sound, location, source, max_distance);
+            }
         }
 
         public static void PlayMusic(string name, bool looping)
         {
-            SoundManager.PlayMusic(Music["Music"][name], looping);
-            SoundManager.NeedMusic = false;
+            if (Music.ContainsKey("Music") &&
+                Music["Music"].ContainsKey(name))
+            {
+                SoundManager.PlayMusic(Music["Music"][name], looping);
+                SoundManager.NeedMusic = false;
+            }
         }
 
         public static void PlayMusic(string type, string name, bool looping)
         {
-            SoundManager.PlayMusic(Music[type][name], looping);
-            SoundManager.NeedMusic = false;
+            if (Music.ContainsKey(type) &&
+                Music[type].ContainsKey(name))
+            {
+                SoundManager.PlayMusic(Music[type][name], looping);
+                SoundManager.NeedMusic = false;
+            }
         }
 
         public static void PlayMusic_Random(string type, bool looping)
         {
-            CryptoRandom rand = new CryptoRandom();
-            int choice = rand.Next(0, Music[type].Count);
+            if (Music.ContainsKey(type))
+            {
+                CryptoRandom rand = new CryptoRandom();
+                int choice = rand.Next(0, Music[type].Count);
 
-            SoundManager.PlayMusic(Music[type].ToList().ElementAt(choice).Value, looping);
-            SoundManager.NeedMusic = false;
+                SoundManager.PlayMusic(Music[type].ToList().ElementAt(choice).Value, looping);
+                SoundManager.NeedMusic = false;
+            }
         }
 
         public static void PlayAmbient(string name, bool looping)
         {
-            SoundManager.PlayMusic(Ambient["Ambient"][name], looping);
+            if (Ambient.ContainsKey("Ambient") && 
+                Ambient["Ambient"].ContainsKey(name))
+            {
+                SoundManager.PlayAmbient(Ambient["Ambient"][name], looping);
+            }
         }
 
         public static void PlayAmbient(string type, string name, bool looping)
         {
-            SoundManager.PlayMusic(Ambient[type][name], looping);
+            if (Ambient.ContainsKey(type) &&
+                Ambient[type].ContainsKey(name))
+            {
+                SoundManager.PlayAmbient(Ambient[type][name], looping);
+            }
         }
 
         public static void PlayAmbient_Random(string type, bool looping)
         {
-            CryptoRandom rand = new CryptoRandom();
-            int choice = rand.Next(0, Ambient[type].Count);
+            if (Ambient.ContainsKey(type))
+            {
+                CryptoRandom rand = new CryptoRandom();
+                int choice = rand.Next(0, Ambient[type].Count);
 
-            SoundManager.PlayMusic(Ambient[type].ToList().ElementAt(choice).Value, looping);
+                SoundManager.PlayAmbient(Ambient[type].ToList().ElementAt(choice).Value, looping);
+            }
         }
 
         #endregion
@@ -438,60 +476,65 @@ namespace OP_Engine.Utility
 
         public static Texture2D GetTexture(string name)
         {
-            return Textures[name];
+            return Textures.ContainsKey(name) ? Textures[name] : null;
         }
 
         public static Texture2D GetTextureCopy(GraphicsDevice graphicsDevice, string name)
         {
-            Texture2D texture = Textures[name];
-            Color[] colors = new Color[texture.Width * texture.Height];
-            texture.GetData(colors);
+            if (Textures.ContainsKey(name))
+            {
+                Texture2D texture = Textures[name];
+                Color[] colors = new Color[texture.Width * texture.Height];
+                texture.GetData(colors);
 
-            Texture2D newTexture = new Texture2D(graphicsDevice, texture.Width, texture.Height);
-            newTexture.Name = texture.Name;
-            newTexture.SetData(colors);
+                Texture2D newTexture = new Texture2D(graphicsDevice, texture.Width, texture.Height);
+                newTexture.Name = texture.Name;
+                newTexture.SetData(colors);
 
-            return newTexture;
+                return newTexture;
+            }
+
+            return null;
         }
 
         public static Effect GetShader(string name)
         {
-            return Shaders[name];
+            return Shaders.ContainsKey(name) ? Shaders[name] : null;
         }
 
         public static SpriteFont GetFont(string name)
         {
-            return Fonts[name];
+            return Fonts.ContainsKey(name) ? Fonts[name] : null;
         }
 
         public static Sound GetSound(string name)
         {
-            return Sounds["Sounds"][name];
+            return Sounds.ContainsKey("Sounds") && Sounds["Sounds"].ContainsKey(name) ? Sounds["Sounds"][name] : null;
         }
 
         public static Sound GetSound(string type, string name)
         {
-            return Sounds[type][name];
+            return Sounds.ContainsKey(type) && Sounds[type].ContainsKey(name) ? Sounds[type][name] : null;
         }
 
         public static Sound GetMusic(string name)
         {
-            return Music["Music"][name];
+            return Music.ContainsKey("Music") && Music["Music"].ContainsKey(name) ? Music["Music"][name] : null;
         }
 
         public static Sound GetMusic(string type, string name)
         {
-            return Music[type][name];
+            return Music.ContainsKey(type) && Music[type].ContainsKey(name) ? Music[type][name] : null;
         }
 
         public static Sound GetAmbient(string name)
         {
-            return Ambient["Ambient"][name];
+            return Ambient.ContainsKey("Ambient") && Ambient["Ambient"].ContainsKey(name) ? Ambient["Ambient"][name] : null;
         }
 
         public static Sound GetAmbient(string type, string name)
         {
-            return Ambient[type][name];
+            return Ambient.ContainsKey(type) && Ambient[type].ContainsKey(name) ? Ambient[type][name] : null;
         }
 
         #endregion

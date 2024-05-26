@@ -12,10 +12,8 @@ namespace OP_Engine.Particles
     {
         #region Variables
 
-        public static List<Particle> Particles = new List<Particle>();
-        public static List<Texture2D> Textures = new List<Texture2D>();
-
-        public static CryptoRandom random = new CryptoRandom();
+        public List<Particle> Particles = new List<Particle>();
+        public List<Texture2D> Textures = new List<Texture2D>();
 
         #endregion
 
@@ -30,7 +28,7 @@ namespace OP_Engine.Particles
 
         #region Methods
 
-        public static void Update()
+        public virtual void Update()
         {
             for (int i = 0; i < Particles.Count; i++)
             {
@@ -47,7 +45,7 @@ namespace OP_Engine.Particles
             }
         }
 
-        public static void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             foreach (Particle particle in Particles)
             {
@@ -55,7 +53,7 @@ namespace OP_Engine.Particles
             }
         }
 
-        public static Particle AddParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, bool waver, bool scatter)
+        public virtual Particle AddParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, bool waver, bool scatter)
         {
             Texture2D texture = null;
 
@@ -69,6 +67,8 @@ namespace OP_Engine.Particles
             }
 
             Vector2 location;
+            CryptoRandom random = new CryptoRandom();
+
             if (waver)
             {
                 location = new Vector2(random.Next(-region.X, region.X), random.Next(-region.Y, region.Y));
@@ -94,10 +94,7 @@ namespace OP_Engine.Particles
                 particle.Dispose();
             }
 
-            foreach (Texture2D texture in Textures)
-            {
-                texture.Dispose();
-            }
+            Textures.Clear();
         }
 
         #endregion

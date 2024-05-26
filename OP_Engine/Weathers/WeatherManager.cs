@@ -58,118 +58,128 @@ namespace OP_Engine.Weathers
 
         public static void ChangeWeather(WeatherType type)
         {
-            Lightning = false;
-            Transitioning = true;
+            WeatherTransition CurrentTransition = TransitionType;
 
-            if (CurrentWeather == WeatherType.Clear)
+            switch (CurrentWeather)
             {
-                if (type == WeatherType.Rain)
-                {
-                    TransitionType = WeatherTransition.ClearToRain;
-                }
-                else if (type == WeatherType.Storm)
-                {
-                    TransitionType = WeatherTransition.ClearToStorm;
-                    Lightning = true;
-                }
-                else if (type == WeatherType.Snow)
-                {
-                    TransitionType = WeatherTransition.ClearToSnow;
-                }
-                else if (type == WeatherType.Fog)
-                {
-                    TransitionType = WeatherTransition.ClearToFog;
-                }
-            }
-            else if (CurrentWeather == WeatherType.Rain)
-            {
-                if (type == WeatherType.Clear)
-                {
-                    TransitionType = WeatherTransition.RainToClear;
-                }
-                else if (type == WeatherType.Storm)
-                {
-                    TransitionType = WeatherTransition.RainToStorm;
-                    Lightning = true;
-                }
-                else if (type == WeatherType.Snow)
-                {
-                    TransitionType = WeatherTransition.RainToSnow;
-                }
-                else if (type == WeatherType.Fog)
-                {
-                    TransitionType = WeatherTransition.RainToFog;
-                }
-            }
-            else if (CurrentWeather == WeatherType.Storm)
-            {
-                if (type == WeatherType.Clear)
-                {
-                    TransitionType = WeatherTransition.StormToClear;
-                }
-                else if (type == WeatherType.Rain)
-                {
-                    TransitionType = WeatherTransition.StormToRain;
-                }
-                else if (type == WeatherType.Snow)
-                {
-                    TransitionType = WeatherTransition.StormToSnow;
-                }
-                else if (type == WeatherType.Fog)
-                {
-                    TransitionType = WeatherTransition.StormToFog;
-                }
-            }
-            else if (CurrentWeather == WeatherType.Snow)
-            {
-                if (type == WeatherType.Clear)
-                {
-                    TransitionType = WeatherTransition.SnowToClear;
-                }
-                else if (type == WeatherType.Rain)
-                {
-                    TransitionType = WeatherTransition.SnowToRain;
-                }
-                else if (type == WeatherType.Storm)
-                {
-                    TransitionType = WeatherTransition.SnowToStorm;
-                    Lightning = true;
-                }
-                else if (type == WeatherType.Fog)
-                {
-                    TransitionType = WeatherTransition.SnowToFog;
-                }
-            }
-            else if (CurrentWeather == WeatherType.Fog)
-            {
-                if (type == WeatherType.Clear)
-                {
-                    TransitionType = WeatherTransition.FogToClear;
-                }
-                else if (type == WeatherType.Rain)
-                {
-                    TransitionType = WeatherTransition.FogToRain;
-                }
-                else if (type == WeatherType.Storm)
-                {
-                    TransitionType = WeatherTransition.FogToStorm;
-                    Lightning = true;
-                }
-                else if (type == WeatherType.Snow)
-                {
-                    TransitionType = WeatherTransition.FogToSnow;
-                }
+                case WeatherType.Clear:
+                    switch (type)
+                    {
+                        case WeatherType.Rain:
+                            TransitionType = WeatherTransition.ClearToRain;
+                            break;
+
+                        case WeatherType.Storm:
+                            TransitionType = WeatherTransition.ClearToStorm;
+                            Lightning = true;
+                            break;
+
+                        case WeatherType.Snow:
+                            TransitionType = WeatherTransition.ClearToSnow;
+                            break;
+
+                        case WeatherType.Fog:
+                            TransitionType = WeatherTransition.ClearToFog;
+                            break;
+                    }
+                    break;
+
+                case WeatherType.Rain:
+                    switch (type)
+                    {
+                        case WeatherType.Clear:
+                            TransitionType = WeatherTransition.RainToClear;
+                            break;
+
+                        case WeatherType.Storm:
+                            TransitionType = WeatherTransition.RainToStorm;
+                            Lightning = true;
+                            break;
+
+                        case WeatherType.Snow:
+                            TransitionType = WeatherTransition.RainToSnow;
+                            break;
+
+                        case WeatherType.Fog:
+                            TransitionType = WeatherTransition.RainToFog;
+                            break;
+                    }
+                    break;
+
+                case WeatherType.Storm:
+                    switch (type)
+                    {
+                        case WeatherType.Clear:
+                            TransitionType = WeatherTransition.StormToClear;
+                            Lightning = false;
+                            break;
+
+                        case WeatherType.Rain:
+                            TransitionType = WeatherTransition.StormToRain;
+                            Lightning = false;
+                            break;
+
+                        case WeatherType.Snow:
+                            TransitionType = WeatherTransition.StormToSnow;
+                            Lightning = false;
+                            break;
+
+                        case WeatherType.Fog:
+                            TransitionType = WeatherTransition.StormToFog;
+                            Lightning = false;
+                            break;
+                    }
+                    break;
+
+                case WeatherType.Fog:
+                    switch (type)
+                    {
+                        case WeatherType.Clear:
+                            TransitionType = WeatherTransition.FogToClear;
+                            break;
+
+                        case WeatherType.Storm:
+                            TransitionType = WeatherTransition.FogToRain;
+                            break;
+
+                        case WeatherType.Snow:
+                            TransitionType = WeatherTransition.FogToStorm;
+                            Lightning = true;
+                            break;
+
+                        case WeatherType.Fog:
+                            TransitionType = WeatherTransition.FogToSnow;
+                            break;
+                    }
+                    break;
             }
 
+            if (TransitionType != CurrentTransition)
+            {
+                foreach (Weather weather in Weathers)
+                {
+                    if (weather.Type == type)
+                    {
+                        Transitioning = true;
+                        weather.TransitionTime = 0;
+                        weather.Visible = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        public static Weather GetWeather(WeatherType type)
+        {
             foreach (Weather weather in Weathers)
             {
                 if (weather.Type == type)
                 {
-                    weather.TransitionTime = 0;
-                    weather.Visible = true;
-                    break;
+                    return weather;
                 }
             }
+
+            return null;
         }
 
         private void Game_Exiting(object sender, EventArgs e)

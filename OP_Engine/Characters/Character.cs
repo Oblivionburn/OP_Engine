@@ -242,6 +242,7 @@ namespace OP_Engine.Characters
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
         {
             if (Visible &&
+                Texture != null &&
                 Region != null)
             {
                 if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))
@@ -266,6 +267,7 @@ namespace OP_Engine.Characters
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution, Color color)
         {
             if (Visible &&
+                Texture != null &&
                 Region != null)
             {
                 if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))

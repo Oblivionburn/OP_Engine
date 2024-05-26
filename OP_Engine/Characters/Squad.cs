@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 using OP_Engine.Utility;
 
@@ -25,6 +26,52 @@ namespace OP_Engine.Characters
         #endregion
 
         #region Methods
+
+        public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
+        {
+            if (Visible &&
+                Texture != null &&
+                Region != null)
+            {
+                if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))
+                {
+                    if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
+                    {
+                        if (DrawColor != new Color(0, 0, 0, 0))
+                        {
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
+                        }
+                    }
+                }
+            }
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch, Point resolution, Color color)
+        {
+            if (Visible &&
+                Texture != null &&
+                Region != null)
+            {
+                if (Region.X >= (Texture.Width * -2) && Region.X < resolution.X + (Texture.Width * 2))
+                {
+                    if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
+                    {
+                        if (DrawColor != new Color(0, 0, 0, 0))
+                        {
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
+                        }
+                        else
+                        {
+                            spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
+                        }
+                    }
+                }
+            }
+        }
 
         public virtual Character GetCharacter(long id)
         {
