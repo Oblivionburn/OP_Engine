@@ -122,6 +122,12 @@ namespace OP_Engine.Inputs
             }
         }
 
+        public virtual void Flush()
+        {
+            lastKeyboardState = Keyboard.GetState();
+            keyboardState = Keyboard.GetState();
+        }
+
         public virtual void Game_Activated(object sender, EventArgs e)
         {
             keyboardListener.Start();

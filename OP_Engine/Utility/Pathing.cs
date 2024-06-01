@@ -238,13 +238,13 @@ namespace OP_Engine.Utility
         {
             ALocation current = locations[0];
 
-            int current_near = current.Distance_ToDestination - current.Priority;
-            int current_far = current.Distance_ToStart + current.Priority;
+            float current_near = current.Distance_ToDestination - current.Priority;
+            float current_far = current.Distance_ToStart + current.Priority;
 
             foreach (ALocation location in locations)
             {
-                int pref_near = location.Distance_ToDestination - location.Priority;
-                int pref_far = location.Distance_ToStart + location.Priority;
+                float pref_near = location.Distance_ToDestination - location.Priority;
+                float pref_far = location.Distance_ToStart + location.Priority;
 
                 bool equal = false;
                 if (pref_near == current_near &&
@@ -378,11 +378,11 @@ namespace OP_Engine.Utility
         {
             ALocation current = locations[0];
 
-            int current_far = current.Distance_ToStart - current.Priority;
+            float current_far = current.Distance_ToStart - current.Priority;
 
             foreach (ALocation location in locations)
             {
-                int pref_far = location.Distance_ToStart - location.Priority;
+                float pref_far = location.Distance_ToStart - location.Priority;
                 if (pref_far < current_far)
                 {
                     current = location;

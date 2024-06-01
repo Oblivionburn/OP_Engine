@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 using OP_Engine.Rendering;
@@ -15,12 +15,11 @@ namespace OP_Engine.Time
 
         private static TimeHandler _now;
 
-        private static float curGameTime;
-        public static float MainGameTime;
-        public static float Interval = 0.25f;
-        public static int Frame = 1;
-        public static bool TimeSet;
+        public static double GameTimeTick;
+        public static double MainGameTime;
+        public static double Interval = 1;
         public static bool Paused;
+        public static WeatherType[] WeatherOptions = { WeatherType.Clear };
 
         #endregion
 
@@ -49,14 +48,14 @@ namespace OP_Engine.Time
             _now = new TimeHandler();
         }
 
-        public static void Init(int year, int month, int day, int hour, int minute, int second, int millisecond)
+        public static void Init(int year, int month, int day, int hour)
         {
-            _now = new TimeHandler(year, month, day, hour, minute, second, millisecond);
+            _now = new TimeHandler(year, month, day, hour);
         }
 
-        public static new void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime, TimeRate timeRate)
         {
-            MainGameTime = (long)gameTime.TotalGameTime.TotalSeconds;
+            MainGameTime = gameTime.TotalGameTime.TotalMilliseconds;
 
             if (RenderingManager.Lighting.FadingIn)
             {
@@ -85,31 +84,50 @@ namespace OP_Engine.Time
                 }
             }
 
-            if (TimeSet == false)
+            if (GameTimeTick <= MainGameTime)
             {
-                curGameTime = MainGameTime + Interval;
-                TimeSet = true;
+                GameTimeTick = MainGameTime + Interval;
+
+                Now.AddTime(timeRate, 1);
             }
-            else
+        }
+
+        public static void Update(double totalMilliseconds, TimeRate timeRate)
+        {
+            MainGameTime = totalMilliseconds;
+
+            if (RenderingManager.Lighting.FadingIn)
             {
-                if (curGameTime <= MainGameTime)
+                if (RenderingManager.Lighting.LerpAmount < 1)
                 {
-                    Frame++;
-
-                    if (Frame == 4)
-                    {
-                        if (!Paused)
-                        {
-                            Now.AddMinutes(1);
-                        }
-                    }
-                    else if (Frame == 5)
-                    {
-                        Frame = 1;
-                    }
-
-                    TimeSet = false;
+                    RenderingManager.Lighting.LerpAmount += 0.025f;
+                    RenderingManager.Lighting.FadeIn();
                 }
+                else
+                {
+                    RenderingManager.Lighting.FadingIn = false;
+                    RenderingManager.Lighting.LerpAmount = 0;
+                }
+            }
+            else if (RenderingManager.Lighting.FadingOut)
+            {
+                if (RenderingManager.Lighting.LerpAmount < 1)
+                {
+                    RenderingManager.Lighting.LerpAmount += 0.025f;
+                    RenderingManager.Lighting.FadeOut();
+                }
+                else
+                {
+                    RenderingManager.Lighting.FadingOut = false;
+                    RenderingManager.Lighting.LerpAmount = 0;
+                }
+            }
+
+            if (GameTimeTick <= MainGameTime)
+            {
+                GameTimeTick = MainGameTime + Interval;
+
+                Now.AddTime(timeRate, 1);
             }
         }
 
@@ -125,7 +143,7 @@ namespace OP_Engine.Time
             {
                 if (RenderingManager.Lighting.LerpAmount < 1)
                 {
-                    RenderingManager.Lighting.LerpAmount += 0.00167f;
+                    RenderingManager.Lighting.LerpAmount += 0.0167f;
                 }
                 RenderingManager.Lighting.Update();
             }
@@ -144,40 +162,60 @@ namespace OP_Engine.Time
 
             if (WeatherManager.CurrentWeather == WeatherType.Clear)
             {
-                if (weather <= 2)
+                if (weather <= 2 &&
+                    WeatherOptions.Contains(WeatherType.Rain))
                 {
                     WeatherManager.ChangeWeather(WeatherType.Rain);
                 }
-                else if (weather <= 4)
+                else if (weather <= 4 &&
+                         WeatherOptions.Contains(WeatherType.Snow))
                 {
                     WeatherManager.ChangeWeather(WeatherType.Snow);
+                }
+                else if (weather <= 6 &&
+                         WeatherOptions.Contains(WeatherType.Fog))
+                {
+                    WeatherManager.ChangeWeather(WeatherType.Fog);
                 }
             }
             else if (WeatherManager.CurrentWeather == WeatherType.Rain)
             {
-                if (weather <= 2)
+                if (weather <= 2 &&
+                    WeatherOptions.Contains(WeatherType.Storm))
                 {
                     WeatherManager.ChangeWeather(WeatherType.Storm);
                 }
-                else
+                else if (weather <= 8 &&
+                         WeatherOptions.Contains(WeatherType.Clear))
                 {
                     WeatherManager.ChangeWeather(WeatherType.Clear);
                 }
             }
             else if (WeatherManager.CurrentWeather == WeatherType.Storm)
             {
-                if (weather <= 5)
+                if (weather <= 4 &&
+                    WeatherOptions.Contains(WeatherType.Rain))
                 {
                     WeatherManager.ChangeWeather(WeatherType.Rain);
                 }
-                else
+                else if (weather <= 8 &&
+                         WeatherOptions.Contains(WeatherType.Clear))
                 {
                     WeatherManager.ChangeWeather(WeatherType.Clear);
                 }
             }
             else if (WeatherManager.CurrentWeather == WeatherType.Snow)
             {
-                if (weather <= 5)
+                if (weather <= 5 &&
+                    WeatherOptions.Contains(WeatherType.Clear))
+                {
+                    WeatherManager.ChangeWeather(WeatherType.Clear);
+                }
+            }
+            else if (WeatherManager.CurrentWeather == WeatherType.Fog)
+            {
+                if (weather <= 5 &&
+                    WeatherOptions.Contains(WeatherType.Clear))
                 {
                     WeatherManager.ChangeWeather(WeatherType.Clear);
                 }
@@ -429,15 +467,29 @@ namespace OP_Engine.Time
             {
                 if (weather.Type == WeatherType.Storm)
                 {
-                    weather.TransitionTime = 80;
+                    if (weather.TransitionTime < 50)
+                    {
+                        weather.TransitionTime++;
+                    }
+                    
                     if (SoundManager.AmbientEnabled &&
                         !SoundManager.AmbientPlaying)
                     {
                         AssetManager.PlayAmbient("Storm", true);
                     }
 
-                    WeatherManager.Transitioning = false;
-                    WeatherManager.TransitionType = WeatherTransition.None;
+                    if (SoundManager.AmbientFade > 0)
+                    {
+                        SoundManager.AmbientFade -= 0.02f;
+                    }
+
+                    if (SoundManager.AmbientFade <= 0)
+                    {
+                        SoundManager.AmbientFade = 0;
+                        WeatherManager.Transitioning = false;
+                        WeatherManager.TransitionType = WeatherTransition.None;
+                        WeatherManager.CurrentWeather = WeatherType.Storm;
+                    }
 
                     break;
                 }
@@ -519,15 +571,33 @@ namespace OP_Engine.Time
             }
         }
 
-        public static void Reset(int year, int month, int day, int hour, int minute)
+        public static void Reset(TimeRate interval, int year, int month, int day, int hour)
         {
-            Now.Interval = TimeRate.Minute;
+            Now.Interval = interval;
 
             Now.Years = year;
             Now.Months = month;
             Now.Days = day;
             Now.Hours = hour;
-            Now.Minutes = minute;
+
+            if (interval == TimeRate.Millisecond)
+            {
+                Interval = 1;
+            }
+            else if (interval == TimeRate.Second)
+            {
+                Interval = 10;
+            }
+            else if (interval == TimeRate.Minute)
+            {
+                Interval = 100;
+            }
+            else if (interval == TimeRate.Hour)
+            {
+                Interval = 1000;
+            }
+
+            RenderingManager.Lighting.Reset();
 
             Paused = false;
 

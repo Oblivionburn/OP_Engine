@@ -84,10 +84,7 @@ namespace OP_Engine.Scenes
 
         public virtual void DrawWorld(SpriteBatch spriteBatch, Point resolution)
         {
-            if (Visible)
-            {
-                World.Draw(spriteBatch, resolution);
-            }
+            
         }
 
         public virtual void DrawWorld(SpriteBatch spriteBatch, Point resolution, Color color)

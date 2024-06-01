@@ -94,13 +94,14 @@ namespace OP_Engine.Sounds
                     }
                 }
 
-                if (Paused &&
-                    !isPaused)
+                if (!isPaused &&
+                    (Paused || MusicPaused))
                 {
                     FMOD.RESULT set_paused = MusicChannel.setPaused(true);
                 }
-                else if (!Paused &&
-                         isPaused)
+                else if (isPaused &&
+                         !Paused &&
+                         !MusicPaused)
                 {
                     FMOD.RESULT set_paused = MusicChannel.setPaused(false);
                 }
@@ -132,13 +133,14 @@ namespace OP_Engine.Sounds
                     StopAmbient();
                 }
 
-                if (Paused &&
-                    !isPaused)
+                if (!isPaused &&
+                    (Paused || AmbientPaused))
                 {
                     FMOD.RESULT set_paused = AmbientChannel.setPaused(true);
                 }
-                else if (!Paused &&
-                         isPaused)
+                else if (isPaused &&
+                         !Paused &&
+                         !AmbientPaused)
                 {
                     FMOD.RESULT set_paused = AmbientChannel.setPaused(false);
                 }
@@ -179,13 +181,14 @@ namespace OP_Engine.Sounds
 
                                 c--;
                             }
-                            else if (Paused &&
-                                    !isPaused)
+                            else if (!isPaused &&
+                                    (Paused || SoundPaused))
                             {
                                 FMOD.RESULT set_paused = channel.setPaused(true);
                             }
-                            else if (!Paused &&
-                                     isPaused)
+                            else if (isPaused &&
+                                     !Paused &&
+                                     !SoundPaused)
                             {
                                 FMOD.RESULT set_paused = channel.setPaused(false);
                             }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,18 +15,160 @@ namespace OP_Engine.Characters
         public List<Character> Characters = new List<Character>();
         public long Leader_ID;
 
+        public List<ALocation> Path = new List<ALocation>();
+        public Vector3 Destination;
+
+        public Animator Animator;
+
+        public bool Moving;
+        public float Moved;
+        public float Move_TotalDistance;
+        public float Speed;
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler OnMove;
+        public event EventHandler OnMovementFinish;
+
         #endregion
 
         #region Constructor
 
         public Squad()
         {
-            
+            Animator = new Animator();
         }
 
         #endregion
 
         #region Methods
+
+        public virtual void Update()
+        {
+            if (Moving &&
+                Region != null)
+            {
+                if (Destination.X > Location.X)
+                {
+                    MoveTo(new Vector2(Region.X + Speed, Region.Y));
+
+                    if (Moved == Move_TotalDistance)
+                    {
+                        Location.X++;
+                        FinishMove();
+                    }
+                    else if (Moved > Move_TotalDistance)
+                    {
+                        MoveTo(new Vector2(Region.X - Speed, Region.Y));
+                        Location.X = Destination.X;
+                        FinishMove();
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= Animator.Frames; i++)
+                        {
+                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                            {
+                                Animator.Animate(this);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (Destination.X < Location.X)
+                {
+                    MoveTo(new Vector2(Region.X - Speed, Region.Y));
+
+                    if (Moved == Move_TotalDistance)
+                    {
+                        Location.X--;
+                        FinishMove();
+                    }
+                    else if (Moved > Move_TotalDistance)
+                    {
+                        MoveTo(new Vector2(Region.X + Speed, Region.Y));
+                        Location.X = Destination.X;
+                        FinishMove();
+                    }
+                    else
+                    {
+                        for (int i = 1; i <= Animator.Frames; i++)
+                        {
+                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                            {
+                                Animator.Animate(this);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (Destination.Y > Location.Y)
+                    {
+                        MoveTo(new Vector2(Region.X, Region.Y + Speed));
+
+                        if (Moved == Move_TotalDistance)
+                        {
+                            Location.Y++;
+                            FinishMove();
+                        }
+                        else if (Moved > Move_TotalDistance)
+                        {
+                            MoveTo(new Vector2(Region.X, Region.Y - Speed));
+                            Location.Y = Destination.Y;
+                            FinishMove();
+                        }
+                        else
+                        {
+                            for (int i = 1; i <= Animator.Frames; i++)
+                            {
+                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                                {
+                                    Animator.Animate(this);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else if (Destination.Y < Location.Y)
+                    {
+                        MoveTo(new Vector2(Region.X, Region.Y - Speed));
+
+                        if (Moved == Move_TotalDistance)
+                        {
+                            Location.Y--;
+                            FinishMove();
+                        }
+                        else if (Moved > Move_TotalDistance)
+                        {
+                            MoveTo(new Vector2(Region.X, Region.Y + Speed));
+                            Location.Y = Destination.Y;
+                            FinishMove();
+                        }
+                        else
+                        {
+                            for (int i = 1; i <= Animator.Frames; i++)
+                            {
+                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                                {
+                                    Animator.Animate(this);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        FinishMove();
+                    }
+                }
+            }
+
+            Animator.Update(this);
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
         {
@@ -71,6 +214,26 @@ namespace OP_Engine.Characters
                     }
                 }
             }
+        }
+
+        public virtual void MoveTo(Vector2 region)
+        {
+            if (Region != null)
+            {
+                Region.X = region.X;
+                Region.Y = region.Y;
+                Moved += Speed;
+
+                OnMove?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public virtual void FinishMove()
+        {
+            Moved = 0;
+            Moving = false;
+            OnMovementFinish?.Invoke(this, EventArgs.Empty);
+            Animator.Reset(this);
         }
 
         public virtual Character GetCharacter(long id)

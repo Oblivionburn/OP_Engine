@@ -108,17 +108,13 @@ namespace OP_Engine.Characters
                     if (Moved == Move_TotalDistance)
                     {
                         Location.X++;
-                        Moved = 0;
-                        Moving = false;
-                        Animator.Reset(this);
+                        FinishMove();
                     }
                     else if (Moved > Move_TotalDistance)
                     {
                         MoveTo(new Vector2(Region.X - Speed, Region.Y));
                         Location.X = Destination.X;
-                        Moved = 0;
-                        Moving = false;
-                        Animator.Reset(this);
+                        FinishMove();
                     }
                     else
                     {
@@ -139,17 +135,13 @@ namespace OP_Engine.Characters
                     if (Moved == Move_TotalDistance)
                     {
                         Location.X--;
-                        Moved = 0;
-                        Moving = false;
-                        Animator.Reset(this);
+                        FinishMove();
                     }
                     else if (Moved > Move_TotalDistance)
                     {
                         MoveTo(new Vector2(Region.X + Speed, Region.Y));
                         Location.X = Destination.X;
-                        Moved = 0;
-                        Moving = false;
-                        Animator.Reset(this);
+                        FinishMove();
                     }
                     else
                     {
@@ -172,17 +164,13 @@ namespace OP_Engine.Characters
                         if (Moved == Move_TotalDistance)
                         {
                             Location.Y++;
-                            Moved = 0;
-                            Moving = false;
-                            Animator.Reset(this);
+                            FinishMove();
                         }
                         else if (Moved > Move_TotalDistance)
                         {
                             MoveTo(new Vector2(Region.X, Region.Y - Speed));
                             Location.Y = Destination.Y;
-                            Moved = 0;
-                            Moving = false;
-                            Animator.Reset(this);
+                            FinishMove();
                         }
                         else
                         {
@@ -203,17 +191,13 @@ namespace OP_Engine.Characters
                         if (Moved == Move_TotalDistance)
                         {
                             Location.Y--;
-                            Moved = 0;
-                            Moving = false;
-                            Animator.Reset(this);
+                            FinishMove();
                         }
                         else if (Moved > Move_TotalDistance)
                         {
                             MoveTo(new Vector2(Region.X, Region.Y + Speed));
                             Location.Y = Destination.Y;
-                            Moved = 0;
-                            Moving = false;
-                            Animator.Reset(this);
+                            FinishMove();
                         }
                         else
                         {
@@ -229,9 +213,7 @@ namespace OP_Engine.Characters
                     }
                     else
                     {
-                        Moved = 0;
-                        Moving = false;
-                        Animator.Reset(this);
+                        FinishMove();
                     }
                 }
             }
@@ -299,6 +281,14 @@ namespace OP_Engine.Characters
 
                 OnMove?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        public virtual void FinishMove()
+        {
+            Moved = 0;
+            Moving = false;
+            OnMovementFinish?.Invoke(this, EventArgs.Empty);
+            Animator.Reset(this);
         }
 
         public virtual Something GetStat(string name)

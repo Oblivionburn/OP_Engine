@@ -134,6 +134,29 @@ namespace OP_Engine.Time
             }
         }
 
+        public TimeHandler(int year, int month, int day, int hour)
+        {
+            if (year > 0)
+            {
+                AddYears(year, TimeRate.Year);
+            }
+
+            if (month > 0)
+            {
+                AddMonths(month, TimeRate.Month);
+            }
+
+            if (day > 0)
+            {
+                AddDays(day, TimeRate.Day);
+            }
+
+            if (hour > 0)
+            {
+                AddHours(hour, TimeRate.Hour);
+            }
+        }
+
         public TimeHandler(long millisecond)
         {
             if (millisecond > 0)
@@ -534,2077 +557,1981 @@ namespace OP_Engine.Time
 
         public virtual void AddSeconds(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
+            long total_milliseconds = amount * 1000;
+
+            switch (Interval)
             {
-                long total_milliseconds = amount * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Second ||
-                     Interval == TimeRate.Minute ||
-                     Interval == TimeRate.Hour ||
-                     Interval == TimeRate.Day ||
-                     Interval == TimeRate.Month ||
-                     Interval == TimeRate.Year ||
-                     Interval == TimeRate.Decade ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                TotalMilliseconds += amount * 1000;
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                case TimeRate.Minute:
+                case TimeRate.Hour:
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalSeconds++;
-                    Seconds++;
-                    OnSecondsChange?.Invoke(this, EventArgs.Empty);
+                    Processing = true;
 
-                    if (Seconds >= 60)
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Seconds = 0;
+                        TotalSeconds++;
+                        Seconds++;
+                        OnSecondsChange?.Invoke(this, EventArgs.Empty);
 
-                        TotalMinutes++;
-                        Minutes++;
-                        OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                        if (Seconds >= 60)
+                        {
+                            Seconds = 0;
+
+                            TotalMinutes++;
+                            Minutes++;
+                            OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Minutes >= 60)
+                        {
+                            Minutes = 0;
+
+                            TotalHours++;
+                            Hours++;
+                            OnHoursChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Hours >= Hours_In_Day)
+                        {
+                            Hours = 0;
+                            TotalDays++;
+                            Days++;
+                            OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Minutes >= 60)
-                    {
-                        Minutes = 0;
-
-                        TotalHours++;
-                        Hours++;
-                        OnHoursChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Hours >= Hours_In_Day)
-                    {
-                        Hours = 0;
-                        TotalDays++;
-                        Days++;
-                        OnDaysChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Days > Days_In_Month)
-                    {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddSeconds(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
+            long total_milliseconds = amount * 1000;
+
+            switch (rate)
             {
-                long total_milliseconds = amount * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Second ||
-                     rate == TimeRate.Minute ||
-                     rate == TimeRate.Hour ||
-                     rate == TimeRate.Day ||
-                     rate == TimeRate.Month ||
-                     rate == TimeRate.Year ||
-                     rate == TimeRate.Decade ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                TotalMilliseconds += amount * 1000;
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                case TimeRate.Minute:
+                case TimeRate.Hour:
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalSeconds++;
-                    Seconds++;
-                    OnSecondsChange?.Invoke(this, EventArgs.Empty);
+                    Processing = true;
 
-                    if (Seconds >= 60)
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Seconds = 0;
+                        TotalSeconds++;
+                        Seconds++;
+                        OnSecondsChange?.Invoke(this, EventArgs.Empty);
 
-                        TotalMinutes++;
-                        Minutes++;
-                        OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                        if (Seconds >= 60)
+                        {
+                            Seconds = 0;
+
+                            TotalMinutes++;
+                            Minutes++;
+                            OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Minutes >= 60)
+                        {
+                            Minutes = 0;
+
+                            TotalHours++;
+                            Hours++;
+                            OnHoursChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Hours >= Hours_In_Day)
+                        {
+                            Hours = 0;
+                            TotalDays++;
+                            Days++;
+                            OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Minutes >= 60)
-                    {
-                        Minutes = 0;
-
-                        TotalHours++;
-                        Hours++;
-                        OnHoursChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Hours >= Hours_In_Day)
-                    {
-                        Hours = 0;
-                        TotalDays++;
-                        Days++;
-                        OnDaysChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Days > Days_In_Month)
-                    {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddMinutes(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
+            long total_seconds = amount * 60;
+            long total_milliseconds = total_seconds * 1000;
+
+            switch (Interval)
             {
-                long total_seconds = amount * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_seconds = amount * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Minute ||
-                     Interval == TimeRate.Hour ||
-                     Interval == TimeRate.Day ||
-                     Interval == TimeRate.Month ||
-                     Interval == TimeRate.Year ||
-                     Interval == TimeRate.Decade ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_seconds = amount * 60;
-                long total_milliseconds = total_seconds * 1000;
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Minute:
+                case TimeRate.Hour:
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalMinutes++;
-                    Minutes++;
-                    OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                    Processing = true;
 
-                    if (Minutes >= 60)
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Minutes = 0;
+                        TotalMinutes++;
+                        Minutes++;
+                        OnMinutesChange?.Invoke(this, EventArgs.Empty);
 
-                        TotalHours++;
-                        Hours++;
-                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+                        if (Minutes >= 60)
+                        {
+                            Minutes = 0;
+
+                            TotalHours++;
+                            Hours++;
+                            OnHoursChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Hours >= Hours_In_Day)
+                        {
+                            Hours = 0;
+                            TotalDays++;
+                            Days++;
+                            OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Hours >= Hours_In_Day)
-                    {
-                        Hours = 0;
-                        TotalDays++;
-                        Days++;
-                        OnDaysChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Days > Days_In_Month)
-                    {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddMinutes(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
+            long total_seconds = amount * 60;
+            long total_milliseconds = total_seconds * 1000;
+
+            switch (rate)
             {
-                long total_seconds = amount * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_seconds = amount * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Minute ||
-                     rate == TimeRate.Hour ||
-                     rate == TimeRate.Day ||
-                     rate == TimeRate.Month ||
-                     rate == TimeRate.Year ||
-                     rate == TimeRate.Decade ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_seconds = amount * 60;
-                long total_milliseconds = total_seconds * 1000;
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                Processing = true;
+                case TimeRate.Minute:
+                case TimeRate.Hour:
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalMinutes++;
-                    Minutes++;
-                    OnMinutesChange?.Invoke(this, EventArgs.Empty);
+                    Processing = true;
 
-                    if (Minutes >= 60)
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Minutes = 0;
+                        TotalMinutes++;
+                        Minutes++;
+                        OnMinutesChange?.Invoke(this, EventArgs.Empty);
 
-                        TotalHours++;
-                        Hours++;
-                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+                        if (Minutes >= 60)
+                        {
+                            Minutes = 0;
+
+                            TotalHours++;
+                            Hours++;
+                            OnHoursChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Hours >= Hours_In_Day)
+                        {
+                            Hours = 0;
+                            TotalDays++;
+                            Days++;
+                            OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Hours >= Hours_In_Day)
-                    {
-                        Hours = 0;
-                        TotalDays++;
-                        Days++;
-                        OnDaysChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Days > Days_In_Month)
-                    {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddHours(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
+            long total_minutes = amount * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
+
+            switch (Interval)
             {
-                long total_minutes = amount * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_minutes = amount * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                long total_minutes = amount * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Hour ||
-                     Interval == TimeRate.Day ||
-                     Interval == TimeRate.Month ||
-                     Interval == TimeRate.Year ||
-                     Interval == TimeRate.Decade ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_minutes = amount * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalHours++;
-                    Hours++;
-                    OnHoursChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Hour:
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
 
-                    if (Hours >= Hours_In_Day)
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Hours = 0;
-                        TotalDays++;
-                        Days++;
-                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        TotalHours++;
+                        Hours++;
+                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Hours >= Hours_In_Day)
+                        {
+                            Hours = 0;
+                            TotalDays++;
+                            Days++;
+                            OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Days > Days_In_Month)
-                    {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddHours(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
+            long total_minutes = amount * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
+
+            switch (rate)
             {
-                long total_minutes = amount * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_minutes = amount * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Minute)
-            {
-                long total_minutes = amount * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Hour ||
-                     rate == TimeRate.Day ||
-                     rate == TimeRate.Month ||
-                     rate == TimeRate.Year ||
-                     rate == TimeRate.Decade ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_minutes = amount * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                Processing = true;
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes, rate);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalHours++;
-                    Hours++;
-                    OnHoursChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Hour:
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
 
-                    if (Hours >= Hours_In_Day)
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Hours = 0;
-                        TotalDays++;
-                        Days++;
-                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        TotalHours++;
+                        Hours++;
+                        OnHoursChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Hours >= Hours_In_Day)
+                        {
+                            Hours = 0;
+                            TotalDays++;
+                            Days++;
+                            OnDaysChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Days > Days_In_Month)
-                    {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddDays(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
-            }
-            else if (Interval == TimeRate.Hour)
-            {
-                long total_hours = amount * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Day ||
-                     Interval == TimeRate.Month ||
-                     Interval == TimeRate.Year ||
-                     Interval == TimeRate.Decade ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_hours = amount * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (Interval)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalDays++;
-                    Days++;
-                    OnDaysChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes);
+                    break;
 
-                    if (Days > Days_In_Month)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours);
+                    break;
+
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        TotalDays++;
+                        Days++;
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddDays(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Minute)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes, rate);
-            }
-            else if (rate == TimeRate.Hour)
-            {
-                long total_hours = amount * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Day ||
-                     rate == TimeRate.Month ||
-                     rate == TimeRate.Year ||
-                     rate == TimeRate.Decade ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_hours = amount * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_hours = amount * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalDays++;
-                    Days++;
-                    OnDaysChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes, rate);
+                    break;
 
-                    if (Days > Days_In_Month)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours, rate);
+                    break;
+
+                case TimeRate.Day:
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Days = 1;
-                        TotalMonths++;
-                        Months++;
-                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        TotalDays++;
+                        Days++;
+                        OnDaysChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Days > Days_In_Month)
+                        {
+                            Days = 1;
+                            TotalMonths++;
+                            Months++;
+                            OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Months > Months_In_Year)
-                    {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddMonths(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
-            }
-            else if (Interval == TimeRate.Hour)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
-            }
-            else if (Interval == TimeRate.Day)
-            {
-                long total_days = amount * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Month ||
-                     Interval == TimeRate.Year ||
-                     Interval == TimeRate.Decade ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_days = amount * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (Interval)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalMonths++;
-                    Months++;
-                    OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes);
+                    break;
 
-                    if (Months > Months_In_Year)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days);
+                    break;
+
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddMonths(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Minute)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes, rate);
-            }
-            else if (rate == TimeRate.Hour)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours, rate);
-            }
-            else if (rate == TimeRate.Day)
-            {
-                long total_days = amount * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Month ||
-                     rate == TimeRate.Year ||
-                     rate == TimeRate.Decade ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_days = amount * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_days = amount * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalMonths++;
-                    Months++;
-                    OnMonthsChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes, rate);
+                    break;
 
-                    if (Months > Months_In_Year)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours, rate);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days, rate);
+                    break;
+
+                case TimeRate.Month:
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Months = 1;
-                        TotalYears++;
-                        Years++;
-                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        TotalMonths++;
+                        Months++;
+                        OnMonthsChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Months > Months_In_Year)
+                        {
+                            Months = 1;
+                            TotalYears++;
+                            Years++;
+                            OnYearsChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Years >= 10)
-                    {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddYears(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
-            }
-            else if (Interval == TimeRate.Hour)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
-            }
-            else if (Interval == TimeRate.Day)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
-            }
-            else if (Interval == TimeRate.Month)
-            {
-                long total_months = amount * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Year ||
-                     Interval == TimeRate.Decade ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_months = amount * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (Interval)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalYears++;
-                    Years++;
-                    OnYearsChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes);
+                    break;
 
-                    if (Years >= 10)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months);
+                    break;
+
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddYears(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Minute)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes, rate);
-            }
-            else if (rate == TimeRate.Hour)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours, rate);
-            }
-            else if (rate == TimeRate.Day)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days, rate);
-            }
-            else if (rate == TimeRate.Month)
-            {
-                long total_months = amount * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Year ||
-                     rate == TimeRate.Decade ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_months = amount * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_months = amount * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalYears++;
-                    Years++;
-                    OnYearsChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes, rate);
+                    break;
 
-                    if (Years >= 10)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours, rate);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days, rate);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months, rate);
+                    break;
+
+                case TimeRate.Year:
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Years = 0;
-                        TotalDecades++;
-                        Decades++;
-                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        TotalYears++;
+                        Years++;
+                        OnYearsChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Years >= 10)
+                        {
+                            Years = 0;
+                            TotalDecades++;
+                            Decades++;
+                            OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Decades >= 10)
-                    {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddDecades(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
-            }
-            else if (Interval == TimeRate.Hour)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
-            }
-            else if (Interval == TimeRate.Day)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
-            }
-            else if (Interval == TimeRate.Month)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
-            }
-            else if (Interval == TimeRate.Year)
-            {
-                long total_years = amount * 10;
-                TotalMonths += total_years * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Decade ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_years = amount * 10;
+            long total_months = total_years * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalYears += total_years;
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (Interval)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalDecades++;
-                    Decades++;
-                    OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes);
+                    break;
 
-                    if (Decades >= 10)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months);
+                    break;
+
+                case TimeRate.Year:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    AddYears(total_years);
+                    break;
+
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddDecades(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Minute)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes, rate);
-            }
-            else if (rate == TimeRate.Hour)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours, rate);
-            }
-            else if (rate == TimeRate.Day)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days, rate);
-            }
-            else if (rate == TimeRate.Month)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months, rate);
-            }
-            else if (rate == TimeRate.Year)
-            {
-                long total_years = amount * 10;
-                TotalMonths += total_years * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Decade ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_years = amount * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_years = amount * 10;
+            long total_months = total_years * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalYears += total_years;
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalDecades++;
-                    Decades++;
-                    OnDecadesChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes, rate);
+                    break;
 
-                    if (Decades >= 10)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours, rate);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days, rate);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months, rate);
+                    break;
+
+                case TimeRate.Year:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    AddYears(total_years, rate);
+                    break;
+
+                case TimeRate.Decade:
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Decades = 0;
-                        TotalCenturies++;
-                        Centuries++;
-                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        TotalDecades++;
+                        Decades++;
+                        OnDecadesChange?.Invoke(this, EventArgs.Empty);
+
+                        if (Decades >= 10)
+                        {
+                            Decades = 0;
+                            TotalCenturies++;
+                            Centuries++;
+                            OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
                     }
 
-                    if (Centuries >= 10)
-                    {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
-
-                Processing = false;
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddCenturies(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
-            }
-            else if (Interval == TimeRate.Hour)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
-            }
-            else if (Interval == TimeRate.Day)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
-            }
-            else if (Interval == TimeRate.Month)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
-            }
-            else if (Interval == TimeRate.Year)
-            {
-                long total_years = amount * 100;
-                TotalMonths += total_years * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years);
-            }
-            else if (Interval == TimeRate.Decade)
-            {
-                long total_years = amount * 10;
-                TotalYears += total_years * 10;
-                TotalMonths += TotalYears * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDecades(total_years);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Century ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_decades = amount * 10;
-                long total_years = total_decades * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_decades = amount * 10;
+            long total_years = total_decades * 10;
+            long total_months = total_years * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalDecades += total_decades;
-                TotalYears += total_years;
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (Interval)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalCenturies++;
-                    Centuries++;
-                    OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes);
+                    break;
 
-                    if (Centuries >= 10)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months);
+                    break;
+
+                case TimeRate.Year:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    AddYears(total_years);
+                    break;
+
+                case TimeRate.Decade:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    AddDecades(total_decades);
+                    break;
+
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    TotalDecades += total_decades;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
 
-                Processing = false;
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
+                    }
+
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddCenturies(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Minute)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes, rate);
-            }
-            else if (rate == TimeRate.Hour)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours, rate);
-            }
-            else if (rate == TimeRate.Day)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days, rate);
-            }
-            else if (rate == TimeRate.Month)
-            {
-                long total_years = amount * 100;
-                long total_months = total_years * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months, rate);
-            }
-            else if (rate == TimeRate.Year)
-            {
-                long total_years = amount * 100;
-                TotalMonths += total_years * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years, rate);
-            }
-            else if (rate == TimeRate.Decade)
-            {
-                long total_years = amount * 10;
-                TotalYears += total_years * 10;
-                TotalMonths += TotalYears * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDecades(total_years, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Century ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_decades = amount * 10;
-                long total_years = total_decades * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_decades = amount * 10;
+            long total_years = total_decades * 10;
+            long total_months = total_years * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalDecades += total_decades;
-                TotalYears += total_years;
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalCenturies++;
-                    Centuries++;
-                    OnCenturiesChange?.Invoke(this, EventArgs.Empty);
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes, rate);
+                    break;
 
-                    if (Centuries >= 10)
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours, rate);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days, rate);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months, rate);
+                    break;
+
+                case TimeRate.Year:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    AddYears(total_years, rate);
+                    break;
+
+                case TimeRate.Decade:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    AddDecades(total_decades, rate);
+                    break;
+
+                case TimeRate.Century:
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    TotalDecades += total_decades;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
                     {
-                        Centuries = 0;
-                        TotalMillennia++;
-                        Millennia++;
-                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                    }
-                }
+                        TotalCenturies++;
+                        Centuries++;
+                        OnCenturiesChange?.Invoke(this, EventArgs.Empty);
 
-                Processing = false;
+                        if (Centuries >= 10)
+                        {
+                            Centuries = 0;
+                            TotalMillennia++;
+                            Millennia++;
+                            OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                        }
+                    }
+
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddMillennia(long amount)
         {
-            if (Interval == TimeRate.Millisecond)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes);
-            }
-            else if (Interval == TimeRate.Hour)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours);
-            }
-            else if (Interval == TimeRate.Day)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days);
-            }
-            else if (Interval == TimeRate.Month)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months);
-            }
-            else if (Interval == TimeRate.Year)
-            {
-                long total_years = amount * 1000;
-                TotalMonths += total_years * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years);
-            }
-            else if (Interval == TimeRate.Decade)
-            {
-                long total_years = amount * 100;
-                TotalYears += total_years * 10;
-                TotalMonths += TotalYears * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDecades(total_years);
-            }
-            else if (Interval == TimeRate.Century)
-            {
-                long total_years = amount * 10;
-                TotalDecades += total_years * 10;
-                TotalYears += TotalDecades * 10;
-                TotalMonths += TotalYears * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddCenturies(total_years);
-            }
-            else if (Interval == TimeRate.Nothing ||
-                     Interval == TimeRate.Millennia)
-            {
-                long total_centuries = amount * 10;
-                long total_decades = total_centuries * 10;
-                long total_years = total_decades * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_centuries = amount * 10;
+            long total_decades = total_centuries * 10;
+            long total_years = total_decades * 10;
+            long total_months = total_years * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalCenturies += total_centuries;
-                TotalDecades += total_decades;
-                TotalYears += total_years;
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (Interval)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalMillennia++;
-                    Millennia++;
-                    OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                }
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes);
+                    break;
 
-                Processing = false;
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months);
+                    break;
+
+                case TimeRate.Year:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    AddYears(total_years);
+                    break;
+
+                case TimeRate.Decade:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    AddDecades(total_decades);
+                    break;
+
+                case TimeRate.Century:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    TotalDecades += total_decades;
+                    AddCenturies(total_centuries);
+                    break;
+
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    TotalDecades += total_decades;
+                    TotalCenturies += total_centuries;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
+                    {
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                    }
+
+                    Processing = false;
+                    break;
             }
         }
 
         public virtual void AddMillennia(long amount, TimeRate rate)
         {
-            if (rate == TimeRate.Millisecond)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
-                AddMilliseconds(total_milliseconds);
-            }
-            else if (rate == TimeRate.Second)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                TotalMilliseconds += total_seconds * 1000;
-                AddSeconds(total_seconds, rate);
-            }
-            else if (rate == TimeRate.Minute)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                TotalSeconds += total_minutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMinutes(total_minutes, rate);
-            }
-            else if (rate == TimeRate.Hour)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                TotalMinutes += total_hours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddHours(total_hours, rate);
-            }
-            else if (rate == TimeRate.Day)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                TotalHours += total_days * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDays(total_days, rate);
-            }
-            else if (rate == TimeRate.Month)
-            {
-                long total_years = amount * 1000;
-                long total_months = total_years * Months_In_Year;
-                TotalDays += total_months * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddMonths(total_months, rate);
-            }
-            else if (rate == TimeRate.Year)
-            {
-                long total_years = amount * 1000;
-                TotalMonths += total_years * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddYears(total_years, rate);
-            }
-            else if (rate == TimeRate.Decade)
-            {
-                long total_years = amount * 100;
-                TotalYears += total_years * 10;
-                TotalMonths += TotalYears * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddDecades(total_years, rate);
-            }
-            else if (rate == TimeRate.Century)
-            {
-                long total_years = amount * 10;
-                TotalDecades += total_years * 10;
-                TotalYears += TotalDecades * 10;
-                TotalMonths += TotalYears * Months_In_Year;
-                TotalDays += TotalMonths * Days_In_Month;
-                TotalHours += TotalDays * Hours_In_Day;
-                TotalMinutes += TotalHours * 60;
-                TotalSeconds += TotalMinutes * 60;
-                TotalMilliseconds += TotalSeconds * 1000;
-                AddCenturies(total_years, rate);
-            }
-            else if (rate == TimeRate.Nothing ||
-                     rate == TimeRate.Millennia)
-            {
-                long total_centuries = amount * 10;
-                long total_decades = total_centuries * 10;
-                long total_years = total_decades * 10;
-                long total_months = total_years * Months_In_Year;
-                long total_days = total_months * Days_In_Month;
-                long total_hours = total_days * Hours_In_Day;
-                long total_minutes = total_hours * 60;
-                long total_seconds = total_minutes * 60;
-                long total_milliseconds = total_seconds * 1000;
+            long total_centuries = amount * 10;
+            long total_decades = total_centuries * 10;
+            long total_years = total_decades * 10;
+            long total_months = total_years * Months_In_Year;
+            long total_days = total_months * Days_In_Month;
+            long total_hours = total_days * Hours_In_Day;
+            long total_minutes = total_hours * 60;
+            long total_seconds = total_minutes * 60;
+            long total_milliseconds = total_seconds * 1000;
 
-                TotalCenturies += total_centuries;
-                TotalDecades += total_decades;
-                TotalYears += total_years;
-                TotalMonths += total_months;
-                TotalDays += total_days;
-                TotalHours += total_hours;
-                TotalMinutes += total_minutes;
-                TotalSeconds += total_seconds;
-                TotalMilliseconds += total_milliseconds;
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(total_milliseconds);
+                    break;
 
-                Processing = true;
+                case TimeRate.Second:
+                    TotalMilliseconds += total_milliseconds;
+                    AddSeconds(total_seconds, rate);
+                    break;
 
-                for (long i = 1; i <= amount; i++)
-                {
-                    TotalMillennia++;
-                    Millennia++;
-                    OnMillenniaChange?.Invoke(this, EventArgs.Empty);
-                }
+                case TimeRate.Minute:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    AddMinutes(total_minutes, rate);
+                    break;
 
-                Processing = false;
+                case TimeRate.Hour:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    AddHours(total_hours, rate);
+                    break;
+
+                case TimeRate.Day:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    AddDays(total_days, rate);
+                    break;
+
+                case TimeRate.Month:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    AddMonths(total_months, rate);
+                    break;
+
+                case TimeRate.Year:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    AddYears(total_years, rate);
+                    break;
+
+                case TimeRate.Decade:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    AddDecades(total_decades, rate);
+                    break;
+
+                case TimeRate.Century:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    TotalDecades += total_decades;
+                    AddCenturies(total_centuries, rate);
+                    break;
+
+                case TimeRate.Millennia:
+                case TimeRate.Nothing:
+                    TotalMilliseconds += total_milliseconds;
+                    TotalSeconds += total_seconds;
+                    TotalMinutes += total_minutes;
+                    TotalHours += total_hours;
+                    TotalDays += total_days;
+                    TotalMonths += total_months;
+                    TotalYears += total_years;
+                    TotalDecades += total_decades;
+                    TotalCenturies += total_centuries;
+
+                    Processing = true;
+
+                    for (long i = 1; i <= amount; i++)
+                    {
+                        TotalMillennia++;
+                        Millennia++;
+                        OnMillenniaChange?.Invoke(this, EventArgs.Empty);
+                    }
+
+                    Processing = false;
+                    break;
+            }
+        }
+
+        public virtual void AddTime(TimeRate rate, long amount)
+        {
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                    AddMilliseconds(amount);
+                    break;
+
+                case TimeRate.Second:
+                    AddSeconds(amount);
+                    break;
+
+                case TimeRate.Minute:
+                    AddMinutes(amount);
+                    break;
+
+                case TimeRate.Hour:
+                    AddHours(amount);
+                    break;
+
+                case TimeRate.Day:
+                    AddDays(amount);
+                    break;
+
+                case TimeRate.Month:
+                    AddMonths(amount);
+                    break;
+
+                case TimeRate.Year:
+                    AddYears(amount);
+                    break;
+
+                case TimeRate.Decade:
+                    AddDecades(amount);
+                    break;
+
+                case TimeRate.Century:
+                    AddCenturies(amount);
+                    break;
+
+                case TimeRate.Millennia:
+                    AddMillennia(amount);
+                    break;
+            }
+        }
+
+        public virtual void AddTime(TimeRate rate, TimeSpan amount)
+        {
+            switch (rate)
+            {
+                case TimeRate.Millisecond:
+                case TimeRate.Nothing:
+                    AddMilliseconds((long)amount.TotalMilliseconds);
+                    break;
+
+                case TimeRate.Second:
+                    AddSeconds((long)amount.TotalSeconds);
+                    break;
+
+                case TimeRate.Minute:
+                    AddMinutes((long)amount.TotalMinutes);
+                    break;
+
+                case TimeRate.Hour:
+                    AddHours((long)amount.TotalHours);
+                    break;
+
+                case TimeRate.Day:
+                    AddDays((long)amount.TotalDays);
+                    break;
+
+                case TimeRate.Month:
+                    long total_months = (long)amount.TotalDays / Days_In_Month;
+                    AddMonths(total_months);
+                    break;
+
+                case TimeRate.Year:
+                    long total_years = (long)amount.TotalDays / Days_In_Month / Months_In_Year;
+                    AddYears(total_years);
+                    break;
+
+                case TimeRate.Decade:
+                    long total_decades = (long)amount.TotalDays / Days_In_Month / Months_In_Year / 10;
+                    AddDecades(total_decades);
+                    break;
+
+                case TimeRate.Century:
+                    long total_centuries = (long)amount.TotalDays / Days_In_Month / Months_In_Year / 100;
+                    AddCenturies(total_centuries);
+                    break;
+
+                case TimeRate.Millennia:
+                    long total_millennia = (long)amount.TotalDays / Days_In_Month / Months_In_Year / 1000;
+                    AddMillennia(total_millennia);
+                    break;
+            }
+        }
+
+        public virtual void AddTime(TimeSpan amount)
+        {
+            switch (Interval)
+            {
+                case TimeRate.Millisecond:
+                case TimeRate.Nothing:
+                    AddMilliseconds((long)amount.TotalMilliseconds);
+                    break;
+
+                case TimeRate.Second:
+                    AddSeconds((long)amount.TotalSeconds);
+                    break;
+
+                case TimeRate.Minute:
+                    AddMinutes((long)amount.TotalMinutes);
+                    break;
+
+                case TimeRate.Hour:
+                    AddHours((long)amount.TotalHours);
+                    break;
+
+                case TimeRate.Day:
+                    AddDays((long)amount.TotalDays);
+                    break;
+
+                case TimeRate.Month:
+                    long total_months = (long)amount.TotalDays / Days_In_Month;
+                    AddMonths(total_months);
+                    break;
+
+                case TimeRate.Year:
+                    long total_years = (long)amount.TotalDays / Days_In_Month / Months_In_Year;
+                    AddYears(total_years);
+                    break;
+
+                case TimeRate.Decade:
+                    long total_decades = (long)amount.TotalDays / Days_In_Month / Months_In_Year / 10;
+                    AddDecades(total_decades);
+                    break;
+
+                case TimeRate.Century:
+                    long total_centuries = (long)amount.TotalDays / Days_In_Month / Months_In_Year / 100;
+                    AddCenturies(total_centuries);
+                    break;
+
+                case TimeRate.Millennia:
+                    long total_millennia = (long)amount.TotalDays / Days_In_Month / Months_In_Year / 1000;
+                    AddMillennia(total_millennia);
+                    break;
             }
         }
 
@@ -2620,63 +2547,6 @@ namespace OP_Engine.Time
             Decades = time.Decades;
             Centuries = time.Centuries;
             Millennia = time.Millennia;
-        }
-
-        public virtual void AddTimeSpan(TimeSpan amount)
-        {
-            if (Interval == TimeRate.Nothing ||
-                Interval == TimeRate.Millisecond)
-            {
-                AddMilliseconds((long)amount.TotalMilliseconds);
-            }
-            else if (Interval == TimeRate.Second)
-            {
-                AddSeconds((long)amount.TotalSeconds);
-            }
-            else if (Interval == TimeRate.Minute)
-            {
-                AddMinutes((long)amount.TotalMinutes);
-            }
-            else if (Interval == TimeRate.Hour)
-            {
-                AddHours((long)amount.TotalHours);
-            }
-            else if (Interval == TimeRate.Day)
-            {
-                AddDays((long)amount.TotalDays);
-            }
-            else if (Interval == TimeRate.Month)
-            {
-                long total_months = (long)amount.TotalDays / Days_In_Month;
-                AddMonths(total_months);
-            }
-            else if (Interval == TimeRate.Year)
-            {
-                long total_months = (long)amount.TotalDays / Days_In_Month;
-                long total_years = total_months / Months_In_Year;
-                AddYears(total_years);
-            }
-            else if (Interval == TimeRate.Decade)
-            {
-                long total_months = (long)amount.TotalDays / Days_In_Month;
-                long total_years = total_months / Months_In_Year;
-                long total_decades = total_years / 10;
-                AddDecades(total_decades);
-            }
-            else if (Interval == TimeRate.Century)
-            {
-                long total_months = (long)amount.TotalDays / Days_In_Month;
-                long total_years = total_months / Months_In_Year;
-                long total_centuries = total_years / 100;
-                AddCenturies(total_centuries);
-            }
-            else if (Interval == TimeRate.Millennia)
-            {
-                long total_months = (long)amount.TotalDays / Days_In_Month;
-                long total_years = total_months / Months_In_Year;
-                long total_millennia = total_years / 1000;
-                AddMillennia(total_millennia);
-            }
         }
 
         public virtual string ToString(bool military_time, bool include_milliseconds, bool include_date)

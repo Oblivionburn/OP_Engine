@@ -8,7 +8,7 @@ namespace OP_Engine.Utility
 
         public int X;
         public int Y;
-        public int Priority;
+        public float Priority;
         public int Distance_ToStart;
         public int Distance_ToDestination;
         public ALocation Parent;

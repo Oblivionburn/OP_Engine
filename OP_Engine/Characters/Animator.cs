@@ -24,7 +24,7 @@ namespace OP_Engine.Characters
 
         #region Methods
 
-        public virtual void Update(Character character)
+        public virtual void Update(Something something)
         {
             
         }
@@ -53,20 +53,20 @@ namespace OP_Engine.Characters
             character.Direction = Direction.Left;
         }
 
-        public virtual void Animate(Character character)
+        public virtual void Animate(Something something)
         {
-            int X = character.Image.X + character.Image.Width;
-            if (X >= character.Texture.Width)
+            int X = something.Image.X + something.Image.Width;
+            if (X >= something.Texture.Width)
             {
                 X = 0;
             }
 
-            character.Image = new Rectangle(X, character.Image.Y, character.Image.Width, character.Image.Height);
+            something.Image = new Rectangle(X, something.Image.Y, something.Image.Width, something.Image.Height);
         }
 
-        public virtual void Reset(Character character)
+        public virtual void Reset(Something something)
         {
-            character.Image = new Rectangle(0, character.Image.Y, character.Image.Width, character.Image.Height);
+            something.Image = new Rectangle(0, something.Image.Y, something.Image.Width, something.Image.Height);
         }
 
         #endregion

@@ -127,13 +127,16 @@ namespace OP_Engine.Tiles
 
         public virtual void Animate()
         {
-            int X = Image.X + Image.Height;
-            if (X >= Texture.Width)
+            if (Texture != null)
             {
-                X = 0;
-            }
+                int X = Image.X + Image.Height;
+                if (X >= Texture.Width)
+                {
+                    X = 0;
+                }
 
-            Image = new Rectangle(X, Image.Y, Image.Width, Image.Height);
+                Image = new Rectangle(X, Image.Y, Image.Width, Image.Height);
+            }
         }
 
         public override void Dispose()

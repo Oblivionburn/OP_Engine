@@ -42,6 +42,7 @@ namespace OP_Engine.Weathers
 
         public static void Load(List<Texture2D> Particles)
         {
+            Weathers.Add(new Weather(null, WeatherType.Clear, 0));
             Weathers.Add(new Weather(Particles, WeatherType.Rain, 0));
             Weathers.Add(new Weather(Particles, WeatherType.Storm, 0));
             Weathers.Add(new Weather(Particles, WeatherType.Snow, 0));
@@ -171,6 +172,88 @@ namespace OP_Engine.Weathers
 
         public static Weather GetWeather(WeatherType type)
         {
+            foreach (Weather weather in Weathers)
+            {
+                if (weather.Type == type)
+                {
+                    return weather;
+                }
+            }
+
+            return null;
+        }
+
+        public static Weather GetWeather_TransitioningTo()
+        {
+            WeatherType type = WeatherType.Clear;
+
+            switch (TransitionType)
+            {
+                case WeatherTransition.ClearToRain:
+                    type = WeatherType.Rain;
+                    break;
+
+                case WeatherTransition.ClearToStorm:
+                    type = WeatherType.Storm;
+                    break;
+
+                case WeatherTransition.ClearToSnow:
+                    type = WeatherType.Snow;
+                    break;
+
+                case WeatherTransition.ClearToFog:
+                    type = WeatherType.Fog;
+                    break;
+
+                case WeatherTransition.RainToStorm:
+                    type = WeatherType.Storm;
+                    break;
+
+                case WeatherTransition.RainToSnow:
+                    type = WeatherType.Snow;
+                    break;
+
+                case WeatherTransition.RainToFog:
+                    type = WeatherType.Fog;
+                    break;
+
+                case WeatherTransition.StormToRain:
+                    type = WeatherType.Rain;
+                    break;
+
+                case WeatherTransition.StormToSnow:
+                    type = WeatherType.Snow;
+                    break;
+
+                case WeatherTransition.StormToFog:
+                    type = WeatherType.Fog;
+                    break;
+
+                case WeatherTransition.SnowToRain:
+                    type = WeatherType.Rain;
+                    break;
+
+                case WeatherTransition.SnowToStorm:
+                    type = WeatherType.Storm;
+                    break;
+
+                case WeatherTransition.SnowToFog:
+                    type = WeatherType.Fog;
+                    break;
+
+                case WeatherTransition.FogToRain:
+                    type = WeatherType.Rain;
+                    break;
+
+                case WeatherTransition.FogToStorm:
+                    type = WeatherType.Storm;
+                    break;
+
+                case WeatherTransition.FogToSnow:
+                    type = WeatherType.Snow;
+                    break;
+            }
+
             foreach (Weather weather in Weathers)
             {
                 if (weather.Type == type)

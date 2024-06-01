@@ -86,7 +86,7 @@ namespace OP_Engine.Jobs
                     if (current_time.TotalMilliseconds >= StepTime.TotalMilliseconds)
                     {
                         StepTime.CopyTime(current_time);
-                        StepTime.AddTimeSpan(time_span);
+                        StepTime.AddTime(time_span);
 
                         if (TaskBar.Rate > 0 &&
                             TaskBar.Value < TaskBar.Max_Value)
