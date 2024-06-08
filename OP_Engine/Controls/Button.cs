@@ -37,6 +37,11 @@ namespace OP_Engine.Controls
 
         #region Methods
 
+        public override void Update()
+        {
+            base.Update();
+        }
+
         public virtual void Click()
         {
             OnClick?.Invoke(this, EventArgs.Empty);

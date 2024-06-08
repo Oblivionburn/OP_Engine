@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace OP_Engine.Controls
 {
@@ -29,28 +28,7 @@ namespace OP_Engine.Controls
 
         public override void Update()
         {
-            if (Font != null &&
-                Region != null)
-            {
-                if (!string.IsNullOrEmpty(Text))
-                {
-                    Size = Font.MeasureString(Text);
-                }
-                else if (!string.IsNullOrEmpty(Caret))
-                {
-                    Size = Font.MeasureString(Caret);
-                }
-
-                float xScale = Region.Width / Size.X;
-                float yScale = Region.Height / Size.Y;
-                Scale = Math.Min(xScale, yScale);
-
-                int strWidth = (int)Math.Round(Size.X * Scale);
-                int strHeight = (int)Math.Round(Size.Y * Scale);
-
-                Position.X = (Region.Width - strWidth) / 2 + Region.X;
-                Position.Y = (Region.Height - strHeight) / 2 + Region.Y;
-            }
+            base.Update();
 
             Caret = "";
             if (Active)
