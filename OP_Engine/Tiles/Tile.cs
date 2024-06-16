@@ -40,7 +40,7 @@ namespace OP_Engine.Tiles
         {
             Inventory = new Inventory();
 
-            Location = new Vector3();
+            Location = new Location();
             ProgressBar = new ProgressBar();
             Region = new Region();
             Image = new Rectangle();

@@ -48,7 +48,7 @@ namespace OP_Engine.Characters
         public long Target_ID;
 
         public Vector2 Formation;
-        public Vector3 Destination;
+        public Location Destination;
         
         public bool Moving;
         public float Moved;

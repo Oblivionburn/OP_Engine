@@ -14,6 +14,8 @@ namespace OP_Engine.Controls
 
         public Color TextColor_Selected;
         public Color TextColor_Disabled;
+        public Color DrawColor_Selected;
+        public Color DrawColor_Disabled;
 
         public Texture2D Texture_Highlight;
         public Texture2D Texture_Disabled;
@@ -58,7 +60,14 @@ namespace OP_Engine.Controls
                         if (Texture_Highlight != null &&
                             Region != null)
                         {
-                            spriteBatch.Draw(Texture_Highlight, Region.ToRectangle, Image, DrawColor * Opacity);
+                            if (DrawColor_Selected != default)
+                            {
+                                spriteBatch.Draw(Texture_Highlight, Region.ToRectangle, Image, DrawColor_Selected * Opacity);
+                            }
+                            else
+                            {
+                                spriteBatch.Draw(Texture_Highlight, Region.ToRectangle, Image, DrawColor * Opacity);
+                            }
                         }
 
                         if (!string.IsNullOrEmpty(Text) &&
@@ -96,7 +105,14 @@ namespace OP_Engine.Controls
                 else if (Texture_Disabled != null &&
                          Region != null)
                 {
-                    spriteBatch.Draw(Texture_Disabled, Region.ToRectangle, Image, DrawColor * Opacity);
+                    if (DrawColor_Disabled != default)
+                    {
+                        spriteBatch.Draw(Texture_Disabled, Region.ToRectangle, Image, DrawColor_Disabled * Opacity);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(Texture_Disabled, Region.ToRectangle, Image, DrawColor * Opacity);
+                    }
 
                     if (!string.IsNullOrEmpty(Text) &&
                         Font != null)

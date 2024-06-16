@@ -45,6 +45,19 @@ namespace OP_Engine.Utility
             return false;
         }
 
+        public static bool RegionsOverlapping(Region origin, Region target)
+        {
+            if (((origin.X >= target.X && origin.X < target.X + target.Width) ||
+                 (origin.X + origin.Width > target.X && origin.X + origin.Width <= target.X + target.Width)) &&
+                ((origin.Y >= target.Y && origin.Y < target.Y + target.Height) ||
+                 (origin.Y + origin.Height > target.Y && origin.Y + origin.Height <= target.Y + target.Height)))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static List<Point> GetLine(Point starting_point, Point destination_point)
         {
             return BresenhamLine(starting_point.X, starting_point.Y, destination_point.X, destination_point.Y);

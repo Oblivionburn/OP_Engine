@@ -16,6 +16,7 @@ namespace OP_Engine.Utility
         #region Variables
 
         public static ContentManager Content;
+        public static string[] SoundExtensions = { ".mp3", ".wma", ".wav", ".ogg" };
         public static Dictionary<string, string> Directories = new Dictionary<string, string>();
         public static Dictionary<string, string> Files = new Dictionary<string, string>();
         public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
@@ -174,23 +175,26 @@ namespace OP_Engine.Utility
             DirectoryInfo dir = new DirectoryInfo(Directories["Sounds"]);
             foreach (var file in dir.GetFiles())
             {
-                Sound sound = new Sound();
-                sound.Extension = file.Extension;
-                sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                sound.Directory = Path.GetDirectoryName(file.FullName);
-                sound.Type = sound.Name;
-
-                if (!Sounds.ContainsKey("Sounds"))
+                if (SoundExtensions.Contains(file.Extension))
                 {
-                    Dictionary<string, Sound> sounds = new Dictionary<string, Sound>();
-                    sounds.Add(sound.Name, sound);
+                    Sound sound = new Sound();
+                    sound.Extension = file.Extension;
+                    sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
+                    sound.Directory = Path.GetDirectoryName(file.FullName);
+                    sound.Type = sound.Name;
 
-                    Sounds.Add("Sounds", sounds);
-                }
-                else if (!Sounds["Sounds"].ContainsKey(sound.Name))
-                {
-                    Sounds["Sounds"].Add(sound.Name, sound);
-                }
+                    if (!Sounds.ContainsKey("Sounds"))
+                    {
+                        Dictionary<string, Sound> sounds = new Dictionary<string, Sound>();
+                        sounds.Add(sound.Name, sound);
+
+                        Sounds.Add("Sounds", sounds);
+                    }
+                    else if (!Sounds["Sounds"].ContainsKey(sound.Name))
+                    {
+                        Sounds["Sounds"].Add(sound.Name, sound);
+                    }
+                } 
             }
         }
 
@@ -203,26 +207,29 @@ namespace OP_Engine.Utility
                 {
                     foreach (var file in sub_dir.GetFiles())
                     {
-                        Sound sound = new Sound();
-                        sound.Extension = file.Extension;
-                        sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                        sound.Directory = Path.GetDirectoryName(file.FullName);
-
-                        //Assumes your sound files end with numbers for variations of each sound
-                        //because nobody likes hearing the same sound repeatedly for hours
-                        //Example: Hit1.mp3, Hit2.mp3, Hit3.mp3,etc
-                        sound.Type = sound.Name.Substring(0, sound.Name.Length - 1);
-
-                        if (!Sounds.ContainsKey(directory))
+                        if (SoundExtensions.Contains(file.Extension))
                         {
-                            Dictionary<string, Sound> sounds = new Dictionary<string, Sound>();
-                            sounds.Add(sound.Name, sound);
+                            Sound sound = new Sound();
+                            sound.Extension = file.Extension;
+                            sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
+                            sound.Directory = Path.GetDirectoryName(file.FullName);
 
-                            Sounds.Add(directory, sounds);
-                        }
-                        else if (!Sounds[directory].ContainsKey(sound.Name))
-                        {
-                            Sounds[directory].Add(sound.Name, sound);
+                            //Assumes your sound files end with numbers for variations of each sound
+                            //because nobody likes hearing the same sound repeatedly for hours
+                            //Example: Hit1.mp3, Hit2.mp3, Hit3.mp3,etc
+                            sound.Type = sound.Name.Substring(0, sound.Name.Length - 1);
+
+                            if (!Sounds.ContainsKey(directory))
+                            {
+                                Dictionary<string, Sound> sounds = new Dictionary<string, Sound>();
+                                sounds.Add(sound.Name, sound);
+
+                                Sounds.Add(directory, sounds);
+                            }
+                            else if (!Sounds[directory].ContainsKey(sound.Name))
+                            {
+                                Sounds[directory].Add(sound.Name, sound);
+                            }
                         }
                     }
 
@@ -236,23 +243,26 @@ namespace OP_Engine.Utility
             DirectoryInfo dir = new DirectoryInfo(Directories["Music"]);
             foreach (var file in dir.GetFiles())
             {
-                Sound sound = new Sound();
-                sound.Extension = file.Extension;
-                sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                sound.Directory = Path.GetDirectoryName(file.FullName);
-                sound.Type = sound.Name;
-
-                if (!Music.ContainsKey("Music"))
+                if (SoundExtensions.Contains(file.Extension))
                 {
-                    Dictionary<string, Sound> music = new Dictionary<string, Sound>();
-                    music.Add(sound.Name, sound);
+                    Sound sound = new Sound();
+                    sound.Extension = file.Extension;
+                    sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
+                    sound.Directory = Path.GetDirectoryName(file.FullName);
+                    sound.Type = sound.Name;
 
-                    Music.Add("Music", music);
-                }
-                else if (!Music["Music"].ContainsKey(sound.Name))
-                {
-                    Music["Music"].Add(sound.Name, sound);
-                }
+                    if (!Music.ContainsKey("Music"))
+                    {
+                        Dictionary<string, Sound> music = new Dictionary<string, Sound>();
+                        music.Add(sound.Name, sound);
+
+                        Music.Add("Music", music);
+                    }
+                    else if (!Music["Music"].ContainsKey(sound.Name))
+                    {
+                        Music["Music"].Add(sound.Name, sound);
+                    }
+                } 
             }
         }
 
@@ -265,22 +275,25 @@ namespace OP_Engine.Utility
                 {
                     foreach (var file in dir_music.GetFiles())
                     {
-                        Sound sound = new Sound();
-                        sound.Extension = file.Extension;
-                        sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                        sound.Directory = Path.GetDirectoryName(file.FullName);
-                        sound.Type = sound.Name;
-
-                        if (!Music.ContainsKey(directory))
+                        if (SoundExtensions.Contains(file.Extension))
                         {
-                            Dictionary<string, Sound> music = new Dictionary<string, Sound>();
-                            music.Add(sound.Name, sound);
+                            Sound sound = new Sound();
+                            sound.Extension = file.Extension;
+                            sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
+                            sound.Directory = Path.GetDirectoryName(file.FullName);
+                            sound.Type = sound.Name;
 
-                            Music.Add(directory, music);
-                        }
-                        else if (!Music[directory].ContainsKey(sound.Name))
-                        {
-                            Music[directory].Add(sound.Name, sound);
+                            if (!Music.ContainsKey(directory))
+                            {
+                                Dictionary<string, Sound> music = new Dictionary<string, Sound>();
+                                music.Add(sound.Name, sound);
+
+                                Music.Add(directory, music);
+                            }
+                            else if (!Music[directory].ContainsKey(sound.Name))
+                            {
+                                Music[directory].Add(sound.Name, sound);
+                            }
                         }
                     }
                 }
@@ -292,23 +305,26 @@ namespace OP_Engine.Utility
             DirectoryInfo dir = new DirectoryInfo(Directories["Ambient"]);
             foreach (var file in dir.GetFiles())
             {
-                Sound sound = new Sound();
-                sound.Extension = file.Extension;
-                sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                sound.Directory = Path.GetDirectoryName(file.FullName);
-                sound.Type = sound.Name;
-
-                if (!Ambient.ContainsKey("Ambient"))
+                if (SoundExtensions.Contains(file.Extension))
                 {
-                    Dictionary<string, Sound> ambient = new Dictionary<string, Sound>();
-                    ambient.Add(sound.Name, sound);
+                    Sound sound = new Sound();
+                    sound.Extension = file.Extension;
+                    sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
+                    sound.Directory = Path.GetDirectoryName(file.FullName);
+                    sound.Type = sound.Name;
 
-                    Ambient.Add("Ambient", ambient);
-                }
-                else if (!Ambient["Ambient"].ContainsKey(sound.Name))
-                {
-                    Ambient["Ambient"].Add(sound.Name, sound);
-                }
+                    if (!Ambient.ContainsKey("Ambient"))
+                    {
+                        Dictionary<string, Sound> ambient = new Dictionary<string, Sound>();
+                        ambient.Add(sound.Name, sound);
+
+                        Ambient.Add("Ambient", ambient);
+                    }
+                    else if (!Ambient["Ambient"].ContainsKey(sound.Name))
+                    {
+                        Ambient["Ambient"].Add(sound.Name, sound);
+                    }
+                }  
             }
         }
 
@@ -321,22 +337,25 @@ namespace OP_Engine.Utility
                 {
                     foreach (var file in dir.GetFiles())
                     {
-                        Sound sound = new Sound();
-                        sound.Extension = file.Extension;
-                        sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                        sound.Directory = Path.GetDirectoryName(file.FullName);
-                        sound.Type = sound.Name;
-
-                        if (!Ambient.ContainsKey(directory))
+                        if (SoundExtensions.Contains(file.Extension))
                         {
-                            Dictionary<string, Sound> ambient = new Dictionary<string, Sound>();
-                            ambient.Add(sound.Name, sound);
+                            Sound sound = new Sound();
+                            sound.Extension = file.Extension;
+                            sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
+                            sound.Directory = Path.GetDirectoryName(file.FullName);
+                            sound.Type = sound.Name;
 
-                            Ambient.Add(directory, ambient);
-                        }
-                        else if (!Ambient[directory].ContainsKey(sound.Name))
-                        {
-                            Ambient[directory].Add(sound.Name, sound);
+                            if (!Ambient.ContainsKey(directory))
+                            {
+                                Dictionary<string, Sound> ambient = new Dictionary<string, Sound>();
+                                ambient.Add(sound.Name, sound);
+
+                                Ambient.Add(directory, ambient);
+                            }
+                            else if (!Ambient[directory].ContainsKey(sound.Name))
+                            {
+                                Ambient[directory].Add(sound.Name, sound);
+                            }
                         }
                     }
 
