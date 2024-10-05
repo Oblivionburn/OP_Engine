@@ -47,13 +47,14 @@ namespace OP_Engine.Particles
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Particle particle in Particles)
+            for (int i = 0; i < Particles.Count; i++)
             {
+                Particle particle = Particles[i];
                 particle.Draw(spriteBatch);
             }
         }
 
-        public virtual Particle AddParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, int waver_min_x, int waver_max_x, int waver_min_y, int waver_max_y)
+        public virtual Particle GetParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, int waver_min_x, int waver_max_x, int waver_min_y, int waver_max_y)
         {
             Texture2D texture = null;
 
@@ -74,7 +75,7 @@ namespace OP_Engine.Particles
             return new Particle(texture, location, velocity, angle, new_color, size, lifetime, waver_min_x, waver_max_x, waver_min_y, waver_max_y);
         }
 
-        public virtual Particle AddParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, bool scatter)
+        public virtual Particle GetParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, bool scatter)
         {
             Texture2D texture = null;
 

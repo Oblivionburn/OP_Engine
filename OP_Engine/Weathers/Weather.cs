@@ -74,24 +74,27 @@ namespace OP_Engine.Weathers
 
                             random = new CryptoRandom();
                             int result = random.Next(1, 5);
-                            if (result == 1)
+                            switch (result)
                             {
-                                size = 0.25f;
-                            }
-                            else if (result == 2)
-                            {
-                                size = 0.5f;
-                            }
-                            else if (result == 3)
-                            {
-                                size = 0.75f;
-                            }
-                            else if (result == 4)
-                            {
-                                size = 1f;
+                                case 1:
+                                    size = 0.25f;
+                                    break;
+
+                                case 2:
+                                    size = 0.5f;
+                                    break;
+
+                                case 3:
+                                    size = 0.75f;
+                                    break;
+
+                                case 4:
+                                    size = 1f;
+                                    break;
                             }
 
-                            ParticleManager.Particles.Add(ParticleManager.AddParticle(Type.ToString(), resolution, new Vector2(0, 8f), 0, Color.White, 0.5f, size, 16, true));
+                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, new Vector2(0, 8f), 0, Color.White, 0.5f, size, 16, true);
+                            ParticleManager.Particles.Add(particle);
                         }
                         break;
 
@@ -103,36 +106,35 @@ namespace OP_Engine.Weathers
 
                             random = new CryptoRandom();
                             int result = random.Next(1, 5);
-                            if (result == 1)
+                            switch (result)
                             {
-                                size = 0.25f;
+                                case 1:
+                                    size = 0.25f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(1, 25) * 0.01f, 0.5f);
+                                    break;
 
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(0, 1), 0.5f);
-                            }
-                            else if (result == 2)
-                            {
-                                size = 0.5f;
+                                case 2:
+                                    size = 0.5f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(1, 50) * 0.01f, 1);
+                                    break;
 
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(0, 2), 1);
-                            }
-                            else if (result == 3)
-                            {
-                                size = 0.75f;
+                                case 3:
+                                    size = 0.75f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(1, 75) * 0.01f, 2);
+                                    break;
 
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(0, 3), 2);
-                            }
-                            else if (result == 4)
-                            {
-                                size = 1f;
-
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(0, 4), 4);
+                                case 4:
+                                    size = 1f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(1, 100) * 0.01f, 3);
+                                    break;
                             }
 
-                            ParticleManager.Particles.Add(ParticleManager.AddParticle(Type.ToString(), resolution, velocity, 0, Color.White, 0.8f, size, 128, 0, 3, -1, 3));
+                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, velocity, 0, Color.White, 0.8f, size, 64, 0, 50, 0, 0);
+                            ParticleManager.Particles.Add(particle);
                         }
                         break;
 
@@ -146,31 +148,34 @@ namespace OP_Engine.Weathers
                             float angle = 0;
 
                             int result = random.Next(1, 5);
-                            if (result == 1)
+                            switch (result)
                             {
-                                size = 0.25f;
-                                x = random.Next(0, 2);
-                            }
-                            else if (result == 2)
-                            {
-                                size = 0.5f;
-                                x = random.Next(0, 3);
-                            }
-                            else if (result == 3)
-                            {
-                                size = 0.75f;
-                                x = random.Next(0, 4);
-                            }
-                            else if (result == 4)
-                            {
-                                size = 1f;
-                                x = random.Next(0, 5);
+                                case 1:
+                                    size = 0.25f;
+                                    x = random.Next(0, 2);
+                                    break;
+
+                                case 2:
+                                    size = 0.5f;
+                                    x = random.Next(0, 3);
+                                    break;
+
+                                case 3:
+                                    size = 0.75f;
+                                    x = random.Next(0, 4);
+                                    break;
+
+                                case 4:
+                                    size = 1f;
+                                    x = random.Next(0, 5);
+                                    break;
                             }
 
                             velocity = new Vector2(x, y);
                             angle = -(float)x / 20;
 
-                            ParticleManager.Particles.Add(ParticleManager.AddParticle(Type.ToString(), resolution, velocity, angle, Color.White, 0.5f, size, 16, true));
+                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, velocity, angle, Color.White, 0.5f, size, 16, true);
+                            ParticleManager.Particles.Add(particle);
                         }
                         break;
 
@@ -187,42 +192,40 @@ namespace OP_Engine.Weathers
 
                             random = new CryptoRandom();
                             int result = random.Next(1, 5);
-                            if (result == 1)
+                            switch (result)
                             {
-                                size = 0.25f;
+                                case 1:
+                                    size = 0.25f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(-1, 2), random.Next(-1, 2));
+                                    break;
 
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(-1, 2), random.Next(-1, 2));
-                            }
-                            else if (result == 2)
-                            {
-                                size = 0.5f;
+                                case 2:
+                                    size = 0.5f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(-2, 3), random.Next(-2, 3));
+                                    break;
 
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(-2, 3), random.Next(-2, 3));
-                            }
-                            else if (result == 3)
-                            {
-                                size = 0.75f;
+                                case 3:
+                                    size = 0.75f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(-3, 4), random.Next(-3, 4));
+                                    break;
 
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(-3, 4), random.Next(-3, 4));
-                            }
-                            else if (result == 4)
-                            {
-                                size = 1f;
-
-                                random = new CryptoRandom();
-                                velocity = new Vector2(random.Next(-4, 5), random.Next(-4, 5));
+                                case 4:
+                                    size = 1f;
+                                    random = new CryptoRandom();
+                                    velocity = new Vector2(random.Next(-4, 5), random.Next(-4, 5));
+                                    break;
                             }
 
-                            ParticleManager.Particles.Add(ParticleManager.AddParticle(Type.ToString(), resolution, velocity, 0, Color.White, opacity, size, 16, true));
+                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, velocity, 0, Color.White, opacity, size, 16, true);
+                            ParticleManager.Particles.Add(particle);
                         }
                         break;
                 }
 
                 ParticleManager.Update();
-                random.Dispose();
             }
         }
 

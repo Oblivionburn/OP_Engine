@@ -34,8 +34,10 @@ namespace OP_Engine.Weathers
 
         public static void Update(Point resolution)
         {
-            foreach (Weather weather in Weathers)
+            int count = Weathers.Count;
+            for (int i = 0; i < count; i++)
             {
+                Weather weather = Weathers[i];
                 weather.Update(resolution);
             }
         }
@@ -51,8 +53,10 @@ namespace OP_Engine.Weathers
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            foreach (Weather weather in Weathers)
+            int count = Weathers.Count;
+            for (int i = 0; i < count; i++)
             {
+                Weather weather = Weathers[i];
                 weather.Draw(spriteBatch);
             }
         }

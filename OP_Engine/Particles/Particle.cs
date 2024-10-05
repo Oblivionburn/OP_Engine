@@ -74,22 +74,13 @@ namespace OP_Engine.Particles
                 int chance = random.Next(0, 3);
                 if (chance == 0)
                 {
-                    float x = Velocity.X;
-                    float y = Velocity.X;
-
                     Vector2 Waver_Velocity = new Vector2(Velocity.X, Velocity.Y);
 
-                    if (Velocity.X != 0)
-                    {
-                        y = random.Next(Waver_Min_Y, Waver_Max_Y + 1);
-                    }
-                    if (Velocity.Y != 0)
-                    {
-                        x = random.Next(Waver_Min_X, Waver_Max_X + 1);
-                    }
+                    random = new CryptoRandom();
+                    Waver_Velocity.X += random.Next(Waver_Min_X, Waver_Max_X + 1) * 0.01f;
 
-                    Waver_Velocity.X += x;
-                    Waver_Velocity.Y += y;
+                    random = new CryptoRandom();
+                    Waver_Velocity.Y += random.Next(Waver_Min_Y, Waver_Max_Y + 1) * 0.01f;
 
                     Location += Waver_Velocity;
                 }
