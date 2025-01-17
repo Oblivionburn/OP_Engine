@@ -11,6 +11,7 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
+        public List<Appointment> Schedule = new List<Appointment>();
         public List<Task> Tasks = new List<Task>();
         public List<Task> TasksCompleted = new List<Task>();
         public List<Task> TasksAborted = new List<Task>();

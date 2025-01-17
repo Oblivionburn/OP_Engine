@@ -82,6 +82,7 @@
     <Compile Include="Inventories\Inventory.cs" />
     <Compile Include="Inventories\InventoryManager.cs" />
     <Compile Include="Inventories\Item.cs" />
+    <Compile Include="Jobs\Appointment.cs" />
     <Compile Include="Jobs\Job.cs" />
     <Compile Include="Jobs\JobManager.cs" />
     <Compile Include="Jobs\Task.cs" />
