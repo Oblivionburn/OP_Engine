@@ -163,10 +163,9 @@ namespace OP_Engine.Rendering
             Window = window;
             Window.ClientSizeChanged += new EventHandler<EventArgs>(Window_ClientSizeChanged);
 
-            //Default borderless window
+            //Default windowed
             ScreenType = ScreenType.Windowed;
             Form.WindowState = FormWindowState.Maximized;
-            //Window.IsBorderless = true;
 
             ResizeTickTimer = new System.Timers.Timer(1) { SynchronizingObject = Form, AutoReset = false };
             ResizeTickTimer.Elapsed += OnResizeTick;
@@ -243,30 +242,36 @@ namespace OP_Engine.Rendering
             if (Window.ClientBounds.Width > 0 &&
                 Window.ClientBounds.Height > 0)
             {
-                if (ScreenType == ScreenType.Fullscreen)
+                if (ScreenType == ScreenType.Fullscreen ||
+                    ScreenType == ScreenType.BorderlessFullscreen)
                 {
+                    Window.Position = new Point(0, 0);
+
+                    GraphicsManager.IsFullScreen = true;
                     GraphicsManager.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                     GraphicsManager.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-                    Form.FormBorderStyle = FormBorderStyle.None;
-                    Window.AllowUserResizing = false;
-                    Window.IsBorderless = true;
+                    if (ScreenType == ScreenType.BorderlessFullscreen)
+                    {
+                        GraphicsManager.HardwareModeSwitch = false;
+                        Form.WindowState = FormWindowState.Normal;
+                        Window.AllowUserResizing = false;
+                        Window.IsBorderless = true;
+                    }
+                    else
+                    {
+                        GraphicsManager.HardwareModeSwitch = true;
+                    }
                 }
-                else if (ScreenType == ScreenType.BorderlessWindow ||
-                         ScreenType == ScreenType.Windowed)
+                else if (ScreenType == ScreenType.Windowed)
                 {
+                    GraphicsManager.IsFullScreen = false;
                     GraphicsManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
                     GraphicsManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
 
-                    if (ScreenType == ScreenType.BorderlessWindow)
-                    {
-                        Window.IsBorderless = true;
-                    }
-                    else if (ScreenType == ScreenType.Windowed)
-                    {
-                        Form.FormBorderStyle = FormBorderStyle.Sizable;
-                        Window.AllowUserResizing = true;
-                    }
+                    Window.AllowUserResizing = true;
+                    Window.IsBorderless = false;
+                    GraphicsManager.HardwareModeSwitch = false;
                 }
 
                 ScreenWidth = GraphicsManager.PreferredBackBufferWidth;

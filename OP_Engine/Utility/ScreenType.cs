@@ -4,6 +4,6 @@
     {
         Windowed,
         Fullscreen,
-        BorderlessWindow
+        BorderlessFullscreen
     }
 }
