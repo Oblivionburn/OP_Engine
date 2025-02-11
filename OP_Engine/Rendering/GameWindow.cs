@@ -37,6 +37,9 @@ namespace OP_Engine.Rendering
         public bool GameStarted;
         public bool Debugging;
 
+        public int TileSize_X;
+        public int TileSize_Y;
+
         public int MenuSize_X;
         public int MenuSize_Y;
 
@@ -54,7 +57,7 @@ namespace OP_Engine.Rendering
 
         public Point TileSize
         {
-            get { return new Point((int)(BaseSize * Zoom), (int)(BaseSize * Zoom)); }
+            get { return new Point(TileSize_X, TileSize_Y); }
         }
 
         public Point MenuSize
@@ -297,6 +300,7 @@ namespace OP_Engine.Rendering
         public virtual void ResolutionChange()
         {
             ResetMenuSize();
+            ResetTileSize();
             ResizeMenus();
             ResizeScenes();
         }
@@ -321,6 +325,12 @@ namespace OP_Engine.Rendering
                     break;
                 }
             }
+        }
+
+        public virtual void ResetTileSize()
+        {
+            TileSize_X = (int)(BaseSize * Zoom);
+            TileSize_Y = (int)(BaseSize * Zoom);
         }
 
         public virtual void ResizeMenus()

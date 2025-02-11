@@ -43,37 +43,34 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time)
         {
-            if (Tasks.Any())
+            Task current = Get_CurrentTask();
+            if (current != null)
             {
-                Task current = Tasks[0];
-                if (current != null)
+                if (!current.Completed)
                 {
-                    if (!current.Completed)
+                    if (!current.Started)
                     {
-                        if (!current.Started)
-                        {
-                            current.Start(current_time);
-                        }
-
-                        current.Update(current_time);
+                        current.Start(current_time);
                     }
 
-                    if (current.Completed)
+                    current.Update(current_time);
+                }
+
+                if (current.Completed)
+                {
+                    if (!current.Keep_On_Completed)
                     {
-                        if (!current.Keep_On_Completed)
+                        TasksCompleted.Add(Tasks[0]);
+                        if (TasksCompleted.Count > 200)
                         {
-                            TasksCompleted.Add(Tasks[0]);
-                            if (TasksCompleted.Count > 200)
-                            {
-                                TasksCompleted.RemoveAt(0);
-                            }
+                            TasksCompleted.RemoveAt(0);
+                        }
 
-                            Tasks.RemoveAt(0);
+                        Tasks.RemoveAt(0);
 
-                            if (CurrentTask != null)
-                            {
-                                CurrentTask.Start(current_time);
-                            }
+                        if (CurrentTask != null)
+                        {
+                            CurrentTask.Start(current_time);
                         }
                     }
                 }
@@ -82,37 +79,34 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time, TimeSpan time_span)
         {
-            if (Tasks.Any())
+            Task current = Get_CurrentTask();
+            if (current != null)
             {
-                Task current = Tasks[0];
-                if (current != null)
+                if (!current.Completed)
                 {
-                    if (!current.Completed)
+                    if (!current.Started)
                     {
-                        if (!current.Started)
-                        {
-                            current.Start(current_time, time_span);
-                        }
-
-                        current.Update(current_time, time_span);
+                        current.Start(current_time, time_span);
                     }
 
-                    if (current.Completed)
+                    current.Update(current_time, time_span);
+                }
+
+                if (current.Completed)
+                {
+                    if (!current.Keep_On_Completed)
                     {
-                        if (!current.Keep_On_Completed)
+                        TasksCompleted.Add(Tasks[0]);
+                        if (TasksCompleted.Count > 200)
                         {
-                            TasksCompleted.Add(Tasks[0]);
-                            if (TasksCompleted.Count > 200)
-                            {
-                                TasksCompleted.RemoveAt(0);
-                            }
+                            TasksCompleted.RemoveAt(0);
+                        }
 
-                            Tasks.RemoveAt(0);
+                        Tasks.RemoveAt(0);
 
-                            if (CurrentTask != null)
-                            {
-                                CurrentTask.Start(current_time, time_span);
-                            }
+                        if (CurrentTask != null)
+                        {
+                            CurrentTask.Start(current_time, time_span);
                         }
                     }
                 }
@@ -157,7 +151,7 @@ namespace OP_Engine.Jobs
 
         public virtual Task Get_CurrentTask()
         {
-            if (Tasks.Any())
+            if (Tasks.Count > 0)
             {
                 return Tasks[0];
             }

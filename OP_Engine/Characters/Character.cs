@@ -293,10 +293,11 @@ namespace OP_Engine.Characters
 
         public virtual Something GetStat(string name)
         {
-            int count = Stats.Count;
+            Something[] stats = Stats.ToArray();
+            int count = stats.Length;
             for (int i = 0; i < count; i++)
             {
-                Something existing = Stats[i];
+                Something existing = stats[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -311,10 +312,11 @@ namespace OP_Engine.Characters
 
         public virtual Something GetSkill(string name)
         {
-            int count = Skills.Count;
+            Something[] skills = Skills.ToArray();
+            int count = skills.Length;
             for (int i = 0; i < count; i++)
             {
-                Something existing = Skills[i];
+                Something existing = skills[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -329,10 +331,11 @@ namespace OP_Engine.Characters
 
         public virtual Something GetStatusEffect(string name)
         {
-            int count = StatusEffects.Count;
+            Something[] statusEffects = StatusEffects.ToArray();
+            int count = statusEffects.Length;
             for (int i = 0; i < count; i++)
             {
-                Something existing = StatusEffects[i];
+                Something existing = statusEffects[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -347,10 +350,11 @@ namespace OP_Engine.Characters
 
         public virtual BodyPart GetBodyPart(string name)
         {
-            int count = BodyParts.Count;
+            BodyPart[] bodyParts = BodyParts.ToArray();
+            int count = bodyParts.Length;
             for (int i = 0; i < count; i++)
             {
-                BodyPart existing = BodyParts[i];
+                BodyPart existing = bodyParts[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)

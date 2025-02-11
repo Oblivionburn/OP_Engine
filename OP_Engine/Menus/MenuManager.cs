@@ -126,7 +126,7 @@ namespace OP_Engine.Menus
 
         public static Menu GetPreviousMenu()
         {
-            if (PreviousMenus.Any())
+            if (PreviousMenus.Count > 0)
             {
                 return PreviousMenus[PreviousMenus.Count - 1];
             }

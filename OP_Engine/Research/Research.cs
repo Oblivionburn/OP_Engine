@@ -63,7 +63,7 @@ namespace OP_Engine.Research
 
         public virtual void Update()
         {
-            if (Cost.Any())
+            if (Cost.Count > 0)
             {
                 int costsPaid = 0;
 
