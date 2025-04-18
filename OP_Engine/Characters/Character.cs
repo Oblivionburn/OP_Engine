@@ -42,6 +42,8 @@ namespace OP_Engine.Characters
         public Inventory Inventory;
         public Job Job;
 
+        public Effect Shader;
+
         public bool InCombat;
         public bool CombatTurn;
         public int CombatStep;
@@ -231,6 +233,11 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
+                        if (Shader != null)
+                        {
+                            Shader.CurrentTechnique.Passes[0].Apply();
+                        }
+
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -256,6 +263,11 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
+                        if (Shader != null)
+                        {
+                            Shader.CurrentTechnique.Passes[0].Apply();
+                        }
+
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -400,6 +412,11 @@ namespace OP_Engine.Characters
 
         public override void Dispose()
         {
+            if (Shader != null)
+            {
+                Shader.Dispose();
+            }
+
             if (HealthBar != null)
             {
                 HealthBar.Dispose();

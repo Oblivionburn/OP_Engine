@@ -136,6 +136,28 @@ namespace OP_Engine.Weathers
                     }
                     break;
 
+                case WeatherType.Snow:
+                    switch (type)
+                    {
+                        case WeatherType.Clear:
+                            TransitionType = WeatherTransition.SnowToClear;
+                            break;
+
+                        case WeatherType.Rain:
+                            TransitionType = WeatherTransition.SnowToRain;
+                            break;
+
+                        case WeatherType.Storm:
+                            TransitionType = WeatherTransition.SnowToStorm;
+                            Lightning = true;
+                            break;
+
+                        case WeatherType.Fog:
+                            TransitionType = WeatherTransition.SnowToFog;
+                            break;
+                    }
+                    break;
+
                 case WeatherType.Fog:
                     switch (type)
                     {

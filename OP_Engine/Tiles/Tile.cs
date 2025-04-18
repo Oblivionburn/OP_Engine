@@ -22,15 +22,7 @@ namespace OP_Engine.Tiles
 
         public Inventory Inventory;
         public ProgressBar ProgressBar;
-
-        /*
-        Using this Square object for Region, instead of the Rectangle 
-        struct, to enable referencing the same Region for all overlapping
-        tiles of the same size across multiple Layers. This enables moving
-        them all at the same time with a single modification to the Region
-        at the lowest Layer. It's an efficiency thing.
-        */
-        public new Region Region;
+        public Effect Shader;
         
         #endregion
 
@@ -95,6 +87,11 @@ namespace OP_Engine.Tiles
             {
                 if (Visible)
                 {
+                    if (Shader != null)
+                    {
+                        Shader.CurrentTechnique.Passes[0].Apply();
+                    }
+
                     if (DrawColor != new Color(0, 0, 0, 0))
                     {
                         spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -113,6 +110,11 @@ namespace OP_Engine.Tiles
             {
                 if (Visible)
                 {
+                    if (Shader != null)
+                    {
+                        Shader.CurrentTechnique.Passes[0].Apply();
+                    }
+
                     if (DrawColor != new Color(0, 0, 0, 0))
                     {
                         spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -146,6 +148,11 @@ namespace OP_Engine.Tiles
             if (Region != null)
             {
                 Region.Dispose();
+            }
+
+            if (Shader != null)
+            {
+                Shader.Dispose();
             }
 
             base.Dispose();

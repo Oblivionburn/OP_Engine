@@ -20,6 +20,8 @@ namespace OP_Engine.Tiles
 
         public List<Tile> Tiles = new List<Tile>();
 
+        public Effect Shader;
+
         #endregion
 
         #region Constructor
@@ -46,6 +48,11 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
+                if (Shader != null)
+                {
+                    Shader.CurrentTechnique.Passes[0].Apply();
+                }
+
                 int count = Tiles.Count;
                 for (int i = 0; i < count; i++)
                 {
@@ -58,6 +65,11 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
+                if (Shader != null)
+                {
+                    Shader.CurrentTechnique.Passes[0].Apply();
+                }
+
                 int count = Tiles.Count;
                 for (int i = 0; i < count; i++)
                 {
@@ -234,6 +246,11 @@ namespace OP_Engine.Tiles
 
         public override void Dispose()
         {
+            if (Shader != null)
+            {
+                Shader.Dispose();
+            }
+
             foreach (Tile tile in Tiles)
             {
                 tile.Dispose();
