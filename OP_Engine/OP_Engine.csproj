@@ -68,6 +68,7 @@
     <Compile Include="Controls\InputBoxOptions.cs" />
     <Compile Include="Controls\Label.cs" />
     <Compile Include="Controls\LabelOptions.cs" />
+    <Compile Include="Controls\LabelPart.cs" />
     <Compile Include="Controls\PictureOptions.cs" />
     <Compile Include="Controls\ProgressBarOptions.cs" />
     <Compile Include="Crafting\CraftingManager.cs" />

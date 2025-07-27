@@ -50,7 +50,11 @@ namespace OP_Engine.Particles
             for (int i = 0; i < Particles.Count; i++)
             {
                 Particle particle = Particles[i];
-                particle.Draw(spriteBatch);
+
+                if (particle != null)
+                {
+                    particle.Draw(spriteBatch);
+                }
             }
         }
 

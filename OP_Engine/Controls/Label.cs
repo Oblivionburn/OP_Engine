@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,8 @@ namespace OP_Engine.Controls
     public class Label : Picture
     {
         #region Variables
+
+        List<LabelPart> Parts = new List<LabelPart>();
 
         public SpriteFont Font;
         
@@ -40,9 +43,56 @@ namespace OP_Engine.Controls
 
         public override void Update()
         {
-            if (!string.IsNullOrEmpty(Text) &&
-                Font != null &&
-                Region != null)
+            if (Parts.Count > 0)
+            {
+                Size = Font.MeasureString(" ");
+
+                float xScale = Region.Width / Size.X;
+                float yScale = Region.Height / Size.Y;
+                float scale = Math.Min(xScale, yScale) - 0.10f;
+
+                if (AutoScale)
+                {
+                    Scale = scale;
+                }
+
+                int strWidth = (int)Math.Round(Size.X * scale);
+                int strHeight = (int)Math.Round(Size.Y * scale);
+
+                for (int i = 0; i < Parts.Count; i++)
+                {
+                    if (Alignment_Verticle == Alignment.Top)
+                    {
+                        Position.Y = Region.Y + 8;
+                    }
+                    else if (Alignment_Verticle == Alignment.Center)
+                    {
+                        Position.Y = Region.Y + (Region.Height / 2) - (strHeight / 2);
+                    }
+                    else if (Alignment_Verticle == Alignment.Bottom)
+                    {
+                        Position.Y = Region.Y + Region.Height - strHeight - 8;
+                    }
+
+                    if (Alignment_Horizontal == Alignment.Left)
+                    {
+                        Position.X = Region.X + 8 + (Size.X * i);
+                    }
+                    else if (Alignment_Horizontal == Alignment.Center)
+                    {
+                        Position.X = Region.X + (Region.Width / 2) - (strWidth / 2) + (Size.X * i);
+                    }
+                    else if (Alignment_Horizontal == Alignment.Right)
+                    {
+                        Position.X = Region.X + Region.Width - strWidth - 8 - (Size.X * i);
+                    }
+
+                    Parts[i].Region = new Region(Position.X, Position.Y, Size.X, Size.Y);
+                }
+            }
+            else if (!string.IsNullOrEmpty(Text) &&
+                     Font != null &&
+                     Region != null)
             {
                 Size = Font.MeasureString(Text);
 
@@ -90,11 +140,20 @@ namespace OP_Engine.Controls
         {
             base.Draw(spriteBatch);
 
-            if (Visible &&
-                !string.IsNullOrEmpty(Text) &&
-                Font != null)
+            if (Visible)
             {
-                spriteBatch.DrawString(Font, Text, Position, TextColor * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                if (Parts.Count > 0)
+                {
+                    for (int i = 0; i < Parts.Count; i++)
+                    {
+                        Parts[i].Draw(spriteBatch);
+                    }
+                }
+                else if (!string.IsNullOrEmpty(Text) &&
+                         Font != null)
+                {
+                    spriteBatch.DrawString(Font, Text, Position, TextColor * Opacity, 0f, default, Scale, SpriteEffects.None, 0f);
+                }
             }
         }
 
