@@ -16,9 +16,9 @@ namespace OP_Engine.Characters
         public long Leader_ID;
 
         public List<ALocation> Path = new List<ALocation>();
-        public Vector3 Destination;
+        public Location Destination = new Location();
 
-        public Animator Animator;
+        public Animator Animator = new Animator();
 
         public bool Moving;
         public float Moved;
@@ -38,7 +38,7 @@ namespace OP_Engine.Characters
 
         public Squad()
         {
-            Animator = new Animator();
+            
         }
 
         #endregion
