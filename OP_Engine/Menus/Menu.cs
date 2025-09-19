@@ -524,13 +524,15 @@ namespace OP_Engine.Menus
             Label label = new Label
             {
                 ID = options.id,
+                Font = options.font,
                 Name = options.name,
                 Text = options.text,
-                Font = options.font,
                 TextColor = options.text_color,
-                DrawColor = options.draw_color,
+                Alignment_Verticle = options.alignment_verticle,
+                Alignment_Horizontal = options.alignment_horizontal,
                 Texture = options.texture,
                 Region = options.region,
+                DrawColor = options.draw_color,
                 Visible = options.visible
             };
 
