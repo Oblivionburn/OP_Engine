@@ -164,6 +164,7 @@ namespace OP_Engine.Rendering
             MenuSize_Y = ScreenHeight / 32;
 
             Window = window;
+            Window.Position = new Point(0, 0);
             Window.ClientSizeChanged += new EventHandler<EventArgs>(Window_ClientSizeChanged);
 
             //Default windowed
