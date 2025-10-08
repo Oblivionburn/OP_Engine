@@ -12,6 +12,8 @@ namespace OP_Engine.Controls
         public string HoverText;
         public float Opacity;
 
+        public Effect Shader;
+
         #endregion
 
         #region Constructors
@@ -41,6 +43,11 @@ namespace OP_Engine.Controls
                     Region != null)
                 {
                     spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor * Opacity);
+
+                    if (Shader != null)
+                    {
+                        Shader.CurrentTechnique.Passes[0].Apply();
+                    } 
                 }
             }
         }

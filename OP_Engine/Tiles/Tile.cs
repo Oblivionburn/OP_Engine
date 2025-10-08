@@ -87,11 +87,6 @@ namespace OP_Engine.Tiles
             {
                 if (Visible)
                 {
-                    if (Shader != null)
-                    {
-                        Shader.CurrentTechnique.Passes[0].Apply();
-                    }
-
                     if (DrawColor != new Color(0, 0, 0, 0))
                     {
                         spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -99,6 +94,11 @@ namespace OP_Engine.Tiles
                     else
                     {
                         spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
+                    }
+
+                    if (Shader != null)
+                    {
+                        Shader.CurrentTechnique.Passes[0].Apply();
                     }
                 }
             }

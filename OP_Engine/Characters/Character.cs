@@ -233,11 +233,6 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
-                        if (Shader != null)
-                        {
-                            Shader.CurrentTechnique.Passes[0].Apply();
-                        }
-
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -247,6 +242,11 @@ namespace OP_Engine.Characters
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
                             Inventory.Draw(spriteBatch, resolution, Color.White);
+                        }
+
+                        if (Shader != null)
+                        {
+                            Shader.CurrentTechnique.Passes[0].Apply();
                         }
                     }
                 }
@@ -263,11 +263,6 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
-                        if (Shader != null)
-                        {
-                            Shader.CurrentTechnique.Passes[0].Apply();
-                        }
-
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -277,6 +272,11 @@ namespace OP_Engine.Characters
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
                             Inventory.Draw(spriteBatch, resolution, color);
+                        }
+
+                        if (Shader != null)
+                        {
+                            Shader.CurrentTechnique.Passes[0].Apply();
                         }
                     }
                 }

@@ -44,15 +44,15 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                if (Shader != null)
-                {
-                    Shader.CurrentTechnique.Passes[0].Apply();
-                }
-
                 int count = Layers.Count;
                 for (int i = 0; i < count; i++)
                 {
                     Layers[i]?.Draw(spriteBatch, resolution);
+                }
+
+                if (Shader != null)
+                {
+                    Shader.CurrentTechnique.Passes[0].Apply();
                 }
             }
         }
