@@ -26,6 +26,7 @@ namespace OP_Engine.Controls
         public Vector2 Size;
         public Vector2 Position;
         public float Scale;
+        public float Margin = 10;
 
         #endregion
 
@@ -63,7 +64,7 @@ namespace OP_Engine.Controls
                 {
                     if (Alignment_Verticle == Alignment.Top)
                     {
-                        Position.Y = Region.Y + 8;
+                        Position.Y = Region.Y + Margin;
                     }
                     else if (Alignment_Verticle == Alignment.Center)
                     {
@@ -71,12 +72,12 @@ namespace OP_Engine.Controls
                     }
                     else if (Alignment_Verticle == Alignment.Bottom)
                     {
-                        Position.Y = Region.Y + Region.Height - strHeight - 8;
+                        Position.Y = Region.Y + Region.Height - strHeight - Margin;
                     }
 
                     if (Alignment_Horizontal == Alignment.Left)
                     {
-                        Position.X = Region.X + 8 + (Size.X * i);
+                        Position.X = Region.X + Margin + (Size.X * i);
                     }
                     else if (Alignment_Horizontal == Alignment.Center)
                     {
@@ -84,7 +85,7 @@ namespace OP_Engine.Controls
                     }
                     else if (Alignment_Horizontal == Alignment.Right)
                     {
-                        Position.X = Region.X + Region.Width - strWidth - 8 - (Size.X * i);
+                        Position.X = Region.X + Region.Width - strWidth - Margin - (Size.X * i);
                     }
 
                     Parts[i].Region = new Region(Position.X, Position.Y, Size.X, Size.Y);
@@ -110,7 +111,7 @@ namespace OP_Engine.Controls
 
                 if (Alignment_Verticle == Alignment.Top)
                 {
-                    Position.Y = Region.Y + 8;
+                    Position.Y = Region.Y + Margin;
                 }
                 else if (Alignment_Verticle == Alignment.Center)
                 {
@@ -118,12 +119,12 @@ namespace OP_Engine.Controls
                 }
                 else if (Alignment_Verticle == Alignment.Bottom)
                 {
-                    Position.Y = Region.Y + Region.Height - strHeight - 8;
+                    Position.Y = Region.Y + Region.Height - strHeight - Margin;
                 }
 
                 if (Alignment_Horizontal == Alignment.Left)
                 {
-                    Position.X = Region.X + 8;
+                    Position.X = Region.X + Margin;
                 }
                 else if (Alignment_Horizontal == Alignment.Center)
                 {
@@ -131,7 +132,7 @@ namespace OP_Engine.Controls
                 }
                 else if (Alignment_Horizontal == Alignment.Right)
                 {
-                    Position.X = Region.X + Region.Width - strWidth - 8;
+                    Position.X = Region.X + Region.Width - strWidth - Margin;
                 }
             }
         }
