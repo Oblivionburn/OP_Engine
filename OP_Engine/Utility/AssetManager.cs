@@ -141,6 +141,67 @@ namespace OP_Engine.Utility
             }
         }
 
+        public static Texture2D LoadTexture(GraphicsDevice graphicsDevice, DirectoryInfo directory, string fileName)
+        {
+            Texture2D texture = null;
+
+            FileInfo[] files = directory.GetFiles("*.png");
+
+            int count = files.Length;
+            for (int i = 0; i < count; i++)
+            {
+                FileInfo file = files[i];
+
+                string name = Path.GetFileNameWithoutExtension(file.Name);
+                if (fileName == name)
+                {
+                    try
+                    {
+                        using (FileStream fileStream = new FileStream(file.FullName, FileMode.Open))
+                        {
+                            texture = Texture2D.FromStream(graphicsDevice, fileStream);
+                        }
+                    }
+                    catch
+                    {
+                        //Ignore potential errors for lazy-loading
+                    }
+
+                    if (texture != null)
+                    {
+                        texture.Name = name;
+
+                        if (!Textures.ContainsKey(name))
+                        {
+                            Textures.Add(name, texture);
+                        }
+
+                        return texture;
+                    }
+                }
+            }
+
+            if (texture == null)
+            {
+                //Search sub-dirs recursively
+
+                DirectoryInfo[] sub_directories = directory.GetDirectories();
+
+                int dir_count = sub_directories.Length;
+                for (int i = 0; i < dir_count; i++)
+                {
+                    DirectoryInfo dir = sub_directories[i];
+                    texture = LoadTexture(graphicsDevice, dir, fileName);
+                    if (texture != null)
+                    {
+                        return texture;
+                    }
+                }
+            }
+
+            return texture;
+        }
+
         public static void LoadFonts()
         {
             DirectoryInfo dir = new DirectoryInfo(Directories["Fonts"]);
@@ -496,6 +557,18 @@ namespace OP_Engine.Utility
         public static Texture2D GetTexture(string name)
         {
             return Textures.ContainsKey(name) ? Textures[name] : null;
+        }
+
+        public static Texture2D GetTexture_LazyLoad(GraphicsDevice graphicsDevice, string name)
+        {
+            if (Textures.ContainsKey(name))
+            {
+                return Textures[name];
+            }
+            else
+            {
+                return LoadTexture(graphicsDevice, new DirectoryInfo(Directories["Textures"]), name);
+            }
         }
 
         public static Texture2D GetTextureCopy(GraphicsDevice graphicsDevice, string name)
