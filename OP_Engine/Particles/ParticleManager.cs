@@ -34,13 +34,16 @@ namespace OP_Engine.Particles
             {
                 Particle particle = Particles[i];
 
-                particle.Update();
-
-                if (particle.Lifetime <= 0)
+                if (particle != null)
                 {
-                    particle.Dispose();
-                    Particles.Remove(particle);
-                    i--;
+                    particle.Update();
+
+                    if (particle.Lifetime <= 0)
+                    {
+                        particle.Dispose();
+                        Particles.Remove(particle);
+                        i--;
+                    }
                 }
             }
         }

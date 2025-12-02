@@ -182,6 +182,7 @@ namespace OP_Engine.Scenes
                 PreviousScene_ID = CurrentScene_ID;
 
                 current_scene.Visible = false;
+                current_scene.Active = false;
             }
 
             Scene new_scene = GetScene(name);
@@ -190,6 +191,7 @@ namespace OP_Engine.Scenes
                 CurrentScene_ID = new_scene.ID;
 
                 new_scene.Visible = true;
+                new_scene.Active = true;
             }
 
             OnSceneChange?.Invoke(null, EventArgs.Empty);
@@ -203,6 +205,7 @@ namespace OP_Engine.Scenes
                 PreviousScene_ID = CurrentScene_ID;
 
                 current_scene.Visible = false;
+                current_scene.Active = false;
             }
 
             Scene new_scene = GetScene(id);
@@ -211,12 +214,13 @@ namespace OP_Engine.Scenes
                 CurrentScene_ID = new_scene.ID;
 
                 new_scene.Visible = true;
+                new_scene.Active = true;
             }
 
             OnSceneChange?.Invoke(null, EventArgs.Empty);
         }
 
-        public static void ChangeScene(Scene scene)
+        public static void ChangeScene(Scene new_scene)
         {
             Scene current_scene = GetCurrentScene();
             if (current_scene != null)
@@ -224,13 +228,15 @@ namespace OP_Engine.Scenes
                 PreviousScene_ID = CurrentScene_ID;
 
                 current_scene.Visible = false;
+                current_scene.Active = false;
             }
 
-            if (scene != null)
+            if (new_scene != null)
             {
-                CurrentScene_ID = scene.ID;
+                CurrentScene_ID = new_scene.ID;
 
-                scene.Visible = true;
+                new_scene.Visible = true;
+                new_scene.Active = true;
             }
 
             OnSceneChange?.Invoke(null, EventArgs.Empty);
