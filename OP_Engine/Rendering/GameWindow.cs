@@ -212,7 +212,7 @@ namespace OP_Engine.Rendering
                             MenuManager.Update(Game, Content);
                             SceneManager.Update(Game, Content);
                             RenderingManager.Update();
-                            WeatherManager.Update(Resolution);
+                            WeatherManager.Update(Resolution, Color.White);
                         }
                     }
                     else

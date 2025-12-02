@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using FMOD;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OP_Engine.Sounds
 {
@@ -22,15 +23,12 @@ namespace OP_Engine.Sounds
         public static string MusicPlaying_Name;
 
         public static bool AmbientEnabled;
-        public static FMOD.Sound AmbientOut;
-        public static FMOD.Channel AmbientChannel;
+        public static List<FMOD.Sound> AmbientOuts = new List<FMOD.Sound>();
+        public static List<FMOD.Channel> AmbientChannels = new List<FMOD.Channel>();
         public static FMOD.ChannelGroup AmbientGroup;
         public static float AmbientVolume = 1;
-        public static float AmbientFade = 0;
-        public static bool AmbientLooping;
-        public static bool AmbientPaused;
-        public static bool AmbientPlaying;
-        public static string AmbientPlaying_Name;
+        public static Dictionary<string, float> AmbientFade = new Dictionary<string, float>();
+        public static string[] AmbientTypes = { "Rain", "Storm", "Snow", "Fog" };
 
         public static bool SoundEnabled;
         public static List<FMOD.Sound> SoundOuts = new List<FMOD.Sound>();
@@ -65,6 +63,15 @@ namespace OP_Engine.Sounds
         #region Methods
 
         public static void Update()
+        {
+            UpdateMusic();
+            UpdateAmbient();
+            UpdateSound();
+
+            FMODSystem.update();
+        }
+
+        public static void UpdateMusic()
         {
             if (MusicEnabled)
             {
@@ -106,46 +113,86 @@ namespace OP_Engine.Sounds
                     FMOD.RESULT set_paused = MusicChannel.setPaused(false);
                 }
             }
+        }
 
+        public static void UpdateAmbient()
+        {
             if (AmbientEnabled)
             {
-                float volume = (((AmbientVolume * 100) * (100 - (AmbientFade * 100))) / 100) / 100;
-                if (volume < 0)
+                if (AmbientChannels.Count > 0)
                 {
-                    volume = 0;
-                }
-                FMOD.RESULT set_ambient_volume = AmbientChannel.setVolume(volume);
+                    for (int c = 0; c < AmbientChannels.Count; c++)
+                    {
+                        FMOD.Channel channel = AmbientChannels[c];
+                        FMOD.Sound sound = AmbientOuts[c];
 
-                bool isPaused = false;
-                FMOD.RESULT get_paused = AmbientChannel.getPaused(out isPaused);
+                        string name = "";
+                        for (int n = 2; n < 7; n++)
+                        {
+                            sound.getName(out name, n);
+                            if (AmbientTypes.Contains(name))
+                            {
+                                break;
+                            }
+                        }
 
-                uint ambient_length;
-                FMOD.RESULT get_ambient_length = AmbientOut.getLength(out ambient_length, FMOD.TIMEUNIT.MS);
+                        float volume = AmbientVolume;
 
-                uint ambient_position;
-                FMOD.RESULT get_ambient_position = AmbientChannel.getPosition(out ambient_position, FMOD.TIMEUNIT.MS);
+                        if (AmbientFade.ContainsKey(name))
+                        {
+                            volume = (((AmbientVolume * 100) * (100 - (AmbientFade[name] * 100))) / 100) / 100;
+                        }
+                        
+                        if (volume < 0)
+                        {
+                            volume = 0;
+                        }
+                        FMOD.RESULT set_ambient_volume = channel.setVolume(volume);
 
-                if (!AmbientLooping &&
-                    ambient_length > 0 &&
-                    ambient_position > 0 &&
-                    ambient_position >= ambient_length)
-                {
-                    StopAmbient();
-                }
+                        bool isPaused = false;
+                        FMOD.RESULT get_paused = channel.getPaused(out isPaused);
 
-                if (!isPaused &&
-                    (Paused || AmbientPaused))
-                {
-                    FMOD.RESULT set_paused = AmbientChannel.setPaused(true);
-                }
-                else if (isPaused &&
-                         !Paused &&
-                         !AmbientPaused)
-                {
-                    FMOD.RESULT set_paused = AmbientChannel.setPaused(false);
+                        bool isPlaying = false;
+                        FMOD.RESULT get_playing = channel.isPlaying(out isPlaying);
+
+                        FMOD.MODE mode = FMOD.MODE.DEFAULT;
+                        FMOD.RESULT get_mode = sound.getMode(out mode);
+
+                        uint ambient_length;
+                        FMOD.RESULT get_ambient_length = sound.getLength(out ambient_length, FMOD.TIMEUNIT.MS);
+
+                        uint ambient_position;
+                        FMOD.RESULT get_ambient_position = channel.getPosition(out ambient_position, FMOD.TIMEUNIT.MS);
+
+                        if (!isPaused &&
+                            Paused)
+                        {
+                            FMOD.RESULT set_paused = channel.setPaused(true);
+                        }
+                        else if (isPaused &&
+                                 !Paused)
+                        {
+                            FMOD.RESULT set_paused = channel.setPaused(false);
+                        }
+                    }
                 }
             }
+            else
+            {
+                if (AmbientChannels.Count > 0)
+                {
+                    int count = AmbientChannels.Count;
+                    for (int c = 0; c < count; c++)
+                    {
+                        FMOD.Channel channel = AmbientChannels[c];
+                        FMOD.RESULT set_sound_volume = channel.setVolume(0);
+                    }
+                }
+            }
+        }
 
+        public static void UpdateSound()
+        {
             if (SoundEnabled)
             {
                 if (SoundChannels.Count > 0)
@@ -208,8 +255,6 @@ namespace OP_Engine.Sounds
                     }
                 }
             }
-
-            FMODSystem.update();
         }
 
         public static void PlayMusic(Sound sound, bool looping)
@@ -258,43 +303,39 @@ namespace OP_Engine.Sounds
             {
                 string file = sound.Directory + @"\" + sound.Name + sound.Extension;
 
-                float volume = AmbientVolume - AmbientFade;
+                FMOD.Channel channel = new FMOD.Channel();
+
+                if (!AmbientFade.ContainsKey(sound.Name))
+                {
+                    AmbientFade.Add(sound.Name, 1f);
+                }
+                else
+                {
+                    AmbientFade[sound.Name] = 1f;
+                }
+
+                float volume = AmbientVolume - AmbientFade[sound.Name];
                 if (volume < 0)
                 {
                     volume = 0;
                 }
-
-                bool isPlaying = false;
-                FMOD.RESULT get_ambient_playing = AmbientChannel.isPlaying(out isPlaying);
-
-                uint ambient_length;
-                FMOD.RESULT get_ambient_length = AmbientOut.getLength(out ambient_length, FMOD.TIMEUNIT.MS);
-
-                uint ambient_position;
-                FMOD.RESULT get_ambient_position = AmbientChannel.getPosition(out ambient_position, FMOD.TIMEUNIT.MS);
-
-                if (isPlaying &&
-                    ambient_length > 0 &&
-                    ambient_position > 0)
+                
+                if (looping)
                 {
-                    StopAmbient();
-                }
-
-                AmbientLooping = looping;
-                if (AmbientLooping)
-                {
-                    FMODSystem.createStream(file, FMOD.MODE.LOOP_NORMAL, out AmbientOut);
+                    FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.LOOP_NORMAL, out sound.SoundOut);
                 }
                 else
                 {
-                    FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out AmbientOut);
+                    FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
                 }
-                
-                FMODSystem.playSound(AmbientOut, AmbientGroup, false, out AmbientChannel);
-                AmbientChannel.setVolume(volume);
 
-                AmbientPlaying = true;
-                AmbientPlaying_Name = sound.Name;
+                FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, AmbientGroup, false, out channel);
+                FMOD.RESULT volume_result = channel.setVolume(volume);
+
+                AmbientOuts.Add(sound.SoundOut);
+                AmbientChannels.Add(channel);
+
+                FMOD.RESULT updated = FMODSystem.update();
             }
         }
 
@@ -311,6 +352,8 @@ namespace OP_Engine.Sounds
                 
                 SoundOuts.Add(sound.SoundOut);
                 SoundChannels.Add(channel);
+
+                FMOD.RESULT updated = FMODSystem.update();
             }
         }
 
@@ -381,10 +424,66 @@ namespace OP_Engine.Sounds
         {
             if (AmbientEnabled)
             {
-                AmbientChannel.stop();
-                AmbientPaused = false;
-                AmbientPlaying = false;
-                AmbientPlaying_Name = null;
+                if (AmbientChannels.Count > 0)
+                {
+                    for (int c = 0; c < AmbientChannels.Count; c++)
+                    {
+                        FMOD.Channel channel = AmbientChannels[c];
+                        FMOD.Sound ambient = AmbientOuts[c];
+
+                        string name = "";
+                        for (int n = 2; n < 7; n++)
+                        {
+                            ambient.getName(out name, n);
+                            if (AmbientTypes.Contains(name))
+                            {
+                                break;
+                            }
+                        }
+
+                        channel.stop();
+                        AmbientChannels.Remove(channel);
+                        AmbientOuts.Remove(ambient);
+                        AmbientFade.Remove(name);
+
+                        FMOD.RESULT updated = FMODSystem.update();
+
+                        c--;
+                    }
+                }
+            }
+        }
+
+        public static void StopAmbient(string name)
+        {
+            int name_length = name.Length + 1;
+
+            if (AmbientEnabled)
+            {
+                if (AmbientChannels.Count > 0)
+                {
+                    for (int c = 0; c < AmbientChannels.Count; c++)
+                    {
+                        FMOD.Channel channel = AmbientChannels[c];
+                        FMOD.Sound ambient = AmbientOuts[c];
+
+                        string name_output;
+                        ambient.getName(out name_output, name_length);
+
+                        if (!string.IsNullOrEmpty(name_output) &&
+                            name_output == name)
+                        {
+                            channel.stop();
+                            AmbientChannels.Remove(channel);
+                            AmbientOuts.Remove(ambient);
+                            AmbientFade.Remove(name);
+
+                            FMODSystem.update();
+
+                            break;
+                        }
+                    }
+                }
             }
         }
 
@@ -457,6 +556,36 @@ namespace OP_Engine.Sounds
             StopMusic();
             StopAmbient();
             StopSound();
+        }
+
+        public static bool IsPlaying_Ambient(string name)
+        {
+            int name_length = name.Length + 1;
+
+            if (AmbientEnabled)
+            {
+                if (AmbientChannels.Count > 0)
+                {
+                    for (int c = 0; c < AmbientChannels.Count; c++)
+                    {
+                        FMOD.Channel channel = AmbientChannels[c];
+                        FMOD.Sound ambient = AmbientOuts[c];
+
+                        string name_output;
+                        ambient.getName(out name_output, name_length);
+
+                        if (!string.IsNullOrEmpty(name_output) &&
+                            name_output == name)
+                        {
+                            bool isPlaying = false;
+                            FMOD.RESULT get_playing = channel.isPlaying(out isPlaying);
+                            return isPlaying;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void Game_Exiting(object sender, EventArgs e)

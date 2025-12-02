@@ -32,13 +32,13 @@ namespace OP_Engine.Weathers
 
         #region Methods
 
-        public static void Update(Point resolution)
+        public static void Update(Point resolution, Color color)
         {
             int count = Weathers.Count;
             for (int i = 0; i < count; i++)
             {
                 Weather weather = Weathers[i];
-                weather.Update(resolution);
+                weather.Update(resolution, color);
             }
         }
 
@@ -165,16 +165,16 @@ namespace OP_Engine.Weathers
                             TransitionType = WeatherTransition.FogToClear;
                             break;
 
-                        case WeatherType.Storm:
+                        case WeatherType.Rain:
                             TransitionType = WeatherTransition.FogToRain;
                             break;
 
-                        case WeatherType.Snow:
+                        case WeatherType.Storm:
                             TransitionType = WeatherTransition.FogToStorm;
                             Lightning = true;
                             break;
 
-                        case WeatherType.Fog:
+                        case WeatherType.Snow:
                             TransitionType = WeatherTransition.FogToSnow;
                             break;
                     }

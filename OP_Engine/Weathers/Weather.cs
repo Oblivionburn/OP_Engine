@@ -46,7 +46,7 @@ namespace OP_Engine.Weathers
 
         #region Methods
 
-        public void Update(Point resolution)
+        public void Update(Point resolution, Color color)
         {
             if (Visible)
             {
@@ -93,7 +93,7 @@ namespace OP_Engine.Weathers
                                     break;
                             }
 
-                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, new Vector2(0, 8f), 0, Color.White, 0.5f, size, 16, true);
+                            Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, new Vector2(0, 8f), 0, color, 0.6f, size, 16, true);
                             ParticleManager.Particles.Add(particle);
                         }
                         break;
@@ -133,7 +133,7 @@ namespace OP_Engine.Weathers
                                     break;
                             }
 
-                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, velocity, 0, Color.White, 0.8f, size, 64, 0, 50, 0, 0);
+                            Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, velocity, 0, color, 1f, size, 64, 0, 50, 0, 0);
                             ParticleManager.Particles.Add(particle);
                         }
                         break;
@@ -174,7 +174,7 @@ namespace OP_Engine.Weathers
                             velocity = new Vector2(x, y);
                             angle = -(float)x / 20;
 
-                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, velocity, angle, Color.White, 0.5f, size, 16, true);
+                            Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, velocity, angle, color, 0.6f, size, 16, true);
                             ParticleManager.Particles.Add(particle);
                         }
                         break;
@@ -182,45 +182,38 @@ namespace OP_Engine.Weathers
                     case WeatherType.Fog:
                         for (int i = 0; i < TransitionTime; i++)
                         {
-                            float size = 0;
-
-                            random = new CryptoRandom();
-                            float opacity = random.Next(1, 11);
-                            opacity = opacity / 100;
-
-                            Vector2 velocity = new Vector2(0, 0);
-
-                            random = new CryptoRandom();
-                            int result = random.Next(1, 5);
-                            switch (result)
+                            if (i % 30 == 0)
                             {
-                                case 1:
-                                    size = 0.25f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(-1, 2), random.Next(-1, 2));
-                                    break;
+                                float size = 8;
+                                int lifetime = 32;
+                                float opacity = (float)TransitionTime / 2000;
 
-                                case 2:
-                                    size = 0.5f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(-2, 3), random.Next(-2, 3));
-                                    break;
+                                Vector2 velocity = new Vector2(0, 0);
 
-                                case 3:
-                                    size = 0.75f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(-3, 4), random.Next(-3, 4));
-                                    break;
+                                random = new CryptoRandom();
+                                int result = random.Next(1, 5);
+                                switch (result)
+                                {
+                                    case 1:
+                                        velocity = new Vector2(1f, -0.5f);
+                                        break;
 
-                                case 4:
-                                    size = 1f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(-4, 5), random.Next(-4, 5));
-                                    break;
+                                    case 2:
+                                        velocity = new Vector2(1f, -1f);
+                                        break;
+
+                                    case 3:
+                                        velocity = new Vector2(1f, 0.5f);
+                                        break;
+
+                                    case 4:
+                                        velocity = new Vector2(1f, 1f);
+                                        break;
+                                }
+
+                                Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, velocity, 0, color, opacity, size, lifetime, true);
+                                ParticleManager.Particles.Add(particle);
                             }
-
-                            Particle particle = ParticleManager.GetParticle(Type.ToString(), resolution, velocity, 0, Color.White, opacity, size, 16, true);
-                            ParticleManager.Particles.Add(particle);
                         }
                         break;
                 }
