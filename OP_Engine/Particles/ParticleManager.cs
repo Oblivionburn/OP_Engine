@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Utility;
 
 namespace OP_Engine.Particles
@@ -11,6 +9,8 @@ namespace OP_Engine.Particles
     public class ParticleManager : IDisposable
     {
         #region Variables
+
+        private static readonly object _listLock = new object();
 
         public List<Particle> Particles;
         public List<Texture2D> Textures;
@@ -31,19 +31,21 @@ namespace OP_Engine.Particles
 
         public virtual void Update()
         {
-            for (int i = 0; i < Particles.Count; i++)
+            lock (_listLock)
             {
-                Particle particle = Particles[i];
-
-                if (particle != null)
+                for (int i = 0; i < Particles.Count; i++)
                 {
-                    particle.Update();
-
-                    if (particle.Lifetime <= 0)
+                    Particle particle = Particles[i];
+                    if (particle != null)
                     {
-                        particle.Dispose();
-                        Particles.Remove(particle);
-                        i--;
+                        particle.Update();
+
+                        if (particle.Lifetime <= 0)
+                        {
+                            Particles.Remove(particle);
+                            particle.Dispose();
+                            i--;
+                        }
                     }
                 }
             }

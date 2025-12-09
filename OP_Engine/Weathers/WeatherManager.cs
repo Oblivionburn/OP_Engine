@@ -198,8 +198,10 @@ namespace OP_Engine.Weathers
 
         public static Weather GetWeather(WeatherType type)
         {
-            foreach (Weather weather in Weathers)
+            int count = Weathers.Count;
+            for (int i = 0; i < count; i++)
             {
+                Weather weather = Weathers[i];
                 if (weather.Type == type)
                 {
                     return weather;
