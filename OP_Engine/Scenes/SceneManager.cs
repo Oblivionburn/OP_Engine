@@ -14,7 +14,7 @@ namespace OP_Engine.Scenes
         public static long CurrentScene_ID;
         public static long PreviousScene_ID;
 
-        public static List<Scene> Scenes = new List<Scene>();
+        public static List<Scene> Scenes;
 
         #endregion
 
@@ -48,6 +48,8 @@ namespace OP_Engine.Scenes
 
         public SceneManager(Game game) : base(game)
         {
+            Scenes = new List<Scene>();
+
             game.Exiting += Game_Exiting;
         }
 

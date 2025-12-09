@@ -12,8 +12,8 @@ namespace OP_Engine.Particles
     {
         #region Variables
 
-        public List<Particle> Particles = new List<Particle>();
-        public List<Texture2D> Textures = new List<Texture2D>();
+        public List<Particle> Particles;
+        public List<Texture2D> Textures;
 
         #endregion
 
@@ -21,7 +21,8 @@ namespace OP_Engine.Particles
 
         public ParticleManager()
         {
-            
+            Particles = new List<Particle>();
+            Textures = new List<Texture2D>();
         }
 
         #endregion
@@ -119,7 +120,7 @@ namespace OP_Engine.Particles
                 particle.Dispose();
             }
 
-            Textures.Clear();
+            Textures = null;
         }
 
         #endregion

@@ -9,7 +9,7 @@ namespace OP_Engine.Spells
     {
         #region Variables
 
-        public static List<Spellbook> Spellbooks = new List<Spellbook>();
+        public static List<Spellbook> Spellbooks;
 
         #endregion
 
@@ -17,6 +17,8 @@ namespace OP_Engine.Spells
 
         public SpellbookManager(Game game) : base(game)
         {
+            Spellbooks = new List<Spellbook>();
+
             game.Exiting += Game_Exiting;
         }
 

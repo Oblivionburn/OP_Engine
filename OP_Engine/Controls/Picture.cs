@@ -18,11 +18,8 @@ namespace OP_Engine.Controls
 
         #region Constructors
 
-        public Picture()
+        public Picture() : base()
         {
-            Location = default;
-            Image = default;
-            Region = default;
             Opacity = 1;
         }
 
@@ -54,6 +51,8 @@ namespace OP_Engine.Controls
 
         public override void Dispose()
         {
+            Shader?.Dispose();
+
             base.Dispose();
         }
 

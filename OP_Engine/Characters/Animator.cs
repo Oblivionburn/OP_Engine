@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-
+﻿using System;
+using Microsoft.Xna.Framework;
 using OP_Engine.Utility;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Characters
 {
-    public class Animator
+    public class Animator : IDisposable
     {
         #region Variables
 
@@ -67,6 +68,11 @@ namespace OP_Engine.Characters
         public virtual void Reset(Something something)
         {
             something.Image = new Rectangle(0, something.Image.Y, something.Image.Width, something.Image.Height);
+        }
+
+        public virtual void Dispose()
+        {
+            
         }
 
         #endregion

@@ -11,14 +11,14 @@ namespace OP_Engine.Tiles
     {
         #region Variables
 
-        public long WorldID;
-        public long MapID;
+        public World World;
+        public Map Map;
 
         public int Rows;
         public int Columns;
         public int Depth;
 
-        public List<Tile> Tiles = new List<Tile>();
+        public List<Tile> Tiles;
 
         public Effect Shader;
 
@@ -26,9 +26,9 @@ namespace OP_Engine.Tiles
 
         #region Constructor
 
-        public Layer()
+        public Layer() : base()
         {
-            
+            Tiles = new List<Tile>();
         }
 
         #endregion
@@ -76,6 +76,14 @@ namespace OP_Engine.Tiles
                     Tiles[i]?.Draw(spriteBatch, resolution, color);
                 }
             }
+        }
+
+        public virtual void AddTile(Tile tile)
+        {
+            tile.World = World;
+            tile.Map = Map;
+            tile.Layer = this;
+            Tiles.Add(tile);
         }
 
         public virtual Tile GetTile(long id)
@@ -246,15 +254,12 @@ namespace OP_Engine.Tiles
 
         public override void Dispose()
         {
-            if (Shader != null)
-            {
-                Shader.Dispose();
-            }
-
             foreach (Tile tile in Tiles)
             {
                 tile.Dispose();
             }
+
+            Shader?.Dispose();
 
             base.Dispose();
         }

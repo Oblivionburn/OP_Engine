@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Utility;
 using OP_Engine.Spells;
 
@@ -13,8 +11,10 @@ namespace OP_Engine.Inventories
     {
         #region Variables
 
-        public List<string> Categories = new List<string>();
-        public List<string> Materials = new List<string>();
+        public Inventory Parent;
+
+        public List<string> Categories;
+        public List<string> Materials;
 
         public bool Equipped;
         public bool Used;
@@ -23,9 +23,9 @@ namespace OP_Engine.Inventories
         //Inventory for items that are containers of other items
         public Inventory Inventory;
 
-        public List<Something> Properties = new List<Something>();
-        public List<Item> Attachments = new List<Item>();
-        public List<Spell> Spells = new List<Spell>();
+        public List<Something> Properties;
+        public List<Item> Attachments;
+        public List<Spell> Spells;
 
         public string Task;
 
@@ -46,12 +46,19 @@ namespace OP_Engine.Inventories
 
         #region Constructor
 
-        public Item()
+        public Item() : base()
         {
+            Categories = new List<string>();
+            Materials = new List<string>();
+
             Inventory = new Inventory();
 
-            Region = new Region();
-            Image = default;
+            Properties = new List<Something>();
+            Attachments = new List<Item>();
+            Spells = new List<Spell>();
+
+            Icon_Region = new Region();
+            Icon_Image = new Rectangle();
         }
 
         #endregion
@@ -274,6 +281,11 @@ namespace OP_Engine.Inventories
 
         public override void Dispose()
         {
+            Categories = null;
+            Materials = null;
+
+            Inventory.Dispose();
+
             foreach (Something property in Properties)
             {
                 property.Dispose();
@@ -289,10 +301,8 @@ namespace OP_Engine.Inventories
                 spell.Dispose();
             }
 
-            if (Icon != null)
-            {
-                Icon.Dispose();
-            }
+            Icon = null;
+            Icon_Region.Dispose();
 
             base.Dispose();
         }

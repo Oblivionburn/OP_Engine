@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Utility;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Controls
 {
@@ -12,7 +11,7 @@ namespace OP_Engine.Controls
     {
         #region Variables
 
-        List<LabelPart> Parts = new List<LabelPart>();
+        List<LabelPart> Parts;
 
         public SpriteFont Font;
         
@@ -34,8 +33,10 @@ namespace OP_Engine.Controls
 
         public Label() : base()
         {
-            Size = default;
-            Position = default;
+            Parts = new List<LabelPart>();
+
+            Size = new Vector2();
+            Position = new Vector2();
         }
 
         #endregion
@@ -160,7 +161,13 @@ namespace OP_Engine.Controls
 
         public override void Dispose()
         {
+            foreach (LabelPart labelPart in Parts)
+            {
+                labelPart.Dispose();
+            }
+
             Font = null;
+
             base.Dispose();
         }
 

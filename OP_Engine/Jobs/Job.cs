@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using OP_Engine.Time;
 using OP_Engine.Utility;
 
@@ -11,10 +9,10 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
-        public List<Appointment> Schedule = new List<Appointment>();
-        public List<Task> Tasks = new List<Task>();
-        public List<Task> TasksCompleted = new List<Task>();
-        public List<Task> TasksAborted = new List<Task>();
+        public List<Appointment> Schedule;
+        public List<Task> Tasks;
+        public List<Task> TasksCompleted;
+        public List<Task> TasksAborted;
 
         #endregion
 
@@ -32,9 +30,12 @@ namespace OP_Engine.Jobs
 
         #region Constructor
 
-        public Job()
+        public Job() : base()
         {
-
+            Schedule = new List<Appointment>();
+            Tasks = new List<Task>();
+            TasksCompleted = new List<Task>();
+            TasksAborted = new List<Task>();
         }
 
         #endregion
@@ -177,11 +178,25 @@ namespace OP_Engine.Jobs
 
         public override void Dispose()
         {
+            Schedule = null;
+
             foreach (Task task in Tasks)
             {
                 task.Dispose();
             }
             Tasks = null;
+
+            foreach (Task task in TasksCompleted)
+            {
+                task.Dispose();
+            }
+            TasksCompleted = null;
+
+            foreach (Task task in TasksAborted)
+            {
+                task.Dispose();
+            }
+            TasksAborted = null;
 
             base.Dispose();
         }

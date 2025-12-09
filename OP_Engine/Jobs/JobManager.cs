@@ -11,7 +11,7 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
-        public static List<Job> Jobs = new List<Job>();
+        public static List<Job> Jobs;
 
         #endregion
 
@@ -19,6 +19,8 @@ namespace OP_Engine.Jobs
 
         public JobManager(Game game) : base(game)
         {
+            Jobs = new List<Job>();
+
             game.Exiting += Game_Exiting;
         }
 

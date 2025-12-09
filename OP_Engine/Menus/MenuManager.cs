@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,8 +12,8 @@ namespace OP_Engine.Menus
 
         public static long CurrentMenu_ID;
 
-        public static List<Menu> Menus = new List<Menu>();
-        public static List<Menu> PreviousMenus = new List<Menu>();
+        public static List<Menu> Menus;
+        public static List<Menu> PreviousMenus;
 
         #endregion
 
@@ -49,6 +47,9 @@ namespace OP_Engine.Menus
 
         public MenuManager(Game game) : base(game)
         {
+            Menus = new List<Menu>();
+            PreviousMenus = new List<Menu>();
+
             game.Exiting += Game_Exiting;
         }
 
@@ -296,6 +297,11 @@ namespace OP_Engine.Menus
         private void Game_Exiting(object sender, EventArgs e)
         {
             foreach (Menu menu in Menus)
+            {
+                menu.Dispose();
+            }
+
+            foreach (Menu menu in PreviousMenus)
             {
                 menu.Dispose();
             }

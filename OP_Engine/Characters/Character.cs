@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Controls;
 using OP_Engine.Inventories;
 using OP_Engine.Jobs;
 using OP_Engine.Spells;
 using OP_Engine.Utility;
+using OP_Engine.Tiles;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Characters
 {
@@ -16,22 +16,25 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public long MapID;
-        public long LayerID;
-        public long SquadID;
+        public Army Army;
+        public Squad Squad;
+
+        public Map Map;
+        public Layer Layer;
+
         public string Gender;
         public bool Interacting;
         public bool Dead;
         public bool Unconscious;
 
-        public List<Something> Stats = new List<Something>();
-        public List<Something> Skills = new List<Something>();
-        public List<Something> Traits = new List<Something>();
-        public List<Something> StatusEffects = new List<Something>();
-        public List<BodyPart> BodyParts = new List<BodyPart>();
-        public List<Memory> Memories = new List<Memory>();
-        public List<ALocation> Path = new List<ALocation>();
-        public Dictionary<long, string> Relationships = new Dictionary<long, string>();
+        public List<Something> Stats;
+        public List<Something> Skills;
+        public List<Something> Traits;
+        public List<Something> StatusEffects;
+        public List<BodyPart> BodyParts;
+        public List<Memory> Memories;
+        public List<ALocation> Path;
+        public Dictionary<long, string> Relationships;
 
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;
@@ -50,7 +53,6 @@ namespace OP_Engine.Characters
         public long Target_ID;
 
         public Vector2 Formation;
-        public Location Destination;
         
         public bool Moving;
         public float Moved;
@@ -74,24 +76,27 @@ namespace OP_Engine.Characters
 
         #region Constructor
 
-        public Character()
+        public Character() : base()
         {
-            Formation = default;
-            Location = default;
-            Destination = default;
-
-            Job = new Job();
-
-            Region = new Region();
-            Image = default;
+            Stats = new List<Something>();
+            Skills = new List<Something>();
+            Traits = new List<Something>();
+            StatusEffects = new List<Something>();
+            BodyParts = new List<BodyPart>();
+            Memories = new List<Memory>();
+            Path = new List<ALocation>();
+            Relationships = new Dictionary<long, string>();
 
             HealthBar = new ProgressBar();
             ManaBar = new ProgressBar();
-
-            Inventory = new Inventory();
-            Spellbook = new Spellbook();
+            StaminaBar = new ProgressBar();
 
             Animator = new Animator();
+            Spellbook = new Spellbook();
+            Inventory = new Inventory();
+            Job = new Job();
+
+            Formation = default;
         }
 
         #endregion
@@ -412,46 +417,6 @@ namespace OP_Engine.Characters
 
         public override void Dispose()
         {
-            if (Shader != null)
-            {
-                Shader.Dispose();
-            }
-
-            if (HealthBar != null)
-            {
-                HealthBar.Dispose();
-            }
-            
-            if (ManaBar != null)
-            {
-                ManaBar.Dispose();
-            }
-
-            if (Inventory != null)
-            {
-                Inventory.Dispose();
-            }
-
-            if (Spellbook != null)
-            {
-                Spellbook.Dispose();
-            }
-
-            if (Region != null)
-            {
-                Region.Dispose();
-            }
-
-            if (Job != null)
-            {
-                Job.Dispose();
-            }
-
-            foreach (ALocation location in Path)
-            {
-                location.Dispose();
-            }
-
             foreach (Something stat in Stats)
             {
                 stat.Dispose();
@@ -461,6 +426,43 @@ namespace OP_Engine.Characters
             {
                 skill.Dispose();
             }
+
+            foreach (Something trait in Traits)
+            {
+                trait.Dispose();
+            }
+
+            foreach (Something statusEffect in StatusEffects)
+            {
+                statusEffect.Dispose();
+            }
+
+            foreach (BodyPart bodyPart in BodyParts)
+            {
+                bodyPart.Dispose();
+            }
+
+            foreach (Memory memory in Memories)
+            {
+                memory.Dispose();
+            }
+
+            foreach (ALocation location in Path)
+            {
+                location.Dispose();
+            }
+
+            Relationships = null;
+
+            HealthBar.Dispose();
+            ManaBar.Dispose();
+            StaminaBar.Dispose();
+            Animator.Dispose();
+            Spellbook.Dispose();
+            Inventory.Dispose();
+            Job.Dispose();
+
+            Shader?.Dispose();
 
             base.Dispose();
         }

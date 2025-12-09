@@ -1,4 +1,4 @@
-﻿namespace OP_Engine.Utility
+﻿namespace OP_Engine.Enums
 {
     public enum ScreenType
     {

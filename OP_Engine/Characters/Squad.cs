@@ -12,14 +12,13 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public List<Character> Characters = new List<Character>();
+        public Army Army;
+
+        public List<Character> Characters;
+        public List<ALocation> Path;
+        public Animator Animator;
+
         public long Leader_ID;
-
-        public List<ALocation> Path = new List<ALocation>();
-        public Location Destination = new Location();
-
-        public Animator Animator = new Animator();
-
         public bool Moving;
         public float Moved;
         public float Move_TotalDistance;
@@ -36,9 +35,11 @@ namespace OP_Engine.Characters
 
         #region Constructor
 
-        public Squad()
+        public Squad() : base()
         {
-            
+            Characters = new List<Character>();
+            Path = new List<ALocation>();
+            Animator = new Animator();
         }
 
         #endregion
@@ -236,6 +237,13 @@ namespace OP_Engine.Characters
             Animator.Reset(this);
         }
 
+        public virtual void AddCharacter(Character character)
+        {
+            character.Army = Army;
+            character.Squad = this;
+            Characters.Add(character);
+        }
+
         public virtual Character GetCharacter(long id)
         {
             int count = Characters.Count;
@@ -315,6 +323,13 @@ namespace OP_Engine.Characters
             {
                 character.Dispose();
             }
+
+            foreach (ALocation location in Path)
+            {
+                location.Dispose();
+            }
+
+            Animator = null;
 
             base.Dispose();
         }

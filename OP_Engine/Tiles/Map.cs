@@ -11,10 +11,10 @@ namespace OP_Engine.Tiles
     {
         #region Variables
 
-        public long WorldID;
+        public World World;
         public int Depth;
 
-        public List<Layer> Layers = new List<Layer>();
+        public List<Layer> Layers;
 
         public Effect Shader;
 
@@ -22,9 +22,9 @@ namespace OP_Engine.Tiles
 
         #region Constructor
 
-        public Map()
+        public Map() : base()
         {
-            
+            Layers = new List<Layer>();
         }
 
         #endregion
@@ -74,6 +74,13 @@ namespace OP_Engine.Tiles
             }
         }
 
+        public virtual void AddLayer(Layer layer)
+        {
+            layer.World = World;
+            layer.Map = this;
+            Layers.Add(layer);
+        }
+
         public virtual Layer GetLayer(long id)
         {
             int count = Layers.Count;
@@ -112,15 +119,12 @@ namespace OP_Engine.Tiles
 
         public override void Dispose()
         {
-            if (Shader != null)
-            {
-                Shader.Dispose();
-            }
-
             foreach (Layer layer in Layers)
             {
                 layer.Dispose();
             }
+
+            Shader?.Dispose();
 
             base.Dispose();
         }

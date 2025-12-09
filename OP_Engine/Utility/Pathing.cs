@@ -17,7 +17,7 @@ namespace OP_Engine.Utility
 
         #region Constructor
 
-        public Pathing()
+        public Pathing() : base()
         {
             
         }

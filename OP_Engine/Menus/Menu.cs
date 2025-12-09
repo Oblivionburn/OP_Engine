@@ -16,13 +16,12 @@ namespace OP_Engine.Menus
 
         public int Current_Button;
 
-        public List<Button> Buttons = new List<Button>();
-        public List<Picture> Pictures = new List<Picture>();
-        public List<Label> Labels = new List<Label>();
-        public List<Slider> Sliders = new List<Slider>();
-        public List<InputBox> Inputs = new List<InputBox>();
-        public List<ProgressBar> ProgressBars = new List<ProgressBar>();
-        public Color nullColor = new Color(0, 0, 0, 0);
+        public List<Button> Buttons;
+        public List<Picture> Pictures;
+        public List<Label> Labels;
+        public List<Slider> Sliders;
+        public List<InputBox> Inputs;
+        public List<ProgressBar> ProgressBars;
 
         #endregion
 
@@ -42,9 +41,14 @@ namespace OP_Engine.Menus
 
         #region Constructors
 
-        public Menu()
+        public Menu() : base()
         {
-            
+            Buttons = new List<Button>();
+            Pictures = new List<Picture>();
+            Labels = new List<Label>();
+            Sliders = new List<Slider>();
+            Inputs = new List<InputBox>();
+            ProgressBars = new List<ProgressBar>();
         }
 
         #endregion

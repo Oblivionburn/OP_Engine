@@ -13,11 +13,11 @@ namespace OP_Engine.Controls
         #region Variables
 
         public Texture2D Base_Texture;
-        public Region Base_Region = new Region();
+        public Region Base_Region;
 
         public Texture2D Bar_Texture;
-        public Region Bar_Region = new Region();
-        public Rectangle Bar_Image = new Rectangle();
+        public Region Bar_Region;
+        public Rectangle Bar_Image;
 
         #endregion
 
@@ -33,7 +33,9 @@ namespace OP_Engine.Controls
 
         public ProgressBar() : base()
         {
-            
+            Base_Region = new Region();
+            Bar_Region = new Region();
+            Bar_Image = new Rectangle();
         }
 
         #endregion
@@ -123,15 +125,8 @@ namespace OP_Engine.Controls
             Base_Region = null;
             Bar_Region = null;
 
-            if (Base_Texture != null)
-            {
-                Base_Texture.Dispose();
-            }
-
-            if (Bar_Texture != null)
-            {
-                Bar_Texture.Dispose();
-            }
+            Base_Texture = null;
+            Bar_Texture = null;
 
             base.Dispose();
         }

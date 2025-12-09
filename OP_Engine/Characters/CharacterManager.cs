@@ -9,11 +9,11 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public static List<string> FirstNames_Male = new List<string>();
-        public static List<string> FirstNames_Female = new List<string>();
-        public static List<string> LastNames = new List<string>();
+        public static List<string> FirstNames_Male;
+        public static List<string> FirstNames_Female;
+        public static List<string> LastNames;
 
-        public static List<Army> Armies = new List<Army>();
+        public static List<Army> Armies;
 
         #endregion
 
@@ -21,6 +21,12 @@ namespace OP_Engine.Characters
 
         public CharacterManager(Game game) : base(game)
         {
+            FirstNames_Male = new List<string>();
+            FirstNames_Female = new List<string>();
+            LastNames = new List<string>();
+
+            Armies = new List<Army>();
+
             game.Exiting += Game_Exiting;
 
             LoadNames();

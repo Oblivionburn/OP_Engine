@@ -1,10 +1,11 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Controls
 {
-    public class LabelPart
+    public class LabelPart : IDisposable
     {
         #region Variables
 
@@ -25,7 +26,10 @@ namespace OP_Engine.Controls
 
         public LabelPart()
         {
-            
+            Rectangle = new Rectangle();
+            Image = new Rectangle();
+
+            Region = new Region();
         }
 
         #endregion
@@ -43,6 +47,14 @@ namespace OP_Engine.Controls
             {
                 spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color);
             }
+        }
+
+        public virtual void Dispose()
+        {
+            Font = null;
+            Texture = null;
+
+            Region.Dispose();
         }
 
         #endregion

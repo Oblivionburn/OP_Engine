@@ -8,17 +8,19 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public List<Something> Stats = new List<Something>();
-        public List<Something> StatusEffects = new List<Something>();
-        public List<Something> Wounds = new List<Something>();
+        public List<Something> Stats;
+        public List<Something> StatusEffects;
+        public List<Something> Wounds;
 
         #endregion
 
         #region Contructors
 
-        public BodyPart()
+        public BodyPart() : base()
         {
-
+            Stats = new List<Something>();
+            StatusEffects = new List<Something>();
+            Wounds = new List<Something>();
         }
 
         #endregion
@@ -79,6 +81,26 @@ namespace OP_Engine.Characters
             }
 
             return results;
+        }
+
+        public override void Dispose()
+        {
+            foreach (Something stat in Stats)
+            {
+                stat.Dispose();
+            }
+
+            foreach (Something statusEffect in StatusEffects)
+            {
+                statusEffect.Dispose();
+            }
+
+            foreach (Something wound in Wounds)
+            {
+                wound.Dispose();
+            }
+
+            base.Dispose();
         }
 
         #endregion

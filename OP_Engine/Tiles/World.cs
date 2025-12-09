@@ -11,18 +11,24 @@ namespace OP_Engine.Tiles
     {
         #region Variables
 
-        public List<Map> Maps = new List<Map>();
+        public List<Map> Maps;
 
-        public List<string> Names = new List<string>();
-        private List<string> Names1 = new List<string>();
-        private List<string> Names2 = new List<string>();
+        public List<string> Names;
+        private List<string> Names1;
+        private List<string> Names2;
 
         #endregion
 
         #region Constructor
 
-        public World()
+        public World() : base()
         {
+            Maps = new List<Map>();
+
+            Names = new List<string>();
+            Names1 = new List<string>();
+            Names2 = new List<string>();
+
             LoadNames();
         }
 
@@ -61,6 +67,12 @@ namespace OP_Engine.Tiles
                     Maps[i]?.Draw(spriteBatch, resolution, color);
                 }
             }
+        }
+
+        public virtual void AddMap(Map map)
+        {
+            map.World = this;
+            Maps.Add(map);
         }
 
         public virtual Map GetMap(long id)
@@ -104,10 +116,16 @@ namespace OP_Engine.Tiles
             LoadNames1();
             LoadNames2();
 
-            foreach (string first in Names1)
+            int nameCount1 = Names1.Count;
+            for (int i = 0; i < nameCount1; i++)
             {
-                foreach (string second in Names2)
+                string first = Names1[i];
+
+                int nameCount2 = Names2.Count;
+                for (int j = 0; j < nameCount2; j++)
                 {
+                    string second = Names2[j];
+
                     if (first != second &&
                         first[first.Length - 1] != second[0])
                     {
@@ -450,6 +468,10 @@ namespace OP_Engine.Tiles
             {
                 map.Dispose();
             }
+
+            Names = null;
+            Names1 = null;
+            Names2 = null;
 
             base.Dispose();
         }

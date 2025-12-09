@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-
 using OP_Engine.Utility;
 
 namespace OP_Engine.Research
@@ -17,16 +15,16 @@ namespace OP_Engine.Research
         public bool Unlocked;
 
         //Resources required to complete this research (name, amount)
-        public Dictionary<string, int> Cost = new Dictionary<string, int>();
+        public Dictionary<string, int> Cost;
 
         //Resources paid toward completing this research (name, amount)
-        public Dictionary<string, int> Payments = new Dictionary<string, int>();
+        public Dictionary<string, int> Payments;
 
         //IDs of other research required to be Completed for this research to be Unlocked
-        public List<long> Prerequisites = new List<long>();
+        public List<long> Prerequisites;
 
         //IDs of other research this will contribute to Unlocking when this is Completed
-        public List<long> Unlocks = new List<long>();
+        public List<long> Unlocks;
 
         #endregion
 
@@ -40,13 +38,18 @@ namespace OP_Engine.Research
 
         #region Constructors
 
-        public Research()
+        public Research() : base()
         {
-            Time = default;
-            Max_Time = default;
+            Cost = new Dictionary<string, int>();
+            Payments = new Dictionary<string, int>();
+            Prerequisites = new List<long>();
+            Unlocks = new List<long>();
+
+            Time = new TimeSpan();
+            Max_Time = new TimeSpan();
         }
 
-        public Research(Dictionary<string, int> cost)
+        public Research(Dictionary<string, int> cost) : this()
         {
             Time = default;
             Max_Time = default;
@@ -153,6 +156,11 @@ namespace OP_Engine.Research
 
         public override void Dispose()
         {
+            Cost = null;
+            Payments = null;
+            Prerequisites = null;
+            Unlocks = null;
+
             base.Dispose();
         }
 

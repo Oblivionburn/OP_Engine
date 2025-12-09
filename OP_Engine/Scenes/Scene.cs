@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Controls;
 using OP_Engine.Menus;
 using OP_Engine.Tiles;
@@ -16,12 +14,12 @@ namespace OP_Engine.Scenes
     {
         #region Variables
 
-        public Menu Menu;
         public World World;
+        public Menu Menu;
 
         public Picture TextFrame;
         public float TextFrame_OpaqueLevel;
-        public List<Button> Messages = new List<Button>();
+        public List<Button> Messages;
         public bool BlockMessages;
 
         #endregion
@@ -35,13 +33,14 @@ namespace OP_Engine.Scenes
 
         #region Constructor
 
-        public Scene()
+        public Scene() : base()
         {
             World = new World();
             Menu = new Menu();
 
             TextFrame = new Picture();
             TextFrame_OpaqueLevel = 1;
+            Messages = new List<Button>();
         }
 
         #endregion
@@ -213,8 +212,9 @@ namespace OP_Engine.Scenes
 
         public override void Dispose()
         {
-            Menu.Dispose();
             World.Dispose();
+            Menu.Dispose();
+            
             TextFrame.Dispose();
 
             foreach (Button label in Messages)

@@ -26,16 +26,15 @@ namespace OP_Engine.Rendering
 
         #region Constructors
 
-        public Renderer()
+        public Renderer() : base()
         {
             BlendState = new BlendState();
         }
 
-        public Renderer(long id, string name)
+        public Renderer(long id, string name) : this()
         {
             ID = id;
             Name = name;
-            BlendState = new BlendState();
         }
 
         #endregion
@@ -110,21 +109,10 @@ namespace OP_Engine.Rendering
 
         public override void Dispose()
         {
-            if (GraphicsDevice != null)
-            {
-                GraphicsDevice.Dispose();
-            }
+            GraphicsDevice = null;
+            RenderTarget = null;
+            BlendState?.Dispose();
 
-            if (RenderTarget != null)
-            {
-                RenderTarget.Dispose();
-            }
-
-            if (BlendState != null)
-            {
-                BlendState.Dispose();
-            }
-            
             base.Dispose();
         }
 

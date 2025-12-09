@@ -105,15 +105,8 @@ namespace OP_Engine.Controls
 
         public override void Dispose()
         {
-            if (Selection != null)
-            {
-                Selection.Dispose();
-            }
-
-            if (Slidebar != null)
-            {
-                Slidebar.Dispose();
-            }
+            Selection = null;
+            Slidebar = null;
 
             base.Dispose();
         }

@@ -591,6 +591,12 @@ namespace OP_Engine.Sounds
         private void Game_Exiting(object sender, EventArgs e)
         {
             StopAll();
+
+            AmbientOuts = null;
+            AmbientChannels = null;
+
+            SoundOuts = null;
+            SoundChannels = null;
         }
 
         #endregion

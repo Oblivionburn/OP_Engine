@@ -9,15 +9,15 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public List<Squad> Squads = new List<Squad>();
+        public List<Squad> Squads;
 
         #endregion
 
         #region Constructor
 
-        public Army()
+        public Army() : base()
         {
-            
+            Squads = new List<Squad>();
         }
 
         #endregion
@@ -68,6 +68,12 @@ namespace OP_Engine.Characters
                     }
                 }
             }
+        }
+
+        public virtual void AddSquad(Squad squad)
+        {
+            squad.Army = this;
+            Squads.Add(squad);
         }
 
         public virtual Squad GetSquad(long id)

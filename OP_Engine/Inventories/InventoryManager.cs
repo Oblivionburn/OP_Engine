@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Inventories
@@ -9,7 +8,7 @@ namespace OP_Engine.Inventories
     {
         #region Variables
 
-        public static List<Inventory> Inventories = new List<Inventory>();
+        public static List<Inventory> Inventories;
 
         #endregion
 
@@ -17,6 +16,8 @@ namespace OP_Engine.Inventories
 
         public InventoryManager(Game game) : base(game)
         {
+            Inventories = new List<Inventory>();
+
             game.Exiting += Game_Exiting;
         }
 

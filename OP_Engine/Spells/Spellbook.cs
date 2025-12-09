@@ -8,15 +8,15 @@ namespace OP_Engine.Spells
     {
         #region Variables
 
-        public List<Spell> Spells = new List<Spell>();
+        public List<Spell> Spells;
 
         #endregion
 
         #region Constructor
 
-        public Spellbook()
+        public Spellbook() : base()
         {
-            
+            Spells = new List<Spell>();
         }
 
         #endregion

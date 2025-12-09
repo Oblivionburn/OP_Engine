@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-
 using OP_Engine.Utility;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Controls
 {

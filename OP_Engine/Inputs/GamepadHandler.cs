@@ -2,11 +2,9 @@
 using System.Linq;
 using System.Timers;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-
-using OP_Engine.Utility;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Inputs
 {

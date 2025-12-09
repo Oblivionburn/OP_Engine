@@ -108,7 +108,8 @@ namespace OP_Engine.Particles
 
         public void Dispose()
         {
-
+            Texture = null;
+            random = null;
         }
 
         #endregion

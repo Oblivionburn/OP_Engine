@@ -18,7 +18,7 @@ namespace OP_Engine.Rendering
         public static Renderer LightingRenderer;
         public static Renderer AddLightingRenderer;
 
-        public static List<Renderer> Renderers = new List<Renderer>();
+        public static List<Renderer> Renderers;
 
         #endregion
 
@@ -26,6 +26,8 @@ namespace OP_Engine.Rendering
 
         public RenderingManager(Game game) : base(game)
         {
+            Renderers = new List<Renderer>();
+
             game.Exiting += Game_Exiting;
         }
 
@@ -131,20 +133,9 @@ namespace OP_Engine.Rendering
 
         private void Game_Exiting(object sender, EventArgs e)
         {
-            if (Lighting != null)
-            {
-                Lighting.Dispose();
-            }
-
-            if (LightingRenderer != null)
-            {
-                LightingRenderer.Dispose();
-            }
-
-            if (AddLightingRenderer != null)
-            {
-                AddLightingRenderer.Dispose();
-            }
+            Lighting?.Dispose();
+            LightingRenderer?.Dispose();
+            AddLightingRenderer?.Dispose();
 
             foreach (Renderer renderer in Renderers)
             {

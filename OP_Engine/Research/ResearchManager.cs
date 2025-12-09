@@ -10,7 +10,7 @@ namespace OP_Engine.Research
         #region Variables
 
         public static TimeSpan Rate;
-        public static List<ResearchTree> ResearchTrees = new List<ResearchTree>();
+        public static List<ResearchTree> ResearchTrees;
 
         #endregion
 
@@ -18,6 +18,8 @@ namespace OP_Engine.Research
 
         public ResearchManager(Game game) : base(game)
         {
+            ResearchTrees = new List<ResearchTree>();
+
             game.Exiting += Game_Exiting;
         }
 

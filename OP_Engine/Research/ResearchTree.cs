@@ -9,7 +9,7 @@ namespace OP_Engine.Research
     {
         #region Variables
 
-        public static List<Research> ResearchNodes = new List<Research>();
+        public List<Research> ResearchNodes;
 
         #endregion
 
@@ -33,9 +33,9 @@ namespace OP_Engine.Research
 
         #region Constructors
 
-        public ResearchTree()
+        public ResearchTree() : base()
         {
-            
+            ResearchNodes = new List<Research>();
         }
 
         #endregion
@@ -376,6 +376,8 @@ namespace OP_Engine.Research
             {
                 research.Dispose();
             }
+
+            base.Dispose();
         }
 
         #endregion

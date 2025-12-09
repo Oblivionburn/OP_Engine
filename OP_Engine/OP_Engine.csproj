@@ -121,7 +121,7 @@
     <Compile Include="Tiles\Map.cs" />
     <Compile Include="Tiles\Tile.cs" />
     <Compile Include="Tiles\World.cs" />
-    <Compile Include="Utility\Alignment.cs" />
+    <Compile Include="Enums\Alignment.cs" />
     <Compile Include="Utility\ALocation.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\Picture.cs" />
@@ -129,7 +129,7 @@
     <Compile Include="Utility\CryptoRandom.cs" />
     <Compile Include="Utility\Dimension2.cs" />
     <Compile Include="Utility\Dimension3.cs" />
-    <Compile Include="Utility\Direction.cs" />
+    <Compile Include="Enums\Direction.cs" />
     <Compile Include="Controls\InputBox.cs" />
     <Compile Include="Controls\ProgressBar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,13 +137,13 @@
     <Compile Include="Utility\Location.cs" />
     <Compile Include="Utility\Pathing.cs" />
     <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Utility\Rarity.cs" />
-    <Compile Include="Utility\ScreenType.cs" />
+    <Compile Include="Enums\Rarity.cs" />
+    <Compile Include="Enums\ScreenType.cs" />
     <Compile Include="Utility\Something.cs" />
     <Compile Include="Utility\Region.cs" />
     <Compile Include="Time\TimeHandler.cs" />
     <Compile Include="Time\TimeManager.cs" />
-    <Compile Include="Utility\TimeRate.cs" />
+    <Compile Include="Enums\TimeRate.cs" />
     <Compile Include="Utility\Utility.cs" />
     <Compile Include="Weathers\Weather.cs" />
     <Compile Include="Weathers\WeatherManager.cs" />

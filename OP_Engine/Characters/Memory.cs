@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-
 using OP_Engine.Time;
-using OP_Engine.Utility;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Characters
 {
-    public class Memory
+    public class Memory : IDisposable
     {
         #region Variables
 
@@ -51,7 +50,15 @@ namespace OP_Engine.Characters
 
         #region Methods
 
+        public virtual void Dispose()
+        {
+            DateTime.Dispose();
 
+            Instigator_Description = null;
+            Instigator_Item_Description = null;
+            Victim_Description = null;
+            Victim_Item_Description = null;
+        }
 
         #endregion
     }

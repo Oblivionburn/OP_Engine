@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Utility;
 
 namespace OP_Engine.Inventories
@@ -11,15 +9,15 @@ namespace OP_Engine.Inventories
     {
         #region Variables
 
-        public List<Item> Items = new List<Item>();
+        public List<Item> Items;
 
         #endregion
 
         #region Constructor
 
-        public Inventory()
+        public Inventory() : base()
         {
-            
+            Items = new List<Item>();
         }
 
         #endregion

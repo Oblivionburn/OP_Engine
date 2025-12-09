@@ -31,7 +31,7 @@ namespace OP_Engine.Jobs
 
         #region Constructor
 
-        public Task()
+        public Task() : base()
         {
             TaskBar = new ProgressBar();
         }
@@ -164,10 +164,11 @@ namespace OP_Engine.Jobs
 
         public override void Dispose()
         {
-            if (TaskBar != null)
-            {
-                TaskBar.Dispose();
-            }
+            TaskBar.Dispose();
+
+            StartTime?.Dispose();
+            StepTime?.Dispose();
+            EndTime?.Dispose();
 
             base.Dispose();
         }

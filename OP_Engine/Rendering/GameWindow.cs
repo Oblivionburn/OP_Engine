@@ -11,7 +11,7 @@ using OP_Engine.Menus;
 using OP_Engine.Scenes;
 using OP_Engine.Sounds;
 using OP_Engine.Time;
-using OP_Engine.Utility;
+using OP_Engine.Enums;
 using OP_Engine.Weathers;
 
 using Menu = OP_Engine.Menus.Menu;

@@ -1,5 +1,5 @@
 ﻿using System;
-using OP_Engine.Utility;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Characters
 {

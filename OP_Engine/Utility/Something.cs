@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Utility
 {
@@ -11,19 +11,19 @@ namespace OP_Engine.Utility
         #region Variables
 
         public long ID;
-        public List<long> OwnerIDs = new List<long>();
+        public List<long> OwnerIDs;
         public string Name;
         public string Type;
         public string Assignment;
         public string Description;
-        public List<string> Tags = new List<string>();
+        public List<string> Tags;
         public int Amount;
         public int Tier;
         public int Grade;
         public int Quality;
         public int Level;
         public int XP;
-        public Dictionary<int, int> XP_Needed_ForLevels = new Dictionary<int, int>();
+        public Dictionary<int, int> XP_Needed_ForLevels;
         public TimeSpan Time;
         public TimeSpan Min_Time;
         public TimeSpan Max_Time;
@@ -45,6 +45,7 @@ namespace OP_Engine.Utility
         public Direction Direction;
         public Location Coordinates; //X, Y, Z
         public Location Location; //X, Y, Z
+        public Location Destination;
         public Dimension3 Dimensions; //Width, Height, Depth
         public Texture2D Texture;
         public Region Region; //Where to draw this to the screen/window; X, Y, Width, Height
@@ -66,10 +67,20 @@ namespace OP_Engine.Utility
 
         public Something()
         {
+            OwnerIDs = new List<long>();
+            Tags = new List<string>();
+            XP_Needed_ForLevels = new Dictionary<int, int>();
 
+            Coordinates = new Location();
+            Location = new Location();
+            Destination = new Location();
+            Region = new Region();
+
+            Dimensions = new Dimension3();
+            Image = new Rectangle();
         }
 
-        public Something(long id, string name, int value, int max_value)
+        public Something(long id, string name, int value, int max_value) : this()
         {
             ID = id;
             Name = name;
@@ -181,11 +192,6 @@ namespace OP_Engine.Utility
                 Value = Min_Value;
                 OnValueChange?.Invoke(this, EventArgs.Empty);
             }
-            else if (Value < 0)
-            {
-                Value = 0;
-                OnValueChange?.Invoke(this, EventArgs.Empty);
-            }
         }
 
         public virtual void AddXP(int amount)
@@ -265,8 +271,14 @@ namespace OP_Engine.Utility
 
         public virtual void Dispose()
         {
+            OwnerIDs = null;
+            Tags = null;
+            XP_Needed_ForLevels = null;
+
+            Coordinates = null;
+            Location = null;
+            Destination = null;
             Region = null;
-            Texture = null;
         }
 
         #endregion

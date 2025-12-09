@@ -11,9 +11,9 @@ namespace OP_Engine.Tiles
     {
         #region Variables
 
-        public long WorldID;
-        public long MapID;
-        public long LayerID;
+        public World World;
+        public Map Map;
+        public Layer Layer;
 
         public bool InView;
         public bool BlocksMovement;
@@ -28,14 +28,10 @@ namespace OP_Engine.Tiles
 
         #region Constructor
 
-        public Tile()
+        public Tile() : base()
         {
             Inventory = new Inventory();
-
-            Location = new Location();
             ProgressBar = new ProgressBar();
-            Region = new Region();
-            Image = new Rectangle();
         }
 
         #endregion
@@ -143,17 +139,10 @@ namespace OP_Engine.Tiles
 
         public override void Dispose()
         {
+            Inventory.Dispose();
             ProgressBar.Dispose();
 
-            if (Region != null)
-            {
-                Region.Dispose();
-            }
-
-            if (Shader != null)
-            {
-                Shader.Dispose();
-            }
+            Shader?.Dispose();
 
             base.Dispose();
         }
