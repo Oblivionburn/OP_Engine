@@ -53,13 +53,12 @@ namespace OP_Engine.Particles
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < Particles.Count; i++)
+            lock (_listLock)
             {
-                Particle particle = Particles[i];
-
-                if (particle != null)
+                for (int i = 0; i < Particles.Count; i++)
                 {
-                    particle.Draw(spriteBatch);
+                    Particle particle = Particles[i];
+                    particle?.Draw(spriteBatch);
                 }
             }
         }
