@@ -332,8 +332,8 @@ namespace OP_Engine.Sounds
                 FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, AmbientGroup, false, out channel);
                 FMOD.RESULT volume_result = channel.setVolume(volume);
 
-                AmbientOuts.Add(sound.SoundOut);
-                AmbientChannels.Add(channel);
+                AmbientOuts?.Add(sound.SoundOut);
+                AmbientChannels?.Add(channel);
 
                 FMOD.RESULT updated = FMODSystem.update();
             }
@@ -350,8 +350,8 @@ namespace OP_Engine.Sounds
                 FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
                 FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
                 
-                SoundOuts.Add(sound.SoundOut);
-                SoundChannels.Add(channel);
+                SoundOuts?.Add(sound.SoundOut);
+                SoundChannels?.Add(channel);
 
                 FMOD.RESULT updated = FMODSystem.update();
             }
