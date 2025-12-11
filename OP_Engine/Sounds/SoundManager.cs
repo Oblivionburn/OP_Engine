@@ -460,7 +460,8 @@ namespace OP_Engine.Sounds
 
             if (AmbientEnabled)
             {
-                if (AmbientChannels.Count > 0)
+                if (AmbientChannels != null &&
+                    AmbientChannels.Count > 0)
                 {
                     for (int c = 0; c < AmbientChannels.Count; c++)
                     {
@@ -489,7 +490,8 @@ namespace OP_Engine.Sounds
 
         public static void StopSound()
         {
-            if (SoundChannels.Count > 0)
+            if (SoundChannels != null &&
+                SoundChannels.Count > 0)
             {
                 for (int c = 0; c < SoundChannels.Count; c++)
                 {
