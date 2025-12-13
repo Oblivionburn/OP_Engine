@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
+using System.Threading.Tasks;
 
 namespace OP_Engine.Particles
 {
@@ -10,10 +12,12 @@ namespace OP_Engine.Particles
     {
         #region Variables
 
-        private static readonly object _listLock = new object();
+        public static long id;
 
-        public List<Particle> Particles;
         public List<Texture2D> Textures;
+
+        public ConcurrentDictionary<long, Particle> Particles;
+        public ConcurrentBag<Particle> ParticleBag;
 
         #endregion
 
@@ -21,45 +25,48 @@ namespace OP_Engine.Particles
 
         public ParticleManager()
         {
-            Particles = new List<Particle>();
             Textures = new List<Texture2D>();
+            Particles = new ConcurrentDictionary<long, Particle>();
+            ParticleBag = new ConcurrentBag<Particle>();
         }
 
         #endregion
 
         #region Methods
 
+        public static long GetID()
+        {
+            id++;
+            return id;
+        }
+
         public virtual void Update()
         {
-            lock (_listLock)
-            {
-                for (int i = 0; i < Particles.Count; i++)
-                {
-                    Particle particle = Particles[i];
-                    if (particle != null)
-                    {
-                        particle.Update();
+            ParticleBag = new ConcurrentBag<Particle>();
 
-                        if (particle.Lifetime <= 0)
-                        {
-                            Particles.Remove(particle);
-                            particle.Dispose();
-                            i--;
-                        }
-                    }
+            Parallel.ForEach(Particles, item =>
+            {
+                if (item.Value.Lifetime > 0)
+                {
+                    ParticleBag.Add(item.Value);
                 }
+                else
+                {
+                    Particles.TryRemove(item.Key, out Particle value);
+                }
+            });
+
+            foreach (Particle particle in ParticleBag)
+            {
+                particle?.Update();
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            lock (_listLock)
+            foreach (Particle particle in ParticleBag)
             {
-                for (int i = 0; i < Particles.Count; i++)
-                {
-                    Particle particle = Particles[i];
-                    particle?.Draw(spriteBatch);
-                }
+                particle?.Draw(spriteBatch);
             }
         }
 
@@ -116,12 +123,9 @@ namespace OP_Engine.Particles
 
         public void Dispose()
         {
-            foreach (Particle particle in Particles)
-            {
-                particle.Dispose();
-            }
-
             Textures = null;
+            Particles = null;
+            ParticleBag = null;
         }
 
         #endregion

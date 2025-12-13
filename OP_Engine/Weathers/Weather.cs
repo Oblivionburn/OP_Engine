@@ -94,7 +94,7 @@ namespace OP_Engine.Weathers
                             }
 
                             Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, new Vector2(0, 8f), 0, color, 0.6f, size, 16, true);
-                            ParticleManager.Particles.Add(particle);
+                            ParticleManager.Particles.TryAdd(ParticleManager.GetID(), particle);
                         }
                         break;
 
@@ -134,7 +134,7 @@ namespace OP_Engine.Weathers
                             }
 
                             Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, velocity, 0, color, 1f, size, 64, 0, 50, 0, 0);
-                            ParticleManager.Particles.Add(particle);
+                            ParticleManager.Particles.TryAdd(ParticleManager.GetID(), particle);
                         }
                         break;
 
@@ -175,7 +175,7 @@ namespace OP_Engine.Weathers
                             angle = -(float)x / 20;
 
                             Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, velocity, angle, color, 0.6f, size, 16, true);
-                            ParticleManager.Particles.Add(particle);
+                            ParticleManager.Particles.TryAdd(ParticleManager.GetID(), particle);
                         }
                         break;
 
@@ -212,7 +212,7 @@ namespace OP_Engine.Weathers
                                 }
 
                                 Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, velocity, 0, color, opacity, size, lifetime, true);
-                                ParticleManager.Particles.Add(particle);
+                                ParticleManager.Particles.TryAdd(ParticleManager.GetID(), particle);
                             }
                         }
                         break;
