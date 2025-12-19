@@ -18,6 +18,7 @@ namespace OP_Engine.Utility
         public string Description;
         public List<string> Tags;
         public int Amount;
+        public int Max_Amount;
         public int Tier;
         public int Grade;
         public int Quality;

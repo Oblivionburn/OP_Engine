@@ -37,32 +37,32 @@ namespace OP_Engine.Rendering
         public bool GameStarted;
         public bool Debugging;
 
-        public int TileSize_X;
-        public int TileSize_Y;
+        public float TileSize_X;
+        public float TileSize_Y;
 
-        public int MenuSize_X;
-        public int MenuSize_Y;
+        public float MenuSize_X;
+        public float MenuSize_Y;
 
         //Default resolution to desktop width/height
         public int ScreenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
         public int ScreenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-        FormWindowState LastWindowState = FormWindowState.Minimized;
-        private bool IsResizeTickEnabled;
-        private System.Timers.Timer ResizeTickTimer;
+        public FormWindowState LastWindowState = FormWindowState.Minimized;
+        public bool IsResizeTickEnabled;
+        public System.Timers.Timer ResizeTickTimer;
 
         #endregion
 
         #region Properties
 
-        public Point TileSize
+        public Vector2 TileSize
         {
-            get { return new Point(TileSize_X, TileSize_Y); }
+            get { return new Vector2(TileSize_X, TileSize_Y); }
         }
 
-        public Point MenuSize
+        public Vector2 MenuSize
         {
-            get { return new Point(MenuSize_X, MenuSize_Y); }
+            get { return new Vector2(MenuSize_X, MenuSize_Y); }
         }
 
         public Point Resolution
@@ -308,30 +308,15 @@ namespace OP_Engine.Rendering
 
         public virtual void ResetMenuSize()
         {
-            int width = ScreenWidth / 32;
-            for (int i = 0; i < 16; i++)
-            {
-                //if the current ScreenWidth is not divisible by 16, increment until we find one that is
-                if (width % 16 != 0)
-                {
-                    if ((width + i) % 16 == 0)
-                    {
-                        MenuSize_X = width + i;
-                        MenuSize_Y = width + i;
-                        break;
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
+            float width = ScreenWidth / 32;
+            MenuSize_X = width;
+            MenuSize_Y = width;
         }
 
         public virtual void ResetTileSize()
         {
-            TileSize_X = (int)(BaseSize * Zoom);
-            TileSize_Y = (int)(BaseSize * Zoom);
+            TileSize_X = BaseSize * Zoom;
+            TileSize_Y = BaseSize * Zoom;
         }
 
         public virtual void ResizeMenus()
@@ -339,7 +324,7 @@ namespace OP_Engine.Rendering
             int count = MenuManager.Menus.Count;
             for (int i = 0; i < count; i++)
             {
-                MenuManager.Menus[i].Resize(new Point(MenuSize_X, MenuSize_Y));
+                MenuManager.Menus[i].Resize(Resolution);
             }
         }
 
@@ -348,7 +333,7 @@ namespace OP_Engine.Rendering
             int count = SceneManager.Scenes.Count;
             for (int i = 0; i < count; i++)
             {
-                SceneManager.Scenes[i].Resize(TileSize);
+                SceneManager.Scenes[i].Resize(Resolution);
             }
         }
 
