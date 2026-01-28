@@ -35,6 +35,7 @@ namespace OP_Engine.Rendering
         public int BaseSize = 32;
         public bool Quit = false;
         public bool GameStarted;
+        public bool LostFocus;
         public bool Debugging;
 
         public float TileSize_X;
@@ -190,15 +191,9 @@ namespace OP_Engine.Rendering
                         if (!Form.Focused)
                         {
                             if (GameStarted &&
-                                !TimeManager.Paused)
+                                !LostFocus)
                             {
-                                Menu main = MenuManager.GetMenu("Main");
-                                if (main != null)
-                                {
-                                    main.Visible = true;
-                                    main.Active = true;
-                                }
-
+                                LostFocus = true;
                                 TimeManager.Paused = true;
                             }
 
@@ -206,6 +201,12 @@ namespace OP_Engine.Rendering
                         }
                         else if (Form.Focused)
                         {
+                            if (LostFocus)
+                            {
+                                LostFocus = false;
+                                TimeManager.Paused = false;
+                            }
+
                             SoundManager.Paused = false;
 
                             InputManager.Update();
@@ -215,8 +216,10 @@ namespace OP_Engine.Rendering
                             WeatherManager.Update(Resolution, Color.White);
                         }
                     }
-                    else
+                    else if (!LostFocus)
                     {
+                        LostFocus = true;
+
                         TimeManager.Paused = true;
                         SoundManager.Paused = true;
                     }
