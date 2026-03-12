@@ -17,6 +17,7 @@ namespace OP_Engine.Tiles
 
         public bool InView;
         public bool BlocksMovement;
+        public bool CanMove;
         public bool IsTall;
         public bool Animated;
 
