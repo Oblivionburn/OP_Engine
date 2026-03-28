@@ -17,6 +17,7 @@ namespace OP_Engine.Controls
         public Texture2D texture;
         public Region region;
         public Color draw_color;
+        public float opacity;
         public bool visible;
     }
 }

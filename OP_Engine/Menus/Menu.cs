@@ -537,6 +537,7 @@ namespace OP_Engine.Menus
                 Texture = options.texture,
                 Region = options.region,
                 DrawColor = options.draw_color,
+                Opacity = options.opacity,
                 Visible = options.visible
             };
 
