@@ -21,10 +21,10 @@ namespace OP_Engine.Research
         public Dictionary<string, int> Payments;
 
         //IDs of other research required to be Completed for this research to be Unlocked
-        public List<long> Prerequisites;
+        public List<Research> Prerequisites;
 
         //IDs of other research this will contribute to Unlocking when this is Completed
-        public List<long> Unlocks;
+        public List<Research> Unlocks;
 
         #endregion
 
@@ -42,8 +42,8 @@ namespace OP_Engine.Research
         {
             Cost = new Dictionary<string, int>();
             Payments = new Dictionary<string, int>();
-            Prerequisites = new List<long>();
-            Unlocks = new List<long>();
+            Prerequisites = new List<Research>();
+            Unlocks = new List<Research>();
 
             Time = new TimeSpan();
             Max_Time = new TimeSpan();

@@ -102,50 +102,6 @@ namespace OP_Engine.Research
             ResearchNodes.Add(research);
         }
 
-        public virtual void AddResearch(long id, string name, string description, Dictionary<string, int> cost, List<long> prerequisites, List<long> unlocks)
-        {
-            Research research = new Research
-            {
-                ID = id,
-                Name = name,
-                Description = description,
-            };
-
-            foreach (var item in cost)
-            {
-                if (!research.Cost.ContainsKey(item.Key))
-                {
-                    research.Cost.Add(item.Key, item.Value);
-                }
-                else
-                {
-                    research.Cost[item.Key] += item.Value;
-                }
-            }
-
-            int prerequisiteCount = prerequisites.Count;
-            for (int p = 0; p < prerequisiteCount; p++)
-            {
-                long prerequisiteId = prerequisites[p];
-                if (!research.Prerequisites.Contains(prerequisiteId))
-                {
-                    research.Prerequisites.Add(prerequisiteId);
-                }
-            }
-
-            int unlockCount = unlocks.Count;
-            for (int u = 0; u < unlockCount; u++)
-            {
-                long unlockId = unlocks[u];
-                if (!research.Unlocks.Contains(unlockId))
-                {
-                    research.Unlocks.Add(unlockId);
-                }
-            }
-
-            ResearchNodes.Add(research);
-        }
-
         public virtual void AddResearch(long id, string name, string description, TimeSpan time_to_complete)
         {
             Research research = new Research
@@ -155,39 +111,6 @@ namespace OP_Engine.Research
                 Description = description,
                 TimeToComplete = TimeSpan.FromMilliseconds(time_to_complete.TotalMilliseconds)
             };
-
-            ResearchNodes.Add(research);
-        }
-
-        public virtual void AddResearch(long id, string name, string description, TimeSpan time_to_complete, List<long> prerequisites, List<long> unlocks)
-        {
-            Research research = new Research
-            {
-                ID = id,
-                Name = name,
-                Description = description,
-                TimeToComplete = TimeSpan.FromMilliseconds(time_to_complete.TotalMilliseconds)
-            };
-
-            int prerequisiteCount = prerequisites.Count;
-            for (int p = 0; p < prerequisiteCount; p++)
-            {
-                long prerequisiteId = prerequisites[p];
-                if (!research.Prerequisites.Contains(prerequisiteId))
-                {
-                    research.Prerequisites.Add(prerequisiteId);
-                }
-            }
-
-            int unlockCount = unlocks.Count;
-            for (int u = 0; u < unlockCount; u++)
-            {
-                long unlockId = unlocks[u];
-                if (!research.Unlocks.Contains(unlockId))
-                {
-                    research.Unlocks.Add(unlockId);
-                }
-            }
 
             ResearchNodes.Add(research);
         }
@@ -211,51 +134,6 @@ namespace OP_Engine.Research
                 else
                 {
                     research.Cost[item.Key] += item.Value;
-                }
-            }
-
-            ResearchNodes.Add(research);
-        }
-
-        public virtual void AddResearch(long id, string name, string description, TimeSpan time_to_complete, Dictionary<string, int> cost, List<long> prerequisites, List<long> unlocks)
-        {
-            Research research = new Research
-            {
-                ID = id,
-                Name = name,
-                Description = description,
-                TimeToComplete = TimeSpan.FromMilliseconds(time_to_complete.TotalMilliseconds)
-            };
-
-            foreach (var item in cost)
-            {
-                if (!research.Cost.ContainsKey(item.Key))
-                {
-                    research.Cost.Add(item.Key, item.Value);
-                }
-                else
-                {
-                    research.Cost[item.Key] += item.Value;
-                }
-            }
-
-            int prerequisiteCount = prerequisites.Count;
-            for (int p = 0; p < prerequisiteCount; p++)
-            {
-                long prerequisiteId = prerequisites[p];
-                if (!research.Prerequisites.Contains(prerequisiteId))
-                {
-                    research.Prerequisites.Add(prerequisiteId);
-                }
-            }
-
-            int unlockCount = unlocks.Count;
-            for (int u = 0; u < unlockCount; u++)
-            {
-                long unlockId = unlocks[u];
-                if (!research.Unlocks.Contains(unlockId))
-                {
-                    research.Unlocks.Add(unlockId);
                 }
             }
 
@@ -329,10 +207,10 @@ namespace OP_Engine.Research
             int unlockCount = research.Unlocks.Count;
             for (int u = 0; u < unlockCount; u++)
             {
-                long unlock = research.Unlocks[u];
+                Research unlock = research.Unlocks[u];
 
                 //Check if unlocked research has all prerequisites completed
-                Research unlocked_research = GetResearch(unlock);
+                Research unlocked_research = GetResearch(unlock.ID);
                 if (unlocked_research != null)
                 {
                     //Don't bother checking if it's already unlocked
@@ -344,9 +222,9 @@ namespace OP_Engine.Research
                         int prerequisiteCount = unlocked_research.Prerequisites.Count;
                         for (int p = 0; p < prerequisiteCount; p++)
                         {
-                            long prerequisite = unlocked_research.Prerequisites[p];
+                            Research prerequisite = unlocked_research.Prerequisites[p];
 
-                            Research prerequisite_research = GetResearch(prerequisite);
+                            Research prerequisite_research = GetResearch(prerequisite.ID);
                             if (prerequisite_research != null)
                             {
                                 if (prerequisite_research.Completed)
