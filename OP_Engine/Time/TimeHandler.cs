@@ -21,16 +21,16 @@ namespace OP_Engine.Time
         public long TotalCenturies;
         public long TotalMillennia;
 
-        public long Milliseconds;
-        public long Seconds;
-        public long Minutes;
-        public long Hours;
-        public long Days;
-        public long Months;
-        public long Years;
-        public long Decades;
-        public long Centuries;
-        public long Millennia;
+        public int Milliseconds;
+        public int Seconds;
+        public int Minutes;
+        public int Hours;
+        public int Days;
+        public int Months;
+        public int Years;
+        public int Decades;
+        public int Centuries;
+        public int Millennia;
 
         public int Hours_In_Day = 24;
         public int Days_In_Month = 30;

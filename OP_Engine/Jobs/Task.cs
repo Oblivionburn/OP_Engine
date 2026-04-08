@@ -1,5 +1,4 @@
 ﻿using System;
-
 using OP_Engine.Controls;
 using OP_Engine.Time;
 using OP_Engine.Utility;
@@ -11,12 +10,21 @@ namespace OP_Engine.Jobs
         #region Variables
 
         public TimeHandler StartTime;
-        public TimeHandler StepTime;
+        public TimeSpan StepTime;
         public TimeHandler EndTime;
+
         public bool Started;
         public bool Completed;
+
+        /// <summary>
+        /// If this value is true, then Job will not automatically start the next queued task when this one has completed.
+        /// </summary>
         public bool Keep_On_Completed;
 
+        /// <summary>
+        /// Alternative way to check if task is in progress (TaskBar.Value < TaskBar.Max_Value) if EndTime is null and TaskBar.Rate > 0, 
+        /// or for visual display of task progress.
+        /// </summary>
         public ProgressBar TaskBar;
 
         #endregion
@@ -40,6 +48,12 @@ namespace OP_Engine.Jobs
 
         #region Methods
 
+        /// <summary>
+        /// Runs the task if it is started and is not yet completed.
+        /// </summary>
+        /// <param name="current_time">
+        /// Passed to InProgress() to check if the task should be completed.
+        /// </param>
         public virtual void Update(TimeHandler current_time)
         {
             if (Started &&
@@ -53,15 +67,11 @@ namespace OP_Engine.Jobs
                         TaskBar.Step();
                     }
 
+                    Action();
+
                     if (!InProgress(current_time))
                     {
-                        if (EndTime == null)
-                        {
-                            EndTime = current_time;
-                        }
-
-                        Completed = true;
-                        OnComplete?.Invoke(this, EventArgs.Empty);
+                        Complete(current_time);
                     }
                     else
                     {
@@ -71,7 +81,16 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public virtual void Update(TimeHandler current_time, TimeSpan time_span)
+        /// <summary>
+        /// Runs the task if it is started and is not yet completed.
+        /// </summary>
+        /// <param name="current_time">
+        /// Used for checking if the task has reached its next StepTime, and passed to InProgress() to check if the task should be completed.
+        /// </param>
+        /// <param name="step_time">
+        /// Used for setting the next StepTime interval when current_time is greater than or equal to the current StepTime.
+        /// </param>
+        public virtual void Update(TimeHandler current_time, TimeSpan step_time)
         {
             if (Started &&
                 !Completed)
@@ -80,19 +99,24 @@ namespace OP_Engine.Jobs
                 {
                     if (StepTime == null)
                     {
-                        StepTime = new TimeHandler(current_time, time_span);
+                        StepTime = new TimeSpan(current_time.Days, current_time.Hours, current_time.Minutes, current_time.Seconds,
+                            current_time.Milliseconds);
+                        StepTime.Add(step_time);
                     }
 
                     if (current_time.TotalMilliseconds >= StepTime.TotalMilliseconds)
                     {
-                        StepTime.CopyTime(current_time);
-                        StepTime.AddTime(time_span);
+                        StepTime = new TimeSpan(current_time.Days, current_time.Hours, current_time.Minutes, current_time.Seconds,
+                            current_time.Milliseconds);
+                        StepTime.Add(step_time);
 
                         if (TaskBar.Rate > 0 &&
                             TaskBar.Value < TaskBar.Max_Value)
                         {
                             TaskBar.Step();
                         }
+
+                        Action();
 
                         if (!InProgress(current_time))
                         {
@@ -113,23 +137,77 @@ namespace OP_Engine.Jobs
             }
         }
 
+        /// <summary>
+        /// Starts the task: sets Started to true, runs Action_Start(), and sets StartTime to current_time.
+        /// </summary>
+        /// <param name="current_time">
+        /// StartTime gets set to this value.
+        /// </param>
         public virtual void Start(TimeHandler current_time)
         {
+            Action_Start();
+
             Started = true;
             StartTime = new TimeHandler(current_time);
 
             OnStart?.Invoke(this, EventArgs.Empty);
         }
 
-        public virtual void Start(TimeHandler current_time, TimeSpan time_span)
+        /// <summary>
+        /// Starts the task: sets Started to true, runs Action_Start(), sets StartTime to current_time, and 
+        /// sets StepTime to current_time + step_time for the next interval of progress.
+        /// </summary>
+        /// <param name="current_time">
+        /// StartTime gets set to this value.
+        /// </param>
+        /// <param name="step_time">
+        /// StepTime gets set to current_time + this value.
+        /// </param>
+        public virtual void Start(TimeHandler current_time, TimeSpan step_time)
         {
+            Action_Start();
+
             Started = true;
             StartTime = new TimeHandler(current_time);
-            StepTime = new TimeHandler(current_time, time_span);
+            StepTime = new TimeSpan(current_time.Days, current_time.Hours, current_time.Minutes, current_time.Seconds,
+                current_time.Milliseconds + step_time.Milliseconds);
 
             OnStart?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Completes the task: sets Completed to true, and sets EndTime to current_time if EndTime is null.
+        /// </summary>
+        /// <param name="current_time">
+        /// The value EndTime will be set to if EndTime is null.
+        /// </param>
+        public virtual void Complete(TimeHandler current_time)
+        {
+            Action_End();
+
+            Completed = true;
+
+            if (EndTime == null)
+            {
+                EndTime.CopyTime(current_time);
+            }
+
+            OnComplete?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// For checking if the task is ready to be completed.
+        /// </summary>
+        /// <param name="current_time">
+        /// If StartTime and EndTime are not null, then will be used to check if it's greater than or equal to StartTime and less than EndTime.
+        /// Else if StartTime is not null, then will be used to check if it's greater than or equal to StartTime.
+        /// </param>
+        /// <returns>
+        /// <para>If StartTime and EndTime are not null, then this will return true if current_time is greater than or equal to StartTime and less than EndTime.</para>
+        /// <para>Else if TaskBar.Value and TaskBar.Rate are greater than 0, then this will return true if TaskBar.Value is less than TaskBar.Max_Value.</para>
+        /// <para>Else if StartTime is not null, then this will return true if current_time is greater than or equal to StartTime.</para>
+        /// <para>Returns false if none of the above is true.</para>
+        /// </returns>
         public virtual bool InProgress(TimeHandler current_time)
         {
             if (Started &&
@@ -162,12 +240,35 @@ namespace OP_Engine.Jobs
             return false;
         }
 
+        /// <summary>
+        /// Override this to execute custom code when the task is started.
+        /// </summary>
+        public virtual void Action_Start()
+        {
+            
+        }
+
+        /// <summary>
+        /// Override this to execute custom code while the task is running (every time Update is called).
+        /// </summary>
+        public virtual void Action()
+        {
+            
+        }
+
+        /// <summary>
+        /// Override this to execute custom code when the task is completed.
+        /// </summary>
+        public virtual void Action_End()
+        {
+            
+        }
+
         public override void Dispose()
         {
             TaskBar.Dispose();
 
             StartTime?.Dispose();
-            StepTime?.Dispose();
             EndTime?.Dispose();
 
             base.Dispose();
