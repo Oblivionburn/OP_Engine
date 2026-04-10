@@ -145,10 +145,10 @@ namespace OP_Engine.Jobs
         /// </param>
         public virtual void Start(TimeHandler current_time)
         {
-            Action_Start();
-
             Started = true;
             StartTime = new TimeHandler(current_time);
+
+            Action_Start();
 
             OnStart?.Invoke(this, EventArgs.Empty);
         }
@@ -165,12 +165,12 @@ namespace OP_Engine.Jobs
         /// </param>
         public virtual void Start(TimeHandler current_time, TimeSpan step_time)
         {
-            Action_Start();
-
             Started = true;
             StartTime = new TimeHandler(current_time);
             StepTime = new TimeSpan(current_time.Days, current_time.Hours, current_time.Minutes, current_time.Seconds,
                 current_time.Milliseconds + step_time.Milliseconds);
+
+            Action_Start();
 
             OnStart?.Invoke(this, EventArgs.Empty);
         }
@@ -183,14 +183,14 @@ namespace OP_Engine.Jobs
         /// </param>
         public virtual void Complete(TimeHandler current_time)
         {
-            Action_End();
-
             Completed = true;
 
             if (EndTime == null)
             {
                 EndTime.CopyTime(current_time);
             }
+
+            Action_End();
 
             OnComplete?.Invoke(this, EventArgs.Empty);
         }

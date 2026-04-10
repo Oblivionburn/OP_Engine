@@ -54,12 +54,16 @@ namespace OP_Engine.Jobs
                         current.Start(current_time);
                     }
 
-                    current.Update(current_time);
+                    if (!current.Completed)
+                    {
+                        current.Update(current_time);
+                    }
                 }
 
                 if (current.Completed)
                 {
-                    if (!current.Keep_On_Completed)
+                    if (!current.Keep_On_Completed &&
+                        Tasks.Count > 0)
                     {
                         TasksCompleted.Add(Tasks[0]);
                         if (TasksCompleted.Count > 200)
@@ -69,10 +73,8 @@ namespace OP_Engine.Jobs
 
                         Tasks.RemoveAt(0);
 
-                        if (CurrentTask != null)
-                        {
-                            CurrentTask.Start(current_time);
-                        }
+                        current = Get_CurrentTask();
+                        current?.Start(current_time);
                     }
                 }
             }
