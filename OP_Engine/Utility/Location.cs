@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Utility
 {
@@ -24,6 +25,20 @@ namespace OP_Engine.Utility
             X = x;
             Y = y;
             Z = z;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public Vector2 ToVector2
+        {
+            get { return new Vector2(X, Y); }
+        }
+
+        public Vector3 ToVector3
+        {
+            get { return new Vector3(X, Y, Z); }
         }
 
         #endregion
