@@ -1,38 +1,58 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Controls;
+using OP_Engine.Enums;
 using OP_Engine.Inventories;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Tiles
 {
-    public class Tile : Something
+    public class Tile : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Type;
+        public float Value;
+        public Direction Direction;
+        public float Duration;
+        public TimeSpan Time;
+        public Dimension2 Dimensions;
+        public Location Location;
 
         public World World;
         public Map Map;
         public Layer Layer;
 
         public bool InView;
+        public bool InSight;
         public bool BlocksMovement;
+        public bool BlocksSight;
         public bool CanMove;
         public bool IsTall;
         public bool Animated;
+        public bool IsLightSource;
 
         public Inventory Inventory;
         public ProgressBar ProgressBar;
         public Effect Shader;
-        
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
+
         #endregion
 
         #region Constructor
 
-        public Tile() : base()
+        public Tile()
         {
-            Inventory = new Inventory();
-            ProgressBar = new ProgressBar();
+            Location = new Location();
+            Region = new Region();
         }
 
         #endregion
@@ -138,14 +158,18 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
-            Inventory.Dispose();
-            ProgressBar.Dispose();
+            World = null;
+            Map = null;
+            Layer = null;
 
+            Inventory?.Dispose();
+            ProgressBar?.Dispose();
             Shader?.Dispose();
 
-            base.Dispose();
+            Region?.Dispose();
+            Texture = null;
         }
 
         #endregion

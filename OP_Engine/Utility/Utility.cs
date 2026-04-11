@@ -58,71 +58,39 @@ namespace OP_Engine.Utility
             return false;
         }
 
-        public static List<Point> GetLine(Point starting_point, Point destination_point)
+        public static List<Point> GetLine(Point p1, Point p2)
         {
-            return BresenhamLine(starting_point.X, starting_point.Y, destination_point.X, destination_point.Y);
-        }
+            int x0 = p1.X, y0 = p1.Y;
+            int x1 = p2.X, y1 = p2.Y;
 
-        private static List<Point> BresenhamLine(int x0, int y0, int x1, int y1)
-        {
-            List<Point> result = new List<Point>();
+            int dx = Math.Abs(x1 - x0);
+            int dy = Math.Abs(y1 - y0);
+            int sx = x0 < x1 ? 1 : -1;
+            int sy = y0 < y1 ? 1 : -1;
+            int err = dx - dy;
 
-            bool steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
+            // Pre-allocate capacity based on the longer axis for speed
+            var points = new List<Point>(Math.Max(dx, dy) + 1);
 
-            if (steep)
+            while (true)
             {
-                Swap(ref x0, ref y0);
-                Swap(ref x1, ref y1);
-            }
+                points.Add(new Point(x0, y0));
 
-            if (x0 > x1)
-            {
-                Swap(ref x0, ref x1);
-                Swap(ref y0, ref y1);
-            }
+                if (x0 == x1 && y0 == y1) break;
 
-            int deltax = x1 - x0;
-            int deltay = Math.Abs(y1 - y0);
-            int error = 0;
-            int ystep;
-            int y = y0;
-
-            if (y0 < y1)
-            {
-                ystep = 1;
-            }
-            else
-            {
-                ystep = -1;
-            }
-
-            for (int x = x0; x <= x1; x++)
-            {
-                if (steep)
+                int e2 = 2 * err;
+                if (e2 > -dy)
                 {
-                    result.Add(new Point(y, x));
+                    err -= dy;
+                    x0 += sx;
                 }
-                else
+                if (e2 < dx)
                 {
-                    result.Add(new Point(x, y));
-                }
-
-                error += deltay;
-                if (2 * error >= deltax)
-                {
-                    y += ystep;
-                    error -= deltax;
+                    err += dx;
+                    y0 += sy;
                 }
             }
-
-            return result;
-        }
-
-        private static void Swap<T>(ref T a, ref T b)
-        {
-            T c = a;
-            a = b;
-            b = c;
+            return points;
         }
 
         #endregion
