@@ -9,6 +9,7 @@ namespace OP_Engine.Controls
     {
         #region Variables
 
+        public bool Active;
         public bool Selected;
         public bool Enabled;
 

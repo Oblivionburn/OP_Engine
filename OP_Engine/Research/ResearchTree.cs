@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using OP_Engine.Utility;
-
 namespace OP_Engine.Research
 {
-    public class ResearchTree : Something
+    public class ResearchTree : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
 
         public List<Research> ResearchNodes;
 
@@ -33,7 +34,7 @@ namespace OP_Engine.Research
 
         #region Constructors
 
-        public ResearchTree() : base()
+        public ResearchTree()
         {
             ResearchNodes = new List<Research>();
         }
@@ -248,14 +249,12 @@ namespace OP_Engine.Research
             }
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Research research in ResearchNodes)
             {
                 research.Dispose();
             }
-
-            base.Dispose();
         }
 
         #endregion

@@ -1,13 +1,24 @@
 ﻿using System;
 using OP_Engine.Controls;
+using OP_Engine.Enums;
 using OP_Engine.Time;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Jobs
 {
-    public class Task : Something
+    public class Task : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Type;
+        public string Description;
+        public string Assignment;
+        public long OwnerID;
+
+        public Direction Direction;
+        public Location Location;
 
         public TimeHandler StartTime;
         public TimeSpan StepTime;
@@ -39,8 +50,9 @@ namespace OP_Engine.Jobs
 
         #region Constructor
 
-        public Task() : base()
+        public Task()
         {
+            Location = new Location();
             TaskBar = new ProgressBar();
         }
 
@@ -264,14 +276,12 @@ namespace OP_Engine.Jobs
             
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             TaskBar.Dispose();
 
             StartTime?.Dispose();
             EndTime?.Dispose();
-
-            base.Dispose();
         }
 
         #endregion

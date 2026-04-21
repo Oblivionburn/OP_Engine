@@ -20,6 +20,12 @@ namespace OP_Engine.Utility
 
         }
 
+        public Location(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
+
         public Location(float x, float y, float z)
         {
             X = x;

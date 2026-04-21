@@ -1,52 +1,55 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Spells
 {
-    public class Spell : Something
+    public class Spell : IDisposable
     {
         #region Variables
 
-        public List<Something> Properties;
+        public long ID;
+        public string Name;
+        public string Description;
+        public string Type;
+        public float Value;
+        public float Min_Value;
+        public float Max_Value;
+        public float Rate;
+        public float Duration;
+        public TimeSpan Time;
+        public bool IsLightSource;
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
+
+        public List<Property> Properties;
 
         #endregion
 
         #region Constructor
 
-        public Spell() : base()
+        public Spell()
         {
-            Properties = new List<Something>();
+            Region = new Region();
+            Properties = new List<Property>();
         }
 
         #endregion
 
         #region Methods
 
-        public virtual Something GetProperty(long id)
+        public virtual Property GetProperty(string name)
         {
             int count = Properties.Count;
             for (int i = 0; i < count; i++)
             {
-                Something existing = Properties[i];
-                if (existing == null)
-                {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public virtual Something GetProperty(string name)
-        {
-            int count = Properties.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Something existing = Properties[i];
+                Property existing = Properties[i];
                 if (existing == null)
                 {
                     if (existing.Name == name)
@@ -59,14 +62,14 @@ namespace OP_Engine.Spells
             return null;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
-            foreach (Something something in Properties)
+            foreach (Property something in Properties)
             {
                 something.Dispose();
             }
 
-            base.Dispose();
+            Region?.Dispose();
         }
 
         #endregion

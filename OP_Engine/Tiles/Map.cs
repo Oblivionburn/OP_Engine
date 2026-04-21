@@ -1,20 +1,32 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using OP_Engine.Enums;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Tiles
 {
-    public class Map : Something
+    public class Map : IDisposable
     {
         #region Variables
 
-        public World World;
-        public int Depth;
+        public long ID;
+        public string Name;
+        public string Type;
+        public bool Visible;
 
+        public World World;
         public List<Layer> Layers;
+
+        public int Depth;
+        public Direction Direction;
+        public Location Location;
+
+        public Texture2D Texture;
+        public Rectangle Image;
+        public Region Region;
+        public Color DrawColor;
 
         public Effect Shader;
 
@@ -22,7 +34,7 @@ namespace OP_Engine.Tiles
 
         #region Constructor
 
-        public Map() : base()
+        public Map()
         {
             Layers = new List<Layer>();
         }
@@ -117,16 +129,15 @@ namespace OP_Engine.Tiles
             return null;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Layer layer in Layers)
             {
                 layer.Dispose();
             }
 
+            Location?.Dispose();
             Shader?.Dispose();
-
-            base.Dispose();
         }
 
         #endregion

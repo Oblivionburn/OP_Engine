@@ -1,28 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using OP_Engine.Enums;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Characters
 {
-    public class Squad : Something
+    public class Squad : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Type;
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
+
+        public Direction Direction;
+        public Location Location;
+        public Location Destination;
 
         public Army Army;
 
         public List<Character> Characters;
         public List<ALocation> Path;
-        public Animator Animator;
 
         public long Leader_ID;
         public bool Moving;
         public float Moved;
         public float Move_TotalDistance;
         public float Speed;
+        public int Frames;
 
         #endregion
 
@@ -35,11 +48,10 @@ namespace OP_Engine.Characters
 
         #region Constructor
 
-        public Squad() : base()
+        public Squad()
         {
             Characters = new List<Character>();
             Path = new List<ALocation>();
-            Animator = new Animator();
         }
 
         #endregion
@@ -68,11 +80,11 @@ namespace OP_Engine.Characters
                     }
                     else
                     {
-                        for (int i = 1; i <= Animator.Frames; i++)
+                        for (int i = 1; i <= Frames; i++)
                         {
-                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                            if (Moved == (Move_TotalDistance / Frames) * i)
                             {
-                                Animator.Animate(this);
+                                Animate();
                                 break;
                             }
                         }
@@ -95,11 +107,11 @@ namespace OP_Engine.Characters
                     }
                     else
                     {
-                        for (int i = 1; i <= Animator.Frames; i++)
+                        for (int i = 1; i <= Frames; i++)
                         {
-                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                            if (Moved == (Move_TotalDistance / Frames) * i)
                             {
-                                Animator.Animate(this);
+                                Animate();
                                 break;
                             }
                         }
@@ -124,11 +136,11 @@ namespace OP_Engine.Characters
                         }
                         else
                         {
-                            for (int i = 1; i <= Animator.Frames; i++)
+                            for (int i = 1; i <= Frames; i++)
                             {
-                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                                if (Moved == (Move_TotalDistance / Frames) * i)
                                 {
-                                    Animator.Animate(this);
+                                    Animate();
                                     break;
                                 }
                             }
@@ -151,11 +163,11 @@ namespace OP_Engine.Characters
                         }
                         else
                         {
-                            for (int i = 1; i <= Animator.Frames; i++)
+                            for (int i = 1; i <= Frames; i++)
                             {
-                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                                if (Moved == (Move_TotalDistance / Frames) * i)
                                 {
-                                    Animator.Animate(this);
+                                    Animate();
                                     break;
                                 }
                             }
@@ -167,8 +179,6 @@ namespace OP_Engine.Characters
                     }
                 }
             }
-
-            Animator.Update(this);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
@@ -234,7 +244,23 @@ namespace OP_Engine.Characters
             Moved = 0;
             Moving = false;
             OnMovementFinish?.Invoke(this, EventArgs.Empty);
-            Animator.Reset(this);
+            ResetAnimation();
+        }
+
+        public virtual void Animate()
+        {
+            int X = Image.X + Image.Width;
+            if (X >= Texture.Width)
+            {
+                X = 0;
+            }
+
+            Image = new Rectangle(X, Image.Y, Image.Width, Image.Height);
+        }
+
+        public virtual void ResetAnimation()
+        {
+            Image = new Rectangle(0, Image.Y, Image.Width, Image.Height);
         }
 
         public virtual void AddCharacter(Character character)
@@ -317,7 +343,7 @@ namespace OP_Engine.Characters
             return null;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Character character in Characters)
             {
@@ -328,10 +354,6 @@ namespace OP_Engine.Characters
             {
                 location.Dispose();
             }
-
-            Animator = null;
-
-            base.Dispose();
         }
 
         #endregion

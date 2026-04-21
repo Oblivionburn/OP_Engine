@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-
 using OP_Engine.Characters;
 using OP_Engine.Tiles;
 
 namespace OP_Engine.Utility
 {
-    public class Pathing : Something
+    public class Pathing : IDisposable
     {
         #region Variables
 
@@ -17,7 +16,7 @@ namespace OP_Engine.Utility
 
         #region Constructor
 
-        public Pathing() : base()
+        public Pathing()
         {
             
         }
@@ -467,9 +466,9 @@ namespace OP_Engine.Utility
             return x_diff + y_diff;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
-            base.Dispose();
+            
         }
 
         #endregion

@@ -91,7 +91,7 @@ namespace OP_Engine.Jobs
                 if (existing != null)
                 {
                     if (existing.Name == name &&
-                        existing.OwnerIDs.Contains(owner_id))
+                        existing.OwnerID == owner_id)
                     {
                         return existing;
                     }
@@ -131,7 +131,7 @@ namespace OP_Engine.Jobs
                 Job existing = Jobs[i];
                 if (existing != null)
                 {
-                    if (existing.OwnerIDs.Contains(owner_id))
+                    if (existing.OwnerID == owner_id)
                     {
                         jobs.Add(existing);
                     }
@@ -152,7 +152,7 @@ namespace OP_Engine.Jobs
                 if (existing != null)
                 {
                     if (existing.Name == name &&
-                        existing.OwnerIDs.Contains(owner_id))
+                        existing.OwnerID == owner_id)
                     {
                         jobs.Add(existing);
                     }

@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
-
-using OP_Engine.Utility;
+﻿using System;
+using System.Collections.Generic;
 
 namespace OP_Engine.Spells
 {
-    public class Spellbook : Something
+    public class Spellbook : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Description;
+        public string Type;
 
         public List<Spell> Spells;
 
@@ -14,7 +18,7 @@ namespace OP_Engine.Spells
 
         #region Constructor
 
-        public Spellbook() : base()
+        public Spellbook()
         {
             Spells = new List<Spell>();
         }
@@ -59,14 +63,12 @@ namespace OP_Engine.Spells
             return null;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Spell spell in Spells)
             {
                 spell.Dispose();
             }
-
-            base.Dispose();
         }
 
         #endregion

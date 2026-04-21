@@ -1,16 +1,32 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-
+﻿using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Controls
 {
-    public class Picture : Something
+    public class Picture : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public Location Location;
 
         public float Fade;
         public string HoverText;
         public float Opacity;
+
+        public float Value;
+        public float Min_Value;
+        public float Max_Value;
+        public float Rate;
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
 
         public Effect Shader;
 
@@ -18,8 +34,11 @@ namespace OP_Engine.Controls
 
         #region Constructors
 
-        public Picture() : base()
+        public Picture()
         {
+            Location = new Location();
+            Region = new Region();
+            Image = new Rectangle();
             Opacity = 1;
         }
 
@@ -49,11 +68,9 @@ namespace OP_Engine.Controls
             }
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             Shader?.Dispose();
-
-            base.Dispose();
         }
 
         #endregion

@@ -1,13 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using OP_Engine.Utility;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Characters
 {
-    public class Army : Something
+    public class Army : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Type;
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
+
+        public Direction Direction;
+        public Location Location;
+        public Location Destination;
 
         public List<Squad> Squads;
 
@@ -15,7 +31,7 @@ namespace OP_Engine.Characters
 
         #region Constructor
 
-        public Army() : base()
+        public Army()
         {
             Squads = new List<Squad>();
         }
@@ -112,14 +128,12 @@ namespace OP_Engine.Characters
             return null;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Squad squad in Squads)
             {
                 squad.Dispose();
             }
-
-            base.Dispose();
         }
 
         #endregion

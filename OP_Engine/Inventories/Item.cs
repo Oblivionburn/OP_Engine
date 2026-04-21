@@ -4,12 +4,38 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
 using OP_Engine.Spells;
+using OP_Engine.Enums;
 
 namespace OP_Engine.Inventories
 {
-    public class Item : Something
+    public class Item : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Description;
+        public string Type;
+        public string Assignment;
+        public int Amount;
+        public int Max_Amount;
+        public int Tier;
+        public int Grade;
+        public int Quality;
+        public Rarity Rarity;
+        public float Value;
+        public float Min_Value;
+        public float Max_Value;
+        public float Sell_Price;
+        public float Buy_Price;
+        public float Weight;
+        public float Duration;
+        public float Durability;
+        public bool IsLightSource;
+
+        public int Level;
+        public int XP;
+        public Dictionary<int, int> XP_Needed_ForLevels;
 
         public Inventory Parent;
 
@@ -23,11 +49,18 @@ namespace OP_Engine.Inventories
         //Inventory for items that are containers of other items
         public Inventory Inventory;
 
-        public List<Something> Properties;
+        public List<Property> Properties;
         public List<Item> Attachments;
         public List<Spell> Spells;
 
         public string Task;
+        public Location Location;
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
 
         public bool Icon_Visible;
         public Texture2D Icon;
@@ -46,14 +79,16 @@ namespace OP_Engine.Inventories
 
         #region Constructor
 
-        public Item() : base()
+        public Item()
         {
+            XP_Needed_ForLevels = new Dictionary<int, int>();
+
             Categories = new List<string>();
             Materials = new List<string>();
 
             Inventory = new Inventory();
 
-            Properties = new List<Something>();
+            Properties = new List<Property>();
             Attachments = new List<Item>();
             Spells = new List<Spell>();
 
@@ -147,30 +182,12 @@ namespace OP_Engine.Inventories
             }
         }
 
-        public virtual Something GetProperty(long id)
+        public virtual Property GetProperty(string name)
         {
             int count = Properties.Count;
             for (int i = 0; i < count; i++)
             {
-                Something existing = Properties[i];
-                if (existing != null)
-                {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public virtual Something GetProperty(string name)
-        {
-            int count = Properties.Count;
-            for (int i = 0; i < count; i++)
-            {
-                Something existing = Properties[i];
+                Property existing = Properties[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -279,14 +296,14 @@ namespace OP_Engine.Inventories
             OnUsed?.Invoke(this, EventArgs.Empty);
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             Categories = null;
             Materials = null;
 
             Inventory.Dispose();
 
-            foreach (Something property in Properties)
+            foreach (Property property in Properties)
             {
                 property.Dispose();
             }
@@ -303,8 +320,6 @@ namespace OP_Engine.Inventories
 
             Icon = null;
             Icon_Region.Dispose();
-
-            base.Dispose();
         }
 
         #endregion

@@ -1,24 +1,26 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using OP_Engine.Utility;
-
 namespace OP_Engine.Tiles
 {
-    public class Layer : Something
+    public class Layer : IDisposable
     {
         #region Variables
 
+        public long ID;
+        public string Name;
+        public string Type;
+        public bool Visible;
+
         public World World;
         public Map Map;
+        public List<Tile> Tiles;
 
         public int Rows;
         public int Columns;
         public int Depth;
-
-        public List<Tile> Tiles;
 
         public Effect Shader;
 
@@ -26,7 +28,7 @@ namespace OP_Engine.Tiles
 
         #region Constructor
 
-        public Layer() : base()
+        public Layer()
         {
             Tiles = new List<Tile>();
         }
@@ -252,7 +254,7 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Tile tile in Tiles)
             {
@@ -260,8 +262,6 @@ namespace OP_Engine.Tiles
             }
 
             Shader?.Dispose();
-
-            base.Dispose();
         }
 
         #endregion

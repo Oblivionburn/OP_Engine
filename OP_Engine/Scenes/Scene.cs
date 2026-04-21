@@ -10,9 +10,14 @@ using OP_Engine.Utility;
 
 namespace OP_Engine.Scenes
 {
-    public class Scene : Something
+    public class Scene : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public bool Active;
+        public bool Visible;
 
         public World World;
         public Menu Menu;
@@ -33,7 +38,7 @@ namespace OP_Engine.Scenes
 
         #region Constructor
 
-        public Scene() : base()
+        public Scene()
         {
             World = new World();
             Menu = new Menu();
@@ -210,7 +215,7 @@ namespace OP_Engine.Scenes
             }
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             World.Dispose();
             Menu.Dispose();
@@ -221,8 +226,6 @@ namespace OP_Engine.Scenes
             {
                 label.Dispose();
             }
-
-            base.Dispose();
         }
 
         #endregion

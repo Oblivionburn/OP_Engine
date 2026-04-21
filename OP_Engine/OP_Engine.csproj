@@ -56,7 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Characters\Animator.cs" />
     <Compile Include="Characters\Army.cs" />
     <Compile Include="Characters\BodyPart.cs" />
     <Compile Include="Characters\Character.cs" />
@@ -64,6 +63,7 @@
     <Compile Include="Characters\Memory.cs" />
     <Compile Include="Characters\ReactionEventArgs.cs" />
     <Compile Include="Characters\Squad.cs" />
+    <Compile Include="Characters\Wound.cs" />
     <Compile Include="Controls\ButtonOptions.cs" />
     <Compile Include="Controls\InputBoxOptions.cs" />
     <Compile Include="Controls\Label.cs" />
@@ -139,6 +139,7 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Enums\Rarity.cs" />
     <Compile Include="Enums\ScreenType.cs" />
+    <Compile Include="Utility\Property.cs" />
     <Compile Include="Utility\Something.cs" />
     <Compile Include="Utility\Region.cs" />
     <Compile Include="Time\TimeHandler.cs" />

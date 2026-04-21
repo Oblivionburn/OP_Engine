@@ -71,7 +71,12 @@ namespace OP_Engine.Controls
 
         public virtual void Step()
         {
-            IncreaseValueByRate();
+            Value += Rate;
+            if (Value > Max_Value)
+            {
+                Value = Max_Value;
+            }
+
             Update();
 
             OnStep?.Invoke(this, EventArgs.Empty);
@@ -79,7 +84,12 @@ namespace OP_Engine.Controls
 
         public virtual void IncreaseValue(int value)
         {
-            base.IncreaseValue(value);
+            Value += value;
+            if (Value > Max_Value)
+            {
+                Value = Max_Value;
+            }
+
             Update();
 
             OnValueIncrease?.Invoke(this, EventArgs.Empty);
@@ -87,7 +97,12 @@ namespace OP_Engine.Controls
 
         public virtual void DecreaseValue(int value)
         {
-            base.DecreaseValue(value);
+            Value -= value;
+            if (Value < 0)
+            {
+                Value = 0;
+            }
+
             Update();
 
             OnValueDecrease?.Invoke(this, EventArgs.Empty);
@@ -95,7 +110,7 @@ namespace OP_Engine.Controls
 
         public virtual void SetValue(int value)
         {
-            base.SetValue(value);
+            Value = value;
             Update();
         }
 

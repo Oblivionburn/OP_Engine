@@ -1,15 +1,18 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using OP_Engine.Utility;
-
 namespace OP_Engine.Tiles
 {
-    public class World : Something
+    public class World : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Type;
+        public bool Visible;
 
         public List<Map> Maps;
 
@@ -21,7 +24,7 @@ namespace OP_Engine.Tiles
 
         #region Constructor
 
-        public World() : base()
+        public World()
         {
             Maps = new List<Map>();
 
@@ -462,7 +465,7 @@ namespace OP_Engine.Tiles
             Names2.Add("y");
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Map map in Maps)
             {
@@ -472,8 +475,6 @@ namespace OP_Engine.Tiles
             Names = null;
             Names1 = null;
             Names2 = null;
-
-            base.Dispose();
         }
 
         #endregion

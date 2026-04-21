@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using OP_Engine.Utility;
-
 namespace OP_Engine.Crafting
 {
-    public class Recipe : Something
+    public class Recipe : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Description;
+        public string Type;
 
         public TimeSpan CraftingTime;
         public List<string> Categories = new List<string>();
@@ -81,9 +84,9 @@ namespace OP_Engine.Crafting
             }
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
-            base.Dispose();
+            
         }
 
         #endregion

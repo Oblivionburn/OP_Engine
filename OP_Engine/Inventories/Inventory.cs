@@ -1,13 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Inventories
 {
-    public class Inventory : Something
+    public class Inventory : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public float Value;
+        public float Min_Value;
+        public float Max_Value;
+        public Location Location;
 
         public List<Item> Items;
 
@@ -15,7 +23,7 @@ namespace OP_Engine.Inventories
 
         #region Constructor
 
-        public Inventory() : base()
+        public Inventory()
         {
             Items = new List<Item>();
         }
@@ -84,7 +92,8 @@ namespace OP_Engine.Inventories
             for (int i = 0; i < count; i++)
             {
                 Item existing = Items[i];
-                if (existing != null)
+                if (existing != null &&
+                    existing.Location != null)
                 {
                     if (existing.Location.X == location.X &&
                         existing.Location.Y == location.Y)
@@ -154,14 +163,14 @@ namespace OP_Engine.Inventories
             return items;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Item item in Items)
             {
                 item.Dispose();
             }
 
-            base.Dispose();
+            Location?.Dispose();
         }
 
         #endregion

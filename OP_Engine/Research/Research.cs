@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using OP_Engine.Utility;
 
 namespace OP_Engine.Research
 {
-    public class Research : Something
+    public class Research : IDisposable
     {
         #region Variables
 
+        public long ID;
+        public string Name;
+        public string Description;
+        public TimeSpan Time;
+        public TimeSpan Max_Time;
         public TimeSpan TimeElapsed;
         public TimeSpan TimeToComplete;
         public bool Started;
@@ -38,7 +42,7 @@ namespace OP_Engine.Research
 
         #region Constructors
 
-        public Research() : base()
+        public Research()
         {
             Cost = new Dictionary<string, int>();
             Payments = new Dictionary<string, int>();
@@ -154,14 +158,12 @@ namespace OP_Engine.Research
             OnUnlock?.Invoke(this, EventArgs.Empty);
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             Cost = null;
             Payments = null;
             Prerequisites = null;
             Unlocks = null;
-
-            base.Dispose();
         }
 
         #endregion

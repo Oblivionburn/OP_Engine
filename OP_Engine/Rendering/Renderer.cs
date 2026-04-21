@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-using OP_Engine.Utility;
-
 namespace OP_Engine.Rendering
 {
-    public class Renderer : Something
+    public class Renderer : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
 
         public bool SetRenderTarget_BeforeDraw;
         public bool ClearGraphics_BeforeDraw;
@@ -26,7 +24,7 @@ namespace OP_Engine.Rendering
 
         #region Constructors
 
-        public Renderer() : base()
+        public Renderer()
         {
             BlendState = new BlendState();
         }
@@ -107,13 +105,11 @@ namespace OP_Engine.Rendering
             //Where you would handle custom drawing to spritebatch
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             GraphicsDevice = null;
             RenderTarget = null;
             BlendState?.Dispose();
-
-            base.Dispose();
         }
 
         #endregion

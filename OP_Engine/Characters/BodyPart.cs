@@ -1,38 +1,41 @@
-﻿using System.Collections.Generic;
-
+﻿using System;
+using System.Collections.Generic;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Characters
 {
-    public class BodyPart : Something
+    public class BodyPart : IDisposable
     {
         #region Variables
 
-        public List<Something> Stats;
-        public List<Something> StatusEffects;
-        public List<Something> Wounds;
+        public string Name;
+        public string Description;
+
+        public List<Property> Stats;
+        public List<Property> StatusEffects;
+        public List<Wound> Wounds;
 
         #endregion
 
         #region Contructors
 
-        public BodyPart() : base()
+        public BodyPart()
         {
-            Stats = new List<Something>();
-            StatusEffects = new List<Something>();
-            Wounds = new List<Something>();
+            Stats = new List<Property>();
+            StatusEffects = new List<Property>();
+            Wounds = new List<Wound>();
         }
 
         #endregion
 
         #region Methods
 
-        public virtual Something GetStat(string name)
+        public virtual Property GetStat(string name)
         {
             int count = Stats.Count;
             for (int i = 0; i < count; i++)
             {
-                Something existing = Stats[i];
+                Property existing = Stats[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -45,12 +48,12 @@ namespace OP_Engine.Characters
             return null;
         }
 
-        public virtual Something GetStatusEffect(string name)
+        public virtual Property GetStatusEffect(string name)
         {
             int count = StatusEffects.Count;
             for (int i = 0; i < count; i++)
             {
-                Something existing = StatusEffects[i];
+                Property existing = StatusEffects[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -63,14 +66,14 @@ namespace OP_Engine.Characters
             return null;
         }
 
-        public virtual List<Something> GetWounds(string name)
+        public virtual List<Wound> GetWounds(string name)
         {
-            List<Something> results = new List<Something>();
+            List<Wound> results = new List<Wound>();
 
             int count = Wounds.Count;
             for (int i = 0; i < count; i++)
             {
-                Something existing = Wounds[i];
+                Wound existing = Wounds[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -83,24 +86,22 @@ namespace OP_Engine.Characters
             return results;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
-            foreach (Something stat in Stats)
+            foreach (Property stat in Stats)
             {
                 stat.Dispose();
             }
 
-            foreach (Something statusEffect in StatusEffects)
+            foreach (Property statusEffect in StatusEffects)
             {
                 statusEffect.Dispose();
             }
 
-            foreach (Something wound in Wounds)
+            foreach (Wound wound in Wounds)
             {
                 wound.Dispose();
             }
-
-            base.Dispose();
         }
 
         #endregion

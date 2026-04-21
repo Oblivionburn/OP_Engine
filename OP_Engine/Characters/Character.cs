@@ -12,9 +12,27 @@ using OP_Engine.Enums;
 
 namespace OP_Engine.Characters
 {
-    public class Character : Something
+    public class Character : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public string Type;
+
+        public int Level;
+        public int XP;
+        public Dictionary<int, int> XP_Needed_ForLevels;
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
+
+        public Direction Direction;
+        public Location Location;
+        public Location Destination;
 
         public Army Army;
         public Squad Squad;
@@ -26,11 +44,12 @@ namespace OP_Engine.Characters
         public bool Interacting;
         public bool Dead;
         public bool Unconscious;
+        public bool InSight;
 
-        public List<Something> Stats;
-        public List<Something> Skills;
-        public List<Something> Traits;
-        public List<Something> StatusEffects;
+        public List<Property> Stats;
+        public List<Property> Skills;
+        public List<Property> Traits;
+        public List<Property> StatusEffects;
         public List<BodyPart> BodyParts;
         public List<Memory> Memories;
         public List<ALocation> Path;
@@ -40,7 +59,6 @@ namespace OP_Engine.Characters
         public ProgressBar ManaBar;
         public ProgressBar StaminaBar;
 
-        public Animator Animator;
         public Spellbook Spellbook;
         public Inventory Inventory;
         public Job Job;
@@ -58,6 +76,7 @@ namespace OP_Engine.Characters
         public float Moved;
         public float Move_TotalDistance;
         public float Speed;
+        public int Frames;
 
         #endregion
 
@@ -76,12 +95,14 @@ namespace OP_Engine.Characters
 
         #region Constructor
 
-        public Character() : base()
+        public Character()
         {
-            Stats = new List<Something>();
-            Skills = new List<Something>();
-            Traits = new List<Something>();
-            StatusEffects = new List<Something>();
+            XP_Needed_ForLevels = new Dictionary<int, int>();
+
+            Stats = new List<Property>();
+            Skills = new List<Property>();
+            Traits = new List<Property>();
+            StatusEffects = new List<Property>();
             BodyParts = new List<BodyPart>();
             Memories = new List<Memory>();
             Path = new List<ALocation>();
@@ -91,7 +112,6 @@ namespace OP_Engine.Characters
             ManaBar = new ProgressBar();
             StaminaBar = new ProgressBar();
 
-            Animator = new Animator();
             Spellbook = new Spellbook();
             Inventory = new Inventory();
             Job = new Job();
@@ -125,11 +145,11 @@ namespace OP_Engine.Characters
                     }
                     else
                     {
-                        for (int i = 1; i <= Animator.Frames; i++)
+                        for (int i = 1; i <= Frames; i++)
                         {
-                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                            if (Moved == (Move_TotalDistance / Frames) * i)
                             {
-                                Animator.Animate(this);
+                                Animate();
                                 break;
                             }
                         }
@@ -152,11 +172,11 @@ namespace OP_Engine.Characters
                     }
                     else
                     {
-                        for (int i = 1; i <= Animator.Frames; i++)
+                        for (int i = 1; i <= Frames; i++)
                         {
-                            if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                            if (Moved == (Move_TotalDistance / Frames) * i)
                             {
-                                Animator.Animate(this);
+                                Animate();
                                 break;
                             }
                         }
@@ -181,11 +201,11 @@ namespace OP_Engine.Characters
                         }
                         else
                         {
-                            for (int i = 1; i <= Animator.Frames; i++)
+                            for (int i = 1; i <= Frames; i++)
                             {
-                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                                if (Moved == (Move_TotalDistance / Frames) * i)
                                 {
-                                    Animator.Animate(this);
+                                    Animate();
                                     break;
                                 }
                             }
@@ -208,11 +228,11 @@ namespace OP_Engine.Characters
                         }
                         else
                         {
-                            for (int i = 1; i <= Animator.Frames; i++)
+                            for (int i = 1; i <= Frames; i++)
                             {
-                                if (Moved == (Move_TotalDistance / Animator.Frames) * i)
+                                if (Moved == (Move_TotalDistance / Frames) * i)
                                 {
-                                    Animator.Animate(this);
+                                    Animate();
                                     break;
                                 }
                             }
@@ -224,8 +244,6 @@ namespace OP_Engine.Characters
                     }
                 }
             }
-
-            Animator.Update(this);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
@@ -305,16 +323,68 @@ namespace OP_Engine.Characters
             Moved = 0;
             Moving = false;
             OnMovementFinish?.Invoke(this, EventArgs.Empty);
-            Animator.Reset(this);
+            ResetAnimation();
         }
 
-        public virtual Something GetStat(string name)
+        public virtual void Animate()
         {
-            Something[] stats = Stats.ToArray();
+            int X = Image.X + Image.Width;
+            if (X >= Texture.Width)
+            {
+                X = 0;
+            }
+
+            Image = new Rectangle(X, Image.Y, Image.Width, Image.Height);
+        }
+
+        public virtual void ResetAnimation()
+        {
+            Image = new Rectangle(0, Image.Y, Image.Width, Image.Height);
+        }
+
+        public virtual void FaceNorth()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, (Texture.Height / 4) * 3, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.Up;
+            }
+        }
+
+        public virtual void FaceEast()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, (Texture.Height / 4) * 2, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.Right;
+            }
+        }
+
+        public virtual void FaceSouth()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, 0, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.Down;
+            }
+        }
+
+        public virtual void FaceWest()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, (Texture.Height / 4) * 1, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.Left;
+            }
+        }
+
+        public virtual Property GetStat(string name)
+        {
+            Property[] stats = Stats.ToArray();
             int count = stats.Length;
             for (int i = 0; i < count; i++)
             {
-                Something existing = stats[i];
+                Property existing = stats[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -327,13 +397,13 @@ namespace OP_Engine.Characters
             return null;
         }
 
-        public virtual Something GetSkill(string name)
+        public virtual Property GetSkill(string name)
         {
-            Something[] skills = Skills.ToArray();
+            Property[] skills = Skills.ToArray();
             int count = skills.Length;
             for (int i = 0; i < count; i++)
             {
-                Something existing = skills[i];
+                Property existing = skills[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -346,13 +416,13 @@ namespace OP_Engine.Characters
             return null;
         }
 
-        public virtual Something GetStatusEffect(string name)
+        public virtual Property GetStatusEffect(string name)
         {
-            Something[] statusEffects = StatusEffects.ToArray();
+            Property[] statusEffects = StatusEffects.ToArray();
             int count = statusEffects.Length;
             for (int i = 0; i < count; i++)
             {
-                Something existing = statusEffects[i];
+                Property existing = statusEffects[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -415,24 +485,24 @@ namespace OP_Engine.Characters
             OnFeelSomething?.Invoke(this, new ReactionEventArgs(adjective, strength, scale, body_part));
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
-            foreach (Something stat in Stats)
+            foreach (Property stat in Stats)
             {
                 stat.Dispose();
             }
 
-            foreach (Something skill in Skills)
+            foreach (Property skill in Skills)
             {
                 skill.Dispose();
             }
 
-            foreach (Something trait in Traits)
+            foreach (Property trait in Traits)
             {
                 trait.Dispose();
             }
 
-            foreach (Something statusEffect in StatusEffects)
+            foreach (Property statusEffect in StatusEffects)
             {
                 statusEffect.Dispose();
             }
@@ -457,14 +527,11 @@ namespace OP_Engine.Characters
             HealthBar.Dispose();
             ManaBar.Dispose();
             StaminaBar.Dispose();
-            Animator.Dispose();
             Spellbook.Dispose();
             Inventory.Dispose();
             Job.Dispose();
 
             Shader?.Dispose();
-
-            base.Dispose();
         }
 
         #endregion

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using OP_Engine.Time;
-using OP_Engine.Utility;
 
 namespace OP_Engine.Jobs
 {
-    public class Job : Something
+    public class Job : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public long OwnerID;
 
         public List<Appointment> Schedule;
         public List<Task> Tasks;
@@ -30,7 +33,7 @@ namespace OP_Engine.Jobs
 
         #region Constructor
 
-        public Job() : base()
+        public Job()
         {
             Schedule = new List<Appointment>();
             Tasks = new List<Task>();
@@ -178,7 +181,7 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             Schedule = null;
 
@@ -199,8 +202,6 @@ namespace OP_Engine.Jobs
                 task.Dispose();
             }
             TasksAborted = null;
-
-            base.Dispose();
         }
 
         #endregion

@@ -1,10 +1,13 @@
-﻿using OP_Engine.Utility;
+﻿using System;
 
 namespace OP_Engine.Sounds
 {
-    public class Sound : Something
+    public class Sound : IDisposable
     {
         #region Variables
+
+        public string Name;
+        public string Type;
 
         public FMOD.Sound SoundOut;
         public string Extension;
@@ -24,7 +27,10 @@ namespace OP_Engine.Sounds
 
         #region Methods
 
+        public virtual void Dispose()
+        {
 
+        }
 
         #endregion
     }

@@ -10,9 +10,14 @@ using OP_Engine.Utility;
 
 namespace OP_Engine.Menus
 {
-    public class Menu : Something
+    public class Menu : IDisposable
     {
         #region Variables
+
+        public long ID;
+        public string Name;
+        public bool Active;
+        public bool Visible;
 
         public int Current_Button;
 
@@ -41,7 +46,7 @@ namespace OP_Engine.Menus
 
         #region Constructors
 
-        public Menu() : base()
+        public Menu()
         {
             Buttons = new List<Button>();
             Pictures = new List<Picture>();
@@ -1021,7 +1026,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public override void Dispose()
+        public virtual void Dispose()
         {
             foreach (Button button in Buttons)
             {
@@ -1052,8 +1057,6 @@ namespace OP_Engine.Menus
             {
                 bar.Dispose();
             }
-
-            base.Dispose();
         }
 
         #endregion
