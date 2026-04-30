@@ -11,11 +11,12 @@ namespace OP_Engine.Jobs
         #region Variables
 
         public long ID;
+        public long OwnerID;
         public string Name;
         public string Type;
         public string Description;
         public string Assignment;
-        public long OwnerID;
+        public int Priority;
 
         public Direction Direction;
         public Location Location;

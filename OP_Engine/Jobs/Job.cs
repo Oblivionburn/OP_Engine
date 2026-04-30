@@ -165,6 +165,23 @@ namespace OP_Engine.Jobs
             return null;
         }
 
+        public virtual void Sort_ByPriority()
+        {
+            int count = Tasks.Count;
+            for (int i = 0; i < count; i++)
+            {
+                for (int j = 0; j < count - 1; j++)
+                {
+                    if (Tasks[j].Priority > Tasks[j + 1].Priority)
+                    {
+                        Task temp = Tasks[j + 1];
+                        Tasks[j + 1] = Tasks[j];
+                        Tasks[j] = temp;
+                    }
+                }
+            }
+        }
+
         public virtual void Abort(TimeHandler current_time)
         {
             for (int i = 0; i < Tasks.Count; i++)

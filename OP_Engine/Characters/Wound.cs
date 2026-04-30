@@ -11,8 +11,11 @@ namespace OP_Engine.Characters
 
         public long ID;
         public string Name;
+        public string Description;
         public float Value;
         public float Max_Value;
+        public float Duration;
+        public float Rate;
 
         public Region Region;
         public Texture2D Texture;
