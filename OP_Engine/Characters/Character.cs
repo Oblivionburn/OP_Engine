@@ -17,36 +17,37 @@ namespace OP_Engine.Characters
         #region Variables
 
         public long ID;
+
         public string Name;
+        public string Gender;
+
+        public string Class;
         public string Type;
 
         public int Level;
         public int XP;
         public Dictionary<int, int> XP_Needed_ForLevels;
 
-        public Region Region;
-        public Texture2D Texture;
-        public Rectangle Image;
-        public bool Visible;
-        public Color DrawColor;
-
-        public Direction Direction;
-        public Location Location;
-        public Location Destination;
-
-        public Army Army;
-        public Squad Squad;
-
-        public Map Map;
-        public Layer Layer;
-
-        public string Gender;
+        public bool Aiming;
         public bool Interacting;
-        public bool Dead;
-        public bool Unconscious;
         public bool InSight;
 
-        public List<Property> Stats;
+        public bool Dead;
+        public bool Unconscious;
+
+        public bool Kneeling;
+        public bool Prone;
+        
+        public bool Sitting;
+        public bool Laying;
+
+        public bool Sprinting;
+        public bool Running;
+        public bool Sneaking;
+        public bool Crouching;
+
+        public Stats Stats;
+
         public List<Property> Skills;
         public List<Property> Traits;
         public List<Property> StatusEffects;
@@ -57,13 +58,18 @@ namespace OP_Engine.Characters
 
         public ProgressBar HealthBar;
         public ProgressBar ManaBar;
+        public ProgressBar EnergyBar;
         public ProgressBar StaminaBar;
 
         public Spellbook Spellbook;
         public Inventory Inventory;
         public Job Job;
 
-        public Effect Shader;
+        public Army Army;
+        public Squad Squad;
+
+        public Map Map;
+        public Layer Layer;
 
         public bool InCombat;
         public bool CombatTurn;
@@ -71,11 +77,23 @@ namespace OP_Engine.Characters
         public long Target_ID;
 
         public Vector2 Formation;
-        
+
+        public Region Region;
+        public Texture2D Texture;
+        public Rectangle Image;
+        public bool Visible;
+        public Color DrawColor;
+
+        public Effect Shader;
+
+        public Direction Direction;
+        public Location Location;
+        public Location Destination;
+
         public bool Moving;
         public float Moved;
         public float Move_TotalDistance;
-        public float Speed;
+        public float MoveSpeed;
         public int Frames;
 
         #endregion
@@ -99,7 +117,7 @@ namespace OP_Engine.Characters
         {
             XP_Needed_ForLevels = new Dictionary<int, int>();
 
-            Stats = new List<Property>();
+            Stats = new Stats();
             Skills = new List<Property>();
             Traits = new List<Property>();
             StatusEffects = new List<Property>();
@@ -110,6 +128,7 @@ namespace OP_Engine.Characters
 
             HealthBar = new ProgressBar();
             ManaBar = new ProgressBar();
+            EnergyBar = new ProgressBar();
             StaminaBar = new ProgressBar();
 
             Spellbook = new Spellbook();
@@ -130,7 +149,7 @@ namespace OP_Engine.Characters
             {
                 if (Destination.X > Location.X)
                 {
-                    MoveTo(new Vector2(Region.X + Speed, Region.Y));
+                    MoveTo(new Vector2(Region.X + MoveSpeed, Region.Y));
 
                     if (Moved == Move_TotalDistance)
                     {
@@ -139,7 +158,7 @@ namespace OP_Engine.Characters
                     }
                     else if (Moved > Move_TotalDistance)
                     {
-                        MoveTo(new Vector2(Region.X - Speed, Region.Y));
+                        MoveTo(new Vector2(Region.X - MoveSpeed, Region.Y));
                         Location.X = Destination.X;
                         FinishMove();
                     }
@@ -157,7 +176,7 @@ namespace OP_Engine.Characters
                 }
                 else if (Destination.X < Location.X)
                 {
-                    MoveTo(new Vector2(Region.X - Speed, Region.Y));
+                    MoveTo(new Vector2(Region.X - MoveSpeed, Region.Y));
 
                     if (Moved == Move_TotalDistance)
                     {
@@ -166,7 +185,7 @@ namespace OP_Engine.Characters
                     }
                     else if (Moved > Move_TotalDistance)
                     {
-                        MoveTo(new Vector2(Region.X + Speed, Region.Y));
+                        MoveTo(new Vector2(Region.X + MoveSpeed, Region.Y));
                         Location.X = Destination.X;
                         FinishMove();
                     }
@@ -186,7 +205,7 @@ namespace OP_Engine.Characters
                 {
                     if (Destination.Y > Location.Y)
                     {
-                        MoveTo(new Vector2(Region.X, Region.Y + Speed));
+                        MoveTo(new Vector2(Region.X, Region.Y + MoveSpeed));
 
                         if (Moved == Move_TotalDistance)
                         {
@@ -195,7 +214,7 @@ namespace OP_Engine.Characters
                         }
                         else if (Moved > Move_TotalDistance)
                         {
-                            MoveTo(new Vector2(Region.X, Region.Y - Speed));
+                            MoveTo(new Vector2(Region.X, Region.Y - MoveSpeed));
                             Location.Y = Destination.Y;
                             FinishMove();
                         }
@@ -213,7 +232,7 @@ namespace OP_Engine.Characters
                     }
                     else if (Destination.Y < Location.Y)
                     {
-                        MoveTo(new Vector2(Region.X, Region.Y - Speed));
+                        MoveTo(new Vector2(Region.X, Region.Y - MoveSpeed));
 
                         if (Moved == Move_TotalDistance)
                         {
@@ -222,7 +241,7 @@ namespace OP_Engine.Characters
                         }
                         else if (Moved > Move_TotalDistance)
                         {
-                            MoveTo(new Vector2(Region.X, Region.Y + Speed));
+                            MoveTo(new Vector2(Region.X, Region.Y + MoveSpeed));
                             Location.Y = Destination.Y;
                             FinishMove();
                         }
@@ -312,7 +331,7 @@ namespace OP_Engine.Characters
             {
                 Region.X = region.X;
                 Region.Y = region.Y;
-                Moved += Speed;
+                Moved += MoveSpeed;
 
                 OnMove?.Invoke(this, EventArgs.Empty);
             }
@@ -378,13 +397,12 @@ namespace OP_Engine.Characters
             }
         }
 
-        public virtual Property GetStat(string name)
+        public virtual Property GetSkill(string name)
         {
-            Property[] stats = Stats.ToArray();
-            int count = stats.Length;
+            int count = Skills.Count;
             for (int i = 0; i < count; i++)
             {
-                Property existing = stats[i];
+                Property existing = Skills[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -397,13 +415,12 @@ namespace OP_Engine.Characters
             return null;
         }
 
-        public virtual Property GetSkill(string name)
+        public virtual Property GetTrait(string name)
         {
-            Property[] skills = Skills.ToArray();
-            int count = skills.Length;
+            int count = Traits.Count;
             for (int i = 0; i < count; i++)
             {
-                Property existing = skills[i];
+                Property existing = Traits[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -418,11 +435,10 @@ namespace OP_Engine.Characters
 
         public virtual Property GetStatusEffect(string name)
         {
-            Property[] statusEffects = StatusEffects.ToArray();
-            int count = statusEffects.Length;
+            int count = StatusEffects.Count;
             for (int i = 0; i < count; i++)
             {
-                Property existing = statusEffects[i];
+                Property existing = StatusEffects[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -437,11 +453,10 @@ namespace OP_Engine.Characters
 
         public virtual BodyPart GetBodyPart(string name)
         {
-            BodyPart[] bodyParts = BodyParts.ToArray();
-            int count = bodyParts.Length;
+            int count = BodyParts.Count;
             for (int i = 0; i < count; i++)
             {
-                BodyPart existing = bodyParts[i];
+                BodyPart existing = BodyParts[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -487,10 +502,7 @@ namespace OP_Engine.Characters
 
         public virtual void Dispose()
         {
-            foreach (Property stat in Stats)
-            {
-                stat.Dispose();
-            }
+            Stats.Dispose();
 
             foreach (Property skill in Skills)
             {
@@ -526,7 +538,9 @@ namespace OP_Engine.Characters
 
             HealthBar.Dispose();
             ManaBar.Dispose();
+            EnergyBar.Dispose();
             StaminaBar.Dispose();
+
             Spellbook.Dispose();
             Inventory.Dispose();
             Job.Dispose();

@@ -63,6 +63,7 @@
     <Compile Include="Characters\Memory.cs" />
     <Compile Include="Characters\ReactionEventArgs.cs" />
     <Compile Include="Characters\Squad.cs" />
+    <Compile Include="Characters\Stats.cs" />
     <Compile Include="Characters\Wound.cs" />
     <Compile Include="Controls\ButtonOptions.cs" />
     <Compile Include="Controls\InputBoxOptions.cs" />
