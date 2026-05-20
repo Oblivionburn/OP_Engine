@@ -29,11 +29,12 @@
   - Includes large lists of first/last names for random name generation
   - Character class includes:
     - Inventory (list of Items)
-    - Lists for Stats, Skills, Traits, and StatusEffects
+    - Stats class with lots of generic RPG stat variables
+    - Lists Skills, Traits, and StatusEffects
     - Events for detecting noises, sights, smells, tastes, and touches (handy for stealth mechanics and realistic NPC reactions)
     - Job class for queueing Tasks and handling AI schedules
       - Task class includes a progress bar to render progress on the screen
-    - Health/Mana/Stamina progress bars
+    - Health/Mana/Energy/Stamina progress bars
     - Spellbook (see SpellbookManager below for details)
     - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
       - Default usage expects spritesheet to have sprites facing South in first row, West in second row, East in third row, and North in fourth row
@@ -124,7 +125,7 @@
 - For logging stuff like game crashes
 
 # Utilities:
-- Something class that most objects inherit from which includes many basic variables (so everything can have an ID, Name, etc)
+- Something class which includes many basic variables
 - Region class that renderable objects use instead of Monogame's Rectangle struct
   - Makes it possible to do stuff like making a higher layer of tiles reference the regions in a lower layer of tiles, so you only have to iterate through a single layer to move multiple layers across the screen (far more efficient than iterating through every Tile in every Layer when you have thousands of tiles in many layers)
 - Cryptography-grade random number generator for extreme randomness (named CryptoRandom in library)
