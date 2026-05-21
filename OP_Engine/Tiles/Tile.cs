@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Controls;
 using OP_Engine.Enums;
 using OP_Engine.Inventories;
+using OP_Engine.Sounds;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Tiles
@@ -37,6 +38,9 @@ namespace OP_Engine.Tiles
 
         public bool IsLightSource;
         public Color LightColor;
+
+        public string Sound;
+        public int SoundRange;
 
         public Inventory Inventory;
         public ProgressBar ProgressBar;

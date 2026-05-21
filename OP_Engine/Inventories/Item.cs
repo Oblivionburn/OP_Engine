@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
 using OP_Engine.Spells;
 using OP_Engine.Enums;
+using OP_Engine.Sounds;
 
 namespace OP_Engine.Inventories
 {
@@ -45,6 +46,9 @@ namespace OP_Engine.Inventories
         public bool Equipped;
         public bool Used;
         public bool OneTimeUse;
+
+        public string Sound;
+        public int SoundRange;
 
         //Inventory for items that are containers of other items
         public Inventory Inventory;
