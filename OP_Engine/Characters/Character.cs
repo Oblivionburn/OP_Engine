@@ -366,7 +366,7 @@ namespace OP_Engine.Characters
             if (Texture != null)
             {
                 Image = new Rectangle(Image.X, (Texture.Height / 4) * 3, Texture.Width / Frames, Texture.Height / 4);
-                Direction = Direction.Up;
+                Direction = Direction.North;
             }
         }
 
@@ -375,7 +375,7 @@ namespace OP_Engine.Characters
             if (Texture != null)
             {
                 Image = new Rectangle(Image.X, (Texture.Height / 4) * 2, Texture.Width / Frames, Texture.Height / 4);
-                Direction = Direction.Right;
+                Direction = Direction.East;
             }
         }
 
@@ -384,11 +384,47 @@ namespace OP_Engine.Characters
             if (Texture != null)
             {
                 Image = new Rectangle(Image.X, 0, Texture.Width / Frames, Texture.Height / 4);
-                Direction = Direction.Down;
+                Direction = Direction.South;
             }
         }
 
         public virtual void FaceWest()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, (Texture.Height / 4) * 1, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.West;
+            }
+        }
+
+        public virtual void FaceUp()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, (Texture.Height / 4) * 3, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.Up;
+            }
+        }
+
+        public virtual void FaceRight()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, (Texture.Height / 4) * 2, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.Right;
+            }
+        }
+
+        public virtual void FaceDown()
+        {
+            if (Texture != null)
+            {
+                Image = new Rectangle(Image.X, 0, Texture.Width / Frames, Texture.Height / 4);
+                Direction = Direction.Down;
+            }
+        }
+
+        public virtual void FaceLeft()
         {
             if (Texture != null)
             {

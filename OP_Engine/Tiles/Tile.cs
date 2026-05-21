@@ -31,9 +31,12 @@ namespace OP_Engine.Tiles
         public bool BlocksMovement;
         public bool BlocksSight;
         public bool CanMove;
+        public bool CanUse;
         public bool IsTall;
         public bool Animated;
+
         public bool IsLightSource;
+        public Color LightColor;
 
         public Inventory Inventory;
         public ProgressBar ProgressBar;
