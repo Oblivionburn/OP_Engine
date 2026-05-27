@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Microsoft.Xna.Framework;
-
 using OP_Engine.Time;
 
 namespace OP_Engine.Jobs

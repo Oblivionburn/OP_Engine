@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using OP_Engine.Controls;
 using OP_Engine.Enums;
 using OP_Engine.Time;
@@ -6,7 +7,7 @@ using OP_Engine.Utility;
 
 namespace OP_Engine.Jobs
 {
-    public class Task : IDisposable
+    public class JobTask : IDisposable
     {
         #region Variables
 
@@ -17,6 +18,8 @@ namespace OP_Engine.Jobs
         public string Description;
         public string Assignment;
         public int Priority;
+
+        public List<JobTask> SubTasks;
 
         public Direction Direction;
         public Location Location;
@@ -51,8 +54,9 @@ namespace OP_Engine.Jobs
 
         #region Constructor
 
-        public Task()
+        public JobTask()
         {
+            SubTasks = new List<JobTask>();
             Location = new Location();
             TaskBar = new ProgressBar();
         }

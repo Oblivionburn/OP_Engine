@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Controls;
 using OP_Engine.Enums;
 using OP_Engine.Inventories;
-using OP_Engine.Sounds;
 using OP_Engine.Utility;
 
 namespace OP_Engine.Tiles
@@ -26,6 +26,8 @@ namespace OP_Engine.Tiles
         public World World;
         public Map Map;
         public Layer Layer;
+
+        public List<string> Tags;
 
         public bool InView;
         public bool InSight;
@@ -59,6 +61,7 @@ namespace OP_Engine.Tiles
         public Tile()
         {
             Location = new Location();
+            Tags = new List<string>();
             Region = new Region();
         }
 

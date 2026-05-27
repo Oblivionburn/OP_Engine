@@ -13,15 +13,15 @@ namespace OP_Engine.Jobs
         public long OwnerID;
 
         public List<Appointment> Schedule;
-        public List<Task> Tasks;
-        public List<Task> TasksCompleted;
-        public List<Task> TasksAborted;
+        public List<JobTask> Tasks;
+        public List<JobTask> TasksCompleted;
+        public List<JobTask> TasksAborted;
 
         #endregion
 
         #region Properties
 
-        public Task CurrentTask
+        public JobTask CurrentTask
         {
             get
             {
@@ -36,9 +36,9 @@ namespace OP_Engine.Jobs
         public Job()
         {
             Schedule = new List<Appointment>();
-            Tasks = new List<Task>();
-            TasksCompleted = new List<Task>();
-            TasksAborted = new List<Task>();
+            Tasks = new List<JobTask>();
+            TasksCompleted = new List<JobTask>();
+            TasksAborted = new List<JobTask>();
         }
 
         #endregion
@@ -47,7 +47,7 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time)
         {
-            Task current = Get_CurrentTask();
+            JobTask current = Get_CurrentTask();
             if (current != null)
             {
                 if (!current.Completed)
@@ -85,7 +85,7 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time, TimeSpan time_span)
         {
-            Task current = Get_CurrentTask();
+            JobTask current = Get_CurrentTask();
             if (current != null)
             {
                 if (!current.Completed)
@@ -119,12 +119,12 @@ namespace OP_Engine.Jobs
             }
         }
 
-        public virtual Task GetTask(long id)
+        public virtual JobTask GetTask(long id)
         {
             int count = Tasks.Count;
             for (int i = 0; i < count; i++)
             {
-                Task existing = Tasks[i];
+                JobTask existing = Tasks[i];
                 if (existing != null)
                 {
                     if (existing.ID == id)
@@ -137,12 +137,12 @@ namespace OP_Engine.Jobs
             return null;
         }
 
-        public virtual Task GetTask(string name)
+        public virtual JobTask GetTask(string name)
         {
             int count = Tasks.Count;
             for (int i = 0; i < count; i++)
             {
-                Task existing = Tasks[i];
+                JobTask existing = Tasks[i];
                 if (existing != null)
                 {
                     if (existing.Name == name)
@@ -155,7 +155,7 @@ namespace OP_Engine.Jobs
             return null;
         }
 
-        public virtual Task Get_CurrentTask()
+        public virtual JobTask Get_CurrentTask()
         {
             if (Tasks.Count > 0)
             {
@@ -174,7 +174,7 @@ namespace OP_Engine.Jobs
                 {
                     if (Tasks[j].Priority > Tasks[j + 1].Priority)
                     {
-                        Task temp = Tasks[j + 1];
+                        JobTask temp = Tasks[j + 1];
                         Tasks[j + 1] = Tasks[j];
                         Tasks[j] = temp;
                     }
@@ -186,7 +186,7 @@ namespace OP_Engine.Jobs
         {
             for (int i = 0; i < Tasks.Count; i++)
             {
-                Task task = Tasks[i];
+                JobTask task = Tasks[i];
                 if (task.Started)
                 {
                     task.EndTime = current_time;
@@ -202,19 +202,19 @@ namespace OP_Engine.Jobs
         {
             Schedule = null;
 
-            foreach (Task task in Tasks)
+            foreach (JobTask task in Tasks)
             {
                 task.Dispose();
             }
             Tasks = null;
 
-            foreach (Task task in TasksCompleted)
+            foreach (JobTask task in TasksCompleted)
             {
                 task.Dispose();
             }
             TasksCompleted = null;
 
-            foreach (Task task in TasksAborted)
+            foreach (JobTask task in TasksAborted)
             {
                 task.Dispose();
             }

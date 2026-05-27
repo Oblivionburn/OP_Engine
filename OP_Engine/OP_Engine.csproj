@@ -87,7 +87,7 @@
     <Compile Include="Jobs\Appointment.cs" />
     <Compile Include="Jobs\Job.cs" />
     <Compile Include="Jobs\JobManager.cs" />
-    <Compile Include="Jobs\Task.cs" />
+    <Compile Include="Jobs\JobTask.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Menus\Menu.cs" />
     <Compile Include="Menus\MenuManager.cs" />
