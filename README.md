@@ -7,8 +7,8 @@
 > This DLL is also available through nuget.org: https://www.nuget.org/packages/OP_Engine
 
 ### Dependencies:
-- MonoGame.Framework.DesktopGL v3.8.4.1+
-- FMOD Sound System dll v0.2.1.4+ (not included for legal reasons, but C# wrapper for it is)
+- MonoGame.Framework.WindowsDX v3.8.4.1+
+- fmod.dll v0.2.3.14+ (not included for legal reasons, but C# wrapper for it is)
 - Project framework .NET 8.0+
 
 ### Features:
