@@ -12,12 +12,12 @@
 - Project framework .NET 8.0+
 
 ### Features:
-- Focus on organization, optimizations, easy to read code, and keeping things simple yet flexible (definitely a balancing act with Simplicity vs Flexibility)
+- A focus on simplicity, organization, and being highly optimized
 - Custom game form with basic pre-built Updating/Drawing methods and handling window resizing
 - Modular component architecture for only including what's needed/wanted in a project
   - Example: "Components.Add(new InputManager(this));" in your game's LoadContent() method
 - Overridable methods for per-game customizations (components themselves require static methods for accessibility)
-- UI objects: Button, Label, InputBox, Picture, ProgressBar, and Slider
+- UI objects: Button, Label, InputBox, Picture, and ProgressBar
 
 # Components:
 
