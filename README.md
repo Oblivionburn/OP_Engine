@@ -34,15 +34,13 @@
     - Inventory (list of Items)
     - Stats class with lots of generic RPG stat variables
     - Lists Skills, Traits, and StatusEffects
-    - Events for detecting noises, sights, smells, tastes, and touches (handy for stealth mechanics and realistic NPC reactions)
     - Job class for queueing Tasks and handling AI schedules
       - Task class includes a progress bar to render progress on the screen
     - Health/Mana/Energy/Stamina progress bars
     - Spellbook (see SpellbookManager below for details)
-    - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
+    - Some basic animation code for spritesheets with 4 directions of movement
       - Default usage expects spritesheet to have sprites facing South in first row, West in second row, East in third row, and North in fourth row
     - Boolean flags for Interacting, Unconscious, Dead, InCombat, and Travelling
-    - List of Memory object for tracking in-game events or recalling experiences in NPC dialogue
     
 ## JobManager
 - For central organization of Jobs (jobs not added to it by default)
@@ -120,19 +118,14 @@
       - There's no loop option for sounds
     - "Textures" folder
       - Textures organized in sub-folders
-      
-## ModManager
-- For handling moddable games
 
 ## Logger
 - For logging stuff like game crashes
 
 # Utilities:
-- Something class which includes many basic variables
 - Region class that renderable objects use instead of Monogame's Rectangle struct
   - Makes it possible to do stuff like making a higher layer of tiles reference the regions in a lower layer of tiles, so you only have to iterate through a single layer to move multiple layers across the screen (far more efficient than iterating through every Tile in every Layer when you have thousands of tiles in many layers)
 - Cryptography-grade random number generator for extreme randomness (named CryptoRandom in library)
 - GetLine method for fast ray-tracing between two coordinates (returns list of coordinates between the two points)
-- Example code for A* pathing
-- Various enums, structs, and other classes
+- Some other misc support classes
 
