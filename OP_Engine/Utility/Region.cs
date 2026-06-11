@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace OP_Engine.Utility
 {
@@ -30,7 +29,7 @@ namespace OP_Engine.Utility
 
         }
 
-        public Region (float x, float y, float width, float height)
+        public Region(float x, float y, float width, float height)
         {
             X = x;
             Y = y;

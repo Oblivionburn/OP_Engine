@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,34 +10,28 @@ namespace OP_Engine.Menus
 
         public static long CurrentMenu_ID;
 
-        public static List<Menu> Menus;
-        public static List<Menu> PreviousMenus;
+        public static List<Menu> Menus = [];
+        public static List<Menu> PreviousMenus = [];
 
         #endregion
 
         #region Properties
 
-        public static Menu CurrentMenu
+        public static Menu? CurrentMenu
         {
-            get
-            {
-                return GetCurrentMenu();
-            }
+            get { return GetCurrentMenu(); }
         }
 
-        public static Menu PreviousMenu
+        public static Menu? PreviousMenu
         {
-            get
-            {
-                return GetPreviousMenu();
-            }
+            get { return GetPreviousMenu(); }
         }
 
         #endregion
 
         #region Events
 
-        public static event EventHandler OnMenuChange;
+        public static event EventHandler? OnMenuChange;
 
         #endregion
 
@@ -47,9 +39,6 @@ namespace OP_Engine.Menus
 
         public MenuManager(Game game) : base(game)
         {
-            Menus = new List<Menu>();
-            PreviousMenus = new List<Menu>();
-
             game.Exiting += Game_Exiting;
         }
 
@@ -62,16 +51,16 @@ namespace OP_Engine.Menus
             int count = Menus.Count;
             for (int i = 0; i < count; i++)
             {
-                Menus[i]?.Update();
+                Menus[i].Update();
             }
         }
 
-        public static void Update(Game gameRef, ContentManager content)
+        public static void Update(Game? gameRef, ContentManager? content)
         {
             int count = Menus.Count;
             for (int i = 0; i < count; i++)
             {
-                Menus[i]?.Update(gameRef, content);
+                Menus[i].Update(gameRef, content);
             }
         }
 
@@ -80,52 +69,46 @@ namespace OP_Engine.Menus
             int count = Menus.Count;
             for (int i = 0; i < count; i++)
             {
-                Menus[i]?.Draw(spriteBatch);
+                Menus[i].Draw(spriteBatch);
             }
         }
 
-        public static Menu GetMenu(string name)
+        public static Menu? GetMenu(string name)
         {
             int count = Menus.Count;
             for (int i = 0; i < count; i++)
             {
                 Menu existing = Menus[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public static Menu GetMenu(long id)
+        public static Menu? GetMenu(long id)
         {
             int count = Menus.Count;
             for (int i = 0; i < count; i++)
             {
                 Menu existing = Menus[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public static Menu GetCurrentMenu()
+        public static Menu? GetCurrentMenu()
         {
             return GetMenu(CurrentMenu_ID);
         }
 
-        public static Menu GetPreviousMenu()
+        public static Menu? GetPreviousMenu()
         {
             if (PreviousMenus.Count > 0)
             {
@@ -137,7 +120,7 @@ namespace OP_Engine.Menus
 
         public static void ChangeMenu(string name)
         {
-            Menu current_menu = GetCurrentMenu();
+            Menu? current_menu = GetCurrentMenu();
             if (current_menu != null)
             {
                 PreviousMenus.Add(current_menu);
@@ -146,7 +129,7 @@ namespace OP_Engine.Menus
                 current_menu.Visible = false;
             }
 
-            Menu new_menu = GetMenu(name);
+            Menu? new_menu = GetMenu(name);
             if (new_menu != null)
             {
                 CurrentMenu_ID = new_menu.ID;
@@ -160,7 +143,7 @@ namespace OP_Engine.Menus
 
         public static void ChangeMenu(long id)
         {
-            Menu current_menu = GetCurrentMenu();
+            Menu? current_menu = GetCurrentMenu();
             if (current_menu != null)
             {
                 PreviousMenus.Add(current_menu);
@@ -169,7 +152,7 @@ namespace OP_Engine.Menus
                 current_menu.Visible = false;
             }
 
-            Menu new_menu = GetMenu(id);
+            Menu? new_menu = GetMenu(id);
             if (new_menu != null)
             {
                 CurrentMenu_ID = new_menu.ID;
@@ -183,7 +166,7 @@ namespace OP_Engine.Menus
 
         public static void ChangeMenu(Menu menu)
         {
-            Menu current_menu = GetCurrentMenu();
+            Menu? current_menu = GetCurrentMenu();
             if (current_menu != null)
             {
                 PreviousMenus.Add(current_menu);
@@ -205,7 +188,7 @@ namespace OP_Engine.Menus
 
         public static void ChangeMenu(string name, bool stay_active, bool stay_visible)
         {
-            Menu current_menu = GetCurrentMenu();
+            Menu? current_menu = GetCurrentMenu();
             if (current_menu != null)
             {
                 PreviousMenus.Add(current_menu);
@@ -214,7 +197,7 @@ namespace OP_Engine.Menus
                 current_menu.Visible = stay_visible;
             }
 
-            Menu new_menu = GetMenu(name);
+            Menu? new_menu = GetMenu(name);
             if (new_menu != null)
             {
                 CurrentMenu_ID = new_menu.ID;
@@ -228,7 +211,7 @@ namespace OP_Engine.Menus
 
         public static void ChangeMenu(long id, bool stay_active, bool stay_visible)
         {
-            Menu current_menu = GetCurrentMenu();
+            Menu? current_menu = GetCurrentMenu();
             if (current_menu != null)
             {
                 PreviousMenus.Add(current_menu);
@@ -237,7 +220,7 @@ namespace OP_Engine.Menus
                 current_menu.Visible = stay_visible;
             }
 
-            Menu new_menu = GetMenu(id);
+            Menu? new_menu = GetMenu(id);
             if (new_menu != null)
             {
                 CurrentMenu_ID = new_menu.ID;
@@ -251,7 +234,7 @@ namespace OP_Engine.Menus
 
         public static void ChangeMenu(Menu menu, bool stay_active, bool stay_visible)
         {
-            Menu current_menu = GetCurrentMenu();
+            Menu? current_menu = GetCurrentMenu();
             if (current_menu != null)
             {
                 PreviousMenus.Add(current_menu);
@@ -273,10 +256,10 @@ namespace OP_Engine.Menus
 
         public static void ChangeMenu_Previous()
         {
-            Menu new_menu = GetPreviousMenu();
+            Menu? new_menu = GetPreviousMenu();
             if (new_menu != null)
             {
-                Menu current_menu = GetCurrentMenu();
+                Menu? current_menu = GetCurrentMenu();
                 if (current_menu != null)
                 {
                     current_menu.Active = false;
@@ -294,7 +277,7 @@ namespace OP_Engine.Menus
             OnMenuChange?.Invoke(null, EventArgs.Empty);
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (Menu menu in Menus)
             {

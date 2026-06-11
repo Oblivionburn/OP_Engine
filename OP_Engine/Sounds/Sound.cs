@@ -1,18 +1,16 @@
-﻿using System;
-
-namespace OP_Engine.Sounds
+﻿namespace OP_Engine.Sounds
 {
     public class Sound : IDisposable
     {
         #region Variables
 
-        public string Name;
-        public string Type;
+        public string? Name;
+        public string? Type;
 
         public FMOD.Sound SoundOut;
-        public string Extension;
-        public string Directory;
-        public byte[] data;
+        public string? Extension;
+        public string? Directory;
+        public byte[]? data;
 
         #endregion
 

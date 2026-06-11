@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OP_Engine.Crafting
+﻿namespace OP_Engine.Crafting
 {
     public class Recipe : IDisposable
     {
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Description;
-        public string Type;
+        public string? Name;
+        public string? Description;
+        public string? Type;
 
         public TimeSpan CraftingTime;
-        public List<string> Categories = new List<string>();
-        public Dictionary<string, int> Ingredients = new Dictionary<string, int>();
-        public Dictionary<string, int> Yield = new Dictionary<string, int>();
+        public List<string> Categories = [];
+        public Dictionary<string, int> Ingredients = [];
+        public Dictionary<string, int> Yield = [];
 
         #endregion
 
@@ -62,11 +59,7 @@ namespace OP_Engine.Crafting
 
         public virtual void AddIngredient(string name, int amount)
         {
-            if (!Ingredients.ContainsKey(name))
-            {
-                Ingredients.Add(name, amount);
-            }
-            else
+            if (!Ingredients.TryAdd(name, amount))
             {
                 Ingredients[name] += amount;
             }
@@ -74,11 +67,7 @@ namespace OP_Engine.Crafting
 
         public virtual void AddYield(string name, int amount)
         {
-            if (!Yield.ContainsKey(name))
-            {
-                Yield.Add(name, amount);
-            }
-            else
+            if (!Yield.TryAdd(name, amount))
             {
                 Yield[name] += amount;
             }
@@ -86,7 +75,7 @@ namespace OP_Engine.Crafting
 
         public virtual void Dispose()
         {
-            
+
         }
 
         #endregion

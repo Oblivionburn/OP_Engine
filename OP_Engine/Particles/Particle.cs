@@ -1,9 +1,8 @@
-﻿using System;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Utility;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace OP_Engine.Particles
 {
@@ -11,9 +10,9 @@ namespace OP_Engine.Particles
     {
         #region Variables
 
-        private CryptoRandom random;
+        private CryptoRandom? random;
 
-        public Texture2D Texture;
+        public Texture2D? Texture;
         public Vector2 Location;
         public Vector2 Velocity;
         public float Angle;
@@ -31,7 +30,7 @@ namespace OP_Engine.Particles
 
         #region Constructors
 
-        public Particle(Texture2D texture, Vector2 location, Vector2 velocity, float angle, Color color, float size, int lifetime)
+        public Particle(Texture2D? texture, Vector2 location, Vector2 velocity, float angle, Color color, float size, int lifetime)
         {
             Texture = texture;
             Location = location;
@@ -42,7 +41,7 @@ namespace OP_Engine.Particles
             Lifetime = lifetime;
         }
 
-        public Particle(Texture2D texture, Vector2 location, Vector2 velocity, float angle, Color color, float size, int lifetime,
+        public Particle(Texture2D? texture, Vector2 location, Vector2 velocity, float angle, Color color, float size, int lifetime,
             int waver_min_x, int waver_max_x, int waver_min_y, int waver_max_y)
         {
             Texture = texture;
@@ -74,7 +73,7 @@ namespace OP_Engine.Particles
                 int chance = random.Next(0, 3);
                 if (chance == 0)
                 {
-                    Vector2 Waver_Velocity = new Vector2(Velocity.X, Velocity.Y);
+                    Vector2 Waver_Velocity = new(Velocity.X, Velocity.Y);
 
                     random = new CryptoRandom();
                     Waver_Velocity.X += random.Next(Waver_Min_X, Waver_Max_X + 1) * 0.01f;
@@ -99,8 +98,8 @@ namespace OP_Engine.Particles
         {
             if (Texture != null)
             {
-                Rectangle sourceRectangle = new Rectangle(0, 0, Texture.Width, Texture.Height);
-                Vector2 origin = new Vector2(Texture.Width / 2, Texture.Height / 2);
+                Rectangle sourceRectangle = new(0, 0, Texture.Width, Texture.Height);
+                Vector2 origin = new(Texture.Width / 2, Texture.Height / 2);
 
                 spriteBatch.Draw(Texture, Location, sourceRectangle, Color, Angle, origin, Size, SpriteEffects.None, 0f);
             }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OP_Engine.Utility;
+﻿using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Spells;
 using OP_Engine.Enums;
-using OP_Engine.Sounds;
+using OP_Engine.Utility;
+using Point = Microsoft.Xna.Framework.Point;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Region = OP_Engine.Utility.Region;
 
 namespace OP_Engine.Inventories
 {
@@ -14,10 +14,10 @@ namespace OP_Engine.Inventories
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Description;
-        public string Type;
-        public string Assignment;
+        public string? Name;
+        public string? Description;
+        public string? Type;
+        public string? Assignment;
         public int Amount;
         public int Max_Amount;
         public int Tier;
@@ -36,48 +36,48 @@ namespace OP_Engine.Inventories
 
         public int Level;
         public int XP;
-        public Dictionary<int, int> XP_Needed_ForLevels;
+        public Dictionary<int, int> XP_Needed_ForLevels = [];
 
-        public Inventory Parent;
+        public Inventory? Parent;
 
-        public List<string> Categories;
-        public List<string> Materials;
+        public List<string> Categories = [];
+        public List<string> Materials = [];
 
         public bool Equipped;
         public bool Used;
         public bool OneTimeUse;
 
-        public string Sound;
+        public string? Sound;
         public int SoundRange;
 
         //Inventory for items that are containers of other items
-        public Inventory Inventory;
+        public Inventory Inventory = new();
 
-        public List<Property> Properties;
-        public List<Item> Attachments;
-        public List<Spell> Spells;
+        public List<Property> Properties = [];
+        public List<Item> Attachments = [];
+        public List<Spell> Spells = [];
 
-        public string Task;
-        public Location Location;
+        public string? Task;
+        public Location? Location;
 
-        public Region Region;
-        public Texture2D Texture;
+        public Region? Region;
+        public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
         public Color DrawColor;
 
         public bool Icon_Visible;
-        public Texture2D Icon;
-        public Region Icon_Region;
-        public Rectangle Icon_Image;
+        public Texture2D? Icon;
+        public Region Icon_Region = new();
+        public Rectangle Icon_Image = new();
         public Color Icon_DrawColor;
 
         #endregion
 
         #region Events
 
-        public event EventHandler OnUsed;
-        public event EventHandler OnEquipped;
+        public event EventHandler? OnUsed;
+        public event EventHandler? OnEquipped;
 
         #endregion
 
@@ -85,19 +85,7 @@ namespace OP_Engine.Inventories
 
         public Item()
         {
-            XP_Needed_ForLevels = new Dictionary<int, int>();
-
-            Categories = new List<string>();
-            Materials = new List<string>();
-
-            Inventory = new Inventory();
-
-            Properties = new List<Property>();
-            Attachments = new List<Item>();
-            Spells = new List<Spell>();
-
-            Icon_Region = new Region();
-            Icon_Image = new Rectangle();
+            
         }
 
         #endregion
@@ -186,15 +174,30 @@ namespace OP_Engine.Inventories
             }
         }
 
-        public virtual Property GetProperty(string name)
+        public virtual Property? GetProperty(string name)
         {
             int count = Properties.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = Properties[i];
-                if (existing != null)
+                if (existing?.Name == name)
                 {
-                    if (existing.Name == name)
+                    return existing;
+                }
+            }
+
+            return null;
+        }
+
+        public virtual Item? GetAttachment(long id)
+        {
+            if (Attachments != null)
+            {
+                int count = Attachments.Count;
+                for (int i = 0; i < count; i++)
+                {
+                    Item existing = Attachments[i];
+                    if (existing?.ID == id)
                     {
                         return existing;
                     }
@@ -204,7 +207,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Item GetAttachment(long id)
+        public virtual Item? GetAttachment(string name)
         {
             if (Attachments != null)
             {
@@ -212,12 +215,9 @@ namespace OP_Engine.Inventories
                 for (int i = 0; i < count; i++)
                 {
                     Item existing = Attachments[i];
-                    if (existing != null)
+                    if (existing?.Name == name)
                     {
-                        if (existing.ID == id)
-                        {
-                            return existing;
-                        }
+                        return existing;
                     }
                 }
             }
@@ -225,28 +225,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Item GetAttachment(string name)
-        {
-            if (Attachments != null)
-            {
-                int count = Attachments.Count;
-                for (int i = 0; i < count; i++)
-                {
-                    Item existing = Attachments[i];
-                    if (existing != null)
-                    {
-                        if (existing.Name == name)
-                        {
-                            return existing;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        public virtual Spell GetSpell(long id)
+        public virtual Spell? GetSpell(long id)
         {
             if (Spells != null)
             {
@@ -254,12 +233,9 @@ namespace OP_Engine.Inventories
                 for (int i = 0; i < count; i++)
                 {
                     Spell existing = Spells[i];
-                    if (existing != null)
+                    if (existing?.ID == id)
                     {
-                        if (existing.ID == id)
-                        {
-                            return existing;
-                        }
+                        return existing;
                     }
                 }
             }
@@ -267,7 +243,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Spell GetSpell(string name)
+        public virtual Spell? GetSpell(string name)
         {
             if (Spells != null)
             {
@@ -275,12 +251,9 @@ namespace OP_Engine.Inventories
                 for (int i = 0; i < count; i++)
                 {
                     Spell existing = Spells[i];
-                    if (existing != null)
+                    if (existing?.Name == name)
                     {
-                        if (existing.Name == name)
-                        {
-                            return existing;
-                        }
+                        return existing;
                     }
                 }
             }
@@ -302,10 +275,7 @@ namespace OP_Engine.Inventories
 
         public virtual void Dispose()
         {
-            Categories = null;
-            Materials = null;
-
-            Inventory.Dispose();
+            Inventory?.Dispose();
 
             foreach (Property property in Properties)
             {
@@ -323,7 +293,7 @@ namespace OP_Engine.Inventories
             }
 
             Icon = null;
-            Icon_Region.Dispose();
+            Icon_Region?.Dispose();
         }
 
         #endregion

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OP_Engine.Utility;
+﻿using OP_Engine.Utility;
 
 namespace OP_Engine.Characters
 {
@@ -8,12 +6,12 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public string Name;
-        public string Description;
+        public string? Name;
+        public string? Description;
 
-        public List<Property> Stats;
-        public List<Property> StatusEffects;
-        public List<Wound> Wounds;
+        public List<Property> Stats = [];
+        public List<Property> StatusEffects = [];
+        public List<Wound> Wounds = [];
 
         #endregion
 
@@ -21,45 +19,37 @@ namespace OP_Engine.Characters
 
         public BodyPart()
         {
-            Stats = new List<Property>();
-            StatusEffects = new List<Property>();
-            Wounds = new List<Wound>();
+            
         }
 
         #endregion
 
         #region Methods
 
-        public virtual Property GetStat(string name)
+        public virtual Property? GetStat(string name)
         {
             int count = Stats.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = Stats[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Property GetStatusEffect(string name)
+        public virtual Property? GetStatusEffect(string name)
         {
             int count = StatusEffects.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = StatusEffects[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
@@ -68,18 +58,15 @@ namespace OP_Engine.Characters
 
         public virtual List<Wound> GetWounds(string name)
         {
-            List<Wound> results = new List<Wound>();
+            List<Wound> results = [];
 
             int count = Wounds.Count;
             for (int i = 0; i < count; i++)
             {
                 Wound existing = Wounds[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        results.Add(existing);
-                    }
+                    results.Add(existing);
                 }
             }
 

@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OP_Engine.Controls;
 using OP_Engine.Inventories;
 using OP_Engine.Jobs;
 using OP_Engine.Spells;
 using OP_Engine.Utility;
 using OP_Engine.Tiles;
 using OP_Engine.Enums;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Point = Microsoft.Xna.Framework.Point;
+using Region = OP_Engine.Utility.Region;
+using ProgressBar = OP_Engine.Controls.ProgressBar;
 
 namespace OP_Engine.Characters
 {
@@ -18,15 +20,15 @@ namespace OP_Engine.Characters
 
         public long ID;
 
-        public string Name;
-        public string Gender;
+        public string? Name;
+        public string? Gender;
 
-        public string Class;
-        public string Type;
+        public string? Class;
+        public string? Type;
 
         public int Level;
         public int XP;
-        public Dictionary<int, int> XP_Needed_ForLevels;
+        public Dictionary<int, int> XP_Needed_ForLevels = [];
 
         public bool Aiming;
         public bool Interacting;
@@ -37,7 +39,7 @@ namespace OP_Engine.Characters
 
         public bool Kneeling;
         public bool Prone;
-        
+
         public bool Sitting;
         public bool Laying;
 
@@ -46,30 +48,30 @@ namespace OP_Engine.Characters
         public bool Sneaking;
         public bool Crouching;
 
-        public Stats Stats;
+        public Stats Stats = new();
 
-        public List<Property> Skills;
-        public List<Property> Traits;
-        public List<Property> StatusEffects;
-        public List<BodyPart> BodyParts;
-        public List<Memory> Memories;
-        public List<ALocation> Path;
-        public Dictionary<long, string> Relationships;
+        public List<Property> Skills = [];
+        public List<Property> Traits = [];
+        public List<Property> StatusEffects = [];
+        public List<BodyPart> BodyParts = [];
+        public List<Memory> Memories = [];
+        public List<ALocation> Path = [];
+        public Dictionary<long, string> Relationships = [];
 
-        public ProgressBar HealthBar;
-        public ProgressBar ManaBar;
-        public ProgressBar EnergyBar;
-        public ProgressBar StaminaBar;
+        public ProgressBar HealthBar = new();
+        public ProgressBar ManaBar = new();
+        public ProgressBar EnergyBar = new();
+        public ProgressBar StaminaBar = new();
 
-        public Spellbook Spellbook;
-        public Inventory Inventory;
-        public Job Job;
+        public Spellbook Spellbook = new();
+        public Inventory Inventory = new();
+        public Job Job = new();
 
-        public Army Army;
-        public Squad Squad;
+        public Army? Army;
+        public Squad? Squad;
 
-        public Map Map;
-        public Layer Layer;
+        public Map? Map;
+        public Layer? Layer;
 
         public bool InCombat;
         public bool CombatTurn;
@@ -78,17 +80,17 @@ namespace OP_Engine.Characters
 
         public Vector2 Formation;
 
-        public Region Region;
-        public Texture2D Texture;
+        public Region? Region;
+        public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
         public Color DrawColor;
 
-        public Effect Shader;
+        public Effect? Shader;
 
         public Direction Direction;
-        public Location Location;
-        public Location Destination;
+        public Location? Location;
+        public Location? Destination;
 
         public bool Moving;
         public float Moved;
@@ -100,14 +102,14 @@ namespace OP_Engine.Characters
 
         #region Events
 
-        public event EventHandler OnMove;
-        public event EventHandler OnMovementFinish;
-        public event EventHandler OnKill;
-        public event EventHandler<ReactionEventArgs> OnHearSomething;
-        public event EventHandler<ReactionEventArgs> OnSeeSomething;
-        public event EventHandler<ReactionEventArgs> OnSmellSomething;
-        public event EventHandler<ReactionEventArgs> OnTasteSomething;
-        public event EventHandler<ReactionEventArgs> OnFeelSomething;
+        public event EventHandler? OnMove;
+        public event EventHandler? OnMovementFinish;
+        public event EventHandler? OnKill;
+        public event EventHandler<ReactionEventArgs>? OnHearSomething;
+        public event EventHandler<ReactionEventArgs>? OnSeeSomething;
+        public event EventHandler<ReactionEventArgs>? OnSmellSomething;
+        public event EventHandler<ReactionEventArgs>? OnTasteSomething;
+        public event EventHandler<ReactionEventArgs>? OnFeelSomething;
 
         #endregion
 
@@ -115,27 +117,7 @@ namespace OP_Engine.Characters
 
         public Character()
         {
-            XP_Needed_ForLevels = new Dictionary<int, int>();
-
-            Stats = new Stats();
-            Skills = new List<Property>();
-            Traits = new List<Property>();
-            StatusEffects = new List<Property>();
-            BodyParts = new List<BodyPart>();
-            Memories = new List<Memory>();
-            Path = new List<ALocation>();
-            Relationships = new Dictionary<long, string>();
-
-            HealthBar = new ProgressBar();
-            ManaBar = new ProgressBar();
-            EnergyBar = new ProgressBar();
-            StaminaBar = new ProgressBar();
-
-            Spellbook = new Spellbook();
-            Inventory = new Inventory();
-            Job = new Job();
-
-            Formation = default;
+            
         }
 
         #endregion
@@ -145,7 +127,9 @@ namespace OP_Engine.Characters
         public virtual void Update()
         {
             if (Moving &&
-                Region != null)
+                Region != null &&
+                Destination != null &&
+                Location != null)
             {
                 if (Destination.X > Location.X)
                 {
@@ -275,6 +259,8 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
+                        Shader?.CurrentTechnique.Passes[0].Apply();
+
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -284,11 +270,6 @@ namespace OP_Engine.Characters
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, Color.White);
                             Inventory.Draw(spriteBatch, resolution, Color.White);
-                        }
-
-                        if (Shader != null)
-                        {
-                            Shader.CurrentTechnique.Passes[0].Apply();
                         }
                     }
                 }
@@ -305,6 +286,8 @@ namespace OP_Engine.Characters
                 {
                     if (Region.Y >= (Texture.Height * -2) && Region.Y < resolution.Y + (Texture.Height * 2))
                     {
+                        Shader?.CurrentTechnique.Passes[0].Apply();
+
                         if (DrawColor != new Color(0, 0, 0, 0))
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor);
@@ -314,11 +297,6 @@ namespace OP_Engine.Characters
                         {
                             spriteBatch.Draw(Texture, Region.ToRectangle, Image, color);
                             Inventory.Draw(spriteBatch, resolution, color);
-                        }
-
-                        if (Shader != null)
-                        {
-                            Shader.CurrentTechnique.Passes[0].Apply();
                         }
                     }
                 }
@@ -348,7 +326,7 @@ namespace OP_Engine.Characters
         public virtual void Animate()
         {
             int X = Image.X + Image.Width;
-            if (X >= Texture.Width)
+            if (X >= Texture?.Width)
             {
                 X = 0;
             }
@@ -359,6 +337,44 @@ namespace OP_Engine.Characters
         public virtual void ResetAnimation()
         {
             Image = new Rectangle(0, Image.Y, Image.Width, Image.Height);
+        }
+
+        public virtual void FaceDirection(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.North:
+                    FaceNorth();
+                    break;
+
+                case Direction.East:
+                    FaceEast();
+                    break;
+
+                case Direction.South:
+                    FaceSouth();
+                    break;
+
+                case Direction.West:
+                    FaceWest();
+                    break;
+
+                case Direction.Up:
+                    FaceUp();
+                    break;
+
+                case Direction.Right:
+                    FaceRight();
+                    break;
+
+                case Direction.Down:
+                    FaceDown();
+                    break;
+
+                case Direction.Left:
+                    FaceLeft();
+                    break;
+            }
         }
 
         public virtual void FaceNorth()
@@ -433,72 +449,60 @@ namespace OP_Engine.Characters
             }
         }
 
-        public virtual Property GetSkill(string name)
+        public virtual Property? GetSkill(string name)
         {
             int count = Skills.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = Skills[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Property GetTrait(string name)
+        public virtual Property? GetTrait(string name)
         {
             int count = Traits.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = Traits[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Property GetStatusEffect(string name)
+        public virtual Property? GetStatusEffect(string name)
         {
             int count = StatusEffects.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = StatusEffects[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual BodyPart GetBodyPart(string name)
+        public virtual BodyPart? GetBodyPart(string name)
         {
             int count = BodyParts.Count;
             for (int i = 0; i < count; i++)
             {
                 BodyPart existing = BodyParts[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
@@ -569,8 +573,6 @@ namespace OP_Engine.Characters
             {
                 location.Dispose();
             }
-
-            Relationships = null;
 
             HealthBar.Dispose();
             ManaBar.Dispose();

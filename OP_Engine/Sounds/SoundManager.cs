@@ -1,8 +1,4 @@
-﻿using FMOD;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Sounds
 {
@@ -20,19 +16,19 @@ namespace OP_Engine.Sounds
         public static bool MusicLooping;
         public static bool MusicPaused;
         public static bool MusicPlaying;
-        public static string MusicPlaying_Name;
+        public static string? MusicPlaying_Name;
 
         public static bool AmbientEnabled;
-        public static List<FMOD.Sound> AmbientOuts = new List<FMOD.Sound>();
-        public static List<FMOD.Channel> AmbientChannels = new List<FMOD.Channel>();
+        public static List<FMOD.Sound> AmbientOuts = [];
+        public static List<FMOD.Channel> AmbientChannels = [];
         public static FMOD.ChannelGroup AmbientGroup;
         public static float AmbientVolume = 1;
-        public static Dictionary<string, float> AmbientFade = new Dictionary<string, float>();
-        public static string[] AmbientTypes = { "Rain", "Storm", "Snow", "Fog" };
+        public static Dictionary<string, float> AmbientFade = [];
+        public static string[] AmbientTypes = ["Rain", "Storm", "Snow", "Fog"];
 
         public static bool SoundEnabled;
-        public static List<FMOD.Sound> SoundOuts = new List<FMOD.Sound>();
-        public static List<FMOD.Channel> SoundChannels = new List<FMOD.Channel>();
+        public static List<FMOD.Sound> SoundOuts = [];
+        public static List<FMOD.Channel> SoundChannels = [];
         public static FMOD.ChannelGroup SoundGroup;
         public static float SoundVolume = 1;
         public static bool SoundPaused;
@@ -142,7 +138,7 @@ namespace OP_Engine.Sounds
                         {
                             volume = (((AmbientVolume * 100) * (100 - (AmbientFade[name] * 100))) / 100) / 100;
                         }
-                        
+
                         if (volume < 0)
                         {
                             volume = 0;
@@ -288,7 +284,7 @@ namespace OP_Engine.Sounds
                 {
                     FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out MusicOut);
                 }
-                
+
                 FMODSystem.playSound(MusicOut, MusicGroup, false, out MusicChannel);
                 MusicChannel.setVolume(MusicVolume);
 
@@ -299,27 +295,28 @@ namespace OP_Engine.Sounds
 
         public static void PlayAmbient(Sound sound, bool looping)
         {
-            if (AmbientEnabled)
+            if (AmbientEnabled &&
+                sound != null)
             {
                 string file = sound.Directory + @"\" + sound.Name + sound.Extension;
 
-                FMOD.Channel channel = new FMOD.Channel();
+                FMOD.Channel channel = new();
+                float volume = 0;
 
-                if (!AmbientFade.ContainsKey(sound.Name))
+                if (sound.Name != null)
                 {
-                    AmbientFade.Add(sound.Name, 1f);
-                }
-                else
-                {
-                    AmbientFade[sound.Name] = 1f;
+                    if (!AmbientFade.TryAdd(sound.Name, 1f))
+                    {
+                        AmbientFade[sound.Name] = 1f;
+                    }
+
+                    volume = AmbientVolume - AmbientFade[sound.Name];
+                    if (volume < 0)
+                    {
+                        volume = 0;
+                    }
                 }
 
-                float volume = AmbientVolume - AmbientFade[sound.Name];
-                if (volume < 0)
-                {
-                    volume = 0;
-                }
-                
                 if (looping)
                 {
                     FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.LOOP_NORMAL, out sound.SoundOut);
@@ -345,11 +342,11 @@ namespace OP_Engine.Sounds
             {
                 string file = sound.Directory + @"\" + sound.Name + sound.Extension;
 
-                FMOD.Channel channel = new FMOD.Channel();
+                FMOD.Channel channel = new();
                 FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
                 FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
                 FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
-                
+
                 SoundOuts?.Add(sound.SoundOut);
                 SoundChannels?.Add(channel);
 
@@ -535,7 +532,7 @@ namespace OP_Engine.Sounds
                             FMOD.RESULT name_result = sound.getName(out name_output, name_length + 1);
                             name_check += i.ToString();
                         }
-                        
+
                         if (!string.IsNullOrEmpty(name_output) &&
                             name_output == name_check)
                         {
@@ -574,14 +571,12 @@ namespace OP_Engine.Sounds
                         FMOD.Channel channel = AmbientChannels[c];
                         FMOD.Sound ambient = AmbientOuts[c];
 
-                        string name_output;
-                        ambient.getName(out name_output, name_length);
+                        ambient.getName(out string name_output, name_length);
 
                         if (!string.IsNullOrEmpty(name_output) &&
                             name_output == name)
                         {
-                            bool isPlaying = false;
-                            FMOD.RESULT get_playing = channel.isPlaying(out isPlaying);
+                            FMOD.RESULT get_playing = channel.isPlaying(out bool isPlaying);
                             return isPlaying;
                         }
                     }
@@ -591,15 +586,9 @@ namespace OP_Engine.Sounds
             return false;
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             StopAll();
-
-            AmbientOuts = null;
-            AmbientChannels = null;
-
-            SoundOuts = null;
-            SoundChannels = null;
         }
 
         #endregion

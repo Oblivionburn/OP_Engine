@@ -1,7 +1,7 @@
-﻿using System;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace OP_Engine.Inputs
 {
@@ -10,16 +10,16 @@ namespace OP_Engine.Inputs
         #region Variables
 
         public static bool MouseEnabled;
-        public static MouseHandler Mouse;
+        public static MouseHandler? Mouse;
 
         public static bool KeyboardEnabled;
-        public static KeyboardHandler Keyboard;
+        public static KeyboardHandler? Keyboard;
 
         public static bool GamepadsEnabled;
-        public static GamepadHandler Player1;
-        public static GamepadHandler Player2;
-        public static GamepadHandler Player3;
-        public static GamepadHandler Player4;
+        public static GamepadHandler? Player1;
+        public static GamepadHandler? Player2;
+        public static GamepadHandler? Player3;
+        public static GamepadHandler? Player4;
 
         #endregion
 
@@ -27,47 +27,128 @@ namespace OP_Engine.Inputs
 
         public static bool Mouse_Moved
         {
-            get { return MouseEnabled && Mouse.Moved; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.Moved;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_LB_Pressed
         {
-            get { return MouseEnabled && Mouse.LB_Pressed; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.LB_Pressed;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_LB_Pressed_Flush
         {
-            get { return MouseEnabled && Mouse.LB_Pressed_Flush; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.LB_Pressed_Flush;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_LB_Held
         {
-            get { return MouseEnabled && Mouse.LB_Held; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.LB_Held;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_RB_Pressed
         {
-            get { return MouseEnabled && Mouse.RB_Pressed; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.RB_Pressed;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_RB_Pressed_Flush
         {
-            get { return MouseEnabled && Mouse.RB_Pressed_Flush; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.RB_Pressed_Flush;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_RB_Held
         {
-            get { return MouseEnabled && Mouse.RB_Held; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.RB_Held;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_ScrolledUp
         {
-            get { return MouseEnabled && Mouse.ScrolledUp; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.ScrolledUp;
+                }
+
+                return false;
+            }
         }
 
         public static bool Mouse_ScrolledDown
         {
-            get { return MouseEnabled && Mouse.ScrolledDown; }
+            get
+            {
+                if (MouseEnabled &&
+                    Mouse != null)
+                {
+                    return Mouse.ScrolledDown;
+                }
+
+                return false;
+            }
         }
 
         #endregion
@@ -96,49 +177,48 @@ namespace OP_Engine.Inputs
         {
             if (KeyboardEnabled)
             {
-                Keyboard.Update();
+                Keyboard?.Update();
             }
 
             if (MouseEnabled)
             {
-                Mouse.Update();
+                Mouse?.Update();
             }
 
             if (GamepadsEnabled)
             {
-                Player1.Update();
-                Player2.Update();
-                Player3.Update();
-                Player4.Update();
+                Player1?.Update();
+                Player2?.Update();
+                Player3?.Update();
+                Player4?.Update();
             }
         }
 
-        public static Keys GetKey(string value)
+        public static Keys? GetKey(string value)
         {
             Array keys = Enum.GetValues(typeof(Keys));
 
             int count = keys.Length;
             for (int i = 0; i < count; i++)
             {
-                Keys key = (Keys)keys.GetValue(i);
+                Keys? key = (Keys?)keys.GetValue(i);
                 if (key.ToString() == value)
                 {
                     return key;
                 }
-
             }
 
-            return 0;
+            return null;
         }
 
-        public static Buttons GetButton(string value)
+        public static Buttons? GetButton(string value)
         {
             Array buttons = Enum.GetValues(typeof(Buttons));
 
             int count = buttons.Length;
             for (int i = 0; i < count; i++)
             {
-                Buttons button = (Buttons)buttons.GetValue(i);
+                Buttons? button = (Buttons?)buttons.GetValue(i);
                 if (button.ToString() == value)
                 {
                     return button;
@@ -146,10 +226,10 @@ namespace OP_Engine.Inputs
 
             }
 
-            return 0;
+            return null;
         }
 
-        public static GamepadHandler GetGamepad(PlayerIndex player)
+        public static GamepadHandler? GetGamepad(PlayerIndex player)
         {
             if (player == PlayerIndex.One)
             {
@@ -173,7 +253,7 @@ namespace OP_Engine.Inputs
 
         public static Keys GetMappedKey(string name)
         {
-            if (Keyboard.KeysMapped.Count > 0)
+            if (Keyboard?.KeysMapped.Count > 0)
             {
                 return Keyboard.KeysMapped[name];
             }
@@ -185,29 +265,54 @@ namespace OP_Engine.Inputs
 
         public static bool KeyPressed(Keys key)
         {
-            return KeyboardEnabled && Keyboard.keyboardState.IsKeyUp(key) && Keyboard.lastKeyboardState.IsKeyDown(key);
+            if (KeyboardEnabled &&
+                Keyboard != null)
+            {
+                return Keyboard.keyboardState.IsKeyUp(key) && Keyboard.lastKeyboardState.IsKeyDown(key);
+            }
+
+            return false;
         }
 
         public static bool KeyPressed(string name)
         {
-            return KeyboardEnabled && Keyboard.keyboardState.IsKeyUp(GetMappedKey(name)) && Keyboard.lastKeyboardState.IsKeyDown(GetMappedKey(name));
+            if (KeyboardEnabled &&
+                Keyboard != null)
+            {
+                return Keyboard.keyboardState.IsKeyUp(GetMappedKey(name)) && Keyboard.lastKeyboardState.IsKeyDown(GetMappedKey(name));
+            }
+
+            return false;
         }
 
         public static bool KeyDown(Keys key)
         {
-            return KeyboardEnabled && Keyboard.keyboardState.IsKeyDown(key);
+            if (KeyboardEnabled &&
+                Keyboard != null)
+            {
+                return Keyboard.keyboardState.IsKeyDown(key);
+            }
+
+            return false;
         }
 
         public static bool KeyDown(string name)
         {
-            return KeyboardEnabled && Keyboard.keyboardState.IsKeyDown(GetMappedKey(name));
+            if (KeyboardEnabled &&
+                Keyboard != null)
+            {
+                return Keyboard.keyboardState.IsKeyDown(GetMappedKey(name));
+            }
+
+            return false;
         }
 
         public static Buttons GetMappedButton(PlayerIndex player, string value)
         {
-            if (GetGamepad(player).ButtonsMapped.Count > 0)
+            GamepadHandler? handler = GetGamepad(player);
+            if (handler?.ButtonsMapped.Count > 0)
             {
-                return GetGamepad(player).ButtonsMapped[value];
+                return handler.ButtonsMapped[value];
             }
             else
             {
@@ -217,76 +322,87 @@ namespace OP_Engine.Inputs
 
         public static bool ButtonPressed(PlayerIndex player, Buttons button)
         {
-            return GamepadsEnabled && 
-                GetGamepad(player).gamePadState.IsButtonUp(button) && 
-                GetGamepad(player).lastGamePadState.IsButtonDown(button);
+            if (GamepadsEnabled)
+            {
+                GamepadHandler? handler = GetGamepad(player);
+                if (handler != null)
+                {
+                    return handler.gamePadState.IsButtonUp(button) && handler.lastGamePadState.IsButtonDown(button);
+                }
+            }
+
+            return false;
         }
 
         public static bool ButtonPressed(PlayerIndex player, string name)
         {
-            return GamepadsEnabled && 
-                GetGamepad(player).gamePadState.IsButtonUp(GetMappedButton(player, name)) && 
-                GetGamepad(player).lastGamePadState.IsButtonDown(GetMappedButton(player, name));
+            if (GamepadsEnabled)
+            {
+                GamepadHandler? handler = GetGamepad(player);
+                if (handler != null)
+                {
+                    Buttons button = GetMappedButton(player, name);
+                    return handler.gamePadState.IsButtonUp(button) && handler.lastGamePadState.IsButtonDown(button);
+                }
+            }
+
+            return false;
         }
 
         public static bool ButtonDown(PlayerIndex player, Buttons button)
         {
-            return GamepadsEnabled && GetGamepad(player).gamePadState.IsButtonDown(button);
+            if (GamepadsEnabled)
+            {
+                GamepadHandler? handler = GetGamepad(player);
+                if (handler != null)
+                {
+                    return handler.gamePadState.IsButtonDown(button);
+                }
+            }
+
+            return false;
         }
 
         public static bool ButtonDown(PlayerIndex player, string name)
         {
-            return GamepadsEnabled && GetGamepad(player).gamePadState.IsButtonDown(GetMappedButton(player, name));
+            if (GamepadsEnabled)
+            {
+                GamepadHandler? handler = GetGamepad(player);
+                if (handler != null)
+                {
+                    Buttons button = GetMappedButton(player, name);
+                    return handler.gamePadState.IsButtonDown(button);
+                }
+            }
+
+            return false;
         }
 
         public static bool MouseWithin(Rectangle region)
         {
             if (MouseEnabled)
             {
-                if (Mouse.mouseState.X >= region.X &&
-                    Mouse.mouseState.X < region.X + region.Width &&
-                    Mouse.mouseState.Y >= region.Y &&
-                    Mouse.mouseState.Y < region.Y + region.Height)
+                if (Mouse?.mouseState.X >= region.X &&
+                    Mouse?.mouseState.X < region.X + region.Width &&
+                    Mouse?.mouseState.Y >= region.Y &&
+                    Mouse?.mouseState.Y < region.Y + region.Height)
                 {
                     return true;
                 }
             }
-            
+
             return false;
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             //This is to stop all the timers when exiting game
-            if (Mouse != null)
-            {
-                Mouse.Dispose();
-            }
-            
-            if (Keyboard != null)
-            {
-                Keyboard.Dispose();
-            }
-            
-            if (Player1 != null)
-            {
-                Player1.Dispose();
-            }
-
-            if (Player2 != null)
-            {
-                Player2.Dispose();
-            }
-
-            if (Player3 != null)
-            {
-                Player3.Dispose();
-            }
-
-            if (Player4 != null)
-            {
-                Player4.Dispose();
-            }
+            Mouse?.Dispose();
+            Keyboard?.Dispose();
+            Player1?.Dispose();
+            Player2?.Dispose();
+            Player3?.Dispose();
+            Player4?.Dispose();
         }
 
         #endregion

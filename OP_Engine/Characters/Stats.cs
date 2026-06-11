@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OP_Engine.Utility;
+﻿using OP_Engine.Utility;
 
 namespace OP_Engine.Characters
 {
@@ -8,7 +6,7 @@ namespace OP_Engine.Characters
     {
         #region Variables
 
-        public List<Property> List;
+        public List<Property> List = [];
 
         public float HP;
         public float MP;
@@ -89,25 +87,22 @@ namespace OP_Engine.Characters
 
         public Stats()
         {
-            List = new List<Property>();
+            
         }
 
         #endregion
 
         #region Methods
 
-        public virtual Property GetStat(string name)
+        public virtual Property? GetStat(string name)
         {
             int count = List.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = List[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 

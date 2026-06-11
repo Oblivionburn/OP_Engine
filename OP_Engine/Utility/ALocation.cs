@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace OP_Engine.Utility
+﻿namespace OP_Engine.Utility
 {
     public class ALocation : IDisposable
     {
@@ -11,7 +9,7 @@ namespace OP_Engine.Utility
         public float Priority;
         public int Distance_ToStart;
         public int Distance_ToDestination;
-        public ALocation Parent;
+        public ALocation? Parent;
 
         #endregion
 
@@ -19,7 +17,7 @@ namespace OP_Engine.Utility
 
         public ALocation()
         {
-            
+
         }
 
         public ALocation(int x, int y)

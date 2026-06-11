@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Timers;
-using System.Collections.Generic;
+﻿using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using OP_Engine.Enums;
@@ -24,17 +21,17 @@ namespace OP_Engine.Inputs
             Keep a store of bound buttons for friendly name lookup
                 and faster iteration (looping only through buttons your game is using)
         */
-        public Dictionary<string, Buttons> ButtonsMapped = new Dictionary<string, Buttons>();
+        public Dictionary<string, Buttons> ButtonsMapped = [];
 
         public bool Connected;
         public PlayerIndex Player;
-        public GamePadState gamePadState = new GamePadState();
-        public GamePadState lastGamePadState = new GamePadState();
+        public GamePadState gamePadState = new();
+        public GamePadState lastGamePadState = new();
         public Direction LeftStick;
         public Direction RightStick;
         public Direction DPad;
 
-        private Timer gamepadListener = new Timer(1);
+        private System.Timers.Timer gamepadListener = new(1);
 
         #endregion
 
@@ -47,7 +44,7 @@ namespace OP_Engine.Inputs
         #region Events
 
         public event EventHandler OnStateChange;
-        public event EventHandler<ButtonEventArgs> OnButtonStateChange;
+        public event EventHandler<ButtonEventArgs>? OnButtonStateChange;
 
         #endregion
 
@@ -87,7 +84,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_GamepadState(object sender, ElapsedEventArgs e)
+        public virtual void Check_GamepadState(object? sender, ElapsedEventArgs e)
         {
             if (!Updated_By_Game)
             {
@@ -100,14 +97,14 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_ButtonState(object sender, EventArgs e)
+        public virtual void Check_ButtonState(object? sender, EventArgs e)
         {
             if (Connected)
             {
                 try
                 {
-                    List<Buttons> ButtonsPressed = new List<Buttons>();
-                    List<Buttons> ButtonsDown = new List<Buttons>();
+                    List<Buttons> ButtonsPressed = [];
+                    List<Buttons> ButtonsDown = [];
 
                     int count = ButtonsMapped.Count;
                     for (int i = 0; i < count; i++)
@@ -144,7 +141,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_LeftStickState(object sender, EventArgs e)
+        public virtual void Check_LeftStickState(object? sender, EventArgs e)
         {
             if (Connected)
             {
@@ -186,10 +183,10 @@ namespace OP_Engine.Inputs
                 {
                     LeftStick = Direction.Up;
                 }
-            } 
+            }
         }
 
-        public virtual void Check_RightStickState(object sender, EventArgs e)
+        public virtual void Check_RightStickState(object? sender, EventArgs e)
         {
             if (Connected)
             {
@@ -234,7 +231,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_DPadState(object sender, EventArgs e)
+        public virtual void Check_DPadState(object? sender, EventArgs e)
         {
             if (Connected)
             {
@@ -279,12 +276,12 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Game_Activated(object sender, EventArgs e)
+        public virtual void Game_Activated(object? sender, EventArgs e)
         {
             gamepadListener.Start();
         }
 
-        public virtual void Game_Deactivated(object sender, EventArgs e)
+        public virtual void Game_Deactivated(object? sender, EventArgs e)
         {
             gamepadListener.Stop();
         }

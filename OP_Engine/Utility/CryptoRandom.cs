@@ -1,5 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
 namespace OP_Engine.Utility
 {
@@ -7,7 +6,7 @@ namespace OP_Engine.Utility
     {
         #region Variables
 
-        private static RandomNumberGenerator r;
+        private static RandomNumberGenerator? r;
 
         #endregion
 
@@ -24,13 +23,13 @@ namespace OP_Engine.Utility
 
         public override void GetBytes(byte[] buffer)
         {
-            r.GetBytes(buffer);
+            r?.GetBytes(buffer);
         }
 
         public double NextDouble()
         {
             byte[] b = new byte[4];
-            r.GetBytes(b);
+            r?.GetBytes(b);
             return (double)BitConverter.ToUInt32(b, 0) / uint.MaxValue;
         }
 
@@ -51,7 +50,7 @@ namespace OP_Engine.Utility
 
         public override void GetNonZeroBytes(byte[] data)
         {
-            r.GetNonZeroBytes(data);
+            r?.GetNonZeroBytes(data);
         }
 
         #endregion

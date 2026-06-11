@@ -1,10 +1,6 @@
-﻿using System;
-using System.Windows.Forms;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Inputs;
 using OP_Engine.Logging;
 using OP_Engine.Menus;
@@ -13,8 +9,9 @@ using OP_Engine.Sounds;
 using OP_Engine.Time;
 using OP_Engine.Enums;
 using OP_Engine.Weathers;
-
-using Menu = OP_Engine.Menus.Menu;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
+using Timer = System.Timers.Timer;
 
 namespace OP_Engine.Rendering
 {
@@ -22,15 +19,15 @@ namespace OP_Engine.Rendering
     {
         #region Variables
 
-        public Game Game;
-        public Form Form;
-        public GameWindow Window;
-        public SpriteBatch SpriteBatch;
-        public GraphicsDeviceManager GraphicsManager;
-        public ContentManager Content;
-        public Logger Logger;
+        public Game? Game;
+        public Form? Form;
+        public GameWindow? Window;
+        public SpriteBatch? SpriteBatch;
+        public GraphicsDeviceManager? GraphicsManager;
+        public ContentManager? Content;
+        public Logger? Logger;
         public ScreenType ScreenType;
-        
+
         public float Zoom = 1;
         public int BaseSize = 32;
         public bool Quit = false;
@@ -50,7 +47,7 @@ namespace OP_Engine.Rendering
 
         public FormWindowState LastWindowState = FormWindowState.Minimized;
         public bool IsResizeTickEnabled;
-        public System.Timers.Timer ResizeTickTimer;
+        public Timer? ResizeTickTimer;
 
         #endregion
 
@@ -77,32 +74,37 @@ namespace OP_Engine.Rendering
 
         public OP_Game()
         {
-            
+
         }
 
         #endregion
 
         #region Events
 
-        private void Window_ClientSizeChanged(object sender, EventArgs e)
+        private void Window_ClientSizeChanged(object? sender, EventArgs e)
         {
             if (!IsResizeTickEnabled) { return; }
 
             //This fires after the window has been manually resized
             //and on release of title bar being clicked and held
-            if (Form.WindowState == LastWindowState)
+            if (Form != null &&
+                Form.WindowState == LastWindowState)
             {
                 ResetScreen();
             }
         }
 
-        private void GameForm_ResizeBegin(object sender, EventArgs e)
+        private void GameForm_ResizeBegin(object? sender, EventArgs e)
         {
             IsResizeTickEnabled = true;
-            ResizeTickTimer.Enabled = true;
+
+            if (ResizeTickTimer != null)
+            {
+                ResizeTickTimer.Enabled = true;
+            }
         }
 
-        private void OnResizeTick(object sender, System.Timers.ElapsedEventArgs e)
+        private void OnResizeTick(object? sender, System.Timers.ElapsedEventArgs e)
         {
             if (!IsResizeTickEnabled)
             {
@@ -111,16 +113,20 @@ namespace OP_Engine.Rendering
 
             ResizeScenes();
             ResizeMenus();
-            Game.Tick();
+            Game?.Tick();
 
-            ResizeTickTimer.Enabled = true;
+            if (ResizeTickTimer != null)
+            {
+                ResizeTickTimer.Enabled = true;
+            }
         }
 
-        private void GameForm_Resize(object sender, EventArgs e)
+        private void GameForm_Resize(object? sender, EventArgs e)
         {
             //This is a resize that occurs from using Maximize Window button
             //and does not fire from manual resizing of the window
-            if (Form.WindowState != LastWindowState)
+            if (Form != null &&
+                Form.WindowState != LastWindowState)
             {
                 LastWindowState = Form.WindowState;
 
@@ -135,10 +141,14 @@ namespace OP_Engine.Rendering
             }
         }
 
-        private void GameForm_ResizeEnd(object sender, EventArgs e)
+        private void GameForm_ResizeEnd(object? sender, EventArgs e)
         {
             IsResizeTickEnabled = false;
-            ResizeTickTimer.Enabled = false;
+
+            if (ResizeTickTimer != null)
+            {
+                ResizeTickTimer.Enabled = false;
+            }
         }
 
         #endregion
@@ -168,15 +178,18 @@ namespace OP_Engine.Rendering
             Window.Position = new Point(0, 0);
             Window.ClientSizeChanged += new EventHandler<EventArgs>(Window_ClientSizeChanged);
 
-            //Default windowed
-            ScreenType = ScreenType.Windowed;
-            Form.WindowState = FormWindowState.Maximized;
+            if (Form != null)
+            {
+                //Default windowed
+                ScreenType = ScreenType.Windowed;
+                Form.WindowState = FormWindowState.Maximized;
 
-            ResizeTickTimer = new System.Timers.Timer(1) { SynchronizingObject = Form, AutoReset = false };
-            ResizeTickTimer.Elapsed += OnResizeTick;
-            Form.ResizeBegin += GameForm_ResizeBegin;
-            Form.Resize += GameForm_Resize;
-            Form.ResizeEnd += GameForm_ResizeEnd;
+                ResizeTickTimer = new System.Timers.Timer(1) { SynchronizingObject = Form, AutoReset = false };
+                ResizeTickTimer.Elapsed += OnResizeTick;
+                Form.ResizeBegin += GameForm_ResizeBegin;
+                Form.Resize += GameForm_Resize;
+                Form.ResizeEnd += GameForm_ResizeEnd;
+            }
         }
 
         public virtual void Update(GameTime gameTime)
@@ -186,7 +199,8 @@ namespace OP_Engine.Rendering
                 if (Window != null)
                 {
                     if (Window.ClientBounds.Width > 0 &&
-                        Window.ClientBounds.Height > 0)
+                        Window.ClientBounds.Height > 0 &&
+                        Form != null)
                     {
                         if (!Form.Focused)
                         {
@@ -230,7 +244,7 @@ namespace OP_Engine.Rendering
                 if (Quit)
                 {
                     SoundManager.StopAll();
-                    Game.Exit();
+                    Game?.Exit();
                 }
             }
             catch (Exception e)
@@ -246,8 +260,10 @@ namespace OP_Engine.Rendering
 
         public virtual void ResetScreen()
         {
-            if (Window.ClientBounds.Width > 0 &&
-                Window.ClientBounds.Height > 0)
+            if (Window != null &&
+                Window.ClientBounds.Width > 0 &&
+                Window.ClientBounds.Height > 0 &&
+                GraphicsManager != null)
             {
                 if (ScreenType == ScreenType.Fullscreen ||
                     ScreenType == ScreenType.BorderlessFullscreen)
@@ -258,7 +274,8 @@ namespace OP_Engine.Rendering
                     GraphicsManager.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                     GraphicsManager.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-                    if (ScreenType == ScreenType.BorderlessFullscreen)
+                    if (ScreenType == ScreenType.BorderlessFullscreen &&
+                        Form != null)
                     {
                         GraphicsManager.HardwareModeSwitch = false;
                         Form.WindowState = FormWindowState.Normal;
@@ -286,7 +303,8 @@ namespace OP_Engine.Rendering
 
                 GraphicsManager.ApplyChanges();
 
-                if (RenderingManager.LightingRenderer != null)
+                if (RenderingManager.LightingRenderer != null &&
+                    RenderingManager.AddLightingRenderer != null)
                 {
                     RenderingManager.LightingRenderer.RenderTarget = new RenderTarget2D(GraphicsManager.GraphicsDevice, ScreenWidth, ScreenHeight);
                     RenderingManager.AddLightingRenderer.RenderTarget = RenderingManager.LightingRenderer.RenderTarget;
@@ -294,7 +312,8 @@ namespace OP_Engine.Rendering
 
                 ResolutionChange();
 
-                if (!Form.Visible)
+                if (Form != null &&
+                    !Form.Visible)
                 {
                     Form.Visible = true;
                 }
@@ -344,10 +363,10 @@ namespace OP_Engine.Rendering
         {
             SoundManager.StopAll();
             Logger.Logs.Add(new Log(e.Source, e.Message, e.StackTrace));
-            Game.Exit();
+            Game?.Exit();
         }
 
-        public virtual void OnExit(object sender, EventArgs e)
+        public virtual void OnExit(object? sender, EventArgs e)
         {
             if (Logger.Logs.Count > 0)
             {

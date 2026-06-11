@@ -1,0 +1,1 @@
+A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.

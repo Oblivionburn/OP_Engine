@@ -40,16 +40,16 @@ namespace OP_Engine.Time
 
         #region Events
 
-        public event EventHandler OnMillisecondsChange;
-        public event EventHandler OnSecondsChange;
-        public event EventHandler OnMinutesChange;
-        public event EventHandler OnHoursChange;
-        public event EventHandler OnDaysChange;
-        public event EventHandler OnMonthsChange;
-        public event EventHandler OnYearsChange;
-        public event EventHandler OnDecadesChange;
-        public event EventHandler OnCenturiesChange;
-        public event EventHandler OnMillenniaChange;
+        public event EventHandler? OnMillisecondsChange;
+        public event EventHandler? OnSecondsChange;
+        public event EventHandler? OnMinutesChange;
+        public event EventHandler? OnHoursChange;
+        public event EventHandler? OnDaysChange;
+        public event EventHandler? OnMonthsChange;
+        public event EventHandler? OnYearsChange;
+        public event EventHandler? OnDecadesChange;
+        public event EventHandler? OnCenturiesChange;
+        public event EventHandler? OnMillenniaChange;
 
         #endregion
 

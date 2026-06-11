@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Region = OP_Engine.Utility.Region;
 
 namespace OP_Engine.Spells
 {
@@ -11,9 +11,9 @@ namespace OP_Engine.Spells
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Description;
-        public string Type;
+        public string? Name;
+        public string? Description;
+        public string? Type;
         public float Value;
         public float Min_Value;
         public float Max_Value;
@@ -23,7 +23,7 @@ namespace OP_Engine.Spells
         public bool IsLightSource;
 
         public Region Region;
-        public Texture2D Texture;
+        public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
         public Color DrawColor;
@@ -37,20 +37,20 @@ namespace OP_Engine.Spells
         public Spell()
         {
             Region = new Region();
-            Properties = new List<Property>();
+            Properties = [];
         }
 
         #endregion
 
         #region Methods
 
-        public virtual Property GetProperty(string name)
+        public virtual Property? GetProperty(string name)
         {
             int count = Properties.Count;
             for (int i = 0; i < count; i++)
             {
                 Property existing = Properties[i];
-                if (existing == null)
+                if (existing != null)
                 {
                     if (existing.Name == name)
                     {

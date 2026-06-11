@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Inventories
 {
@@ -8,7 +6,7 @@ namespace OP_Engine.Inventories
     {
         #region Variables
 
-        public static List<Inventory> Inventories;
+        public static List<Inventory> Inventories = [];
 
         #endregion
 
@@ -16,8 +14,6 @@ namespace OP_Engine.Inventories
 
         public InventoryManager(Game game) : base(game)
         {
-            Inventories = new List<Inventory>();
-
             game.Exiting += Game_Exiting;
         }
 
@@ -25,43 +21,37 @@ namespace OP_Engine.Inventories
 
         #region Methods
 
-        public static Inventory GetInventory(long id)
+        public static Inventory? GetInventory(long id)
         {
             int count = Inventories.Count;
             for (int i = 0; i < count; i++)
             {
                 Inventory existing = Inventories[i];
-                if (existing != null)
+                if (existing?.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public static Inventory GetInventory(string name)
+        public static Inventory? GetInventory(string name)
         {
             int count = Inventories.Count;
             for (int i = 0; i < count; i++)
             {
                 Inventory existing = Inventories[i];
-                if (existing != null)
+                if (existing?.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (Inventory inventory in Inventories)
             {

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Menus;
 using OP_Engine.Scenes;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Rendering
 {
@@ -14,11 +12,11 @@ namespace OP_Engine.Rendering
         #region Variables
 
         public static bool UsingDefaults;
-        public static Lighting Lighting;
-        public static Renderer LightingRenderer;
-        public static Renderer AddLightingRenderer;
+        public static Lighting? Lighting;
+        public static Renderer? LightingRenderer;
+        public static Renderer? AddLightingRenderer;
 
-        public static List<Renderer> Renderers;
+        public static List<Renderer> Renderers = [];
 
         #endregion
 
@@ -26,8 +24,6 @@ namespace OP_Engine.Rendering
 
         public RenderingManager(Game game) : base(game)
         {
-            Renderers = new List<Renderer>();
-
             game.Exiting += Game_Exiting;
         }
 
@@ -39,26 +35,30 @@ namespace OP_Engine.Rendering
         {
             Lighting = new Lighting();
 
-            LightingRenderer = new Renderer();
-            LightingRenderer.Name = "Lighting";
-            LightingRenderer.Init(graphicsManager, resolution);
-            LightingRenderer.SetRenderTarget_BeforeDraw = true;
-            LightingRenderer.ClearGraphics_BeforeDraw = true;
-            LightingRenderer.ClearRenderTarget_AfterDraw = true;
-            LightingRenderer.BlendState = BlendState.Additive;
-
-            AddLightingRenderer = new Renderer();
-            AddLightingRenderer.Name = "Add Lighting to World";
-            AddLightingRenderer.RenderTarget = LightingRenderer.RenderTarget;
-            AddLightingRenderer.DrawToRenderTarget = true;
-            AddLightingRenderer.BlendState = new BlendState
+            LightingRenderer = new Renderer
             {
-                AlphaBlendFunction = BlendFunction.Add,
-                AlphaSourceBlend = Blend.One,
-                AlphaDestinationBlend = Blend.One,
-                ColorBlendFunction = BlendFunction.Add,
-                ColorSourceBlend = Blend.DestinationColor,
-                ColorDestinationBlend = Blend.Zero
+                Name = "Lighting",
+                SetRenderTarget_BeforeDraw = true,
+                ClearGraphics_BeforeDraw = true,
+                ClearRenderTarget_AfterDraw = true,
+                BlendState = BlendState.Additive
+            };
+            LightingRenderer.Init(graphicsManager, resolution);
+
+            AddLightingRenderer = new Renderer
+            {
+                Name = "Add Lighting to World",
+                RenderTarget = LightingRenderer.RenderTarget,
+                DrawToRenderTarget = true,
+                BlendState = new BlendState
+                {
+                    AlphaBlendFunction = BlendFunction.Add,
+                    AlphaSourceBlend = Blend.One,
+                    AlphaDestinationBlend = Blend.One,
+                    ColorBlendFunction = BlendFunction.Add,
+                    ColorSourceBlend = Blend.DestinationColor,
+                    ColorDestinationBlend = Blend.Zero
+                }
             };
 
             UsingDefaults = true;
@@ -68,17 +68,17 @@ namespace OP_Engine.Rendering
         {
             if (UsingDefaults)
             {
-                LightingRenderer.Update();
+                LightingRenderer?.Update();
             }
 
             int count = Renderers.Count;
             for (int i = 0; i < count; i++)
             {
-                Renderers[i]?.Update();
+                Renderers[i].Update();
             }
         }
 
-        public static void Draw(GameWindow window, GraphicsDeviceManager graphicsManager, SpriteBatch spriteBatch, Point resolution)
+        public static void Draw(GameWindow? window, GraphicsDeviceManager? graphicsManager, SpriteBatch? spriteBatch, Point resolution)
         {
             if (window != null)
             {
@@ -99,10 +99,14 @@ namespace OP_Engine.Rendering
                             */
 
                             //Set ambient light in case the color changed
-                            LightingRenderer.GraphicsClearColor = Lighting.DrawColor;
+                            if (LightingRenderer != null &&
+                                Lighting != null)
+                            {
+                                LightingRenderer.GraphicsClearColor = Lighting.DrawColor;
+                            }
 
                             //Render lighting
-                            LightingRenderer.Draw(spriteBatch, resolution);
+                            LightingRenderer?.Draw(spriteBatch, resolution);
 
                             //Render world
                             graphicsManager.GraphicsDevice.Clear(Color.Black);
@@ -111,7 +115,7 @@ namespace OP_Engine.Rendering
                             spriteBatch.End();
 
                             //Add lighting to world
-                            AddLightingRenderer.Draw(spriteBatch, resolution);
+                            AddLightingRenderer?.Draw(spriteBatch, resolution);
 
                             //Render menus
                             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
@@ -131,7 +135,7 @@ namespace OP_Engine.Rendering
             }
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             Lighting?.Dispose();
             LightingRenderer?.Dispose();

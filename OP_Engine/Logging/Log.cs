@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace OP_Engine.Logging
+﻿namespace OP_Engine.Logging
 {
     public class Log
     {
         #region Variables
 
         public DateTime TimeStamp;
-        public string Source;
-        public string Message;
-        public string StackTrace;
+        public string? Source;
+        public string? Message;
+        public string? StackTrace;
 
         #endregion
 
@@ -20,7 +18,7 @@ namespace OP_Engine.Logging
 
         }
 
-        public Log(string source, string message, string stack_trace)
+        public Log(string? source, string? message, string? stack_trace)
         {
             TimeStamp = DateTime.Now;
             Source = source;

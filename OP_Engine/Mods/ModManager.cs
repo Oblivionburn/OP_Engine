@@ -1,11 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Xml;
-using System.Collections.Generic;
-
+﻿using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
 using OP_Engine.Logging;
 
 namespace OP_Engine.Mods
@@ -14,8 +9,8 @@ namespace OP_Engine.Mods
     {
         #region Variables
 
-        public static string ModsDirectory;
-        public static List<Mod> Mods = new List<Mod>();
+        public static string? ModsDirectory;
+        public static List<Mod> Mods = [];
 
         #endregion
 
@@ -30,7 +25,7 @@ namespace OP_Engine.Mods
 
         #region Methods
 
-        public static Mod GetMod(Guid id)
+        public static Mod? GetMod(Guid id)
         {
             foreach (Mod mod in Mods)
             {
@@ -43,7 +38,7 @@ namespace OP_Engine.Mods
             return null;
         }
 
-        public static Mod GetMod(string name)
+        public static Mod? GetMod(string name)
         {
             foreach (Mod mod in Mods)
             {
@@ -58,7 +53,7 @@ namespace OP_Engine.Mods
 
         public static List<Mod> GetMods_ByAuthor(string author)
         {
-            List<Mod> mods = new List<Mod>();
+            List<Mod> mods = [];
             foreach (Mod mod in Mods)
             {
                 if (mod.Author == author)
@@ -79,7 +74,7 @@ namespace OP_Engine.Mods
                 {
                     string dir_path = directories[d];
 
-                    DirectoryInfo dir = new DirectoryInfo(dir_path);
+                    DirectoryInfo dir = new(dir_path);
                     string mod_info = Path.Combine(dir.FullName, "ModInfo.xml");
 
                     if (File.Exists(mod_info))
@@ -94,7 +89,7 @@ namespace OP_Engine.Mods
 
                         try
                         {
-                            using (XmlTextReader reader = new XmlTextReader(File.OpenRead(mod_info)))
+                            using (XmlTextReader reader = new(File.OpenRead(mod_info)))
                             {
                                 while (reader.Read())
                                 {
@@ -141,24 +136,24 @@ namespace OP_Engine.Mods
                                 }
                             }
 
-                            Texture2D image = null;
+                            Texture2D? image = null;
                             if (Images.Length > 0)
                             {
                                 string path = Images[0].FullName;
-                                using (FileStream fileStream = new FileStream(path, FileMode.Open))
+                                using (FileStream fileStream = new(path, FileMode.Open))
                                 {
                                     image = Texture2D.FromStream(graphicsDevice, fileStream);
                                 }
                             }
 
-                            ModAssembly assembly = null;
+                            ModAssembly? assembly = null;
                             if (AssemblyPaths.Length > 0)
                             {
                                 string path = AssemblyPaths[0].FullName;
                                 assembly = new ModAssembly(Path.GetFileNameWithoutExtension(path), path);
                             }
 
-                            Mod mod = new Mod(Name, Directory, Description, Author, Version, image, assembly);
+                            Mod mod = new(Name, Directory, Description, Author, Version, image, assembly);
                             Mods.Add(mod);
                         }
                         catch (Exception e)
@@ -170,7 +165,7 @@ namespace OP_Engine.Mods
             }
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (Mod mod in Mods)
             {

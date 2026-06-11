@@ -1,9 +1,7 @@
-﻿using System;
-using System.Timers;
-using System.Collections.Generic;
-
+﻿using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace OP_Engine.Inputs
 {
@@ -23,12 +21,12 @@ namespace OP_Engine.Inputs
             Keep a store of bound keys for friendly name lookup
                 and faster iteration (looping only through keys your game is using)
         */
-        public Dictionary<string, Keys> KeysMapped = new Dictionary<string, Keys>();
+        public Dictionary<string, Keys> KeysMapped = [];
 
-        public KeyboardState keyboardState = new KeyboardState();
-        public KeyboardState lastKeyboardState = new KeyboardState();
+        public KeyboardState keyboardState = new();
+        public KeyboardState lastKeyboardState = new();
 
-        private Timer keyboardListener = new Timer(1);
+        private System.Timers.Timer keyboardListener = new(1);
 
         #endregion
 
@@ -40,8 +38,8 @@ namespace OP_Engine.Inputs
 
         #region Events
 
-        public event EventHandler OnStateChange;
-        public event EventHandler<KeyEventArgs> OnKeyStateChange;
+        public event EventHandler? OnStateChange;
+        public event EventHandler<KeyEventArgs>? OnKeyStateChange;
 
         #endregion
 
@@ -73,7 +71,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_KeyboardState(object sender, ElapsedEventArgs e)
+        public virtual void Check_KeyboardState(object? sender, ElapsedEventArgs e)
         {
             if (!Updated_By_Game)
             {
@@ -84,12 +82,12 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_KeyState(object sender, EventArgs e)
+        public virtual void Check_KeyState(object? sender, EventArgs e)
         {
             try
             {
-                List<Keys> KeysPressed = new List<Keys>();
-                List<Keys> KeysDown = new List<Keys>();
+                List<Keys> KeysPressed = [];
+                List<Keys> KeysDown = [];
 
                 foreach (var key in KeysMapped)
                 {
@@ -128,12 +126,12 @@ namespace OP_Engine.Inputs
             keyboardState = Keyboard.GetState();
         }
 
-        public virtual void Game_Activated(object sender, EventArgs e)
+        public virtual void Game_Activated(object? sender, EventArgs e)
         {
             keyboardListener.Start();
         }
 
-        public virtual void Game_Deactivated(object sender, EventArgs e)
+        public virtual void Game_Deactivated(object? sender, EventArgs e)
         {
             keyboardListener.Stop();
         }

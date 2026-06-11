@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
 using OP_Engine.Enums;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Point = Microsoft.Xna.Framework.Point;
+using Region = OP_Engine.Utility.Region;
 
 namespace OP_Engine.Characters
 {
@@ -12,20 +13,20 @@ namespace OP_Engine.Characters
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Type;
+        public string? Name;
+        public string? Type;
 
-        public Region Region;
-        public Texture2D Texture;
+        public Region? Region;
+        public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
         public Color DrawColor;
 
         public Direction Direction;
-        public Location Location;
-        public Location Destination;
+        public Location? Location;
+        public Location? Destination;
 
-        public List<Squad> Squads;
+        public List<Squad> Squads = [];
 
         #endregion
 
@@ -33,7 +34,7 @@ namespace OP_Engine.Characters
 
         public Army()
         {
-            Squads = new List<Squad>();
+            
         }
 
         #endregion
@@ -86,42 +87,30 @@ namespace OP_Engine.Characters
             }
         }
 
-        public virtual void AddSquad(Squad squad)
-        {
-            squad.Army = this;
-            Squads.Add(squad);
-        }
-
-        public virtual Squad GetSquad(long id)
+        public virtual Squad? GetSquad(long id)
         {
             int count = Squads.Count;
             for (int i = 0; i < count; i++)
             {
                 Squad existing = Squads[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Squad GetSquad(string name)
+        public virtual Squad? GetSquad(string name)
         {
             int count = Squads.Count;
             for (int i = 0; i < count; i++)
             {
                 Squad existing = Squads[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 

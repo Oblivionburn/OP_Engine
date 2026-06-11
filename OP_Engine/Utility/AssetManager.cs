@@ -1,39 +1,26 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
 
 using OP_Engine.Sounds;
 
 namespace OP_Engine.Utility
 {
-    public class AssetManager : GameComponent
+    public class AssetManager(Game game) : GameComponent(game)
     {
         #region Variables
 
-        public static ContentManager Content;
-        public static string[] SoundExtensions = { ".mp3", ".wma", ".wav", ".ogg" };
-        public static Dictionary<string, string> Directories = new Dictionary<string, string>();
-        public static Dictionary<string, string> Files = new Dictionary<string, string>();
-        public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
-        public static Dictionary<string, Effect> Shaders = new Dictionary<string, Effect>();
-        public static Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
-        public static Dictionary<string, Dictionary<string, Sound>> Sounds = new Dictionary<string, Dictionary<string, Sound>>();
-        public static Dictionary<string, Dictionary<string, Sound>> Music = new Dictionary<string, Dictionary<string, Sound>>();
-        public static Dictionary<string, Dictionary<string, Sound>> Ambient = new Dictionary<string, Dictionary<string, Sound>>();
-
-        #endregion
-
-        #region Constructor
-
-        public AssetManager(Game game) : base(game)
-        {
-            
-        }
+        public static ContentManager? Content;
+        public static string[] SoundExtensions = [".mp3", ".wma", ".wav", ".ogg"];
+        public static Dictionary<string, string> Directories = [];
+        public static Dictionary<string, string> Files = [];
+        public static Dictionary<string, Texture2D> Textures = [];
+        public static Dictionary<string, Effect> Shaders = [];
+        public static Dictionary<string, SpriteFont> Fonts = [];
+        public static Dictionary<string, Dictionary<string, Sound>> Sounds = [];
+        public static Dictionary<string, Dictionary<string, Sound>> Music = [];
+        public static Dictionary<string, Dictionary<string, Sound>> Ambient = [];
 
         #endregion
 
@@ -41,48 +28,23 @@ namespace OP_Engine.Utility
 
         public static void Init(Game game, string content_dir)
         {
-            if (!Directories.ContainsKey("Content"))
+            if (!Directories.TryAdd("Content", content_dir))
             {
-                Directories.Add("Content", content_dir);
-
                 Content = new ContentManager(game.Services, content_dir)
                 {
                     RootDirectory = content_dir
                 };
             }
 
-            if (!Directories.ContainsKey("Ambient"))
-            {
-                Directories.Add("Ambient", string.Concat(Directories["Content"], @"\Ambient"));
-            }
-
-            if (!Directories.ContainsKey("Fonts"))
-            {
-                Directories.Add("Fonts", string.Concat(Directories["Content"], @"\Fonts"));
-            }
-
-            if (!Directories.ContainsKey("Music"))
-            {
-                Directories.Add("Music", string.Concat(Directories["Content"], @"\Music"));
-            }
-
-            if (!Directories.ContainsKey("Shaders"))
-            {
-                Directories.Add("Shaders", string.Concat(Directories["Content"], @"\Shaders"));
-            }
-
-            if (!Directories.ContainsKey("Sounds"))
-            {
-                Directories.Add("Sounds", string.Concat(Directories["Content"], @"\Sounds"));
-            }
-
-            if (!Directories.ContainsKey("Textures"))
-            {
-                Directories.Add("Textures", string.Concat(Directories["Content"], @"\Textures"));
-            }            
+            Directories.TryAdd("Ambient", string.Concat(Directories["Content"], @"\Ambient"));
+            Directories.TryAdd("Fonts", string.Concat(Directories["Content"], @"\Fonts"));
+            Directories.TryAdd("Music", string.Concat(Directories["Content"], @"\Music"));
+            Directories.TryAdd("Shaders", string.Concat(Directories["Content"], @"\Shaders"));
+            Directories.TryAdd("Sounds", string.Concat(Directories["Content"], @"\Sounds"));
+            Directories.TryAdd("Textures", string.Concat(Directories["Content"], @"\Textures"));
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (var texture in Textures)
             {
@@ -99,13 +61,13 @@ namespace OP_Engine.Utility
 
         public static void LoadTextures(GraphicsDevice graphicsDevice)
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Textures"]);
+            DirectoryInfo dir = new(Directories["Textures"]);
             foreach (var file in dir.GetFiles("*.png"))
             {
                 var name = Path.GetFileNameWithoutExtension(file.Name);
                 if (!Textures.ContainsKey(name))
                 {
-                    using (FileStream fileStream = new FileStream(file.FullName, FileMode.Open))
+                    using (FileStream fileStream = new(file.FullName, FileMode.Open))
                     {
                         Texture2D texture = Texture2D.FromStream(graphicsDevice, fileStream);
                         texture.Name = name;
@@ -117,7 +79,7 @@ namespace OP_Engine.Utility
 
         public static void LoadTextures(GraphicsDevice graphicsDevice, string directory)
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Textures"]);
+            DirectoryInfo dir = new(Directories["Textures"]);
             foreach (var sub_dir in dir.GetDirectories())
             {
                 if (sub_dir.Name == directory)
@@ -127,7 +89,7 @@ namespace OP_Engine.Utility
                         var name = Path.GetFileNameWithoutExtension(file.Name);
                         if (!Textures.ContainsKey(name))
                         {
-                            using (FileStream fileStream = new FileStream(file.FullName, FileMode.Open))
+                            using (FileStream fileStream = new(file.FullName, FileMode.Open))
                             {
                                 Texture2D texture = Texture2D.FromStream(graphicsDevice, fileStream);
                                 texture.Name = name;
@@ -141,9 +103,9 @@ namespace OP_Engine.Utility
             }
         }
 
-        public static Texture2D LoadTexture(GraphicsDevice graphicsDevice, DirectoryInfo directory, string fileName)
+        public static Texture2D? LoadTexture(GraphicsDevice graphicsDevice, DirectoryInfo directory, string fileName)
         {
-            Texture2D texture = null;
+            Texture2D? texture = null;
 
             FileInfo[] files = directory.GetFiles("*.png");
 
@@ -157,7 +119,7 @@ namespace OP_Engine.Utility
                 {
                     try
                     {
-                        using (FileStream fileStream = new FileStream(file.FullName, FileMode.Open))
+                        using (FileStream fileStream = new(file.FullName, FileMode.Open))
                         {
                             texture = Texture2D.FromStream(graphicsDevice, fileStream);
                         }
@@ -171,11 +133,7 @@ namespace OP_Engine.Utility
                     {
                         texture.Name = name;
 
-                        if (!Textures.ContainsKey(name))
-                        {
-                            Textures.Add(name, texture);
-                        }
-
+                        Textures.TryAdd(name, texture);
                         return texture;
                     }
                 }
@@ -204,64 +162,67 @@ namespace OP_Engine.Utility
 
         public static void LoadFonts()
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Fonts"]);
+            DirectoryInfo dir = new(Directories["Fonts"]);
             foreach (var file in dir.GetFiles("*.xnb"))
             {
                 var name = Path.GetFileNameWithoutExtension(file.Name);
-                if (!Fonts.ContainsKey(name))
+
+                if (Content != null)
                 {
-                    SpriteFont font = Content.Load<SpriteFont>(@"Fonts\" + name);
-                    Fonts.Add(name, font);
+                    Fonts.TryAdd(name, Content.Load<SpriteFont>(@"Fonts\" + name));
                 }
             }
         }
 
         public static void LoadShaders(GraphicsDevice graphicsDevice)
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Shaders"]);
+            DirectoryInfo dir = new(Directories["Shaders"]);
             foreach (var file in dir.GetFiles("*.FxDX"))
             {
                 var name = Path.GetFileNameWithoutExtension(file.Name);
-                if (!Shaders.ContainsKey(name))
-                {
-                    Effect effect = new Effect(graphicsDevice, File.ReadAllBytes(file.FullName));
-                    effect.CurrentTechnique = effect.Techniques[name];
-                    Shaders.Add(name, effect);
-                }
+
+                Effect effect = new(graphicsDevice, File.ReadAllBytes(file.FullName));
+                effect.CurrentTechnique = effect.Techniques[name];
+
+                Shaders.TryAdd(name, effect);
             }
         }
 
         public static void LoadSounds()
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Sounds"]);
+            DirectoryInfo dir = new(Directories["Sounds"]);
             foreach (var file in dir.GetFiles())
             {
                 if (SoundExtensions.Contains(file.Extension))
                 {
-                    Sound sound = new Sound();
-                    sound.Extension = file.Extension;
-                    sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                    sound.Directory = Path.GetDirectoryName(file.FullName);
-                    sound.Type = sound.Name;
+                    string name = Path.GetFileNameWithoutExtension(file.Name);
 
-                    if (!Sounds.ContainsKey("Sounds"))
+                    Sound sound = new()
                     {
-                        Dictionary<string, Sound> sounds = new Dictionary<string, Sound>();
-                        sounds.Add(sound.Name, sound);
+                        Extension = file.Extension,
+                        Name = name,
+                        Type = name,
+                        Directory = Path.GetDirectoryName(file.FullName)
+                    };
 
-                        Sounds.Add("Sounds", sounds);
-                    }
-                    else if (!Sounds["Sounds"].ContainsKey(sound.Name))
+                    if (!Sounds.TryGetValue("Sounds", out Dictionary<string, Sound>? value))
                     {
-                        Sounds["Sounds"].Add(sound.Name, sound);
+                        Sounds.Add("Sounds", new()
+                        {
+                            { sound.Name, sound }
+                        });
                     }
-                } 
+                    else
+                    {
+                        value.TryAdd(sound.Name, sound);
+                    }
+                }
             }
         }
 
         public static void LoadSounds(string directory)
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Sounds"]);
+            DirectoryInfo dir = new(Directories["Sounds"]);
             foreach (var sub_dir in dir.GetDirectories())
             {
                 if (sub_dir.Name == directory)
@@ -270,66 +231,75 @@ namespace OP_Engine.Utility
                     {
                         if (SoundExtensions.Contains(file.Extension))
                         {
-                            Sound sound = new Sound();
-                            sound.Extension = file.Extension;
-                            sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                            sound.Directory = Path.GetDirectoryName(file.FullName);
+                            string name = Path.GetFileNameWithoutExtension(file.FullName);
 
-                            //Assumes your sound files end with numbers for variations of each sound
-                            //because nobody likes hearing the same sound repeatedly for hours
-                            //Example: Hit1.mp3, Hit2.mp3, Hit3.mp3,etc
-                            sound.Type = sound.Name.Substring(0, sound.Name.Length - 1);
-
-                            if (!Sounds.ContainsKey(directory))
+                            Sound sound = new()
                             {
-                                Dictionary<string, Sound> sounds = new Dictionary<string, Sound>();
-                                sounds.Add(sound.Name, sound);
+                                Extension = file.Extension,
+                                Name = name,
 
-                                Sounds.Add(directory, sounds);
+                                //Assumes your sound files end with numbers for variations of each sound
+                                //because nobody likes hearing the same sound repeatedly for hours
+                                //Example: Hit1.mp3, Hit2.mp3, Hit3.mp3,etc
+                                Type = name.Substring(0, name.Length - 1),
+
+                                Directory = Path.GetDirectoryName(file.FullName)
+                            };
+
+                            if (!Sounds.TryGetValue(directory, out Dictionary<string, Sound>? value))
+                            {
+                                Sounds.Add(directory, new()
+                                {
+                                    { sound.Name, sound }
+                                });
                             }
-                            else if (!Sounds[directory].ContainsKey(sound.Name))
+                            else
                             {
-                                Sounds[directory].Add(sound.Name, sound);
+                                value.TryAdd(sound.Name, sound);
                             }
                         }
                     }
 
                     break;
                 }
-            }  
+            }
         }
 
         public static void LoadMusic()
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Music"]);
+            DirectoryInfo dir = new(Directories["Music"]);
             foreach (var file in dir.GetFiles())
             {
                 if (SoundExtensions.Contains(file.Extension))
                 {
-                    Sound sound = new Sound();
-                    sound.Extension = file.Extension;
-                    sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                    sound.Directory = Path.GetDirectoryName(file.FullName);
-                    sound.Type = sound.Name;
+                    string name = Path.GetFileNameWithoutExtension(file.FullName);
 
-                    if (!Music.ContainsKey("Music"))
+                    Sound sound = new()
                     {
-                        Dictionary<string, Sound> music = new Dictionary<string, Sound>();
-                        music.Add(sound.Name, sound);
+                        Extension = file.Extension,
+                        Name = name,
+                        Type = name,
+                        Directory = Path.GetDirectoryName(file.FullName)
+                    };
 
-                        Music.Add("Music", music);
-                    }
-                    else if (!Music["Music"].ContainsKey(sound.Name))
+                    if (!Music.TryGetValue("Music", out Dictionary<string, Sound>? value))
                     {
-                        Music["Music"].Add(sound.Name, sound);
+                        Music.Add("Music", new()
+                        {
+                            { sound.Name, sound }
+                        });
                     }
-                } 
+                    else
+                    {
+                        value.TryAdd(sound.Name, sound);
+                    }
+                }
             }
         }
 
         public static void LoadMusic(string directory)
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Music"]);
+            DirectoryInfo dir = new(Directories["Music"]);
             foreach (var dir_music in dir.GetDirectories())
             {
                 if (dir_music.Name == directory)
@@ -338,22 +308,26 @@ namespace OP_Engine.Utility
                     {
                         if (SoundExtensions.Contains(file.Extension))
                         {
-                            Sound sound = new Sound();
-                            sound.Extension = file.Extension;
-                            sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                            sound.Directory = Path.GetDirectoryName(file.FullName);
-                            sound.Type = sound.Name;
+                            string name = Path.GetFileNameWithoutExtension(file.FullName);
 
-                            if (!Music.ContainsKey(directory))
+                            Sound sound = new()
                             {
-                                Dictionary<string, Sound> music = new Dictionary<string, Sound>();
-                                music.Add(sound.Name, sound);
+                                Extension = file.Extension,
+                                Name = name,
+                                Type = name,
+                                Directory = Path.GetDirectoryName(file.FullName)
+                            };
 
-                                Music.Add(directory, music);
+                            if (!Music.TryGetValue(directory, out Dictionary<string, Sound>? value))
+                            {
+                                Music.Add(directory, new()
+                                {
+                                    { sound.Name, sound }
+                                });
                             }
-                            else if (!Music[directory].ContainsKey(sound.Name))
+                            else
                             {
-                                Music[directory].Add(sound.Name, sound);
+                                value.TryAdd(sound.Name, sound);
                             }
                         }
                     }
@@ -363,59 +337,67 @@ namespace OP_Engine.Utility
 
         public static void LoadAmbient()
         {
-            DirectoryInfo dir = new DirectoryInfo(Directories["Ambient"]);
+            DirectoryInfo dir = new(Directories["Ambient"]);
             foreach (var file in dir.GetFiles())
             {
                 if (SoundExtensions.Contains(file.Extension))
                 {
-                    Sound sound = new Sound();
-                    sound.Extension = file.Extension;
-                    sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                    sound.Directory = Path.GetDirectoryName(file.FullName);
-                    sound.Type = sound.Name;
+                    string name = Path.GetFileNameWithoutExtension(file.FullName);
 
-                    if (!Ambient.ContainsKey("Ambient"))
+                    Sound sound = new()
                     {
-                        Dictionary<string, Sound> ambient = new Dictionary<string, Sound>();
-                        ambient.Add(sound.Name, sound);
+                        Extension = file.Extension,
+                        Name = name,
+                        Type = name,
+                        Directory = Path.GetDirectoryName(file.FullName)
+                    };
 
-                        Ambient.Add("Ambient", ambient);
-                    }
-                    else if (!Ambient["Ambient"].ContainsKey(sound.Name))
+                    if (!Ambient.TryGetValue("Ambient", out Dictionary<string, Sound>? value))
                     {
-                        Ambient["Ambient"].Add(sound.Name, sound);
+                        Ambient.Add("Ambient", new()
+                        {
+                            { sound.Name, sound }
+                        });
                     }
-                }  
+                    else
+                    {
+                        value.TryAdd(sound.Name, sound);
+                    }
+                }
             }
         }
 
         public static void LoadAmbient(string directory)
         {
-            DirectoryInfo d = new DirectoryInfo(Directories["Ambient"]);
-            foreach (var dir in d.GetDirectories())
+            DirectoryInfo dir = new(Directories["Ambient"]);
+            foreach (var dir_ambient in dir.GetDirectories())
             {
-                if (dir.Name == directory)
+                if (dir_ambient.Name == directory)
                 {
-                    foreach (var file in dir.GetFiles())
+                    foreach (var file in dir_ambient.GetFiles())
                     {
                         if (SoundExtensions.Contains(file.Extension))
                         {
-                            Sound sound = new Sound();
-                            sound.Extension = file.Extension;
-                            sound.Name = Path.GetFileNameWithoutExtension(file.FullName);
-                            sound.Directory = Path.GetDirectoryName(file.FullName);
-                            sound.Type = sound.Name;
+                            string name = Path.GetFileNameWithoutExtension(file.FullName);
 
-                            if (!Ambient.ContainsKey(directory))
+                            Sound sound = new()
                             {
-                                Dictionary<string, Sound> ambient = new Dictionary<string, Sound>();
-                                ambient.Add(sound.Name, sound);
+                                Extension = file.Extension,
+                                Name = name,
+                                Type = name,
+                                Directory = Path.GetDirectoryName(file.FullName)
+                            };
 
-                                Ambient.Add(directory, ambient);
+                            if (!Ambient.TryGetValue(directory, out Dictionary<string, Sound>? value))
+                            {
+                                Ambient.Add(directory, new()
+                                {
+                                    { sound.Name, sound }
+                                });
                             }
-                            else if (!Ambient[directory].ContainsKey(sound.Name))
+                            else
                             {
-                                Ambient[directory].Add(sound.Name, sound);
+                                value.TryAdd(sound.Name, sound);
                             }
                         }
                     }
@@ -431,122 +413,126 @@ namespace OP_Engine.Utility
 
         public static void PlaySound(string name)
         {
-            if (Sounds.ContainsKey("Sounds") &&
-                Sounds["Sounds"].ContainsKey(name))
+            if (Sounds.TryGetValue("Sounds", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlaySound(Sounds["Sounds"][name]);
+                SoundManager.PlaySound(sound);
             }
         }
 
         public static void PlaySound(string type, string name)
         {
-            if (Sounds.ContainsKey(type) &&
-                Sounds[type].ContainsKey(name))
+            if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlaySound(Sounds[type][name]);
+                SoundManager.PlaySound(sound);
             }
         }
 
         public static void PlaySound_Random(string type)
         {
-            if (Sounds.ContainsKey(type))
+            if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list))
             {
-                CryptoRandom rand = new CryptoRandom();
-                int choice = rand.Next(0, Sounds[type].Count);
+                CryptoRandom rand = new();
+                int choice = rand.Next(0, list.Count);
 
-                Sound sound = Sounds[type].ToList().ElementAt(choice).Value;
+                Sound sound = list.ToList().ElementAt(choice).Value;
                 SoundManager.PlaySound(sound);
             }
         }
 
         public static void PlaySound_AtDistance(string name, Vector2 location, Vector2 source, int max_distance)
         {
-            if (Sounds.ContainsKey("Sounds") &&
-                Sounds["Sounds"].ContainsKey(name))
+            if (Sounds.TryGetValue("Sounds", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlaySound_Distance(Sounds["Sounds"][name], location, source, max_distance);
+                SoundManager.PlaySound_Distance(sound, location, source, max_distance);
             }
         }
 
         public static void PlaySound_AtDistance(string type, string name, Vector2 location, Vector2 source, int max_distance)
         {
-            if (Sounds.ContainsKey(type) &&
-                Sounds[type].ContainsKey(name))
+            if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlaySound_Distance(Sounds[type][name], location, source, max_distance);
+                SoundManager.PlaySound_Distance(sound, location, source, max_distance);
             }
         }
 
         public static void PlaySound_Random_AtDistance(string type, Vector2 location, Vector2 source, int max_distance)
         {
-            if (Sounds.ContainsKey(type))
+            if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list))
             {
-                CryptoRandom rand = new CryptoRandom();
-                int choice = rand.Next(0, Sounds[type].Count);
+                CryptoRandom rand = new();
+                int choice = rand.Next(0, list.Count);
 
-                Sound sound = Sounds[type].ToList().ElementAt(choice).Value;
+                Sound sound = list.ToList().ElementAt(choice).Value;
                 SoundManager.PlaySound_Distance(sound, location, source, max_distance);
             }
         }
 
         public static void PlayMusic(string name, bool looping)
         {
-            if (Music.ContainsKey("Music") &&
-                Music["Music"].ContainsKey(name))
+            if (Music.TryGetValue("Music", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlayMusic(Music["Music"][name], looping);
+                SoundManager.PlayMusic(sound, looping);
                 SoundManager.NeedMusic = false;
             }
         }
 
         public static void PlayMusic(string type, string name, bool looping)
         {
-            if (Music.ContainsKey(type) &&
-                Music[type].ContainsKey(name))
+            if (Music.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlayMusic(Music[type][name], looping);
+                SoundManager.PlayMusic(sound, looping);
                 SoundManager.NeedMusic = false;
             }
         }
 
         public static void PlayMusic_Random(string type, bool looping)
         {
-            if (Music.ContainsKey(type))
+            if (Music.TryGetValue(type, out Dictionary<string, Sound>? list))
             {
-                CryptoRandom rand = new CryptoRandom();
-                int choice = rand.Next(0, Music[type].Count);
+                CryptoRandom rand = new();
+                int choice = rand.Next(0, list.Count);
 
-                SoundManager.PlayMusic(Music[type].ToList().ElementAt(choice).Value, looping);
+                Sound sound = list.ToList().ElementAt(choice).Value;
+
+                SoundManager.PlayMusic(sound, looping);
                 SoundManager.NeedMusic = false;
             }
         }
 
         public static void PlayAmbient(string name, bool looping)
         {
-            if (Ambient.ContainsKey("Ambient") && 
-                Ambient["Ambient"].ContainsKey(name))
+            if (Ambient.TryGetValue("Ambient", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlayAmbient(Ambient["Ambient"][name], looping);
+                SoundManager.PlayAmbient(sound, looping);
             }
         }
 
         public static void PlayAmbient(string type, string name, bool looping)
         {
-            if (Ambient.ContainsKey(type) &&
-                Ambient[type].ContainsKey(name))
+            if (Ambient.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlayAmbient(Ambient[type][name], looping);
+                SoundManager.PlayAmbient(sound, looping);
             }
         }
 
         public static void PlayAmbient_Random(string type, bool looping)
         {
-            if (Ambient.ContainsKey(type))
+            if (Ambient.TryGetValue(type, out Dictionary<string, Sound>? list))
             {
-                CryptoRandom rand = new CryptoRandom();
-                int choice = rand.Next(0, Ambient[type].Count);
+                CryptoRandom rand = new();
+                int choice = rand.Next(0, list.Count);
 
-                SoundManager.PlayAmbient(Ambient[type].ToList().ElementAt(choice).Value, looping);
+                Sound sound = list.ToList().ElementAt(choice).Value;
+
+                SoundManager.PlayAmbient(sound, looping);
             }
         }
 
@@ -554,16 +540,16 @@ namespace OP_Engine.Utility
 
         #region Get Stuff
 
-        public static Texture2D GetTexture(string name)
+        public static Texture2D? GetTexture(string name)
         {
-            return Textures.ContainsKey(name) ? Textures[name] : null;
+            return Textures.TryGetValue(name, out Texture2D? value) ? value : null;
         }
 
-        public static Texture2D GetTexture_LazyLoad(GraphicsDevice graphicsDevice, string name)
+        public static Texture2D? GetTexture_LazyLoad(GraphicsDevice graphicsDevice, string name)
         {
-            if (Textures.ContainsKey(name))
+            if (Textures.TryGetValue(name, out Texture2D? value))
             {
-                return Textures[name];
+                return value;
             }
             else
             {
@@ -571,62 +557,102 @@ namespace OP_Engine.Utility
             }
         }
 
-        public static Texture2D GetTextureCopy(GraphicsDevice graphicsDevice, string name)
+        public static Texture2D? GetTextureCopy(GraphicsDevice graphicsDevice, string name)
         {
-            if (Textures.ContainsKey(name))
+            if (Textures.TryGetValue(name, out Texture2D? texture))
             {
-                Texture2D texture = Textures[name];
-                Color[] colors = new Color[texture.Width * texture.Height];
-                texture.GetData(colors);
+                if (texture != null)
+                {
+                    Color[] colors = new Color[texture.Width * texture.Height];
+                    texture.GetData(colors);
 
-                Texture2D newTexture = new Texture2D(graphicsDevice, texture.Width, texture.Height);
-                newTexture.Name = texture.Name;
-                newTexture.SetData(colors);
+                    Texture2D newTexture = new(graphicsDevice, texture.Width, texture.Height)
+                    {
+                        Name = texture.Name
+                    };
+                    newTexture.SetData(colors);
 
-                return newTexture;
+                    return newTexture;
+                }
             }
 
             return null;
         }
 
-        public static Effect GetShader(string name)
+        public static Effect? GetShader(string name)
         {
-            return Shaders.ContainsKey(name) ? Shaders[name] : null;
+            return Shaders.TryGetValue(name, out Effect? value) ? value : null;
         }
 
-        public static SpriteFont GetFont(string name)
+        public static SpriteFont? GetFont(string name)
         {
-            return Fonts.ContainsKey(name) ? Fonts[name] : null;
+            return Fonts.TryGetValue(name, out SpriteFont? value) ? value : null;
         }
 
-        public static Sound GetSound(string name)
+        public static Sound? GetSound(string name)
         {
-            return Sounds.ContainsKey("Sounds") && Sounds["Sounds"].ContainsKey(name) ? Sounds["Sounds"][name] : null;
+            if (Sounds.TryGetValue("Sounds", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                return sound;
+            }
+
+            return null;
         }
 
-        public static Sound GetSound(string type, string name)
+        public static Sound? GetSound(string type, string name)
         {
-            return Sounds.ContainsKey(type) && Sounds[type].ContainsKey(name) ? Sounds[type][name] : null;
+            if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                return sound;
+            }
+
+            return null;
         }
 
-        public static Sound GetMusic(string name)
+        public static Sound? GetMusic(string name)
         {
-            return Music.ContainsKey("Music") && Music["Music"].ContainsKey(name) ? Music["Music"][name] : null;
+            if (Music.TryGetValue("Music", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                return sound;
+            }
+
+            return null;
         }
 
-        public static Sound GetMusic(string type, string name)
+        public static Sound? GetMusic(string type, string name)
         {
-            return Music.ContainsKey(type) && Music[type].ContainsKey(name) ? Music[type][name] : null;
+            if (Music.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                return sound;
+            }
+
+            return null;
         }
 
-        public static Sound GetAmbient(string name)
+        public static Sound? GetAmbient(string name)
         {
-            return Ambient.ContainsKey("Ambient") && Ambient["Ambient"].ContainsKey(name) ? Ambient["Ambient"][name] : null;
+            if (Ambient.TryGetValue("Ambient", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                return sound;
+            }
+
+            return null;
         }
 
-        public static Sound GetAmbient(string type, string name)
+        public static Sound? GetAmbient(string type, string name)
         {
-            return Ambient.ContainsKey(type) && Ambient[type].ContainsKey(name) ? Ambient[type][name] : null;
+            if (Ambient.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                return sound;
+            }
+
+            return null;
         }
 
         #endregion

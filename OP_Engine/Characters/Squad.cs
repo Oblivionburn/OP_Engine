@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Enums;
 using OP_Engine.Utility;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Point = Microsoft.Xna.Framework.Point;
+using Region = OP_Engine.Utility.Region;
 
 namespace OP_Engine.Characters
 {
@@ -12,23 +14,23 @@ namespace OP_Engine.Characters
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Type;
+        public string? Name;
+        public string? Type;
 
-        public Region Region;
-        public Texture2D Texture;
+        public Region? Region;
+        public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
         public Color DrawColor;
 
         public Direction Direction;
-        public Location Location;
-        public Location Destination;
+        public Location? Location;
+        public Location? Destination;
 
-        public Army Army;
+        public Army? Army;
 
-        public List<Character> Characters;
-        public List<ALocation> Path;
+        public List<Character> Characters = [];
+        public List<ALocation> Path = [];
 
         public long Leader_ID;
         public bool Moving;
@@ -41,8 +43,8 @@ namespace OP_Engine.Characters
 
         #region Events
 
-        public event EventHandler OnMove;
-        public event EventHandler OnMovementFinish;
+        public event EventHandler? OnMove;
+        public event EventHandler? OnMovementFinish;
 
         #endregion
 
@@ -50,8 +52,7 @@ namespace OP_Engine.Characters
 
         public Squad()
         {
-            Characters = new List<Character>();
-            Path = new List<ALocation>();
+            
         }
 
         #endregion
@@ -61,7 +62,9 @@ namespace OP_Engine.Characters
         public virtual void Update()
         {
             if (Moving &&
-                Region != null)
+                Region != null &&
+                Destination != null &&
+                Location != null)
             {
                 if (Destination.X > Location.X)
                 {
@@ -250,7 +253,7 @@ namespace OP_Engine.Characters
         public virtual void Animate()
         {
             int X = Image.X + Image.Width;
-            if (X >= Texture.Width)
+            if (X >= Texture?.Width)
             {
                 X = 0;
             }
@@ -270,73 +273,61 @@ namespace OP_Engine.Characters
             Characters.Add(character);
         }
 
-        public virtual Character GetCharacter(long id)
+        public virtual Character? GetCharacter(long id)
         {
             int count = Characters.Count;
             for (int i = 0; i < count; i++)
             {
                 Character existing = Characters[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Character GetCharacter(string name)
+        public virtual Character? GetCharacter(string name)
         {
             int count = Characters.Count;
             for (int i = 0; i < count; i++)
             {
                 Character existing = Characters[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Character GetCharacter (Vector2 formation)
+        public virtual Character? GetCharacter(Vector2 formation)
         {
             int count = Characters.Count;
             for (int i = 0; i < count; i++)
             {
                 Character existing = Characters[i];
-                if (existing != null)
+                if (existing.Formation.X == formation.X &&
+                    existing.Formation.Y == formation.Y)
                 {
-                    if (existing.Formation.X == formation.X &&
-                        existing.Formation.Y == formation.Y)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Character GetLeader()
+        public virtual Character? GetLeader()
         {
             int count = Characters.Count;
             for (int i = 0; i < count; i++)
             {
                 Character existing = Characters[i];
-                if (existing != null)
+                if (existing.ID == Leader_ID)
                 {
-                    if (existing.ID == Leader_ID)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 

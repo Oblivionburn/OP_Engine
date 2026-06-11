@@ -1,10 +1,8 @@
-﻿using System;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-
-using OP_Engine.Utility;
+﻿using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Inputs;
+using Region = OP_Engine.Utility.Region;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace OP_Engine.Controls
 {
@@ -12,20 +10,20 @@ namespace OP_Engine.Controls
     {
         #region Variables
 
-        public Texture2D Base_Texture;
-        public Region Base_Region;
+        public Texture2D? Base_Texture;
+        public Region? Base_Region;
 
-        public Texture2D Bar_Texture;
-        public Region Bar_Region;
+        public Texture2D? Bar_Texture;
+        public Region? Bar_Region;
         public Rectangle Bar_Image;
 
         #endregion
 
         #region Events
 
-        public event EventHandler OnStep;
-        public event EventHandler OnValueIncrease;
-        public event EventHandler OnValueDecrease;
+        public event EventHandler? OnStep;
+        public event EventHandler? OnValueIncrease;
+        public event EventHandler? OnValueDecrease;
 
         #endregion
 
@@ -44,7 +42,8 @@ namespace OP_Engine.Controls
 
         public override void Update()
         {
-            if (Base_Region != null)
+            if (Base_Region != null &&
+                Bar_Texture != null)
             {
                 float CurrentVal = (Bar_Texture.Width / Max_Value) * Value;
                 Bar_Image = new Rectangle(Bar_Image.X, Bar_Image.Y, (int)CurrentVal, Bar_Image.Height);
@@ -118,7 +117,8 @@ namespace OP_Engine.Controls
         {
             if (Base_Region != null &&
                 Bar_Region != null &&
-                Bar_Texture != null)
+                Bar_Texture != null &&
+                InputManager.Mouse != null)
             {
                 Bar_Region.Width = InputManager.Mouse.X - Base_Region.X;
                 float value = ((Bar_Region.Width * Max_Value) / Base_Region.Width) + 1;

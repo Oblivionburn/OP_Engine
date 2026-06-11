@@ -1,27 +1,17 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
-
+﻿using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Logging
 {
-    public class Logger : GameComponent
+    public class Logger(Game game) : GameComponent(game)
     {
         #region Variables
 
-        public static string LogFile;
-        public static List<Log> Logs = new List<Log>();
+        public static string? LogFile;
+        public static List<Log> Logs = [];
 
         #endregion
-
         #region Constructors
-
-        public Logger(Game game) : base(game)
-        {
-            
-        }
 
         #endregion
 
@@ -46,7 +36,7 @@ namespace OP_Engine.Logging
         {
             if (!string.IsNullOrEmpty(LogFile))
             {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder sb = new();
 
                 for (int i = 0; i < Logs.Count; i++)
                 {

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OP_Engine.Research
+﻿namespace OP_Engine.Research
 {
     public class ResearchTree : IDisposable
     {
         #region Variables
 
         public long ID;
-        public string Name;
+        public string? Name;
 
-        public List<Research> ResearchNodes;
+        public List<Research> ResearchNodes = [];
 
         #endregion
 
@@ -28,7 +25,7 @@ namespace OP_Engine.Research
 
         #region Events
 
-        public event EventHandler OnComplete;
+        public event EventHandler? OnComplete;
 
         #endregion
 
@@ -36,7 +33,7 @@ namespace OP_Engine.Research
 
         public ResearchTree()
         {
-            ResearchNodes = new List<Research>();
+            
         }
 
         #endregion
@@ -61,7 +58,7 @@ namespace OP_Engine.Research
             }
         }
 
-        public virtual void Update(TimeSpan add_time)
+        public virtual void Update(TimeSpan? add_time)
         {
             int count = ResearchNodes.Count;
             for (int i = 0; i < count; i++)
@@ -81,7 +78,7 @@ namespace OP_Engine.Research
 
         public virtual void AddResearch(long id, string name, string description, Dictionary<string, int> cost)
         {
-            Research research = new Research
+            Research research = new()
             {
                 ID = id,
                 Name = name,
@@ -90,11 +87,7 @@ namespace OP_Engine.Research
 
             foreach (var item in cost)
             {
-                if (!research.Cost.ContainsKey(item.Key))
-                {
-                    research.Cost.Add(item.Key, item.Value);
-                }
-                else
+                if (!research.Cost.TryAdd(item.Key, item.Value))
                 {
                     research.Cost[item.Key] += item.Value;
                 }
@@ -105,7 +98,7 @@ namespace OP_Engine.Research
 
         public virtual void AddResearch(long id, string name, string description, TimeSpan time_to_complete)
         {
-            Research research = new Research
+            Research research = new()
             {
                 ID = id,
                 Name = name,
@@ -118,7 +111,7 @@ namespace OP_Engine.Research
 
         public virtual void AddResearch(long id, string name, string description, TimeSpan time_to_complete, Dictionary<string, int> cost)
         {
-            Research research = new Research
+            Research research = new()
             {
                 ID = id,
                 Name = name,
@@ -128,11 +121,7 @@ namespace OP_Engine.Research
 
             foreach (var item in cost)
             {
-                if (!research.Cost.ContainsKey(item.Key))
-                {
-                    research.Cost.Add(item.Key, item.Value);
-                }
-                else
+                if (!research.Cost.TryAdd(item.Key, item.Value))
                 {
                     research.Cost[item.Key] += item.Value;
                 }
@@ -141,36 +130,30 @@ namespace OP_Engine.Research
             ResearchNodes.Add(research);
         }
 
-        public virtual Research GetResearch(string name)
+        public virtual Research? GetResearch(string name)
         {
             int count = ResearchNodes.Count;
             for (int i = 0; i < count; i++)
             {
                 Research existing = ResearchNodes[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Research GetResearch(long id)
+        public virtual Research? GetResearch(long id)
         {
             int count = ResearchNodes.Count;
             for (int i = 0; i < count; i++)
             {
                 Research existing = ResearchNodes[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
@@ -211,7 +194,7 @@ namespace OP_Engine.Research
                 Research unlock = research.Unlocks[u];
 
                 //Check if unlocked research has all prerequisites completed
-                Research unlocked_research = GetResearch(unlock.ID);
+                Research? unlocked_research = GetResearch(unlock.ID);
                 if (unlocked_research != null)
                 {
                     //Don't bother checking if it's already unlocked
@@ -225,7 +208,7 @@ namespace OP_Engine.Research
                         {
                             Research prerequisite = unlocked_research.Prerequisites[p];
 
-                            Research prerequisite_research = GetResearch(prerequisite.ID);
+                            Research? prerequisite_research = GetResearch(prerequisite.ID);
                             if (prerequisite_research != null)
                             {
                                 if (prerequisite_research.Completed)

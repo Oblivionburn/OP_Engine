@@ -1,6 +1,4 @@
-﻿using System;
-
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace OP_Engine.Mods
 {
@@ -9,13 +7,13 @@ namespace OP_Engine.Mods
         #region Variables
 
         public Guid ID;
-        public string Name;
-        public string Description;
-        public string Directory;
-        public string Author;
-        public string Version;
-        public Texture2D Image;
-        public ModAssembly Assembly;
+        public string? Name;
+        public string? Description;
+        public string? Directory;
+        public string? Author;
+        public string? Version;
+        public Texture2D? Image;
+        public ModAssembly? Assembly;
 
         #endregion
 
@@ -31,7 +29,7 @@ namespace OP_Engine.Mods
             Version = version;
         }
 
-        public Mod(string name, string directory, string description, string author, string version, Texture2D image)
+        public Mod(string name, string directory, string description, string author, string version, Texture2D? image)
         {
             ID = Guid.NewGuid();
             Name = name;
@@ -42,7 +40,7 @@ namespace OP_Engine.Mods
             Image = image;
         }
 
-        public Mod(string name, string directory, string description, string author, string version, ModAssembly assembly)
+        public Mod(string name, string directory, string description, string author, string version, ModAssembly? assembly)
         {
             ID = Guid.NewGuid();
             Name = name;
@@ -53,7 +51,7 @@ namespace OP_Engine.Mods
             Assembly = assembly;
         }
 
-        public Mod(string name, string directory, string description, string author, string version, Texture2D image, ModAssembly assembly)
+        public Mod(string name, string directory, string description, string author, string version, Texture2D? image, ModAssembly? assembly)
         {
             ID = Guid.NewGuid();
             Name = name;
@@ -71,10 +69,7 @@ namespace OP_Engine.Mods
 
         public void Dispose()
         {
-            if (Image != null)
-            {
-                Image.Dispose();
-            }
+            Image?.Dispose();
         }
 
         #endregion

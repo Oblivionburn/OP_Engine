@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using OP_Engine.Controls;
-using OP_Engine.Enums;
+﻿using OP_Engine.Enums;
 using OP_Engine.Time;
 using OP_Engine.Utility;
+using ProgressBar = OP_Engine.Controls.ProgressBar;
 
 namespace OP_Engine.Jobs
 {
@@ -13,20 +11,20 @@ namespace OP_Engine.Jobs
 
         public long ID;
         public long OwnerID;
-        public string Name;
-        public string Type;
-        public string Description;
-        public string Assignment;
+        public string? Name;
+        public string? Type;
+        public string? Description;
+        public string? Assignment;
         public int Priority;
 
-        public List<JobTask> SubTasks;
+        public List<JobTask> SubTasks = [];
 
         public Direction Direction;
-        public Location Location;
+        public Location Location = new();
 
-        public TimeHandler StartTime;
-        public TimeSpan StepTime;
-        public TimeHandler EndTime;
+        public TimeHandler? StartTime;
+        public TimeSpan? StepTime;
+        public TimeHandler? EndTime;
 
         public bool Started;
         public bool Completed;
@@ -40,15 +38,15 @@ namespace OP_Engine.Jobs
         /// Alternative way to check if task is in progress (TaskBar.Value < TaskBar.Max_Value) if EndTime is null and TaskBar.Rate > 0, 
         /// or for visual display of task progress.
         /// </summary>
-        public ProgressBar TaskBar;
+        public ProgressBar TaskBar = new();
 
         #endregion
 
         #region Events
 
-        public event EventHandler OnStart;
-        public event EventHandler OnStep;
-        public event EventHandler OnComplete;
+        public event EventHandler? OnStart;
+        public event EventHandler? OnStep;
+        public event EventHandler? OnComplete;
 
         #endregion
 
@@ -56,9 +54,7 @@ namespace OP_Engine.Jobs
 
         public JobTask()
         {
-            SubTasks = new List<JobTask>();
-            Location = new Location();
-            TaskBar = new ProgressBar();
+            
         }
 
         #endregion
@@ -118,14 +114,14 @@ namespace OP_Engine.Jobs
                     {
                         StepTime = new TimeSpan(current_time.Days, current_time.Hours, current_time.Minutes, current_time.Seconds,
                             current_time.Milliseconds);
-                        StepTime.Add(step_time);
+                        StepTime?.Add(step_time);
                     }
 
-                    if (current_time.TotalMilliseconds >= StepTime.TotalMilliseconds)
+                    if (current_time.TotalMilliseconds >= StepTime?.TotalMilliseconds)
                     {
                         StepTime = new TimeSpan(current_time.Days, current_time.Hours, current_time.Minutes, current_time.Seconds,
                             current_time.Milliseconds);
-                        StepTime.Add(step_time);
+                        StepTime?.Add(step_time);
 
                         if (TaskBar.Rate > 0 &&
                             TaskBar.Value < TaskBar.Max_Value)
@@ -201,11 +197,7 @@ namespace OP_Engine.Jobs
         public virtual void Complete(TimeHandler current_time)
         {
             Completed = true;
-
-            if (EndTime == null)
-            {
-                EndTime.CopyTime(current_time);
-            }
+            EndTime?.CopyTime(current_time);
 
             Action_End();
 
@@ -262,7 +254,7 @@ namespace OP_Engine.Jobs
         /// </summary>
         public virtual void Action_Start()
         {
-            
+
         }
 
         /// <summary>
@@ -270,7 +262,7 @@ namespace OP_Engine.Jobs
         /// </summary>
         public virtual void Action()
         {
-            
+
         }
 
         /// <summary>
@@ -278,7 +270,7 @@ namespace OP_Engine.Jobs
         /// </summary>
         public virtual void Action_End()
         {
-            
+
         }
 
         public virtual void Dispose()

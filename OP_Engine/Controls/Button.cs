@@ -1,7 +1,5 @@
-﻿using System;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace OP_Engine.Controls
 {
@@ -18,14 +16,14 @@ namespace OP_Engine.Controls
         public Color DrawColor_Selected;
         public Color DrawColor_Disabled;
 
-        public Texture2D Texture_Highlight;
-        public Texture2D Texture_Disabled;
+        public Texture2D? Texture_Highlight;
+        public Texture2D? Texture_Disabled;
 
         #endregion
 
         #region Events
 
-        public event EventHandler OnClick;
+        public event EventHandler? OnClick;
 
         #endregion
 

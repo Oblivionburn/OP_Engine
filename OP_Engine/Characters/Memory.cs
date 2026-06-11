@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using OP_Engine.Time;
 using OP_Engine.Enums;
 
@@ -11,10 +9,10 @@ namespace OP_Engine.Characters
         #region Variables
 
         public long ID;
-        public TimeHandler DateTime; //When did this happen?
+        public TimeHandler? DateTime; //When did this happen?
         public long CausedBy_Memory_ID; //Was this event caused by something else?
-        public string Event_Type; //What happened? (e.g. witnessed a murder, car crash, broke a window)
-        public string Emotion_Response; //Was the character happy it happened, or sad, or terrified?
+        public string? Event_Type; //What happened? (e.g. witnessed a murder, car crash, broke a window)
+        public string? Emotion_Response; //Was the character happy it happened, or sad, or terrified?
         public int Memory_Strength; //How long will it be before this memory is forgotten? Was it fleeting or traumatic?
         public int Memory_Scale; //Was it a really good memory or a bad one? (e.g. scale of -10 to +10)
 
@@ -52,12 +50,7 @@ namespace OP_Engine.Characters
 
         public virtual void Dispose()
         {
-            DateTime.Dispose();
-
-            Instigator_Description = null;
-            Instigator_Item_Description = null;
-            Victim_Description = null;
-            Victim_Item_Description = null;
+            DateTime?.Dispose();
         }
 
         #endregion

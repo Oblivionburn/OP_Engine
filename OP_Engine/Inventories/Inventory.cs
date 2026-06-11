@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
+using Point = Microsoft.Xna.Framework.Point;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace OP_Engine.Inventories
 {
@@ -11,13 +11,13 @@ namespace OP_Engine.Inventories
         #region Variables
 
         public long ID;
-        public string Name;
+        public string? Name;
         public float Value;
         public float Min_Value;
         public float Max_Value;
-        public Location Location;
+        public Location? Location;
 
-        public List<Item> Items;
+        public List<Item> Items = [];
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace OP_Engine.Inventories
 
         public Inventory()
         {
-            Items = new List<Item>();
+            
         }
 
         #endregion
@@ -50,7 +50,7 @@ namespace OP_Engine.Inventories
             }
         }
 
-        public virtual Item GetItem(string name)
+        public virtual Item? GetItem(string name)
         {
             int count = Items.Count;
             for (int i = 0; i < count; i++)
@@ -68,7 +68,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Item GetItem(long id)
+        public virtual Item? GetItem(long id)
         {
             int count = Items.Count;
             for (int i = 0; i < count; i++)
@@ -86,7 +86,7 @@ namespace OP_Engine.Inventories
             return null;
         }
 
-        public virtual Item GetItem(Vector2 location)
+        public virtual Item? GetItem(Vector2 location)
         {
             int count = Items.Count;
             for (int i = 0; i < count; i++)

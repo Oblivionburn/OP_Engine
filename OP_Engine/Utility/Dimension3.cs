@@ -1,16 +1,9 @@
 ﻿namespace OP_Engine.Utility
 {
-    public struct Dimension3
+    public struct Dimension3(int width, int height, int depth)
     {
-        public int Width;
-        public int Height;
-        public int Depth;
-
-        public Dimension3(int width, int height, int depth)
-        {
-            Width = width;
-            Height = height;
-            Depth = depth;
-        }
+        public int Width = width;
+        public int Height = height;
+        public int Depth = depth;
     }
 }

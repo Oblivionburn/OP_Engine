@@ -1,157 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{695C4649-831B-4B59-9271-838804A797D4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OP_Engine</RootNamespace>
-    <AssemblyName>OP_Engine</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <LangVersion>7.1</LangVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
+    <PackageId>OP_Engine_v1.0.9.6</PackageId>
+    <Version>1.0.9.6</Version>
+    <Authors>Oblivionburn</Authors>
+    <Company>Oblivionburn Productions</Company>
+    <Description>A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.</Description>
+    <PackageProjectUrl>https://github.com/Oblivionburn/OP_Engine</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Oblivionburn/OP_Engine</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <PackageReleaseNotes>
+- Added FaceDirection method to Character class
+- Added GetAppointment method to Job class
+- Implemented separate Draw_Layers method in Map class for rendering of Layers, while Draw method is now for the Map.Texture
+- Updated framework to .NET 8.0
+- Added nuget reference to latest version of MonoGame library
+    </PackageReleaseNotes>
+    <PackageTags>op_engine game engine</PackageTags>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <LangVersion>7.1</LangVersion>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <LangVersion>7.1</LangVersion>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MonoGame.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4.1" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Characters\Army.cs" />
-    <Compile Include="Characters\BodyPart.cs" />
-    <Compile Include="Characters\Character.cs" />
-    <Compile Include="Characters\CharacterManager.cs" />
-    <Compile Include="Characters\Memory.cs" />
-    <Compile Include="Characters\ReactionEventArgs.cs" />
-    <Compile Include="Characters\Squad.cs" />
-    <Compile Include="Characters\Stats.cs" />
-    <Compile Include="Characters\Wound.cs" />
-    <Compile Include="Controls\ButtonOptions.cs" />
-    <Compile Include="Controls\InputBoxOptions.cs" />
-    <Compile Include="Controls\Label.cs" />
-    <Compile Include="Controls\LabelOptions.cs" />
-    <Compile Include="Controls\LabelPart.cs" />
-    <Compile Include="Controls\PictureOptions.cs" />
-    <Compile Include="Controls\ProgressBarOptions.cs" />
-    <Compile Include="Crafting\CraftingManager.cs" />
-    <Compile Include="Crafting\Recipe.cs" />
-    <Compile Include="Inputs\ButtonEventArgs.cs" />
-    <Compile Include="Inputs\GamepadHandler.cs" />
-    <Compile Include="Inputs\Input.cs" />
-    <Compile Include="Inputs\KeyboardHandler.cs" />
-    <Compile Include="Inputs\InputManager.cs" />
-    <Compile Include="Inputs\KeyEventArgs.cs" />
-    <Compile Include="Inputs\MouseHandler.cs" />
-    <Compile Include="Inventories\Inventory.cs" />
-    <Compile Include="Inventories\InventoryManager.cs" />
-    <Compile Include="Inventories\Item.cs" />
-    <Compile Include="Jobs\Appointment.cs" />
-    <Compile Include="Jobs\Job.cs" />
-    <Compile Include="Jobs\JobManager.cs" />
-    <Compile Include="Jobs\JobTask.cs" />
-    <Compile Include="Logging\Log.cs" />
-    <Compile Include="Menus\Menu.cs" />
-    <Compile Include="Menus\MenuManager.cs" />
-    <Compile Include="Mods\Mod.cs" />
-    <Compile Include="Mods\ModAssembly.cs" />
-    <Compile Include="Mods\ModManager.cs" />
-    <Compile Include="Particles\Particle.cs" />
-    <Compile Include="Particles\ParticleManager.cs" />
-    <Compile Include="Rendering\GameWindow.cs" />
-    <Compile Include="Rendering\Lighting.cs" />
-    <Compile Include="Rendering\Renderer.cs" />
-    <Compile Include="Rendering\RenderingManager.cs" />
-    <Compile Include="Research\Research.cs" />
-    <Compile Include="Research\ResearchManager.cs" />
-    <Compile Include="Research\ResearchTree.cs" />
-    <Compile Include="Scenes\Scene.cs" />
-    <Compile Include="Scenes\SceneManager.cs" />
-    <Compile Include="Sounds\FMOD\fmod.cs" />
-    <Compile Include="Sounds\FMOD\fmod_dsp.cs" />
-    <Compile Include="Sounds\FMOD\fmod_errors.cs" />
-    <Compile Include="Sounds\Sound.cs" />
-    <Compile Include="Sounds\SoundManager.cs" />
-    <Compile Include="Sounds\WaveOut\WaveFormat.cs" />
-    <Compile Include="Sounds\WaveOut\WaveNative.cs" />
-    <Compile Include="Sounds\WaveOut\WaveBuffer.cs" />
-    <Compile Include="Sounds\WaveOut\WavePlayer.cs" />
-    <Compile Include="Sounds\WaveOut\WaveStream.cs" />
-    <Compile Include="Spells\Spell.cs" />
-    <Compile Include="Spells\Spellbook.cs" />
-    <Compile Include="Spells\SpellbookManager.cs" />
-    <Compile Include="Tiles\Layer.cs" />
-    <Compile Include="Tiles\Map.cs" />
-    <Compile Include="Tiles\Tile.cs" />
-    <Compile Include="Tiles\World.cs" />
-    <Compile Include="Enums\Alignment.cs" />
-    <Compile Include="Utility\ALocation.cs" />
-    <Compile Include="Controls\Button.cs" />
-    <Compile Include="Controls\Picture.cs" />
-    <Compile Include="Utility\AssetManager.cs" />
-    <Compile Include="Utility\CryptoRandom.cs" />
-    <Compile Include="Utility\Dimension2.cs" />
-    <Compile Include="Utility\Dimension3.cs" />
-    <Compile Include="Enums\Direction.cs" />
-    <Compile Include="Controls\InputBox.cs" />
-    <Compile Include="Controls\ProgressBar.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controls\Slider.cs" />
-    <Compile Include="Utility\Location.cs" />
-    <Compile Include="Utility\Pathing.cs" />
-    <Compile Include="Logging\Logger.cs" />
-    <Compile Include="Enums\Rarity.cs" />
-    <Compile Include="Enums\ScreenType.cs" />
-    <Compile Include="Utility\Property.cs" />
-    <Compile Include="Utility\Something.cs" />
-    <Compile Include="Utility\Region.cs" />
-    <Compile Include="Time\TimeHandler.cs" />
-    <Compile Include="Time\TimeManager.cs" />
-    <Compile Include="Enums\TimeRate.cs" />
-    <Compile Include="Utility\Utility.cs" />
-    <Compile Include="Weathers\Weather.cs" />
-    <Compile Include="Weathers\WeatherManager.cs" />
-    <Compile Include="Weathers\WeatherTransition.cs" />
-    <Compile Include="Weathers\WeatherType.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

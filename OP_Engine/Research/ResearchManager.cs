@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Research
 {
@@ -9,8 +6,8 @@ namespace OP_Engine.Research
     {
         #region Variables
 
-        public static TimeSpan Rate;
-        public static List<ResearchTree> ResearchTrees;
+        public static TimeSpan? Rate;
+        public static List<ResearchTree> ResearchTrees = [];
 
         #endregion
 
@@ -18,8 +15,6 @@ namespace OP_Engine.Research
 
         public ResearchManager(Game game) : base(game)
         {
-            ResearchTrees = new List<ResearchTree>();
-
             game.Exiting += Game_Exiting;
         }
 
@@ -47,43 +42,37 @@ namespace OP_Engine.Research
             }
         }
 
-        public static ResearchTree GetResearchTree(string name)
+        public static ResearchTree? GetResearchTree(string name)
         {
             int count = ResearchTrees.Count;
             for (int i = 0; i < count; i++)
             {
                 ResearchTree existing = ResearchTrees[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public static ResearchTree GetResearchTree(long id)
+        public static ResearchTree? GetResearchTree(long id)
         {
             int count = ResearchTrees.Count;
             for (int i = 0; i < count; i++)
             {
                 ResearchTree existing = ResearchTrees[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (ResearchTree tree in ResearchTrees)
             {

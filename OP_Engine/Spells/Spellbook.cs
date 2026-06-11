@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OP_Engine.Spells
+﻿namespace OP_Engine.Spells
 {
     public class Spellbook : IDisposable
     {
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Description;
-        public string Type;
+        public string? Name;
+        public string? Description;
+        public string? Type;
 
         public List<Spell> Spells;
 
@@ -20,20 +17,20 @@ namespace OP_Engine.Spells
 
         public Spellbook()
         {
-            Spells = new List<Spell>();
+            Spells = [];
         }
 
         #endregion
 
         #region Methods
 
-        public Spell GetSpell(long id)
+        public Spell? GetSpell(long id)
         {
             int count = Spells.Count;
             for (int i = 0; i < count; i++)
             {
                 Spell existing = Spells[i];
-                if (existing == null)
+                if (existing != null)
                 {
                     if (existing.ID == id)
                     {
@@ -45,19 +42,19 @@ namespace OP_Engine.Spells
             return null;
         }
 
-        public Spell GetSpell(string name)
+        public Spell? GetSpell(string name)
         {
             int count = Spells.Count;
             for (int i = 0; i < count; i++)
             {
                 Spell existing = Spells[i];
-                if (existing == null)
+                if (existing != null)
                 {
                     if (existing.Name == name)
                     {
                         return existing;
                     }
-                } 
+                }
             }
 
             return null;

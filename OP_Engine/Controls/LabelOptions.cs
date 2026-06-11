@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using OP_Engine.Utility;
 using OP_Engine.Enums;
+using Region = OP_Engine.Utility.Region;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace OP_Engine.Controls
 {

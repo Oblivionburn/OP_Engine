@@ -1,5 +1,4 @@
-﻿using System;
-using OP_Engine.Enums;
+﻿using OP_Engine.Enums;
 
 namespace OP_Engine.Characters
 {
@@ -10,8 +9,8 @@ namespace OP_Engine.Characters
         public float LightLevel { get; private set; } //How dark was it?
         public int Strength { get; private set; } //How loud was the noise, strong the smell, potent the taste, etc?
         public int Scale { get; private set; } //How positive or negative was the experience? (e.g. scale of -10 to +10 with -10 being the worst imaginable)
-        public string Adjective { get; private set; } //What would describe the thing being experienced? (e.g. horrible, sharp, sour, cold, etc)
-        public BodyPart BodyPart { get; private set; } //What part of the body did it happen to?
+        public string? Adjective { get; private set; } //What would describe the thing being experienced? (e.g. horrible, sharp, sour, cold, etc)
+        public BodyPart? BodyPart { get; private set; } //What part of the body did it happen to?
 
         //Heard Something
         public ReactionEventArgs(Direction direction, int distance, string adjective, int strength, int scale)
@@ -75,7 +74,7 @@ namespace OP_Engine.Characters
         }
 
         //Tasted Something
-        public ReactionEventArgs(string adjective, int strength, int scale)
+        public ReactionEventArgs(string? adjective, int strength, int scale)
         {
             Adjective = adjective;
             Strength = strength;

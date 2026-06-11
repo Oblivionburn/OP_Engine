@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
+using Region = OP_Engine.Utility.Region;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace OP_Engine.Controls
 {
@@ -10,11 +11,11 @@ namespace OP_Engine.Controls
         #region Variables
 
         public long ID;
-        public string Name;
+        public string? Name;
         public Location Location;
 
         public float Fade;
-        public string HoverText;
+        public string? HoverText;
         public float Opacity;
 
         public float Value;
@@ -23,12 +24,12 @@ namespace OP_Engine.Controls
         public float Rate;
 
         public Region Region;
-        public Texture2D Texture;
+        public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
         public Color DrawColor;
 
-        public Effect Shader;
+        public Effect? Shader;
 
         #endregion
 
@@ -58,12 +59,8 @@ namespace OP_Engine.Controls
                 if (Texture != null &&
                     Region != null)
                 {
+                    Shader?.CurrentTechnique.Passes[0].Apply();
                     spriteBatch.Draw(Texture, Region.ToRectangle, Image, DrawColor * Opacity);
-
-                    if (Shader != null)
-                    {
-                        Shader.CurrentTechnique.Passes[0].Apply();
-                    } 
                 }
             }
         }

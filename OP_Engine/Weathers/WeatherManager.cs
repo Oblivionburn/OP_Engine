@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OP_Engine.Enums;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Weathers
 {
@@ -10,7 +10,7 @@ namespace OP_Engine.Weathers
     {
         #region Variables
 
-        public static List<Weather> Weathers = new List<Weather>();
+        public static List<Weather> Weathers = [];
         public static WeatherType CurrentWeather;
         public static WeatherTransition TransitionType;
         public static bool Transitioning;
@@ -196,7 +196,7 @@ namespace OP_Engine.Weathers
             }
         }
 
-        public static Weather GetWeather(WeatherType type)
+        public static Weather? GetWeather(WeatherType type)
         {
             int count = Weathers.Count;
             for (int i = 0; i < count; i++)
@@ -211,7 +211,7 @@ namespace OP_Engine.Weathers
             return null;
         }
 
-        public static Weather GetWeather_TransitioningTo()
+        public static Weather? GetWeather_TransitioningTo()
         {
             WeatherType type = WeatherType.Clear;
 
@@ -293,7 +293,7 @@ namespace OP_Engine.Weathers
             return null;
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (Weather weather in Weathers)
             {

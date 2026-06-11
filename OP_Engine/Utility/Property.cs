@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace OP_Engine.Utility
+﻿namespace OP_Engine.Utility
 {
     public class Property : IDisposable
     {
         #region Variables
 
-        public string Name;
-        public string Description;
+        public string? Name;
+        public string? Description;
         public float Value;
         public float Max_Value;
         public float Rate;
@@ -18,7 +16,7 @@ namespace OP_Engine.Utility
 
         public Property()
         {
-            
+
         }
 
         public Property(string name, float value)
@@ -48,7 +46,7 @@ namespace OP_Engine.Utility
 
         public virtual void Dispose()
         {
-            
+
         }
 
         #endregion

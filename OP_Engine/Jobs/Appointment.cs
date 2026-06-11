@@ -1,5 +1,4 @@
-﻿using System;
-using OP_Engine.Time;
+﻿using OP_Engine.Time;
 
 namespace OP_Engine.Jobs
 {
@@ -7,9 +6,9 @@ namespace OP_Engine.Jobs
     {
         #region Variables
 
-        public string Name;
-        public TimeHandler StartTime;
-        public TimeHandler EndTime;
+        public string? Name;
+        public TimeHandler? StartTime;
+        public TimeHandler? EndTime;
 
         #endregion
 
@@ -17,7 +16,7 @@ namespace OP_Engine.Jobs
 
         public Appointment()
         {
-            
+
         }
 
         #endregion

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Utility
 {
@@ -29,13 +26,13 @@ namespace OP_Engine.Utility
 
         public static int DiceRoll(int sides)
         {
-            CryptoRandom random = new CryptoRandom();
+            CryptoRandom random = new();
             return random.Next(1, sides + 1);
         }
 
         public static bool RandomPercent(float value)
         {
-            CryptoRandom random = new CryptoRandom();
+            CryptoRandom random = new();
             int chance = random.Next(1, 101);
             if (chance <= value)
             {

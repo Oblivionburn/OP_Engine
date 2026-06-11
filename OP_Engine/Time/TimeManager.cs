@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
-
+﻿using Microsoft.Xna.Framework;
 using OP_Engine.Rendering;
 using OP_Engine.Sounds;
 using OP_Engine.Utility;
@@ -14,19 +11,19 @@ namespace OP_Engine.Time
     {
         #region Variables
 
-        private static TimeHandler _now;
+        private static TimeHandler? _now;
 
         public static double GameTimeTick;
         public static double MainGameTime;
         public static double Interval = 1;
         public static bool Paused;
-        public static WeatherType[] WeatherOptions = { WeatherType.Clear };
+        public static WeatherType[] WeatherOptions = [WeatherType.Clear];
 
         #endregion
 
         #region Properties
 
-        public static TimeHandler Now
+        public static TimeHandler? Now
         {
             get { return _now; }
         }
@@ -58,30 +55,33 @@ namespace OP_Engine.Time
         {
             MainGameTime = gameTime.TotalGameTime.TotalMilliseconds;
 
-            if (RenderingManager.Lighting.FadingIn)
+            if (RenderingManager.Lighting != null)
             {
-                if (RenderingManager.Lighting.LerpAmount < 1)
+                if (RenderingManager.Lighting.FadingIn)
                 {
-                    RenderingManager.Lighting.LerpAmount += 0.025f;
-                    RenderingManager.Lighting.FadeIn();
+                    if (RenderingManager.Lighting.LerpAmount < 1)
+                    {
+                        RenderingManager.Lighting.LerpAmount += 0.025f;
+                        RenderingManager.Lighting.FadeIn();
+                    }
+                    else
+                    {
+                        RenderingManager.Lighting.FadingIn = false;
+                        RenderingManager.Lighting.LerpAmount = 0;
+                    }
                 }
-                else
+                else if (RenderingManager.Lighting.FadingOut)
                 {
-                    RenderingManager.Lighting.FadingIn = false;
-                    RenderingManager.Lighting.LerpAmount = 0;
-                }
-            }
-            else if (RenderingManager.Lighting.FadingOut)
-            {
-                if (RenderingManager.Lighting.LerpAmount < 1)
-                {
-                    RenderingManager.Lighting.LerpAmount += 0.025f;
-                    RenderingManager.Lighting.FadeOut();
-                }
-                else
-                {
-                    RenderingManager.Lighting.FadingOut = false;
-                    RenderingManager.Lighting.LerpAmount = 0;
+                    if (RenderingManager.Lighting.LerpAmount < 1)
+                    {
+                        RenderingManager.Lighting.LerpAmount += 0.025f;
+                        RenderingManager.Lighting.FadeOut();
+                    }
+                    else
+                    {
+                        RenderingManager.Lighting.FadingOut = false;
+                        RenderingManager.Lighting.LerpAmount = 0;
+                    }
                 }
             }
 
@@ -89,7 +89,7 @@ namespace OP_Engine.Time
             {
                 GameTimeTick = MainGameTime + Interval;
 
-                Now.AddTime(timeRate, 1);
+                Now?.AddTime(timeRate, 1);
             }
         }
 
@@ -97,30 +97,33 @@ namespace OP_Engine.Time
         {
             MainGameTime = totalMilliseconds;
 
-            if (RenderingManager.Lighting.FadingIn)
+            if (RenderingManager.Lighting != null)
             {
-                if (RenderingManager.Lighting.LerpAmount < 1)
+                if (RenderingManager.Lighting.FadingIn)
                 {
-                    RenderingManager.Lighting.LerpAmount += 0.025f;
-                    RenderingManager.Lighting.FadeIn();
+                    if (RenderingManager.Lighting.LerpAmount < 1)
+                    {
+                        RenderingManager.Lighting.LerpAmount += 0.025f;
+                        RenderingManager.Lighting.FadeIn();
+                    }
+                    else
+                    {
+                        RenderingManager.Lighting.FadingIn = false;
+                        RenderingManager.Lighting.LerpAmount = 0;
+                    }
                 }
-                else
+                else if (RenderingManager.Lighting.FadingOut)
                 {
-                    RenderingManager.Lighting.FadingIn = false;
-                    RenderingManager.Lighting.LerpAmount = 0;
-                }
-            }
-            else if (RenderingManager.Lighting.FadingOut)
-            {
-                if (RenderingManager.Lighting.LerpAmount < 1)
-                {
-                    RenderingManager.Lighting.LerpAmount += 0.025f;
-                    RenderingManager.Lighting.FadeOut();
-                }
-                else
-                {
-                    RenderingManager.Lighting.FadingOut = false;
-                    RenderingManager.Lighting.LerpAmount = 0;
+                    if (RenderingManager.Lighting.LerpAmount < 1)
+                    {
+                        RenderingManager.Lighting.LerpAmount += 0.025f;
+                        RenderingManager.Lighting.FadeOut();
+                    }
+                    else
+                    {
+                        RenderingManager.Lighting.FadingOut = false;
+                        RenderingManager.Lighting.LerpAmount = 0;
+                    }
                 }
             }
 
@@ -128,237 +131,248 @@ namespace OP_Engine.Time
             {
                 GameTimeTick = MainGameTime + Interval;
 
-                Now.AddTime(timeRate, 1);
+                Now?.AddTime(timeRate, 1);
             }
         }
 
-        public static void MinutesChange(object sender, EventArgs e)
+        public static void MinutesChange(object? sender, EventArgs e)
         {
             if (WeatherManager.Transitioning)
             {
                 Transition();
             }
 
-            if (!RenderingManager.Lighting.FadingIn &&
-                !RenderingManager.Lighting.FadingOut)
+            if (RenderingManager.Lighting != null)
             {
-                if (RenderingManager.Lighting.LerpAmount < 1)
+                if (!RenderingManager.Lighting.FadingIn &&
+                    !RenderingManager.Lighting.FadingOut)
                 {
-                    RenderingManager.Lighting.LerpAmount += 0.0167f;
+                    if (RenderingManager.Lighting.LerpAmount < 1)
+                    {
+                        RenderingManager.Lighting.LerpAmount += 0.0167f;
+                    }
+                    RenderingManager.Lighting.Update();
                 }
-                RenderingManager.Lighting.Update();
             }
         }
 
-        public static void HourChange(object sender, EventArgs e)
+        public static void HourChange(object? sender, EventArgs e)
         {
-            RenderingManager.Lighting.LerpAmount = 0;
+            if (RenderingManager.Lighting != null)
+            {
+                RenderingManager.Lighting.LerpAmount = 0;
+            }
+
             WeatherUpdate();
         }
 
         public static void WeatherUpdate()
         {
-            CryptoRandom random = new CryptoRandom();
+            CryptoRandom random = new();
             int weather = random.Next(1, 21);
 
-            if (WeatherManager.CurrentWeather == WeatherType.Clear)
+            switch (WeatherManager.CurrentWeather)
             {
-                if (weather == 5 &&
-                    WeatherOptions.Contains(WeatherType.Storm))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Storm);
-                }
-                else if (weather == 10 &&
-                         WeatherOptions.Contains(WeatherType.Fog))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Fog);
-                }
-                else if (weather == 15 &&
-                         WeatherOptions.Contains(WeatherType.Snow))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Snow);
-                }
-                else if (weather == 20 &&
-                         WeatherOptions.Contains(WeatherType.Rain))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Rain);
-                }
-            }
-            else if (WeatherManager.CurrentWeather == WeatherType.Rain)
-            {
-                if (weather == 2 &&
-                    WeatherOptions.Contains(WeatherType.Snow))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Snow);
-                }
-                else if (weather == 4 &&
-                         WeatherOptions.Contains(WeatherType.Fog))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Fog);
-                }
-                else if (weather == 8 &&
-                         WeatherOptions.Contains(WeatherType.Storm))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Storm);
-                }
-                else if (weather <= 12 &&
-                         WeatherOptions.Contains(WeatherType.Clear))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Clear);
-                }
-            }
-            else if (WeatherManager.CurrentWeather == WeatherType.Storm)
-            {
-                if (weather == 2 &&
-                    WeatherOptions.Contains(WeatherType.Snow))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Snow);
-                }
-                else if (weather == 4 &&
-                         WeatherOptions.Contains(WeatherType.Fog))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Fog);
-                }
-                else if (weather == 8 &&
-                         WeatherOptions.Contains(WeatherType.Rain))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Rain);
-                }
-                else if (weather <= 12 &&
-                         WeatherOptions.Contains(WeatherType.Clear))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Clear);
-                }
-            }
-            else if (WeatherManager.CurrentWeather == WeatherType.Snow)
-            {
-                if (weather == 2 &&
-                    WeatherOptions.Contains(WeatherType.Storm))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Storm);
-                }
-                else if (weather == 4 &&
-                         WeatherOptions.Contains(WeatherType.Fog))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Fog);
-                }
-                else if (weather == 8 &&
-                         WeatherOptions.Contains(WeatherType.Rain))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Rain);
-                }
-                else if (weather <= 12 &&
-                         WeatherOptions.Contains(WeatherType.Clear))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Clear);
-                }
-            }
-            else if (WeatherManager.CurrentWeather == WeatherType.Fog)
-            {
-                if (weather == 2 &&
-                    WeatherOptions.Contains(WeatherType.Storm))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Storm);
-                }
-                else if (weather == 4 &&
-                         WeatherOptions.Contains(WeatherType.Snow))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Snow);
-                }
-                else if (weather == 8 &&
-                         WeatherOptions.Contains(WeatherType.Rain))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Rain);
-                }
-                else if (weather <= 12 &&
-                         WeatherOptions.Contains(WeatherType.Clear))
-                {
-                    WeatherManager.ChangeWeather(WeatherType.Clear);
-                }
+                case WeatherType.Clear:
+                    if (weather == 5 &&
+                        WeatherOptions.Contains(WeatherType.Storm))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Storm);
+                    }
+                    else if (weather == 10 &&
+                             WeatherOptions.Contains(WeatherType.Fog))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Fog);
+                    }
+                    else if (weather == 15 &&
+                             WeatherOptions.Contains(WeatherType.Snow))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Snow);
+                    }
+                    else if (weather == 20 &&
+                             WeatherOptions.Contains(WeatherType.Rain))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Rain);
+                    }
+                    break;
+
+                case WeatherType.Rain:
+                    if (weather == 2 &&
+                        WeatherOptions.Contains(WeatherType.Snow))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Snow);
+                    }
+                    else if (weather == 4 &&
+                             WeatherOptions.Contains(WeatherType.Fog))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Fog);
+                    }
+                    else if (weather == 8 &&
+                             WeatherOptions.Contains(WeatherType.Storm))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Storm);
+                    }
+                    else if (weather <= 12 &&
+                             WeatherOptions.Contains(WeatherType.Clear))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Clear);
+                    }
+                    break;
+
+                case WeatherType.Storm:
+                    if (weather == 2 &&
+                        WeatherOptions.Contains(WeatherType.Snow))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Snow);
+                    }
+                    else if (weather == 4 &&
+                             WeatherOptions.Contains(WeatherType.Fog))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Fog);
+                    }
+                    else if (weather == 8 &&
+                             WeatherOptions.Contains(WeatherType.Rain))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Rain);
+                    }
+                    else if (weather <= 12 &&
+                             WeatherOptions.Contains(WeatherType.Clear))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Clear);
+                    }
+                    break;
+
+                case WeatherType.Snow:
+                    if (weather == 2 &&
+                        WeatherOptions.Contains(WeatherType.Storm))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Storm);
+                    }
+                    else if (weather == 4 &&
+                             WeatherOptions.Contains(WeatherType.Fog))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Fog);
+                    }
+                    else if (weather == 8 &&
+                             WeatherOptions.Contains(WeatherType.Rain))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Rain);
+                    }
+                    else if (weather <= 12 &&
+                             WeatherOptions.Contains(WeatherType.Clear))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Clear);
+                    }
+                    break;
+
+                case WeatherType.Fog:
+                    if (weather == 2 &&
+                        WeatherOptions.Contains(WeatherType.Storm))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Storm);
+                    }
+                    else if (weather == 4 &&
+                             WeatherOptions.Contains(WeatherType.Snow))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Snow);
+                    }
+                    else if (weather == 8 &&
+                             WeatherOptions.Contains(WeatherType.Rain))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Rain);
+                    }
+                    else if (weather <= 12 &&
+                             WeatherOptions.Contains(WeatherType.Clear))
+                    {
+                        WeatherManager.ChangeWeather(WeatherType.Clear);
+                    }
+                    break;
             }
         }
 
         private static void Transition()
         {
-            if (WeatherManager.TransitionType == WeatherTransition.ClearToRain)
+            switch (WeatherManager.TransitionType)
             {
-                ClearTo(WeatherType.Rain);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.ClearToStorm)
-            {
-                ClearTo(WeatherType.Storm);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.ClearToSnow)
-            {
-                ClearTo(WeatherType.Snow);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.ClearToFog)
-            {
-                ClearTo(WeatherType.Fog);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.RainToClear)
-            {
-                ToClear(WeatherType.Rain);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.RainToStorm)
-            {
-                Transition(WeatherType.Rain, WeatherType.Storm);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.RainToSnow)
-            {
-                Transition(WeatherType.Rain, WeatherType.Snow);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.RainToFog)
-            {
-                Transition(WeatherType.Rain, WeatherType.Fog);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.StormToClear)
-            {
-                ToClear(WeatherType.Storm);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.StormToRain)
-            {
-                Transition(WeatherType.Storm, WeatherType.Rain);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.StormToSnow)
-            {
-                Transition(WeatherType.Storm, WeatherType.Snow);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.StormToFog)
-            {
-                Transition(WeatherType.Storm, WeatherType.Fog);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.SnowToClear)
-            {
-                ToClear(WeatherType.Snow);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.SnowToRain)
-            {
-                Transition(WeatherType.Snow, WeatherType.Rain);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.SnowToStorm)
-            {
-                Transition(WeatherType.Snow, WeatherType.Storm);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.SnowToFog)
-            {
-                Transition(WeatherType.Snow, WeatherType.Fog);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.FogToClear)
-            {
-                ToClear(WeatherType.Fog);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.FogToRain)
-            {
-                Transition(WeatherType.Fog, WeatherType.Rain);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.FogToStorm)
-            {
-                Transition(WeatherType.Fog, WeatherType.Storm);
-            }
-            else if (WeatherManager.TransitionType == WeatherTransition.FogToSnow)
-            {
-                Transition(WeatherType.Fog, WeatherType.Snow);
+                case WeatherTransition.ClearToRain:
+                    ClearTo(WeatherType.Rain);
+                    break;
+
+                case WeatherTransition.ClearToStorm:
+                    ClearTo(WeatherType.Storm);
+                    break;
+
+                case WeatherTransition.ClearToSnow:
+                    ClearTo(WeatherType.Snow);
+                    break;
+
+                case WeatherTransition.ClearToFog:
+                    ClearTo(WeatherType.Fog);
+                    break;
+
+                case WeatherTransition.RainToClear:
+                    ToClear(WeatherType.Rain);
+                    break;
+
+                case WeatherTransition.RainToStorm:
+                    Transition(WeatherType.Rain, WeatherType.Storm);
+                    break;
+
+                case WeatherTransition.RainToSnow:
+                    Transition(WeatherType.Rain, WeatherType.Snow);
+                    break;
+
+                case WeatherTransition.RainToFog:
+                    Transition(WeatherType.Rain, WeatherType.Fog);
+                    break;
+
+                case WeatherTransition.StormToClear:
+                    ToClear(WeatherType.Storm);
+                    break;
+
+                case WeatherTransition.StormToRain:
+                    Transition(WeatherType.Storm, WeatherType.Rain);
+                    break;
+
+                case WeatherTransition.StormToSnow:
+                    Transition(WeatherType.Storm, WeatherType.Snow);
+                    break;
+
+                case WeatherTransition.StormToFog:
+                    Transition(WeatherType.Storm, WeatherType.Fog);
+                    break;
+
+                case WeatherTransition.SnowToClear:
+                    ToClear(WeatherType.Snow);
+                    break;
+
+                case WeatherTransition.SnowToRain:
+                    Transition(WeatherType.Snow, WeatherType.Rain);
+                    break;
+
+                case WeatherTransition.SnowToStorm:
+                    Transition(WeatherType.Snow, WeatherType.Storm);
+                    break;
+
+                case WeatherTransition.SnowToFog:
+                    Transition(WeatherType.Snow, WeatherType.Fog);
+                    break;
+
+                case WeatherTransition.FogToClear:
+                    ToClear(WeatherType.Fog);
+                    break;
+
+                case WeatherTransition.FogToRain:
+                    Transition(WeatherType.Fog, WeatherType.Rain);
+                    break;
+
+                case WeatherTransition.FogToStorm:
+                    Transition(WeatherType.Fog, WeatherType.Storm);
+                    break;
+
+                case WeatherTransition.FogToSnow:
+                    Transition(WeatherType.Fog, WeatherType.Snow);
+                    break;
             }
         }
 
@@ -373,7 +387,7 @@ namespace OP_Engine.Time
                 AssetManager.PlayAmbient(newTypeString, true);
             }
 
-            Weather newWeather = WeatherManager.GetWeather(newType);
+            Weather? newWeather = WeatherManager.GetWeather(newType);
             if (newWeather != null)
             {
                 if (newWeather.TransitionTime < 50)
@@ -394,7 +408,7 @@ namespace OP_Engine.Time
                 }
             }
 
-            Weather oldWeather = WeatherManager.GetWeather(oldType);
+            Weather? oldWeather = WeatherManager.GetWeather(oldType);
             if (oldWeather != null)
             {
                 if (oldWeather.TransitionTime > 0)
@@ -432,7 +446,7 @@ namespace OP_Engine.Time
                 AssetManager.PlayAmbient(newTypeString, true);
             }
 
-            Weather newWeather = WeatherManager.GetWeather(newType);
+            Weather? newWeather = WeatherManager.GetWeather(newType);
             if (newWeather != null)
             {
                 if (newWeather.TransitionTime < 50)
@@ -462,7 +476,7 @@ namespace OP_Engine.Time
         {
             string oldTypeString = oldType.ToString();
 
-            Weather oldWeather = WeatherManager.GetWeather(oldType);
+            Weather? oldWeather = WeatherManager.GetWeather(oldType);
             if (oldWeather != null)
             {
                 if (oldWeather.TransitionTime > 0)
@@ -492,6 +506,11 @@ namespace OP_Engine.Time
 
         public static void Reset(TimeRate interval, int year, int month, int day, int hour)
         {
+            if (Now == null)
+            {
+                return;
+            }
+
             Now.Interval = interval;
 
             Now.Years = year;
@@ -516,7 +535,7 @@ namespace OP_Engine.Time
                 Interval = 1000;
             }
 
-            RenderingManager.Lighting.Reset();
+            RenderingManager.Lighting?.Reset();
 
             Paused = false;
 
@@ -527,12 +546,9 @@ namespace OP_Engine.Time
             Now.OnHoursChange += HourChange;
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
-            if (_now != null)
-            {
-                _now.Dispose();
-            }
+            _now?.Dispose();
         }
 
         #endregion

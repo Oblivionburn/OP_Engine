@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Scenes
 {
@@ -14,33 +13,27 @@ namespace OP_Engine.Scenes
         public static long CurrentScene_ID;
         public static long PreviousScene_ID;
 
-        public static List<Scene> Scenes;
+        public static List<Scene> Scenes = [];
 
         #endregion
 
         #region Properties
 
-        public static Scene CurrentScene
+        public static Scene? CurrentScene
         {
-            get
-            {
-                return GetCurrentScene();
-            }
+            get { return GetCurrentScene(); }
         }
 
-        public static Scene PreviousScene
+        public static Scene? PreviousScene
         {
-            get
-            {
-                return GetPreviousScene();
-            }
+            get { return GetPreviousScene(); }
         }
 
         #endregion
 
         #region Events
 
-        public static event EventHandler OnSceneChange;
+        public static event EventHandler? OnSceneChange;
 
         #endregion
 
@@ -48,8 +41,6 @@ namespace OP_Engine.Scenes
 
         public SceneManager(Game game) : base(game)
         {
-            Scenes = new List<Scene>();
-
             game.Exiting += Game_Exiting;
         }
 
@@ -62,16 +53,16 @@ namespace OP_Engine.Scenes
             int count = Scenes.Count;
             for (int i = 0; i < count; i++)
             {
-                Scenes[i]?.Update();
+                Scenes[i].Update();
             }
         }
 
-        public static void Update(Game gameRef, ContentManager content)
+        public static void Update(Game? gameRef, ContentManager? content)
         {
             int count = Scenes.Count;
             for (int i = 0; i < count; i++)
             {
-                Scenes[i]?.Update(gameRef, content);
+                Scenes[i].Update(gameRef, content);
             }
         }
 
@@ -81,11 +72,9 @@ namespace OP_Engine.Scenes
             for (int i = 0; i < count; i++)
             {
                 Scene existing = Scenes[i];
-                if (existing == null)
-                {
-                    existing.DrawWorld(spriteBatch, resolution);
-                    existing.DrawMenu(spriteBatch);
-                }
+
+                existing.DrawWorld(spriteBatch, resolution);
+                existing.DrawMenu(spriteBatch);
             }
         }
 
@@ -95,11 +84,9 @@ namespace OP_Engine.Scenes
             for (int i = 0; i < count; i++)
             {
                 Scene existing = Scenes[i];
-                if (existing == null)
-                {
-                    existing.DrawWorld(spriteBatch, resolution, color);
-                    existing.DrawMenu(spriteBatch);
-                }
+
+                existing.DrawWorld(spriteBatch, resolution, color);
+                existing.DrawMenu(spriteBatch);
             }
         }
 
@@ -108,7 +95,7 @@ namespace OP_Engine.Scenes
             int count = Scenes.Count;
             for (int i = 0; i < count; i++)
             {
-                Scenes[i]?.DrawWorld(spriteBatch, resolution);
+                Scenes[i].DrawWorld(spriteBatch, resolution);
             }
         }
 
@@ -117,7 +104,7 @@ namespace OP_Engine.Scenes
             int count = Scenes.Count;
             for (int i = 0; i < count; i++)
             {
-                Scenes[i]?.DrawWorld(spriteBatch, resolution, color);
+                Scenes[i].DrawWorld(spriteBatch, resolution, color);
             }
         }
 
@@ -126,59 +113,53 @@ namespace OP_Engine.Scenes
             int count = Scenes.Count;
             for (int i = 0; i < count; i++)
             {
-                Scenes[i]?.DrawMenu(spriteBatch);
+                Scenes[i].DrawMenu(spriteBatch);
             }
         }
 
-        public static Scene GetScene(string name)
+        public static Scene? GetScene(string name)
         {
             int count = Scenes.Count;
             for (int i = 0; i < count; i++)
             {
                 Scene existing = Scenes[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public static Scene GetScene(long id)
+        public static Scene? GetScene(long id)
         {
             int count = Scenes.Count;
             for (int i = 0; i < count; i++)
             {
                 Scene existing = Scenes[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public static Scene GetCurrentScene()
+        public static Scene? GetCurrentScene()
         {
             return GetScene(CurrentScene_ID);
         }
 
-        public static Scene GetPreviousScene()
+        public static Scene? GetPreviousScene()
         {
             return GetScene(PreviousScene_ID);
         }
 
         public static void ChangeScene(string name)
         {
-            Scene current_scene = GetCurrentScene();
+            Scene? current_scene = GetCurrentScene();
             if (current_scene != null)
             {
                 PreviousScene_ID = CurrentScene_ID;
@@ -187,7 +168,7 @@ namespace OP_Engine.Scenes
                 current_scene.Active = false;
             }
 
-            Scene new_scene = GetScene(name);
+            Scene? new_scene = GetScene(name);
             if (new_scene != null)
             {
                 CurrentScene_ID = new_scene.ID;
@@ -201,7 +182,7 @@ namespace OP_Engine.Scenes
 
         public static void ChangeScene(long id)
         {
-            Scene current_scene = GetCurrentScene();
+            Scene? current_scene = GetCurrentScene();
             if (current_scene != null)
             {
                 PreviousScene_ID = CurrentScene_ID;
@@ -210,7 +191,7 @@ namespace OP_Engine.Scenes
                 current_scene.Active = false;
             }
 
-            Scene new_scene = GetScene(id);
+            Scene? new_scene = GetScene(id);
             if (new_scene != null)
             {
                 CurrentScene_ID = new_scene.ID;
@@ -224,7 +205,7 @@ namespace OP_Engine.Scenes
 
         public static void ChangeScene(Scene new_scene)
         {
-            Scene current_scene = GetCurrentScene();
+            Scene? current_scene = GetCurrentScene();
             if (current_scene != null)
             {
                 PreviousScene_ID = CurrentScene_ID;
@@ -244,7 +225,7 @@ namespace OP_Engine.Scenes
             OnSceneChange?.Invoke(null, EventArgs.Empty);
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (Scene scene in Scenes)
             {

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Utility;
-using System.Threading.Tasks;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Particles
 {
@@ -14,10 +13,10 @@ namespace OP_Engine.Particles
 
         public static long id;
 
-        public List<Texture2D> Textures;
+        public List<Texture2D> Textures = [];
 
-        public ConcurrentDictionary<long, Particle> Particles;
-        public ConcurrentBag<Particle> ParticleBag;
+        public ConcurrentDictionary<long, Particle> Particles = [];
+        public ConcurrentBag<Particle> ParticleBag = [];
 
         #endregion
 
@@ -25,9 +24,7 @@ namespace OP_Engine.Particles
 
         public ParticleManager()
         {
-            Textures = new List<Texture2D>();
-            Particles = new ConcurrentDictionary<long, Particle>();
-            ParticleBag = new ConcurrentBag<Particle>();
+            
         }
 
         #endregion
@@ -42,7 +39,9 @@ namespace OP_Engine.Particles
 
         public virtual void Update()
         {
-            ParticleBag = new ConcurrentBag<Particle>();
+            ParticleBag = [];
+
+            Particle? value = null;
 
             Parallel.ForEach(Particles, item =>
             {
@@ -52,7 +51,7 @@ namespace OP_Engine.Particles
                 }
                 else
                 {
-                    Particles.TryRemove(item.Key, out Particle value);
+                    Particles.TryRemove(item.Key, out value);
                 }
             });
 
@@ -72,7 +71,7 @@ namespace OP_Engine.Particles
 
         public virtual Particle CreateParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, int waver_min_x, int waver_max_x, int waver_min_y, int waver_max_y)
         {
-            Texture2D texture = null;
+            Texture2D? texture = null;
 
             foreach (Texture2D existing in Textures)
             {
@@ -83,8 +82,8 @@ namespace OP_Engine.Particles
                 }
             }
 
-            CryptoRandom random = new CryptoRandom();
-            Vector2 location = new Vector2(random.Next(-region.X, region.X), random.Next(-region.Y, region.Y));
+            CryptoRandom random = new();
+            Vector2 location = new(random.Next(-region.X, region.X), random.Next(-region.Y, region.Y));
 
             Color new_color = color * opaque;
 
@@ -93,7 +92,7 @@ namespace OP_Engine.Particles
 
         public virtual Particle CreateParticle(string type, Point region, Vector2 velocity, float angle, Color color, float opaque, float size, int lifetime, bool scatter)
         {
-            Texture2D texture = null;
+            Texture2D? texture = null;
 
             foreach (Texture2D existing in Textures)
             {
@@ -105,9 +104,10 @@ namespace OP_Engine.Particles
             }
 
             Vector2 location;
-            CryptoRandom random = new CryptoRandom();
+            CryptoRandom random = new();
 
-            if (scatter)
+            if (scatter &&
+                texture != null)
             {
                 location = new Vector2(random.Next(0, region.X), random.Next(-(texture.Height * 2), region.Y));
             }
@@ -123,9 +123,7 @@ namespace OP_Engine.Particles
 
         public void Dispose()
         {
-            Textures = null;
-            Particles = null;
-            ParticleBag = null;
+            
         }
 
         #endregion

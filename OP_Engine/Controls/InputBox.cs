@@ -7,7 +7,7 @@ namespace OP_Engine.Controls
         #region Variables
 
         public int MaxLength;
-        public string Caret;
+        public string? Caret;
         public int CarrotDelay;
 
         private bool delayed;
@@ -19,7 +19,7 @@ namespace OP_Engine.Controls
 
         public InputBox() : base()
         {
-            
+
         }
 
         #endregion
@@ -55,7 +55,7 @@ namespace OP_Engine.Controls
                                 Caret += " ";
                             }
                         }
-                        
+
                         Caret += "|";
                         delay--;
                     }
@@ -65,7 +65,7 @@ namespace OP_Engine.Controls
                     }
                 }
             }
-            
+
         }
 
         public override void Draw(SpriteBatch spriteBatch)

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Timers;
-
+﻿using System.Timers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 
 namespace OP_Engine.Inputs
 {
@@ -18,10 +17,10 @@ namespace OP_Engine.Inputs
         */
         public bool Updated_By_Game = true;
 
-        public MouseState mouseState = new MouseState();
-        public MouseState lastMouseState = new MouseState();
+        public MouseState mouseState = new();
+        public MouseState lastMouseState = new();
 
-        private Timer mouseListener = new Timer(1);
+        private System.Timers.Timer mouseListener = new(1);
 
         #endregion
 
@@ -111,14 +110,14 @@ namespace OP_Engine.Inputs
 
         #region Events
 
-        public event EventHandler OnStateChange;
-        public event EventHandler OnLeftButtonPress;
-        public event EventHandler OnLeftButtonHeld;
-        public event EventHandler OnRightButtonPress;
-        public event EventHandler OnRightButtonHeld;
-        public event EventHandler OnWheelUp;
-        public event EventHandler OnWheelDown;
-        public event EventHandler OnMouseMove;
+        public event EventHandler? OnStateChange;
+        public event EventHandler? OnLeftButtonPress;
+        public event EventHandler? OnLeftButtonHeld;
+        public event EventHandler? OnRightButtonPress;
+        public event EventHandler? OnRightButtonHeld;
+        public event EventHandler? OnWheelUp;
+        public event EventHandler? OnWheelDown;
+        public event EventHandler? OnMouseMove;
 
         #endregion
 
@@ -154,7 +153,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_MouseState(object sender, ElapsedEventArgs e)
+        public virtual void Check_MouseState(object? sender, ElapsedEventArgs e)
         {
             if (!Updated_By_Game)
             {
@@ -165,7 +164,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_LeftButton(object sender, EventArgs e)
+        public virtual void Check_LeftButton(object? sender, EventArgs e)
         {
             if (mouseState.LeftButton == ButtonState.Released &&
                 lastMouseState.LeftButton == ButtonState.Pressed)
@@ -179,7 +178,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_RightButton(object sender, EventArgs e)
+        public virtual void Check_RightButton(object? sender, EventArgs e)
         {
             if (mouseState.RightButton == ButtonState.Released &&
                 lastMouseState.RightButton == ButtonState.Pressed)
@@ -193,7 +192,7 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_MouseWheel(object sender, EventArgs e)
+        public virtual void Check_MouseWheel(object? sender, EventArgs e)
         {
             if (lastMouseState.ScrollWheelValue < mouseState.ScrollWheelValue)
             {
@@ -205,9 +204,9 @@ namespace OP_Engine.Inputs
             }
         }
 
-        public virtual void Check_MouseMoved(object sender, EventArgs e)
+        public virtual void Check_MouseMoved(object? sender, EventArgs e)
         {
-            if (mouseState.X != lastMouseState.X || 
+            if (mouseState.X != lastMouseState.X ||
                 mouseState.Y != lastMouseState.Y)
             {
                 OnMouseMove?.Invoke(this, EventArgs.Empty);
@@ -220,12 +219,12 @@ namespace OP_Engine.Inputs
             mouseState = Mouse.GetState();
         }
 
-        public virtual void Game_Activated(object sender, EventArgs e)
+        public virtual void Game_Activated(object? sender, EventArgs e)
         {
             mouseListener.Start();
         }
 
-        public virtual void Game_Deactivated(object sender, EventArgs e)
+        public virtual void Game_Deactivated(object? sender, EventArgs e)
         {
             mouseListener.Stop();
         }

@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OP_Engine.Utility;
+using Region = OP_Engine.Utility.Region;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace OP_Engine.Controls
 {
@@ -9,11 +10,11 @@ namespace OP_Engine.Controls
     {
         #region Variables
 
-        public SpriteFont Font;
-        public string Text;
+        public SpriteFont? Font;
+        public string? Text;
         public float Size = 1;
 
-        public Texture2D Texture;
+        public Texture2D? Texture;
         public Rectangle Rectangle;
         public Rectangle Image;
 

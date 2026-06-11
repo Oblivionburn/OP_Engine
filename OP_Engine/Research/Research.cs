@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OP_Engine.Research
+﻿namespace OP_Engine.Research
 {
     public class Research : IDisposable
     {
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Description;
-        public TimeSpan Time;
-        public TimeSpan Max_Time;
+        public string? Name;
+        public string? Description;
+        public TimeSpan Time = new();
+        public TimeSpan Max_Time = new();
         public TimeSpan TimeElapsed;
         public TimeSpan TimeToComplete;
         public bool Started;
@@ -19,24 +16,24 @@ namespace OP_Engine.Research
         public bool Unlocked;
 
         //Resources required to complete this research (name, amount)
-        public Dictionary<string, int> Cost;
+        public Dictionary<string, int> Cost = [];
 
         //Resources paid toward completing this research (name, amount)
-        public Dictionary<string, int> Payments;
+        public Dictionary<string, int> Payments = [];
 
         //IDs of other research required to be Completed for this research to be Unlocked
-        public List<Research> Prerequisites;
+        public List<Research> Prerequisites = [];
 
         //IDs of other research this will contribute to Unlocking when this is Completed
-        public List<Research> Unlocks;
+        public List<Research> Unlocks = [];
 
         #endregion
 
         #region Events
 
-        public event EventHandler OnStart;
-        public event EventHandler OnComplete;
-        public event EventHandler OnUnlock;
+        public event EventHandler? OnStart;
+        public event EventHandler? OnComplete;
+        public event EventHandler? OnUnlock;
 
         #endregion
 
@@ -44,20 +41,11 @@ namespace OP_Engine.Research
 
         public Research()
         {
-            Cost = new Dictionary<string, int>();
-            Payments = new Dictionary<string, int>();
-            Prerequisites = new List<Research>();
-            Unlocks = new List<Research>();
-
-            Time = new TimeSpan();
-            Max_Time = new TimeSpan();
+            
         }
 
         public Research(Dictionary<string, int> cost) : this()
         {
-            Time = default;
-            Max_Time = default;
-
             foreach (var item in cost)
             {
                 Cost.Add(item.Key, item.Value);
@@ -112,7 +100,7 @@ namespace OP_Engine.Research
             }
         }
 
-        public virtual void Update(TimeSpan add_time)
+        public virtual void Update(TimeSpan? add_time)
         {
             if (Started &&
                 !Completed)
@@ -121,20 +109,16 @@ namespace OP_Engine.Research
                 {
                     Complete();
                 }
-                else
+                else if (add_time != null)
                 {
-                    TimeElapsed.Add(add_time);
+                    TimeElapsed.Add((TimeSpan)add_time);
                 }
             }
         }
 
         public virtual void AddCost(string name, int amount)
         {
-            if (!Cost.ContainsKey(name))
-            {
-                Cost.Add(name, amount);
-            }
-            else
+            if (!Cost.TryAdd(name, amount))
             {
                 Cost[name] += amount;
             }
@@ -160,10 +144,7 @@ namespace OP_Engine.Research
 
         public virtual void Dispose()
         {
-            Cost = null;
-            Payments = null;
-            Prerequisites = null;
-            Unlocks = null;
+            
         }
 
         #endregion

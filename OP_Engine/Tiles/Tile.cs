@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OP_Engine.Controls;
+﻿using Microsoft.Xna.Framework.Graphics;
 using OP_Engine.Enums;
 using OP_Engine.Inventories;
 using OP_Engine.Utility;
+using Region = OP_Engine.Utility.Region;
+using ProgressBar = OP_Engine.Controls.ProgressBar;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Tiles
 {
@@ -14,20 +15,20 @@ namespace OP_Engine.Tiles
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Type;
+        public string? Name;
+        public string? Type;
         public float Value;
         public Direction Direction;
         public float Duration;
         public TimeSpan Time;
         public Dimension2 Dimensions;
-        public Location Location;
+        public Location Location = new();
 
-        public World World;
-        public Map Map;
-        public Layer Layer;
+        public World? World;
+        public Map? Map;
+        public Layer? Layer;
 
-        public List<string> Tags;
+        public List<string> Tags = [];
 
         public bool InView;
         public bool InSight;
@@ -41,15 +42,15 @@ namespace OP_Engine.Tiles
         public bool IsLightSource;
         public Color LightColor;
 
-        public string Sound;
+        public string? Sound;
         public int SoundRange;
 
-        public Inventory Inventory;
-        public ProgressBar ProgressBar;
-        public Effect Shader;
+        public Inventory? Inventory;
+        public ProgressBar? ProgressBar;
+        public Effect? Shader;
 
-        public Region Region;
-        public Texture2D Texture;
+        public Region Region = new();
+        public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
         public Color DrawColor;
@@ -60,9 +61,7 @@ namespace OP_Engine.Tiles
 
         public Tile()
         {
-            Location = new Location();
-            Tags = new List<string>();
-            Region = new Region();
+            
         }
 
         #endregion
@@ -87,7 +86,7 @@ namespace OP_Engine.Tiles
                 {
                     float x = Region.X;
                     float width = Region.Width;
-                    
+
                     if (x >= 0 - width - 1)
                     {
                         if (x < resolution.X + width + 1)
@@ -137,10 +136,7 @@ namespace OP_Engine.Tiles
             {
                 if (Visible)
                 {
-                    if (Shader != null)
-                    {
-                        Shader.CurrentTechnique.Passes[0].Apply();
-                    }
+                    Shader?.CurrentTechnique.Passes[0].Apply();
 
                     if (DrawColor != new Color(0, 0, 0, 0))
                     {
@@ -178,7 +174,7 @@ namespace OP_Engine.Tiles
             ProgressBar?.Dispose();
             Shader?.Dispose();
 
-            Region?.Dispose();
+            Region.Dispose();
             Texture = null;
         }
 

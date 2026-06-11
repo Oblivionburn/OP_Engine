@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace OP_Engine.Crafting
 {
@@ -9,7 +6,7 @@ namespace OP_Engine.Crafting
     {
         #region Variables
 
-        public static List<Recipe> Recipes = new List<Recipe>();
+        public static List<Recipe> Recipes = [];
 
         #endregion
 
@@ -24,36 +21,30 @@ namespace OP_Engine.Crafting
 
         #region Methods
 
-        public static Recipe GetRecipe(string name)
+        public static Recipe? GetRecipe(string name)
         {
             int count = Recipes.Count;
             for (int i = 0; i < count; i++)
             {
                 Recipe existing = Recipes[i];
-                if (existing != null)
+                if (existing.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public static Recipe GetRecipe(long id)
+        public static Recipe? GetRecipe(long id)
         {
             int count = Recipes.Count;
             for (int i = 0; i < count; i++)
             {
                 Recipe existing = Recipes[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
@@ -62,7 +53,7 @@ namespace OP_Engine.Crafting
 
         public virtual List<Recipe> GetRecipes(string type, List<string> categories)
         {
-            List<Recipe> recipes = new List<Recipe>();
+            List<Recipe> recipes = [];
 
             int count = Recipes.Count;
             for (int i = 0; i < count; i++)
@@ -103,7 +94,7 @@ namespace OP_Engine.Crafting
             return recipes;
         }
 
-        private void Game_Exiting(object sender, EventArgs e)
+        private void Game_Exiting(object? sender, EventArgs e)
         {
             foreach (Recipe recipe in Recipes)
             {

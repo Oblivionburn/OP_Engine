@@ -1,6 +1,5 @@
-﻿using System;
-
-using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework.Input;
+using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace OP_Engine.Inputs
 {
@@ -8,7 +7,7 @@ namespace OP_Engine.Inputs
     {
         #region Variables
 
-        public string Name;
+        public string? Name;
         public Keys Key;
         public Buttons Button;
 

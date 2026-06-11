@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using OP_Engine.Enums;
 using OP_Engine.Particles;
 using OP_Engine.Utility;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Weathers
 {
@@ -23,7 +22,7 @@ namespace OP_Engine.Weathers
 
         #region Constructor
 
-        public Weather(List<Texture2D> Particles, WeatherType type, int transitionTime)
+        public Weather(List<Texture2D>? Particles, WeatherType type, int transitionTime)
         {
             Type = type;
             TransitionTime = transitionTime;
@@ -50,7 +49,7 @@ namespace OP_Engine.Weathers
         {
             if (Visible)
             {
-                CryptoRandom random = new CryptoRandom();
+                CryptoRandom random = new();
 
                 if (WeatherManager.Lightning)
                 {
@@ -72,7 +71,7 @@ namespace OP_Engine.Weathers
                         {
                             float size = 0;
 
-                            random = new CryptoRandom();
+                            random = new();
                             int result = random.Next(1, 5);
                             switch (result)
                             {
@@ -102,34 +101,34 @@ namespace OP_Engine.Weathers
                         for (int i = 0; i < TransitionTime; i++)
                         {
                             float size = 0;
-                            Vector2 velocity = new Vector2(0, 0);
+                            Vector2 velocity = new(0, 0);
 
-                            random = new CryptoRandom();
+                            random = new();
                             int result = random.Next(1, 5);
                             switch (result)
                             {
                                 case 1:
                                     size = 0.25f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(1, 25) * 0.01f, 0.5f);
+                                    random = new();
+                                    velocity = new(random.Next(1, 25) * 0.01f, 0.5f);
                                     break;
 
                                 case 2:
                                     size = 0.5f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(1, 50) * 0.01f, 1);
+                                    random = new();
+                                    velocity = new(random.Next(1, 50) * 0.01f, 1);
                                     break;
 
                                 case 3:
                                     size = 0.75f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(1, 75) * 0.01f, 2);
+                                    random = new();
+                                    velocity = new(random.Next(1, 75) * 0.01f, 2);
                                     break;
 
                                 case 4:
                                     size = 1f;
-                                    random = new CryptoRandom();
-                                    velocity = new Vector2(random.Next(1, 100) * 0.01f, 3);
+                                    random = new();
+                                    velocity = new(random.Next(1, 100) * 0.01f, 3);
                                     break;
                             }
 
@@ -142,10 +141,8 @@ namespace OP_Engine.Weathers
                         for (int i = 0; i < TransitionTime; i++)
                         {
                             float size = 0;
-                            Vector2 velocity = new Vector2(0, 0);
                             int x = 0;
                             int y = 12;
-                            float angle = 0;
 
                             int result = random.Next(1, 5);
                             switch (result)
@@ -171,8 +168,8 @@ namespace OP_Engine.Weathers
                                     break;
                             }
 
-                            velocity = new Vector2(x, y);
-                            angle = -(float)x / 20;
+                            Vector2 velocity = new(x, y);
+                            float angle = -(float)x / 20;
 
                             Particle particle = ParticleManager.CreateParticle(Type.ToString(), resolution, velocity, angle, color, 0.6f, size, 16, true);
                             ParticleManager.Particles.TryAdd(ParticleManager.GetID(), particle);
@@ -188,26 +185,26 @@ namespace OP_Engine.Weathers
                                 int lifetime = 32;
                                 float opacity = (float)TransitionTime / 2000;
 
-                                Vector2 velocity = new Vector2(0, 0);
+                                Vector2 velocity = new(0, 0);
 
-                                random = new CryptoRandom();
+                                random = new();
                                 int result = random.Next(1, 5);
                                 switch (result)
                                 {
                                     case 1:
-                                        velocity = new Vector2(1f, -0.5f);
+                                        velocity = new(1f, -0.5f);
                                         break;
 
                                     case 2:
-                                        velocity = new Vector2(1f, -1f);
+                                        velocity = new(1f, -1f);
                                         break;
 
                                     case 3:
-                                        velocity = new Vector2(1f, 0.5f);
+                                        velocity = new(1f, 0.5f);
                                         break;
 
                                     case 4:
-                                        velocity = new Vector2(1f, 1f);
+                                        velocity = new(1f, 1f);
                                         break;
                                 }
 

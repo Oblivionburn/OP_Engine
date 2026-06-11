@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OP_Engine.Utility;
 using OP_Engine.Enums;
+using Region = OP_Engine.Utility.Region;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace OP_Engine.Controls
 {
@@ -11,11 +10,11 @@ namespace OP_Engine.Controls
     {
         #region Variables
 
-        List<LabelPart> Parts;
+        public List<LabelPart> Parts;
 
-        public SpriteFont Font;
-        
-        public string Text;
+        public SpriteFont? Font;
+
+        public string? Text;
         public Color TextColor;
 
         public Alignment Alignment_Verticle;
@@ -33,7 +32,7 @@ namespace OP_Engine.Controls
 
         public Label() : base()
         {
-            Parts = new List<LabelPart>();
+            Parts = [];
 
             Size = new Vector2();
             Position = new Vector2();
@@ -45,7 +44,8 @@ namespace OP_Engine.Controls
 
         public override void Update()
         {
-            if (Parts.Count > 0)
+            if (Parts.Count > 0 &&
+                Font != null)
             {
                 Size = Font.MeasureString(" ");
 

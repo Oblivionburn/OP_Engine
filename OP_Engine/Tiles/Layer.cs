@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Color = Microsoft.Xna.Framework.Color;
+using Point = Microsoft.Xna.Framework.Point;
 
 namespace OP_Engine.Tiles
 {
@@ -10,19 +10,19 @@ namespace OP_Engine.Tiles
         #region Variables
 
         public long ID;
-        public string Name;
-        public string Type;
+        public string? Name;
+        public string? Type;
         public bool Visible;
 
-        public World World;
-        public Map Map;
-        public List<Tile> Tiles;
+        public World? World;
+        public Map? Map;
+        public List<Tile> Tiles = [];
 
         public int Rows;
         public int Columns;
         public int Depth;
 
-        public Effect Shader;
+        public Effect? Shader;
 
         #endregion
 
@@ -30,7 +30,7 @@ namespace OP_Engine.Tiles
 
         public Layer()
         {
-            Tiles = new List<Tile>();
+            
         }
 
         #endregion
@@ -50,15 +50,12 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
+                Shader?.CurrentTechnique.Passes[0].Apply();
+
                 int count = Tiles.Count;
                 for (int i = 0; i < count; i++)
                 {
                     Tiles[i]?.Draw(spriteBatch, resolution);
-                }
-
-                if (Shader != null)
-                {
-                    Shader.CurrentTechnique.Passes[0].Apply();
                 }
             }
         }
@@ -67,10 +64,7 @@ namespace OP_Engine.Tiles
         {
             if (Visible)
             {
-                if (Shader != null)
-                {
-                    Shader.CurrentTechnique.Passes[0].Apply();
-                }
+                Shader?.CurrentTechnique.Passes[0].Apply();
 
                 int count = Tiles.Count;
                 for (int i = 0; i < count; i++)
@@ -80,51 +74,37 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public virtual void AddTile(Tile tile)
-        {
-            tile.World = World;
-            tile.Map = Map;
-            tile.Layer = this;
-            Tiles.Add(tile);
-        }
-
-        public virtual Tile GetTile(long id)
+        public virtual Tile? GetTile(long id)
         {
             int count = Tiles.Count;
             for (int i = 0; i < count; i++)
             {
                 Tile existing = Tiles[i];
-                if (existing != null)
+                if (existing?.ID == id)
                 {
-                    if (existing.ID == id)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Tile GetTile(string name)
+        public virtual Tile? GetTile(string name)
         {
             int count = Tiles.Count;
             for (int i = 0; i < count; i++)
             {
                 Tile existing = Tiles[i];
-                if (existing != null)
+                if (existing?.Name == name)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
+                    return existing;
                 }
             }
 
             return null;
         }
 
-        public virtual Tile GetTile(Vector2 location)
+        public virtual Tile? GetTile(Vector2 location)
         {
             //This only works if there's no gaps in the grid (every location has a Tile),
             //otherwise the indexing will be off
@@ -139,27 +119,24 @@ namespace OP_Engine.Tiles
             }
         }
 
-        public virtual Tile GetTile(Vector3 location)
+        public virtual Tile? GetTile(Vector3 location)
         {
             int count = Tiles.Count;
             for (int i = 0; i < count; i++)
             {
                 Tile existing = Tiles[i];
-                if (existing != null)
+                if (existing?.Location.X == location.X &&
+                    existing?.Location.Y == location.Y &&
+                    existing?.Location.Z == location.Z)
                 {
-                    if (existing.Location.X == location.X &&
-                        existing.Location.Y == location.Y &&
-                        existing.Location.Z == location.Z)
-                    {
-                        return existing;
-                    }
-                } 
+                    return existing;
+                }
             }
 
             return null;
         }
 
-        public virtual Tile GetTile(Point screen_point, Point tileSize)
+        public virtual Tile? GetTile(Point screen_point, Point tileSize)
         {
             //This only works if the tiles are sorted by Y,X
             //Can use Sort_ForDrawing() method to pre-sort them by Y,X
@@ -194,7 +171,7 @@ namespace OP_Engine.Tiles
             return GetTile(new Vector2(x_pos, y_pos));
         }
 
-        public virtual Tile WithinTile(Point screen_point, Point tileSize)
+        public virtual Tile? WithinTile(Point screen_point, Point tileSize)
         {
             //This only works if the tiles are sorted by Y,X
             //Can use Sort_ForDrawing() method to pre-sort them by Y,X

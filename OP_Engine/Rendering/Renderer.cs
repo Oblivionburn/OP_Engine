@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace OP_Engine.Rendering
@@ -9,16 +8,16 @@ namespace OP_Engine.Rendering
         #region Variables
 
         public long ID;
-        public string Name;
+        public string? Name;
 
         public bool SetRenderTarget_BeforeDraw;
         public bool ClearGraphics_BeforeDraw;
         public bool DrawToRenderTarget;
         public bool ClearRenderTarget_AfterDraw;
-        public Color GraphicsClearColor;
-        public GraphicsDevice GraphicsDevice;
-        public RenderTarget2D RenderTarget;
-        public BlendState BlendState;
+        public Microsoft.Xna.Framework.Color GraphicsClearColor;
+        public GraphicsDevice? GraphicsDevice;
+        public RenderTarget2D? RenderTarget;
+        public BlendState BlendState = new();
 
         #endregion
 
@@ -26,7 +25,7 @@ namespace OP_Engine.Rendering
 
         public Renderer()
         {
-            BlendState = new BlendState();
+            
         }
 
         public Renderer(long id, string name) : this()
@@ -39,23 +38,23 @@ namespace OP_Engine.Rendering
 
         #region Methods
 
-        public virtual void Init(GraphicsDeviceManager graphicsDevice, Point resolution)
+        public virtual void Init(GraphicsDeviceManager graphicsDevice, Microsoft.Xna.Framework.Point resolution)
         {
             GraphicsDevice = graphicsDevice.GraphicsDevice;
-            RenderTarget = new RenderTarget2D(GraphicsDevice, resolution.X, resolution.Y);
+            RenderTarget = new(GraphicsDevice, resolution.X, resolution.Y);
         }
 
-        public virtual void Init(GraphicsDeviceManager graphicsDevice, Point resolution, Color graphicsClearColor)
+        public virtual void Init(GraphicsDeviceManager graphicsDevice, Microsoft.Xna.Framework.Point resolution, Microsoft.Xna.Framework.Color graphicsClearColor)
         {
             GraphicsDevice = graphicsDevice.GraphicsDevice;
-            RenderTarget = new RenderTarget2D(GraphicsDevice, resolution.X, resolution.Y);
+            RenderTarget = new(GraphicsDevice, resolution.X, resolution.Y);
             GraphicsClearColor = graphicsClearColor;
         }
 
-        public virtual void Init(GraphicsDeviceManager graphicsDevice, Point resolution, Color graphicsClearColor, BlendFunction alphaBlendFunction, Blend alphaSourceBlend, Blend alphaDestinationBlend, BlendFunction colorBlendFunction, Blend colorSourceBlend, Blend colorDestinationBlend)
+        public virtual void Init(GraphicsDeviceManager graphicsDevice, Microsoft.Xna.Framework.Point resolution, Microsoft.Xna.Framework.Color graphicsClearColor, BlendFunction alphaBlendFunction, Blend alphaSourceBlend, Blend alphaDestinationBlend, BlendFunction colorBlendFunction, Blend colorSourceBlend, Blend colorDestinationBlend)
         {
             GraphicsDevice = graphicsDevice.GraphicsDevice;
-            RenderTarget = new RenderTarget2D(GraphicsDevice, resolution.X, resolution.Y);
+            RenderTarget = new(GraphicsDevice, resolution.X, resolution.Y);
             GraphicsClearColor = graphicsClearColor;
 
             BlendState.AlphaBlendFunction = alphaBlendFunction;
@@ -71,16 +70,16 @@ namespace OP_Engine.Rendering
             //Where you would handle lighting calculations
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
+        public virtual void Draw(SpriteBatch spriteBatch, Microsoft.Xna.Framework.Point resolution)
         {
             if (SetRenderTarget_BeforeDraw)
             {
-                GraphicsDevice.SetRenderTarget(RenderTarget);
+                GraphicsDevice?.SetRenderTarget(RenderTarget);
             }
 
             if (ClearGraphics_BeforeDraw)
             {
-                GraphicsDevice.Clear(GraphicsClearColor);
+                GraphicsDevice?.Clear(GraphicsClearColor);
             }
 
             spriteBatch.Begin(SpriteSortMode.Immediate, blendState: BlendState);
@@ -89,14 +88,14 @@ namespace OP_Engine.Rendering
 
             if (DrawToRenderTarget)
             {
-                spriteBatch.Draw(RenderTarget, new Rectangle(0, 0, resolution.X, resolution.Y), Color.White);
+                spriteBatch.Draw(RenderTarget, new Microsoft.Xna.Framework.Rectangle(0, 0, resolution.X, resolution.Y), Microsoft.Xna.Framework.Color.White);
             }
 
             spriteBatch.End();
 
             if (ClearRenderTarget_AfterDraw)
             {
-                GraphicsDevice.SetRenderTarget(null);
+                GraphicsDevice?.SetRenderTarget(null);
             }
         }
 

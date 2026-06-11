@@ -1,4 +1,4 @@
-﻿namespace OP_Engine.Weathers
+﻿namespace OP_Engine.Enums
 {
     public enum WeatherType
     {

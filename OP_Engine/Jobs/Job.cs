@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OP_Engine.Time;
+﻿using OP_Engine.Time;
 
 namespace OP_Engine.Jobs
 {
@@ -9,19 +7,19 @@ namespace OP_Engine.Jobs
         #region Variables
 
         public long ID;
-        public string Name;
+        public string? Name;
         public long OwnerID;
 
-        public List<Appointment> Schedule;
-        public List<JobTask> Tasks;
-        public List<JobTask> TasksCompleted;
-        public List<JobTask> TasksAborted;
+        public List<Appointment> Schedule = [];
+        public List<JobTask> Tasks = [];
+        public List<JobTask> TasksCompleted = [];
+        public List<JobTask> TasksAborted = [];
 
         #endregion
 
         #region Properties
 
-        public JobTask CurrentTask
+        public JobTask? CurrentTask
         {
             get
             {
@@ -35,10 +33,7 @@ namespace OP_Engine.Jobs
 
         public Job()
         {
-            Schedule = new List<Appointment>();
-            Tasks = new List<JobTask>();
-            TasksCompleted = new List<JobTask>();
-            TasksAborted = new List<JobTask>();
+            
         }
 
         #endregion
@@ -47,7 +42,7 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time)
         {
-            JobTask current = Get_CurrentTask();
+            JobTask? current = Get_CurrentTask();
             if (current != null)
             {
                 if (!current.Completed)
@@ -85,7 +80,7 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time, TimeSpan time_span)
         {
-            JobTask current = Get_CurrentTask();
+            JobTask? current = Get_CurrentTask();
             if (current != null)
             {
                 if (!current.Completed)
@@ -109,53 +104,80 @@ namespace OP_Engine.Jobs
                         }
 
                         Tasks.RemoveAt(0);
-
-                        if (CurrentTask != null)
-                        {
-                            CurrentTask.Start(current_time, time_span);
-                        }
+                        CurrentTask?.Start(current_time, time_span);
                     }
                 }
             }
         }
 
-        public virtual JobTask GetTask(long id)
+        public virtual Appointment? GetAppointment(TimeHandler current_time)
         {
-            int count = Tasks.Count;
+            int count = Schedule.Count;
             for (int i = 0; i < count; i++)
             {
-                JobTask existing = Tasks[i];
-                if (existing != null)
+                Appointment appointment = Schedule[i];
+
+                //Check for StartTime and EndTime not in the same day
+                //Example: Starts at 22:00 and ends 06:00 the next morning
+                if (appointment?.StartTime?.Hours > appointment?.EndTime?.Hours &&
+                    appointment?.EndTime?.Hours >= 0)
                 {
-                    if (existing.ID == id)
+                    if (current_time.Hours >= appointment?.StartTime?.Hours &&
+                        current_time.Minutes >= appointment?.StartTime?.Minutes &&
+                        current_time.Seconds >= appointment?.StartTime?.Seconds &&
+                        current_time.Milliseconds >= appointment?.StartTime?.Milliseconds)
                     {
-                        return existing;
+                        return appointment;
                     }
-                }  
+                    else if (current_time.Hours < appointment?.EndTime?.Hours)
+                    {
+                        return appointment;
+                    }
+                }
+                else if (current_time.Hours >= appointment?.StartTime?.Hours &&
+                        current_time.Minutes >= appointment?.StartTime?.Minutes &&
+                        current_time.Seconds >= appointment?.StartTime?.Seconds &&
+                        current_time.Milliseconds >= appointment?.StartTime?.Milliseconds &&
+                        current_time.Hours < appointment?.EndTime?.Hours)
+                {
+                    return appointment;
+                }
             }
 
             return null;
         }
 
-        public virtual JobTask GetTask(string name)
+        public virtual JobTask? GetTask(long id)
         {
             int count = Tasks.Count;
             for (int i = 0; i < count; i++)
             {
                 JobTask existing = Tasks[i];
-                if (existing != null)
+                if (existing.ID == id)
                 {
-                    if (existing.Name == name)
-                    {
-                        return existing;
-                    }
-                } 
+                    return existing;
+                }
             }
 
             return null;
         }
 
-        public virtual JobTask Get_CurrentTask()
+        public virtual JobTask? GetTask(string name)
+        {
+            int count = Tasks.Count;
+            for (int i = 0; i < count; i++)
+            {
+                JobTask existing = Tasks[i];
+                if (existing.Name == name)
+                {
+                    return existing;
+                }
+            }
+
+            return null;
+        }
+
+        public virtual JobTask? Get_CurrentTask()
         {
             if (Tasks.Count > 0)
             {
@@ -192,7 +214,7 @@ namespace OP_Engine.Jobs
                     task.EndTime = current_time;
                     TasksAborted.Add(task);
                 }
-                
+
                 Tasks.Remove(task);
                 i--;
             }
@@ -200,25 +222,20 @@ namespace OP_Engine.Jobs
 
         public virtual void Dispose()
         {
-            Schedule = null;
-
             foreach (JobTask task in Tasks)
             {
                 task.Dispose();
             }
-            Tasks = null;
 
             foreach (JobTask task in TasksCompleted)
             {
                 task.Dispose();
             }
-            TasksCompleted = null;
 
             foreach (JobTask task in TasksAborted)
             {
                 task.Dispose();
             }
-            TasksAborted = null;
         }
 
         #endregion
