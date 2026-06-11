@@ -4,9 +4,9 @@
 > This does not include an editor like you would find with Unity or Unreal Engine, this is for programming games from scratch in Visual Studio. I created this 'engine' to save myself some time with getting new games up and running. I've mostly used it for making RPG, Strategy, and Simulation games.
 
 ### Dependencies:
-- MonoGame v3.7.1.189+ for Windows Desktop DirectX (dll's included in the zip release, but you'll still need to install it for the templates in VS)
+- MonoGame.Framework.DesktopGL v3.8.4.1+
 - FMOD Sound System dll v0.2.1.4+ (not included for legal reasons, but C# wrapper for it is)
-- Your game to be a DirectX Windows Application project using .NET Framework 4.8+
+- Project framework .NET 8.0+
 
 ### Features:
 - Focus on organization, optimizations, easy to read code, and keeping things simple yet flexible (definitely a balancing act with Simplicity vs Flexibility)
