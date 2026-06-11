@@ -6,8 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
-    <PackageId>OP_Engine_v1.0.9.6</PackageId>
-    <Version>1.0.9.6</Version>
+    <PackageId>OP_Engine</PackageId>
+    <Version>1.0.9.7</Version>
     <Authors>Oblivionburn</Authors>
     <Company>Oblivionburn Productions</Company>
     <Description>A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.</Description>
@@ -16,18 +16,17 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <PackageReleaseNotes>
-- Added FaceDirection method to Character class
-- Added GetAppointment method to Job class
-- Implemented separate Draw_Layers method in Map class for rendering of Layers, while Draw method is now for the Map.Texture
-- Updated framework to .NET 8.0
-- Added nuget reference to latest version of MonoGame library
-    </PackageReleaseNotes>
+		- Switched to MonoGame.Framework.WindowsDX
+	</PackageReleaseNotes>
     <PackageTags>op_engine game engine</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.4.1" />
-    <None Include="README.md" Pack="true" PackagePath="\"/>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4.1" />
   </ItemGroup>
 
 </Project>
