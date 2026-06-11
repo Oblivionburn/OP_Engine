@@ -3,6 +3,9 @@
 > [!WARNING]
 > This does not include an editor like you would find with Unity or Unreal Engine, this is for programming games from scratch in Visual Studio. I created this 'engine' to save myself some time with getting new games up and running. I've mostly used it for making RPG, Strategy, and Simulation games.
 
+> [!NOTE]
+> Also available through nuget.org: https://www.nuget.org/packages/OP_Engine
+
 ### Dependencies:
 - MonoGame.Framework.DesktopGL v3.8.4.1+
 - FMOD Sound System dll v0.2.1.4+ (not included for legal reasons, but C# wrapper for it is)
