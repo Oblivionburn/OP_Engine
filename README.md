@@ -3,18 +3,21 @@
 > [!WARNING]
 > This does not include an editor like you would find with Unity or Unreal Engine, this is for programming games from scratch in Visual Studio. I created this 'engine' to save myself some time with getting new games up and running. I've mostly used it for making RPG, Strategy, and Simulation games.
 
+> [!NOTE]
+> This DLL is also available through nuget.org: https://www.nuget.org/packages/OP_Engine
+
 ### Dependencies:
-- MonoGame.Framework.DesktopGL v3.8.4.1+
-- FMOD Sound System dll v0.2.1.4+ (not included for legal reasons, but C# wrapper for it is)
+- MonoGame.Framework.WindowsDX v3.8.4.1+
+- fmod.dll v0.2.3.14+ (not included for legal reasons, but C# wrapper for it is)
 - Project framework .NET 8.0+
 
 ### Features:
-- Focus on organization, optimizations, easy to read code, and keeping things simple yet flexible (definitely a balancing act with Simplicity vs Flexibility)
+- A focus on simplicity, organization, and being highly optimized
 - Custom game form with basic pre-built Updating/Drawing methods and handling window resizing
 - Modular component architecture for only including what's needed/wanted in a project
   - Example: "Components.Add(new InputManager(this));" in your game's LoadContent() method
 - Overridable methods for per-game customizations (components themselves require static methods for accessibility)
-- UI objects: Button, Label, InputBox, Picture, ProgressBar, and Slider
+- UI objects: Button, Label, InputBox, Picture, and ProgressBar
 
 # Components:
 
@@ -31,15 +34,13 @@
     - Inventory (list of Items)
     - Stats class with lots of generic RPG stat variables
     - Lists Skills, Traits, and StatusEffects
-    - Events for detecting noises, sights, smells, tastes, and touches (handy for stealth mechanics and realistic NPC reactions)
     - Job class for queueing Tasks and handling AI schedules
       - Task class includes a progress bar to render progress on the screen
     - Health/Mana/Energy/Stamina progress bars
     - Spellbook (see SpellbookManager below for details)
-    - Some basic animation code for spritesheets with 4 directions of movement (can override Animator class for more)
+    - Some basic animation code for spritesheets with 4 directions of movement
       - Default usage expects spritesheet to have sprites facing South in first row, West in second row, East in third row, and North in fourth row
     - Boolean flags for Interacting, Unconscious, Dead, InCombat, and Travelling
-    - List of Memory object for tracking in-game events or recalling experiences in NPC dialogue
     
 ## JobManager
 - For central organization of Jobs (jobs not added to it by default)
@@ -117,19 +118,14 @@
       - There's no loop option for sounds
     - "Textures" folder
       - Textures organized in sub-folders
-      
-## ModManager
-- For handling moddable games
 
 ## Logger
 - For logging stuff like game crashes
 
 # Utilities:
-- Something class which includes many basic variables
 - Region class that renderable objects use instead of Monogame's Rectangle struct
   - Makes it possible to do stuff like making a higher layer of tiles reference the regions in a lower layer of tiles, so you only have to iterate through a single layer to move multiple layers across the screen (far more efficient than iterating through every Tile in every Layer when you have thousands of tiles in many layers)
 - Cryptography-grade random number generator for extreme randomness (named CryptoRandom in library)
 - GetLine method for fast ray-tracing between two coordinates (returns list of coordinates between the two points)
-- Example code for A* pathing
-- Various enums, structs, and other classes
+- Some other misc support classes
 
