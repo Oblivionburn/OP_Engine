@@ -28,7 +28,7 @@ namespace OP_Engine.Utility
 
         public static void Init(Game game, string content_dir)
         {
-            if (!Directories.TryAdd("Content", content_dir))
+            if (Directories.TryAdd("Content", content_dir))
             {
                 Content = new ContentManager(game.Services, content_dir)
                 {
