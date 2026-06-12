@@ -4,10 +4,12 @@
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+	<IncludeSymbols>true</IncludeSymbols>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <PackageId>OP_Engine</PackageId>
-    <Version>1.0.9.7</Version>
+    <Version>1.0.9.8</Version>
     <Authors>Oblivionburn</Authors>
     <Company>Oblivionburn Productions</Company>
     <Description>A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.</Description>
@@ -16,7 +18,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <PackageReleaseNotes>
-		- Switched to MonoGame.Framework.WindowsDX
+		- Included snupkg symbols file for debugging
 	</PackageReleaseNotes>
     <PackageTags>op_engine game engine</PackageTags>
   </PropertyGroup>
