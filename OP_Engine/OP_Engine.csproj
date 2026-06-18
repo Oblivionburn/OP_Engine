@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <PackageId>OP_Engine</PackageId>
-    <Version>1.1.0.0</Version>
+    <Version>1.1.0.1</Version>
     <Authors>Oblivionburn</Authors>
     <Company>Oblivionburn Productions</Company>
     <Description>A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.</Description>
@@ -18,7 +18,11 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <PackageReleaseNotes>
-		- Updated FMOD C# wrapper for fmod.dll v0.2.3.14
+		- Fixed Menu.GetButton method properties not nullable
+		- Fixed Menu.GetLabel method properties not nullable
+		- Fixed Menu.GetPicture method properties not nullable
+		- Fixed Menu.GetInput method properties not nullable
+		- Fixed Menu.GetProgressBar method properties not nullable
 	</PackageReleaseNotes>
     <PackageTags>op_engine game engine</PackageTags>
   </PropertyGroup>

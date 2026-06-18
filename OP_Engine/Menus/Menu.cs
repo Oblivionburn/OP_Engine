@@ -859,7 +859,7 @@ namespace OP_Engine.Menus
             OnAddInput?.Invoke(this, EventArgs.Empty);
         }
 
-        public Button? GetButton(string name)
+        public Button? GetButton(string? name)
         {
             int count = Buttons.Count;
             for (int i = 0; i < count; i++)
@@ -904,7 +904,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public Label? GetLabel(string name)
+        public Label? GetLabel(string? name)
         {
             int count = Labels.Count;
             for (int i = 0; i < count; i++)
@@ -934,7 +934,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public Picture? GetPicture(string name)
+        public Picture? GetPicture(string? name)
         {
             int count = Pictures.Count;
             for (int i = 0; i < count; i++)
@@ -964,7 +964,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public InputBox? GetInput(string name)
+        public InputBox? GetInput(string? name)
         {
             int count = Inputs.Count;
             for (int i = 0; i < count; i++)
@@ -994,7 +994,7 @@ namespace OP_Engine.Menus
             return null;
         }
 
-        public ProgressBar? GetProgressBar(string name)
+        public ProgressBar? GetProgressBar(string? name)
         {
             int count = ProgressBars.Count;
             for (int i = 0; i < count; i++)
