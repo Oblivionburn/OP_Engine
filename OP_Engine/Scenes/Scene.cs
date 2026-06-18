@@ -20,10 +20,10 @@ namespace OP_Engine.Scenes
         public bool Active;
         public bool Visible;
 
-        public World World = new();
-        public Menu Menu = new();
+        public World? World = new();
+        public Menu? Menu = new();
 
-        public Picture TextFrame = new();
+        public Picture? TextFrame = new();
         public float TextFrame_OpaqueLevel;
         public List<Button> Messages = [];
         public bool BlockMessages;
@@ -52,7 +52,7 @@ namespace OP_Engine.Scenes
         {
             if (Visible)
             {
-                Menu.Update();
+                Menu?.Update();
             }
         }
 
@@ -60,7 +60,7 @@ namespace OP_Engine.Scenes
         {
             if (Visible)
             {
-                Menu.Update(gameRef, content);
+                Menu?.Update(gameRef, content);
             }
         }
 
@@ -68,8 +68,8 @@ namespace OP_Engine.Scenes
         {
             if (Visible)
             {
-                World.Draw(spriteBatch, resolution);
-                Menu.Draw(spriteBatch);
+                World?.Draw(spriteBatch, resolution);
+                Menu?.Draw(spriteBatch);
             }
         }
 
@@ -77,8 +77,8 @@ namespace OP_Engine.Scenes
         {
             if (Visible)
             {
-                World.Draw(spriteBatch, resolution, color);
-                Menu.Draw(spriteBatch);
+                World?.Draw(spriteBatch, resolution, color);
+                Menu?.Draw(spriteBatch);
             }
         }
 
@@ -91,7 +91,7 @@ namespace OP_Engine.Scenes
         {
             if (Visible)
             {
-                World.Draw(spriteBatch, resolution, color);
+                World?.Draw(spriteBatch, resolution, color);
             }
         }
 
@@ -99,7 +99,7 @@ namespace OP_Engine.Scenes
         {
             if (Visible)
             {
-                Menu.Draw(spriteBatch);
+                Menu?.Draw(spriteBatch);
             }
         }
 
@@ -120,6 +120,11 @@ namespace OP_Engine.Scenes
 
         public virtual void PrintMessage(SpriteFont font, string text, Point resolution)
         {
+            if (TextFrame?.Region == null)
+            {
+                return;
+            }
+
             if (!BlockMessages)
             {
                 int height = resolution.Y / 32;
@@ -157,18 +162,22 @@ namespace OP_Engine.Scenes
                 if (Messages.Count > 0 &&
                     Messages.Count < 5)
                 {
-                    Vector2 vector;
-                    vector.X = Messages[Messages.Count - 1].Region.X;
-                    vector.Y = Messages[Messages.Count - 1].Region.Y;
+                    Button last_message = Messages[Messages.Count - 1];
+                    if (last_message.Region != null)
+                    {
+                        Vector2 vector;
+                        vector.X = last_message.Region.X;
+                        vector.Y = last_message.Region.Y;
 
-                    Vector2 vector2;
-                    vector2.X = vector.X;
-                    vector2.Y = vector.Y + (resolution.Y / 32);
+                        Vector2 vector2;
+                        vector2.X = vector.X;
+                        vector2.Y = vector.Y + (resolution.Y / 32);
 
-                    int width = (int)TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
-                    int x = (int)TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
+                        int width = (int)TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
+                        int x = (int)TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
 
-                    label.Region = new Region(x, (int)vector2.Y, width, height);
+                        label.Region = new Region(x, (int)vector2.Y, width, height);
+                    }
                 }
                 else
                 {
@@ -177,20 +186,28 @@ namespace OP_Engine.Scenes
                         Messages.RemoveAt(0);
                         for (int j = 0; j < Messages.Count; j++)
                         {
-                            Messages[j].Region = new Region(Messages[j].Region.X, Messages[j].Region.Y - resolution.Y / 32, TextFrame.Region.Width, height);
+                            Button message = Messages[j];
+                            if (message.Region != null)
+                            {
+                                message.Region = new Region(message.Region.X, message.Region.Y - resolution.Y / 32, TextFrame.Region.Width, height);
+                            }
                         }
 
-                        Vector2 vector;
-                        vector.X = Messages[Messages.Count - 1].Region.X;
-                        vector.Y = Messages[Messages.Count - 1].Region.Y;
+                        Button last_message = Messages[Messages.Count - 1];
+                        if (last_message.Region != null)
+                        {
+                            Vector2 vector;
+                            vector.X = last_message.Region.X;
+                            vector.Y = last_message.Region.Y;
 
-                        Vector2 vector2;
-                        vector2.X = vector.X;
-                        vector2.Y = vector.Y + (resolution.Y / 32);
+                            Vector2 vector2;
+                            vector2.X = vector.X;
+                            vector2.Y = vector.Y + (resolution.Y / 32);
 
-                        int width2 = (int)TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
-                        int x2 = (int)TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
-                        label.Region = new Region(x2, (int)vector2.Y, width2, height);
+                            int width2 = (int)TextFrame.Region.Width - 32 - (num - label.Text.Length) * 10;
+                            int x2 = (int)TextFrame.Region.X + 16 + (num - label.Text.Length) * 5;
+                            label.Region = new Region(x2, (int)vector2.Y, width2, height);
+                        }
                     }
                     else
                     {
@@ -216,10 +233,10 @@ namespace OP_Engine.Scenes
 
         public virtual void Dispose()
         {
-            World.Dispose();
-            Menu.Dispose();
+            World?.Dispose();
+            Menu?.Dispose();
 
-            TextFrame.Dispose();
+            TextFrame?.Dispose();
 
             foreach (Button label in Messages)
             {

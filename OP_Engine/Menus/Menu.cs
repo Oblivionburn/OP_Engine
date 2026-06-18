@@ -219,7 +219,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(long id, string name, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color color, bool visible)
+        public void AddButton(long id, string? name, Texture2D? texture, Texture2D? texture_hover, Texture2D? texture_disabled, Region? region, Color color, bool visible)
         {
             Button button = new()
             {
@@ -252,7 +252,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Texture2D? texture, Region? region, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -279,7 +279,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Texture2D? texture, Region? region, Color draw_color, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -306,7 +306,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D? texture, Region? region, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -334,7 +334,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D? texture, Region? region, Color draw_color, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -362,7 +362,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Texture2D? texture, Texture2D? texture_hover, Texture2D? texture_disabled, Region? region, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -399,7 +399,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Texture2D? texture, Texture2D? texture_hover, Texture2D? texture_disabled, Region? region, Color draw_color, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -436,7 +436,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D? texture, Texture2D? texture_hover, Texture2D? texture_disabled, Region? region, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -474,7 +474,7 @@ namespace OP_Engine.Menus
             OnAddButton?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddButton(SpriteFont font, long id, string name, string text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D texture, Texture2D texture_hover, Texture2D texture_disabled, Region region, Color draw_color, bool selected, bool visible)
+        public void AddButton(SpriteFont? font, long id, string? name, string? text, Color text_color, Color text_highlight_color, Color text_disabled_color, Texture2D? texture, Texture2D? texture_hover, Texture2D? texture_disabled, Region? region, Color draw_color, bool selected, bool visible)
         {
             Button button = new()
             {
@@ -534,7 +534,7 @@ namespace OP_Engine.Menus
             OnAddPicture?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddPicture(long id, string name, Texture2D texture, Region region, Color color, bool visible)
+        public void AddPicture(long id, string? name, Texture2D? texture, Region? region, Color color, bool visible)
         {
             Picture picture = new()
             {
@@ -584,7 +584,7 @@ namespace OP_Engine.Menus
             OnAddLabel?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Region region, bool visible)
+        public void AddLabel(SpriteFont? font, long id, string? name, string? text, Color text_color, Region? region, bool visible)
         {
             Label label = new()
             {
@@ -603,7 +603,7 @@ namespace OP_Engine.Menus
             OnAddLabel?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Region region, bool visible)
+        public void AddLabel(SpriteFont? font, long id, string? name, string? text, Color text_color, Texture2D? texture, Region? region, bool visible)
         {
             Label label = new()
             {
@@ -628,7 +628,7 @@ namespace OP_Engine.Menus
             OnAddLabel?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddLabel(SpriteFont font, long id, string name, string text, Color text_color, Texture2D texture, Region region, Color draw_color, bool visible)
+        public void AddLabel(SpriteFont? font, long id, string? name, string? text, Color text_color, Texture2D? texture, Region? region, Color draw_color, bool visible)
         {
             Label label = new()
             {
@@ -686,7 +686,7 @@ namespace OP_Engine.Menus
             OnAddProgressBar?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddProgressBar(long id, string name, int max, int value, int increment, Texture2D base_texture, Texture2D bar_texture, Region region, Color draw_color, bool visible)
+        public void AddProgressBar(long id, string? name, int max, int value, int increment, Texture2D? base_texture, Texture2D? bar_texture, Region? region, Color draw_color, bool visible)
         {
             ProgressBar progressBar = new()
             {
@@ -747,7 +747,7 @@ namespace OP_Engine.Menus
             OnAddInput?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Texture2D texture, Region region, bool active, bool visible)
+        public void AddInput(SpriteFont? font, long id, int max_length, string? name, string? text, Color text_color, Texture2D? texture, Region? region, bool active, bool visible)
         {
             InputBox input = new()
             {
@@ -775,7 +775,7 @@ namespace OP_Engine.Menus
             OnAddInput?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Color draw_color, Texture2D texture, Region region, bool active, bool visible)
+        public void AddInput(SpriteFont? font, long id, int max_length, string? name, string? text, Color text_color, Color draw_color, Texture2D? texture, Region? region, bool active, bool visible)
         {
             InputBox input = new()
             {
@@ -803,7 +803,7 @@ namespace OP_Engine.Menus
             OnAddInput?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Texture2D texture, Region region, float opacity, bool active, bool visible)
+        public void AddInput(SpriteFont? font, long id, int max_length, string? name, string text, Color text_color, Texture2D? texture, Region? region, float opacity, bool active, bool visible)
         {
             InputBox input = new()
             {
@@ -831,7 +831,7 @@ namespace OP_Engine.Menus
             OnAddInput?.Invoke(this, EventArgs.Empty);
         }
 
-        public void AddInput(SpriteFont font, long id, int max_length, string name, string text, Color text_color, Color draw_color, Texture2D texture, Region region, float opacity, bool active, bool visible)
+        public void AddInput(SpriteFont? font, long id, int max_length, string? name, string? text, Color text_color, Color draw_color, Texture2D? texture, Region? region, float opacity, bool active, bool visible)
         {
             InputBox input = new()
             {

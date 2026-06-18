@@ -45,7 +45,8 @@ namespace OP_Engine.Controls
         public override void Update()
         {
             if (Parts.Count > 0 &&
-                Font != null)
+                Font != null &&
+                Region != null)
             {
                 Size = Font.MeasureString(" ");
 

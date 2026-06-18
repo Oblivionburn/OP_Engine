@@ -23,7 +23,7 @@ namespace OP_Engine.Controls
         public float Max_Value;
         public float Rate;
 
-        public Region Region;
+        public Region? Region;
         public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
