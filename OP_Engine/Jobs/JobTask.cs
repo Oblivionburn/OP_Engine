@@ -20,7 +20,7 @@ namespace OP_Engine.Jobs
         public List<JobTask> SubTasks = [];
 
         public Direction Direction;
-        public Location Location = new();
+        public Location? Location = new();
 
         public TimeHandler? StartTime;
         public TimeSpan? StepTime;
@@ -38,7 +38,7 @@ namespace OP_Engine.Jobs
         /// Alternative way to check if task is in progress (TaskBar.Value < TaskBar.Max_Value) if EndTime is null and TaskBar.Rate > 0, 
         /// or for visual display of task progress.
         /// </summary>
-        public ProgressBar TaskBar = new();
+        public ProgressBar? TaskBar = new();
 
         #endregion
 
@@ -74,10 +74,13 @@ namespace OP_Engine.Jobs
             {
                 if (current_time != null)
                 {
-                    if (TaskBar.Rate > 0 &&
-                        TaskBar.Value < TaskBar.Max_Value)
+                    if (TaskBar != null)
                     {
-                        TaskBar.Step();
+                        if (TaskBar.Rate > 0 &&
+                            TaskBar.Value < TaskBar.Max_Value)
+                        {
+                            TaskBar.Step();
+                        }
                     }
 
                     Action();
@@ -123,10 +126,13 @@ namespace OP_Engine.Jobs
                             current_time.Milliseconds);
                         StepTime?.Add(step_time);
 
-                        if (TaskBar.Rate > 0 &&
-                            TaskBar.Value < TaskBar.Max_Value)
+                        if (TaskBar != null)
                         {
-                            TaskBar.Step();
+                            if (TaskBar.Rate > 0 &&
+                                TaskBar.Value < TaskBar.Max_Value)
+                            {
+                                TaskBar.Step();
+                            }
                         }
 
                         Action();
@@ -231,7 +237,8 @@ namespace OP_Engine.Jobs
                         return true;
                     }
                 }
-                else if (TaskBar.Value > 0 &&
+                else if (TaskBar != null &&
+                         TaskBar.Value > 0 &&
                          TaskBar.Rate > 0 &&
                          TaskBar.Value < TaskBar.Max_Value)
                 {
@@ -275,7 +282,7 @@ namespace OP_Engine.Jobs
 
         public virtual void Dispose()
         {
-            TaskBar.Dispose();
+            TaskBar?.Dispose();
 
             StartTime?.Dispose();
             EndTime?.Dispose();
