@@ -1,4 +1,6 @@
-﻿using OP_Engine.Enums;
+﻿using OP_Engine.Characters;
+using OP_Engine.Enums;
+using OP_Engine.Tiles;
 using OP_Engine.Time;
 using OP_Engine.Utility;
 using ProgressBar = OP_Engine.Controls.ProgressBar;
@@ -10,7 +12,8 @@ namespace OP_Engine.Jobs
         #region Variables
 
         public long ID;
-        public long OwnerID;
+        public Character? Owner_Character;
+        public Tile? Owner_Tile;
         public string? Name;
         public string? Type;
         public string? Description;

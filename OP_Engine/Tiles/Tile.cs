@@ -22,7 +22,7 @@ namespace OP_Engine.Tiles
         public float Duration;
         public TimeSpan Time;
         public Dimension2 Dimensions;
-        public Location Location = new();
+        public Location? Location;
 
         public World? World;
         public Map? Map;
@@ -49,7 +49,7 @@ namespace OP_Engine.Tiles
         public ProgressBar? ProgressBar;
         public Effect? Shader;
 
-        public Region Region = new();
+        public Region? Region;
         public Texture2D? Texture;
         public Rectangle Image;
         public bool Visible;
@@ -80,7 +80,8 @@ namespace OP_Engine.Tiles
         {
             InView = false;
 
-            if (Texture != null)
+            if (Texture != null &&
+                Region != null)
             {
                 if (Visible)
                 {
@@ -109,7 +110,8 @@ namespace OP_Engine.Tiles
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution)
         {
-            if (Texture != null)
+            if (Texture != null &&
+                Region != null)
             {
                 if (Visible)
                 {
@@ -132,7 +134,8 @@ namespace OP_Engine.Tiles
 
         public virtual void Draw(SpriteBatch spriteBatch, Point resolution, Color color)
         {
-            if (Texture != null)
+            if (Texture != null &&
+                Region != null)
             {
                 if (Visible)
                 {
@@ -170,11 +173,12 @@ namespace OP_Engine.Tiles
             Map = null;
             Layer = null;
 
+            Location?.Dispose();
             Inventory?.Dispose();
             ProgressBar?.Dispose();
-            Shader?.Dispose();
 
-            Region.Dispose();
+            Shader = null;
+            Region = null;
             Texture = null;
         }
 

@@ -42,7 +42,7 @@ namespace OP_Engine.Tiles
             int count = Tiles.Count;
             for (int i = 0; i < count; i++)
             {
-                Tiles[i]?.Update();
+                Tiles[i].Update();
             }
         }
 
@@ -55,7 +55,7 @@ namespace OP_Engine.Tiles
                 int count = Tiles.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    Tiles[i]?.Draw(spriteBatch, resolution);
+                    Tiles[i].Draw(spriteBatch, resolution);
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace OP_Engine.Tiles
                 int count = Tiles.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    Tiles[i]?.Draw(spriteBatch, resolution, color);
+                    Tiles[i].Draw(spriteBatch, resolution, color);
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace OP_Engine.Tiles
             for (int i = 0; i < count; i++)
             {
                 Tile existing = Tiles[i];
-                if (existing?.ID == id)
+                if (existing.ID == id)
                 {
                     return existing;
                 }
@@ -95,7 +95,7 @@ namespace OP_Engine.Tiles
             for (int i = 0; i < count; i++)
             {
                 Tile existing = Tiles[i];
-                if (existing?.Name == name)
+                if (existing.Name == name)
                 {
                     return existing;
                 }
@@ -125,9 +125,10 @@ namespace OP_Engine.Tiles
             for (int i = 0; i < count; i++)
             {
                 Tile existing = Tiles[i];
-                if (existing?.Location.X == location.X &&
-                    existing?.Location.Y == location.Y &&
-                    existing?.Location.Z == location.Z)
+                if (existing.Location != null &&
+                    existing.Location.X == location.X &&
+                    existing.Location.Y == location.Y &&
+                    existing.Location.Z == location.Z)
                 {
                     return existing;
                 }
@@ -141,9 +142,15 @@ namespace OP_Engine.Tiles
             //This only works if the tiles are sorted by Y,X
             //Can use Sort_ForDrawing() method to pre-sort them by Y,X
 
-            int min_x = (int)Tiles[0].Region.X;
+            Tile tile = Tiles[0];
+            if (tile.Region == null)
+            {
+                return null;
+            }
+
+            int min_x = (int)tile.Region.X;
             int max_x = min_x + (tileSize.X * Columns);
-            int min_y = (int)Tiles[0].Region.Y;
+            int min_y = (int)tile.Region.Y;
             int max_y = min_y + (tileSize.Y * Rows);
 
             int y_pos = 0;
@@ -176,9 +183,15 @@ namespace OP_Engine.Tiles
             //This only works if the tiles are sorted by Y,X
             //Can use Sort_ForDrawing() method to pre-sort them by Y,X
 
-            int min_x = (int)Tiles[0].Region.X;
+            Tile tile = Tiles[0];
+            if (tile.Region == null)
+            {
+                return null;
+            }
+
+            int min_x = (int)tile.Region.X;
             int max_x = min_x + (tileSize.X * Columns);
-            int min_y = (int)Tiles[0].Region.Y;
+            int min_y = (int)tile.Region.Y;
             int max_y = min_y + (tileSize.Y * Rows);
 
             int y_pos = 0;
@@ -214,18 +227,28 @@ namespace OP_Engine.Tiles
             {
                 for (int j = 0; j < Tiles.Count - 1; j++)
                 {
-                    if (Tiles[j].Region.Y > Tiles[j + 1].Region.Y)
+                    Tile current = Tiles[j];
+                    if (current.Region == null)
                     {
-                        Tile temp = Tiles[j + 1];
-                        Tiles[j + 1] = Tiles[j];
-                        Tiles[j] = temp;
+                        continue;
                     }
-                    else if (Tiles[j].Region.Y == Tiles[j + 1].Region.Y &&
-                             Tiles[j].Region.X > Tiles[j + 1].Region.X)
+
+                    Tile next = Tiles[j + 1];
+                    if (next.Region == null)
                     {
-                        Tile temp = Tiles[j + 1];
-                        Tiles[j + 1] = Tiles[j];
-                        Tiles[j] = temp;
+                        continue;
+                    }
+
+                    if (current.Region.Y > next.Region.Y)
+                    {
+                        Tiles[j + 1] = current;
+                        Tiles[j] = next;
+                    }
+                    else if (current.Region.Y == next.Region.Y &&
+                             current.Region.X > next.Region.X)
+                    {
+                        Tiles[j + 1] = current;
+                        Tiles[j] = next;
                     }
                 }
             }

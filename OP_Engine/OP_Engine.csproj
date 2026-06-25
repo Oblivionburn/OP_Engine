@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <PackageId>OP_Engine</PackageId>
-    <Version>1.1.0.3</Version>
+    <Version>1.1.0.4</Version>
     <Authors>Oblivionburn</Authors>
     <Company>Oblivionburn Productions</Company>
     <Description>A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.</Description>
@@ -18,11 +18,9 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <PackageReleaseNotes>
-		- Fixed ButtonOptions properties not nullable
-		- Fixed InputBoxOptions properties not nullable
-		- Fixed LabelOptions properties not nullable
-		- Fixed PictureOptions properties not nullable
-		- Fixed ProgressBarOptions properties not nullable
+		- Replaced JobTask.Owner_ID with Character/Tile references
+		- Fixed Tile.Location and Tile.Region not nullable
+		- Fixed Tile.Dispose() disposing of potentially referenced Shader and Region
 	</PackageReleaseNotes>
     <PackageTags>op_engine game engine</PackageTags>
   </PropertyGroup>
