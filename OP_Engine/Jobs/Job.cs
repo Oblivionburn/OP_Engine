@@ -1,4 +1,6 @@
-﻿using OP_Engine.Time;
+﻿using OP_Engine.Characters;
+using OP_Engine.Tiles;
+using OP_Engine.Time;
 
 namespace OP_Engine.Jobs
 {
@@ -8,7 +10,10 @@ namespace OP_Engine.Jobs
 
         public long ID;
         public string? Name;
-        public long OwnerID;
+        public string? Type;
+        public string? Description;
+        public Character? Owner_Character;
+        public Tile? Owner_Tile;
 
         public List<Appointment> Schedule = [];
         public List<JobTask> Tasks = [];
@@ -171,6 +176,43 @@ namespace OP_Engine.Jobs
                 if (existing.Name == name)
                 {
                     return existing;
+                }
+            }
+
+            return null;
+        }
+
+        public virtual JobTask? GetTask(TimeHandler current_time)
+        {
+            int count = Tasks.Count;
+            for (int i = 0; i < count; i++)
+            {
+                JobTask task = Tasks[i];
+
+                //Check for StartTime and EndTime not in the same day
+                //Example: Starts at 22:00 and ends 06:00 the next morning
+                if (task?.StartTime?.Hours > task?.EndTime?.Hours &&
+                    task?.EndTime?.Hours >= 0)
+                {
+                    if (current_time.Hours >= task?.StartTime?.Hours &&
+                        current_time.Minutes >= task?.StartTime?.Minutes &&
+                        current_time.Seconds >= task?.StartTime?.Seconds &&
+                        current_time.Milliseconds >= task?.StartTime?.Milliseconds)
+                    {
+                        return task;
+                    }
+                    else if (current_time.Hours < task?.EndTime?.Hours)
+                    {
+                        return task;
+                    }
+                }
+                else if (current_time.Hours >= task?.StartTime?.Hours &&
+                        current_time.Minutes >= task?.StartTime?.Minutes &&
+                        current_time.Seconds >= task?.StartTime?.Seconds &&
+                        current_time.Milliseconds >= task?.StartTime?.Milliseconds &&
+                        current_time.Hours < task?.EndTime?.Hours)
+                {
+                    return task;
                 }
             }
 
