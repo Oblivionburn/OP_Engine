@@ -47,25 +47,25 @@ namespace OP_Engine.Jobs
 
         public virtual void Update(TimeHandler current_time)
         {
-            JobTask? current = Get_CurrentTask();
-            if (current != null)
+            JobTask? task = Get_CurrentTask();
+            if (task != null)
             {
-                if (!current.Completed)
+                if (!task.Completed)
                 {
-                    if (!current.Started)
+                    if (!task.Started)
                     {
-                        current.Start(current_time);
+                        task.Start(current_time);
                     }
 
-                    if (!current.Completed)
+                    if (!task.Completed)
                     {
-                        current.Update(current_time);
+                        task.Update(current_time);
                     }
                 }
 
-                if (current.Completed)
+                if (task.Completed)
                 {
-                    if (!current.Keep_On_Completed &&
+                    if (!task.Keep_On_Completed &&
                         Tasks.Count > 0)
                     {
                         TasksCompleted.Add(Tasks[0]);
@@ -76,31 +76,31 @@ namespace OP_Engine.Jobs
 
                         Tasks.RemoveAt(0);
 
-                        current = Get_CurrentTask();
-                        current?.Start(current_time);
+                        task = Get_CurrentTask();
+                        task?.Start(current_time);
                     }
                 }
             }
         }
 
-        public virtual void Update(TimeHandler current_time, TimeSpan time_span)
+        public virtual void Update(TimeHandler current_time, TimeSpan step_time)
         {
-            JobTask? current = Get_CurrentTask();
-            if (current != null)
+            JobTask? task = Get_CurrentTask();
+            if (task != null)
             {
-                if (!current.Completed)
+                if (!task.Completed)
                 {
-                    if (!current.Started)
+                    if (!task.Started)
                     {
-                        current.Start(current_time, time_span);
+                        task.Start(current_time, step_time);
                     }
 
-                    current.Update(current_time, time_span);
+                    task.Update(current_time, step_time);
                 }
 
-                if (current.Completed)
+                if (task.Completed)
                 {
-                    if (!current.Keep_On_Completed)
+                    if (!task.Keep_On_Completed)
                     {
                         TasksCompleted.Add(Tasks[0]);
                         if (TasksCompleted.Count > 200)
@@ -109,7 +109,9 @@ namespace OP_Engine.Jobs
                         }
 
                         Tasks.RemoveAt(0);
-                        CurrentTask?.Start(current_time, time_span);
+
+                        task = Get_CurrentTask();
+                        task?.Start(current_time, step_time);
                     }
                 }
             }
@@ -229,18 +231,21 @@ namespace OP_Engine.Jobs
             return null;
         }
 
-        public virtual void Sort_ByPriority()
+        public virtual void Sort_ByPriority(bool ascending)
         {
             int count = Tasks.Count;
             for (int i = 0; i < count; i++)
             {
                 for (int j = 0; j < count - 1; j++)
                 {
-                    if (Tasks[j].Priority > Tasks[j + 1].Priority)
+                    JobTask current = Tasks[j];
+                    JobTask next = Tasks[j + 1];
+
+                    if ((ascending && current.Priority > next.Priority) ||
+                        current.Priority < next.Priority)
                     {
-                        JobTask temp = Tasks[j + 1];
-                        Tasks[j + 1] = Tasks[j];
-                        Tasks[j] = temp;
+                        Tasks[j] = next;
+                        Tasks[j + 1] = current;
                     }
                 }
             }

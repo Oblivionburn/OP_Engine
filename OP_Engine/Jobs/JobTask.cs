@@ -88,6 +88,11 @@ namespace OP_Engine.Jobs
 
                     Action();
 
+                    if (SubTasks.Count > 0)
+                    {
+                        Update_SubTasks(current_time);
+                    }
+
                     if (!InProgress(current_time))
                     {
                         Complete(current_time);
@@ -139,6 +144,11 @@ namespace OP_Engine.Jobs
                         }
 
                         Action();
+
+                        if (SubTasks.Count > 0)
+                        {
+                            Update_SubTasks(current_time, step_time);
+                        }
 
                         if (!InProgress(current_time))
                         {
@@ -281,6 +291,91 @@ namespace OP_Engine.Jobs
         public virtual void Action_End()
         {
 
+        }
+
+        /// <summary>
+        /// Updates the current JobTask in the SubTasks list if it is not Completed, else starts the next JobTask in the SubTasks list.
+        /// </summary>
+        /// <param name="current_time">
+        /// Passed to JobTask.Start() when starting the next sub-task, or passed to JobTask.Update() when running the current sub-task.
+        /// </param>
+        public virtual void Update_SubTasks(TimeHandler current_time)
+        {
+            JobTask? subTask = Get_SubTask();
+            if (subTask != null)
+            {
+                if (!subTask.Completed)
+                {
+                    if (!subTask.Started)
+                    {
+                        subTask.Start(current_time);
+                    }
+
+                    if (!subTask.Completed)
+                    {
+                        subTask.Update(current_time);
+                    }
+                }
+
+                if (subTask.Completed)
+                {
+                    if (!subTask.Keep_On_Completed &&
+                        SubTasks.Count > 0)
+                    {
+                        SubTasks.RemoveAt(0);
+
+                        subTask = Get_SubTask();
+                        subTask?.Start(current_time);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the current JobTask in the SubTasks list if it is not Completed, else starts the next JobTask in the SubTasks list.
+        /// </summary>
+        /// <param name="current_time">
+        /// Passed to JobTask.Start() when starting the next sub-task, or passed to JobTask.Update() when running the current sub-task.
+        /// </param>
+        public virtual void Update_SubTasks(TimeHandler current_time, TimeSpan time_span)
+        {
+            JobTask? subTask = Get_SubTask();
+            if (subTask != null)
+            {
+                if (!subTask.Completed)
+                {
+                    if (!subTask.Started)
+                    {
+                        subTask.Start(current_time, time_span);
+                    }
+
+                    subTask.Update(current_time, time_span);
+                }
+
+                if (subTask.Completed)
+                {
+                    if (!subTask.Keep_On_Completed)
+                    {
+                        SubTasks.RemoveAt(0);
+
+                        subTask = Get_SubTask();
+                        subTask?.Start(current_time, time_span);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the first JobTask in SubTasks, else returns null if SubTasks is empty.
+        /// </summary>
+        public virtual JobTask? Get_SubTask()
+        {
+            if (SubTasks.Count > 0)
+            {
+                return SubTasks[0];
+            }
+
+            return null;
         }
 
         public virtual void Dispose()
