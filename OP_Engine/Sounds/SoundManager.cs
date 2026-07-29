@@ -275,6 +275,8 @@ namespace OP_Engine.Sounds
                     StopMusic();
                 }
 
+                MusicChannel.setVolume(MusicVolume);
+
                 MusicLooping = looping;
                 if (MusicLooping)
                 {
@@ -286,7 +288,6 @@ namespace OP_Engine.Sounds
                 }
 
                 FMODSystem.playSound(MusicOut, MusicGroup, false, out MusicChannel);
-                MusicChannel.setVolume(MusicVolume);
 
                 MusicPlaying = true;
                 MusicPlaying_Name = sound.Name;
@@ -317,6 +318,8 @@ namespace OP_Engine.Sounds
                     }
                 }
 
+                FMOD.RESULT volume_result = channel.setVolume(volume);
+
                 if (looping)
                 {
                     FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.LOOP_NORMAL, out sound.SoundOut);
@@ -327,7 +330,6 @@ namespace OP_Engine.Sounds
                 }
 
                 FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, AmbientGroup, false, out channel);
-                FMOD.RESULT volume_result = channel.setVolume(volume);
 
                 AmbientOuts?.Add(sound.SoundOut);
                 AmbientChannels?.Add(channel);
@@ -343,9 +345,10 @@ namespace OP_Engine.Sounds
                 string file = sound.Directory + @"\" + sound.Name + sound.Extension;
 
                 FMOD.Channel channel = new();
+                FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
+
                 FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
                 FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
-                FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
 
                 SoundOuts?.Add(sound.SoundOut);
                 SoundChannels?.Add(channel);
@@ -394,11 +397,12 @@ namespace OP_Engine.Sounds
 
                     if (volume > 0)
                     {
-                        FMOD.Channel channel = new FMOD.Channel();
-                        FMOD.RESULT stream_result = FMODSystem.createStream(fileName, FMOD.MODE.DEFAULT, out sound.SoundOut);
-                        FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
+                        FMOD.Channel channel = new();
                         FMOD.RESULT volume_result = channel.setVolume(volume);
 
+                        FMOD.RESULT stream_result = FMODSystem.createStream(fileName, FMOD.MODE.DEFAULT, out sound.SoundOut);
+                        FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
+                        
                         SoundOuts.Add(sound.SoundOut);
                         SoundChannels.Add(channel);
                     }
@@ -412,15 +416,15 @@ namespace OP_Engine.Sounds
             {
                 string file = sound.Directory + @"\" + sound.Name + sound.Extension;
 
-                FMOD.Channel channel = new();
-                FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
-                FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
-
-                FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
-
                 FMOD.VECTOR position = new() { x = location.X, y = location.Y * -1, z = location.Z };
                 FMOD.VECTOR velocity = new() { x = 0.0f, y = 0.0f, z = 0.0f };
+
+                FMOD.Channel channel = new();
                 FMOD.RESULT spatial_result = channel.set3DAttributes(ref position, ref velocity);
+                FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
+
+                FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
+                FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
 
                 SoundOuts?.Add(sound.SoundOut);
                 SoundChannels?.Add(channel);
