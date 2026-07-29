@@ -471,6 +471,36 @@ namespace OP_Engine.Utility
             }
         }
 
+        public static void PlaySound_In3D(string name, Vector3 location)
+        {
+            if (Sounds.TryGetValue("Sounds", out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                SoundManager.PlaySound_Spatial(sound, location);
+            }
+        }
+
+        public static void PlaySound_In3D(string type, string name, Vector3 location)
+        {
+            if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list) &&
+                list.TryGetValue(name, out Sound? sound))
+            {
+                SoundManager.PlaySound_Spatial(sound, location);
+            }
+        }
+
+        public static void PlaySound_Random_In3D(string type, Vector3 location)
+        {
+            if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list))
+            {
+                CryptoRandom rand = new();
+                int choice = rand.Next(0, list.Count);
+
+                Sound sound = list.ToList().ElementAt(choice).Value;
+                SoundManager.PlaySound_Spatial(sound, location);
+            }
+        }
+
         public static void PlayMusic(string name, bool looping)
         {
             if (Music.TryGetValue("Music", out Dictionary<string, Sound>? list) &&

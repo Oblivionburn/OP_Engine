@@ -406,6 +406,29 @@ namespace OP_Engine.Sounds
             }
         }
 
+        public static void PlaySound_Spatial(Sound sound, Vector3 location)
+        {
+            if (SoundEnabled)
+            {
+                string file = sound.Directory + @"\" + sound.Name + sound.Extension;
+
+                FMOD.Channel channel = new();
+                FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
+                FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
+
+                FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
+
+                FMOD.VECTOR position = new() { x = location.X, y = location.Y * -1, z = location.Z };
+                FMOD.VECTOR velocity = new() { x = 0.0f, y = 0.0f, z = 0.0f };
+                FMOD.RESULT spatial_result = channel.set3DAttributes(ref position, ref velocity);
+
+                SoundOuts?.Add(sound.SoundOut);
+                SoundChannels?.Add(channel);
+
+                FMOD.RESULT updated = FMODSystem.update();
+            }
+        }
+
         public static void StopMusic()
         {
             if (MusicEnabled)

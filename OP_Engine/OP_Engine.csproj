@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <PackageId>OP_Engine</PackageId>
-    <Version>1.1.0.6</Version>
+    <Version>1.1.0.7</Version>
     <Authors>Oblivionburn</Authors>
     <Company>Oblivionburn Productions</Company>
     <Description>A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.</Description>
@@ -18,10 +18,8 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <PackageReleaseNotes>
-		- Added ascending [bool] parameter to Job.Sort_ByPriority() to determine sorting Tasks by ascending or descending Priority value
-		- Added JobTask.Get_SubTask()
-		- Added JobTask.Update_SubTasks()
-		- Updated JobTask.Update() to call Update_SubTasks() if JobTask.SubTasks is not empty
+		- Updated to MonoGame v3.8.5
+		- Added SoundManager.PlaySound_Spatial() for 3D audio
 	</PackageReleaseNotes>
     <PackageTags>op_engine game engine</PackageTags>
   </PropertyGroup>
@@ -31,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.4.1" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.5" />
   </ItemGroup>
 
 </Project>
