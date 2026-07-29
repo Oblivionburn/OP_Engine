@@ -420,12 +420,13 @@ namespace OP_Engine.Sounds
                 FMOD.VECTOR velocity = new() { x = 0.0f, y = 0.0f, z = 0.0f };
 
                 FMOD.Channel channel = new();
+
+                FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE._3D, out sound.SoundOut);
+                FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
+
                 FMOD.RESULT spatial_result = channel.set3DAttributes(ref position, ref velocity);
                 FMOD.RESULT minmax_result = channel.set3DMinMaxDistance(minDistance, maxDistance);
                 FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
-
-                FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
-                FMOD.RESULT play_result = FMODSystem.playSound(sound.SoundOut, SoundGroup, false, out channel);
 
                 SoundOuts?.Add(sound.SoundOut);
                 SoundChannels?.Add(channel);
