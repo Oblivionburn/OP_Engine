@@ -471,25 +471,25 @@ namespace OP_Engine.Utility
             }
         }
 
-        public static void PlaySound_In3D(string name, Vector3 location)
+        public static void PlaySound_In3D(string name, Vector3 location, int minDistance, int maxDistance)
         {
             if (Sounds.TryGetValue("Sounds", out Dictionary<string, Sound>? list) &&
                 list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlaySound_Spatial(sound, location);
+                SoundManager.PlaySound_Spatial(sound, location, minDistance, maxDistance);
             }
         }
 
-        public static void PlaySound_In3D(string type, string name, Vector3 location)
+        public static void PlaySound_In3D(string type, string name, Vector3 location, int minDistance, int maxDistance)
         {
             if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list) &&
                 list.TryGetValue(name, out Sound? sound))
             {
-                SoundManager.PlaySound_Spatial(sound, location);
+                SoundManager.PlaySound_Spatial(sound, location, minDistance, maxDistance);
             }
         }
 
-        public static void PlaySound_Random_In3D(string type, Vector3 location)
+        public static void PlaySound_Random_In3D(string type, Vector3 location, int minDistance, int maxDistance)
         {
             if (Sounds.TryGetValue(type, out Dictionary<string, Sound>? list))
             {
@@ -497,7 +497,7 @@ namespace OP_Engine.Utility
                 int choice = rand.Next(0, list.Count);
 
                 Sound sound = list.ToList().ElementAt(choice).Value;
-                SoundManager.PlaySound_Spatial(sound, location);
+                SoundManager.PlaySound_Spatial(sound, location, minDistance, maxDistance);
             }
         }
 

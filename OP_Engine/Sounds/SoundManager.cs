@@ -410,7 +410,7 @@ namespace OP_Engine.Sounds
             }
         }
 
-        public static void PlaySound_Spatial(Sound sound, Vector3 location)
+        public static void PlaySound_Spatial(Sound sound, Vector3 location, int minDistance, int maxDistance)
         {
             if (SoundEnabled)
             {
@@ -421,6 +421,7 @@ namespace OP_Engine.Sounds
 
                 FMOD.Channel channel = new();
                 FMOD.RESULT spatial_result = channel.set3DAttributes(ref position, ref velocity);
+                FMOD.RESULT minmax_result = channel.set3DMinMaxDistance(minDistance, maxDistance);
                 FMOD.RESULT volume_result = channel.setVolume(SoundVolume);
 
                 FMOD.RESULT stream_result = FMODSystem.createStream(file, FMOD.MODE.DEFAULT, out sound.SoundOut);
