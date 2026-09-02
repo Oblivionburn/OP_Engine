@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <PackageId>OP_Engine</PackageId>
-    <Version>1.1.1.1</Version>
+    <Version>1.1.2.0</Version>
     <Authors>Oblivionburn</Authors>
     <Company>Oblivionburn Productions</Company>
     <Description>A simple C# game engine used to make 2D tile mapped games for Windows from scratch in Visual Studio. Uses MonoGame library for rendering pipeline and FMOD for sound.</Description>
@@ -18,7 +18,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <PackageReleaseNotes>
-		- Finished rolling back changes to FMOD channel settings in SoundManager
+		- Added RenderingManager.BufferRenderer for shader application prior to final render on screen
 	</PackageReleaseNotes>
     <PackageTags>op_engine game engine</PackageTags>
   </PropertyGroup>

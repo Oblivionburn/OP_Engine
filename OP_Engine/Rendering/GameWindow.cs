@@ -6,7 +6,6 @@ using OP_Engine.Logging;
 using OP_Engine.Menus;
 using OP_Engine.Scenes;
 using OP_Engine.Sounds;
-using OP_Engine.Time;
 using OP_Engine.Enums;
 using OP_Engine.Weathers;
 using Color = Microsoft.Xna.Framework.Color;
@@ -25,6 +24,7 @@ namespace OP_Engine.Rendering
         public SpriteBatch? SpriteBatch;
         public GraphicsDeviceManager? GraphicsManager;
         public ContentManager? Content;
+        public RenderingManager? RenderingManager;
         public Logger? Logger;
         public ScreenType ScreenType;
 
@@ -83,12 +83,15 @@ namespace OP_Engine.Rendering
 
         private void Window_ClientSizeChanged(object? sender, EventArgs e)
         {
-            if (!IsResizeTickEnabled) { return; }
+            if (!IsResizeTickEnabled ||
+                Form == null)
+            {
+                return;
+            }
 
             //This fires after the window has been manually resized
             //and on release of title bar being clicked and held
-            if (Form != null &&
-                Form.WindowState == LastWindowState)
+            if (Form.WindowState == LastWindowState)
             {
                 ResetScreen();
             }
@@ -106,14 +109,15 @@ namespace OP_Engine.Rendering
 
         private void OnResizeTick(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!IsResizeTickEnabled)
+            if (!IsResizeTickEnabled ||
+                Game == null)
             {
                 return;
             }
 
             ResizeScenes();
             ResizeMenus();
-            Game?.Tick();
+            Game.Tick();
 
             if (ResizeTickTimer != null)
             {
@@ -123,10 +127,14 @@ namespace OP_Engine.Rendering
 
         private void GameForm_Resize(object? sender, EventArgs e)
         {
+            if (Form == null)
+            {
+                return;
+            }
+
             //This is a resize that occurs from using Maximize Window button
             //and does not fire from manual resizing of the window
-            if (Form != null &&
-                Form.WindowState != LastWindowState)
+            if (Form.WindowState != LastWindowState)
             {
                 LastWindowState = Form.WindowState;
 
@@ -164,6 +172,8 @@ namespace OP_Engine.Rendering
 
             Application.EnableVisualStyles();
 
+            RenderingManager = new RenderingManager(game);
+
             GraphicsManager = new GraphicsDeviceManager(game)
             {
                 PreferredBackBufferWidth = ScreenWidth,
@@ -178,10 +188,11 @@ namespace OP_Engine.Rendering
             Window.Position = new Point(0, 0);
             Window.ClientSizeChanged += new EventHandler<EventArgs>(Window_ClientSizeChanged);
 
+            //Default windowed
+            ScreenType = ScreenType.Windowed;
+
             if (Form != null)
             {
-                //Default windowed
-                ScreenType = ScreenType.Windowed;
                 Form.WindowState = FormWindowState.Maximized;
 
                 ResizeTickTimer = new System.Timers.Timer(1) { SynchronizingObject = Form, AutoReset = false };
@@ -194,58 +205,57 @@ namespace OP_Engine.Rendering
 
         public virtual void Update(GameTime gameTime)
         {
+            if (Window == null ||
+                Form == null)
+            {
+                return;
+            }
+
             try
             {
-                if (Window != null)
+                if (Window.ClientBounds.Width == 0 ||
+                    Window.ClientBounds.Height == 0)
                 {
-                    if (Window.ClientBounds.Width > 0 &&
-                        Window.ClientBounds.Height > 0 &&
-                        Form != null)
-                    {
-                        if (!Form.Focused)
-                        {
-                            if (GameStarted &&
-                                !LostFocus)
-                            {
-                                LostFocus = true;
-                                TimeManager.Paused = true;
-                            }
-
-                            SoundManager.Paused = true;
-                        }
-                        else if (Form.Focused)
-                        {
-                            if (LostFocus)
-                            {
-                                LostFocus = false;
-                                TimeManager.Paused = false;
-                            }
-
-                            SoundManager.Paused = false;
-
-                            InputManager.Update();
-                            MenuManager.Update(Game, Content);
-                            SceneManager.Update(Game, Content);
-                            RenderingManager.Update();
-                            WeatherManager.Update(Resolution, Color.White);
-                        }
-                    }
-                    else if (!LostFocus)
+                    if (!LostFocus)
                     {
                         LostFocus = true;
-
-                        TimeManager.Paused = true;
                         SoundManager.Paused = true;
                     }
 
-                    SoundManager.Update();
+                    return;
+                }
+
+                if (!Form.Focused)
+                {
+                    if (GameStarted &&
+                        !LostFocus)
+                    {
+                        LostFocus = true;
+                        SoundManager.Paused = true;
+                    }
+
+                    return;
                 }
 
                 if (Quit)
                 {
                     SoundManager.StopAll();
                     Game?.Exit();
+                    return;
                 }
+
+                if (LostFocus)
+                {
+                    LostFocus = false;
+                    SoundManager.Paused = false;
+                }
+
+                InputManager.Update();
+                MenuManager.Update(Game, Content);
+                SceneManager.Update(Game, Content);
+                RenderingManager?.Update();
+                WeatherManager.Update(Resolution, Color.White);
+                SoundManager.Update();
             }
             catch (Exception e)
             {
@@ -255,68 +265,77 @@ namespace OP_Engine.Rendering
 
         public virtual void Draw()
         {
-            RenderingManager.Draw(Window, GraphicsManager, SpriteBatch, new Point(ScreenWidth, ScreenHeight));
+            RenderingManager?.Draw(Window, GraphicsManager, SpriteBatch, new Point(ScreenWidth, ScreenHeight));
         }
 
         public virtual void ResetScreen()
         {
-            if (Window != null &&
-                Window.ClientBounds.Width > 0 &&
-                Window.ClientBounds.Height > 0 &&
-                GraphicsManager != null)
+            if (Window == null ||
+                GraphicsManager == null ||
+                RenderingManager == null ||
+                Form == null)
             {
-                if (ScreenType == ScreenType.Fullscreen ||
-                    ScreenType == ScreenType.BorderlessFullscreen)
+                return;
+            }
+
+            if (Window.ClientBounds.Width == 0 ||
+                Window.ClientBounds.Height == 0)
+            {
+                return;
+            }
+
+            if (ScreenType == ScreenType.Fullscreen ||
+                ScreenType == ScreenType.BorderlessFullscreen)
+            {
+                Window.Position = new Point(0, 0);
+
+                GraphicsManager.IsFullScreen = true;
+                GraphicsManager.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                GraphicsManager.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+
+                if (ScreenType == ScreenType.BorderlessFullscreen)
                 {
-                    Window.Position = new Point(0, 0);
-
-                    GraphicsManager.IsFullScreen = true;
-                    GraphicsManager.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-                    GraphicsManager.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-
-                    if (ScreenType == ScreenType.BorderlessFullscreen &&
-                        Form != null)
-                    {
-                        GraphicsManager.HardwareModeSwitch = false;
-                        Form.WindowState = FormWindowState.Normal;
-                        Window.AllowUserResizing = false;
-                        Window.IsBorderless = true;
-                    }
-                    else
-                    {
-                        GraphicsManager.HardwareModeSwitch = true;
-                    }
-                }
-                else if (ScreenType == ScreenType.Windowed)
-                {
-                    GraphicsManager.IsFullScreen = false;
-                    GraphicsManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
-                    GraphicsManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
-
-                    Window.AllowUserResizing = true;
-                    Window.IsBorderless = false;
                     GraphicsManager.HardwareModeSwitch = false;
+                    Form.WindowState = FormWindowState.Normal;
+                    Window.AllowUserResizing = false;
+                    Window.IsBorderless = true;
                 }
-
-                ScreenWidth = GraphicsManager.PreferredBackBufferWidth;
-                ScreenHeight = GraphicsManager.PreferredBackBufferHeight;
-
-                GraphicsManager.ApplyChanges();
-
-                if (RenderingManager.LightingRenderer != null &&
-                    RenderingManager.AddLightingRenderer != null)
+                else
                 {
-                    RenderingManager.LightingRenderer.RenderTarget = new RenderTarget2D(GraphicsManager.GraphicsDevice, ScreenWidth, ScreenHeight);
-                    RenderingManager.AddLightingRenderer.RenderTarget = RenderingManager.LightingRenderer.RenderTarget;
+                    GraphicsManager.HardwareModeSwitch = true;
                 }
+            }
+            else if (ScreenType == ScreenType.Windowed)
+            {
+                GraphicsManager.IsFullScreen = false;
+                GraphicsManager.PreferredBackBufferWidth = Window.ClientBounds.Width;
+                GraphicsManager.PreferredBackBufferHeight = Window.ClientBounds.Height;
 
-                ResolutionChange();
+                Window.AllowUserResizing = true;
+                Window.IsBorderless = false;
+                GraphicsManager.HardwareModeSwitch = false;
+            }
 
-                if (Form != null &&
-                    !Form.Visible)
-                {
-                    Form.Visible = true;
-                }
+            ScreenWidth = GraphicsManager.PreferredBackBufferWidth;
+            ScreenHeight = GraphicsManager.PreferredBackBufferHeight;
+
+            GraphicsManager.ApplyChanges();
+
+            if (RenderingManager.LightingRenderer != null &&
+                RenderingManager.AddLightingRenderer != null)
+            {
+                RenderingManager.LightingRenderer.RenderTarget = new RenderTarget2D(GraphicsManager.GraphicsDevice, ScreenWidth, ScreenHeight);
+                RenderingManager.AddLightingRenderer.RenderTarget = RenderingManager.LightingRenderer.RenderTarget;
+            }
+
+            RenderingManager.BufferRenderer?.Init(GraphicsManager, new Point(ScreenWidth, ScreenHeight));
+            RenderingManager.FinalRenderer?.Init(GraphicsManager, new Point(ScreenWidth, ScreenHeight));
+
+            ResolutionChange();
+
+            if (!Form.Visible)
+            {
+                Form.Visible = true;
             }
         }
 

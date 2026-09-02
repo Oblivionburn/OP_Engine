@@ -11,12 +11,14 @@ namespace OP_Engine.Rendering
     {
         #region Variables
 
-        public static bool UsingDefaults;
+        public bool UsingDefaults;
         public static Lighting? Lighting;
-        public static Renderer? LightingRenderer;
-        public static Renderer? AddLightingRenderer;
+        public Renderer? LightingRenderer;
+        public Renderer? AddLightingRenderer;
+        public Renderer? BufferRenderer;
+        public Renderer? FinalRenderer;
 
-        public static List<Renderer> Renderers = [];
+        public List<Renderer> Renderers = [];
 
         #endregion
 
@@ -31,7 +33,7 @@ namespace OP_Engine.Rendering
 
         #region Methods
 
-        public static void InitDefaults(GraphicsDeviceManager graphicsManager, Point resolution)
+        public virtual void InitDefaults(GraphicsDeviceManager graphicsManager, Point resolution)
         {
             Lighting = new Lighting();
 
@@ -64,7 +66,7 @@ namespace OP_Engine.Rendering
             UsingDefaults = true;
         }
 
-        public static void Update()
+        public virtual void Update()
         {
             if (UsingDefaults)
             {
@@ -78,61 +80,105 @@ namespace OP_Engine.Rendering
             }
         }
 
-        public static void Draw(GameWindow? window, GraphicsDeviceManager? graphicsManager, SpriteBatch? spriteBatch, Point resolution)
+        public virtual void Draw(GameWindow? window, GraphicsDeviceManager? graphicsManager, SpriteBatch? spriteBatch, Point resolution)
         {
-            if (window != null)
+            if (window == null ||
+                spriteBatch == null ||
+                graphicsManager == null ||
+                LightingRenderer == null ||
+                Lighting == null ||
+                AddLightingRenderer == null ||
+                BufferRenderer?.RenderTarget == null ||
+                FinalRenderer?.RenderTarget == null)
             {
-                //Don't bother drawing if the window is minimized
-                if (window.ClientBounds.Width > 0 &&
-                    window.ClientBounds.Height > 0)
-                {
-                    if (spriteBatch != null)
-                    {
-                        if (UsingDefaults &&
-                            graphicsManager != null)
-                        {
-                            /*
-                                This is a very basic setup for rendering whatever's currently visible in SceneManager,
-                                    applying deferred lighting on the scene, and then rendering menus ontop of that.
-
-                                Can just not run InitDefaults() if you want to use your own custom rendering.
-                            */
-
-                            //Set ambient light in case the color changed
-                            if (LightingRenderer != null &&
-                                Lighting != null)
-                            {
-                                LightingRenderer.GraphicsClearColor = Lighting.DrawColor;
-                            }
-
-                            //Render lighting
-                            LightingRenderer?.Draw(spriteBatch, resolution);
-
-                            //Render world
-                            graphicsManager.GraphicsDevice.Clear(Color.Black);
-                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
-                            SceneManager.Draw_WorldsOnly(spriteBatch, resolution, Color.White);
-                            spriteBatch.End();
-
-                            //Add lighting to world
-                            AddLightingRenderer?.Draw(spriteBatch, resolution);
-
-                            //Render menus
-                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
-                            SceneManager.Draw_WorldsOnly(spriteBatch, resolution); //Alt method with no lighting applied
-                            SceneManager.Draw_MenusOnly(spriteBatch);
-                            MenuManager.Draw(spriteBatch);
-                            spriteBatch.End();
-                        }
-
-                        int count = Renderers.Count;
-                        for (int i = 0; i < count; i++)
-                        {
-                            Renderers[i].Draw(spriteBatch, resolution);
-                        }
-                    }
-                }
+                return;
             }
+
+            //Don't bother drawing if the window is minimized
+            if (window.ClientBounds.Width == 0 ||
+                window.ClientBounds.Height == 0)
+            {
+                return;
+            }
+
+            if (UsingDefaults)
+            {
+                /*
+                    This is a very basic setup for rendering whatever's currently visible in SceneManager,
+                        applying deferred lighting on the scene, and then rendering menus ontop of that.
+
+                    Can just not run InitDefaults() if you want to use your own custom rendering.
+                */
+
+                //Set ambient light in case the color changed
+                LightingRenderer.GraphicsClearColor = Lighting.DrawColor;
+
+                //Render lighting
+                LightingRenderer.Draw(spriteBatch, resolution);
+
+                //=================================
+                // Draw world to Buffer
+                //---------------------------------
+                graphicsManager.GraphicsDevice.SetRenderTarget(BufferRenderer.RenderTarget);
+                graphicsManager.GraphicsDevice.Clear(Color.Black);
+
+                //Render world
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+                SceneManager.Draw_WorldsOnly(spriteBatch, resolution, Color.White);
+                spriteBatch.End();
+
+                //Add lighting to world
+                AddLightingRenderer.Draw(spriteBatch, resolution);
+
+                //Render world with no lighting applied
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+                SceneManager.Draw_WorldsOnly(spriteBatch, resolution); 
+                spriteBatch.End();
+                //---------------------------------
+                // End of drawing to Buffer
+                //=================================
+
+                //Apply shaders
+                ApplyShaders(BufferRenderer.RenderTarget);
+
+                //Draw Buffer to Final RenderTarget
+                graphicsManager.GraphicsDevice.SetRenderTarget(FinalRenderer.RenderTarget);
+                graphicsManager.GraphicsDevice.Clear(Color.Black);
+
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque);
+                spriteBatch.Draw(BufferRenderer.RenderTarget, new Microsoft.Xna.Framework.Rectangle(0, 0, resolution.X, resolution.Y), Color.White);
+                spriteBatch.End();
+
+                //Draw Final RenderTarget to screen
+                graphicsManager.GraphicsDevice.SetRenderTarget(null);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque);
+                spriteBatch.Draw(FinalRenderer.RenderTarget, new Microsoft.Xna.Framework.Rectangle(0, 0, resolution.X, resolution.Y), Color.White);
+                spriteBatch.End();
+
+                //=================================
+                // Draw menus
+                //---------------------------------
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied);
+
+                //Render scene specific menus
+                SceneManager.Draw_MenusOnly(spriteBatch);
+
+                //Render standalone menus
+                MenuManager.Draw(spriteBatch);
+
+                spriteBatch.End();
+            }
+
+            int count = Renderers.Count;
+            for (int i = 0; i < count; i++)
+            {
+                Renderers[i].Draw(spriteBatch, resolution);
+            }
+        }
+
+        public virtual void ApplyShaders(RenderTarget2D renderTarget)
+        {
+
         }
 
         private void Game_Exiting(object? sender, EventArgs e)
