@@ -63,6 +63,18 @@ namespace OP_Engine.Rendering
                 }
             };
 
+            BufferRenderer = new Renderer
+            {
+                Name = "Buffer"
+            };
+            BufferRenderer.Init(graphicsManager, resolution);
+
+            FinalRenderer = new Renderer
+            {
+                Name = "Final"
+            };
+            FinalRenderer.Init(graphicsManager, resolution);
+
             UsingDefaults = true;
         }
 
